@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            现代 PHP 新特性系列（三） —— Trait 概览 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="4281.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="4281.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="4281.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="4281.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="4281.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../modern-php.1">
+                现代PHP
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../feature-modern-php">
+                新特性
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">现代 PHP 新特性系列（三） —— Trait 概览</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">现代 PHP 新特性系列（三） —— Trait 概览</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="4281.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2016-05-12T23:52:27+08:00">2016-05-12</time>
+                    <time class="updated" datetime="2016-05-12T23:53:53+08:00">2016-05-12 23:53:53</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                15799 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>Trait是PHP 5.4引入的新概念，看上去既像类又像接口，其实都不是，Trait可以看做类的部分实现，可以混入一个或多个现有的PHP类中，其作用有两个：表明类可以做什么；提供模块化实现。Trait是一种代码复用技术，为PHP的单继承限制提供了一套灵活的代码复用机制。</p>
+<h3 id="toc_0"><b>为什么使用Trait</b></h3>
+<p>PHP语言使用一种典型的单继承模型，在这种模型中，我们先编写一个通用的根类，实现基本的功能，然后扩展这个根类，创建更具体的子类，直接从父类继承实现。这叫做继承层次结构，很多编程语言都使用这个模式。大多数时候这种典型的继承模型能够良好运作，但是如果想让两个无关的PHP类具有类似的行为，应该怎么做呢？</p>
+<p>Trait就是为了解决这种问题而诞生的。Trait能够把模块化的实现方式注入多个无关的类中，从而提高代码复用，符合DRY（Don’t Repeat Yourself）原则。比如Laravel底层用户认证相关逻辑以及软删除实现等地方都使用了Trait来实现。以Laravel自带的<code>AuthController</code>为例，其中的登录、注册以及登录失败尝试次数都是通过Trait实现：</p>
+<p><img class="alignnone size-full wp-image-4283" src="https://static.laravelacademy.org/wp-content/uploads/2016/05/trait-userauthencation.png" alt="trait-userauthencation" width="987" height="345" /></p>
+<h3 id="toc_1"><b>如何创建Trait</b></h3>
+<p>创建Trait很简单，跟创建类有点类似，只不过使用的关键字是<code>trait</code>而不是<code>class</code>，以上述<code>ThrottlesLogin</code>为例：</p>
+<p><img class="alignnone size-full wp-image-4284" src="https://static.laravelacademy.org/wp-content/uploads/2016/05/trait-throttleslogin.png" alt="trait-throttleslogin" width="602" height="326" /></p>
+<p>我们通过<code>trait</code>声明定义的是一个Trait，然后我们可以在这个Trait中像类一样定义要使用的属性和方法。</p>
+<p>此外Trait支持嵌套和组合，即通过一个或多个Trait（多个用,分隔）组合成一个Trait，比如<code>AuthenticatesAndRegistersUsers</code>即是如此：</p>
+<p><img class="alignnone size-full wp-image-4282" src="https://static.laravelacademy.org/wp-content/uploads/2016/05/trait-authcontroller.png" alt="trait-authcontroller" width="523" height="193" /></p>
+<p>使用多个Trait可能会引起命名冲突问题，上面的代码给出了解决方案：使用<code>insteadof</code>关键字，如果<code>AuthenticatesUsers</code>和<code>RegistersUsers</code>中都定义了<code>redirectPath</code>和<code>getGuard</code>方法，那么将从<code>AuthenticatesUsers</code>中获取对应方法而不是<code>RegistersUsers</code>。另外还可以使用<code>as</code>关键字为方法起个别名，这样也可以避免命名冲突。</p>
+<p>此外，这里可能没有完整列出，Trait中还支持定义抽象方法和静态方法，其中抽象方法必须在使用它的类中实现。</p>
+<p>这里还需要声明的一点是调用方法的优先级：调用类&gt;Trait&gt;父类（如果有的话），方法可以覆盖，但属性不行，如果Trait中定义了一个属性，如果调用类中也定义这个属性则会报错。</p>
+<h3 id="toc_2"><b>如何使用Trait</b></h3>
+<p>Trait的使用方法也很简单，上面已经显示的很清楚明了，即使用<code>use</code>关键字。</p>
+<p>可能你已经注意到，命名空间和Trait使用的都是<code>use</code>关键字，不同之处在于导入位置，命名空间在类的定义体外导入，而Trait在类的定义体内导入。</p>
+<blockquote><p>注：PHP解释器在编译时会把Trait复制到类的定义体中，但是不会处理这个操作引入的不兼容问题，如果Trait假定类中有特定的属性或方法，需要先确保类中确实有相应的属性或方法。</p></blockquote>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../modern-php/feature-modern-php" rel="category tag">
+                新特性
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/PHP" rel="tag">PHP</a>
+                                    ,
+                                            <a href="../tags/新特性" rel="tag">新特性</a>
+                                    ,
+                                            <a href="../tags/继承" rel="tag">继承</a>
+                                    ,
+                                            <a href="../tags/Trait" rel="tag">Trait</a>
+                                    ,
+                                            <a href="../tags/代码复用" rel="tag">代码复用</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;25 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="4281" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="4281" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;25 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="4246.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                现代 PHP 新特性系列（二） —— 善用接口
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="4317.html" rel="next">
+                现代 PHP 新特性系列（四） —— 生成器的创建和使用
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        9 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-10169" class="comment even thread-even depth-1">
+            <article id="div-comment-10169" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='匿名用户' src='https://www.gravatar.com/avatar/1b45c378822fc4dd2aeb7e47e9d652f2?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            匿名用户
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    储杰
+                                                                真™B事多
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="10169"  aria-label='回复匿名用户...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-15T15:16:31+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-15 15:16:31
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10169" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8855" class="comment even thread-even depth-1">
+            <article id="div-comment-8855" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='bruce' src='https://www.gravatar.com/avatar/ab4215f58f4342b1bad81b2bd4426916?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            bruce
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    储杰
+                                                                脑子缺根玄
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="8855"  aria-label='回复bruce...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-12-05T10:25:13+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-12-05 10:25:13
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8855" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4850" class="comment even thread-even depth-1">
+            <article id="div-comment-4850" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        一并回复下，本系列确实借鉴自Modern PHP，我的本意是结合现代PHP和Laravel进行讲解，让大家对Laravel底层有更好的认知和理解。@杜新龙  @幸福--简单 @罗彦 @冉海龙 @汉子
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="4850"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-08-23T23:44:30+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-08-23 23:44:30
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4850" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4847" class="comment even thread-even depth-1">
+            <article id="div-comment-4847" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='汉子' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            汉子
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        版权。。PHP出来就是让人使用的，这种哪里算侵权。。难道别人书里写了，就不能再让别人写了？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="4847"  aria-label='回复汉子...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-08-23T20:53:13+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-08-23 20:53:13
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4847" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3688" class="comment even thread-even depth-1">
+            <article id="div-comment-3688" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='冉海龙' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            冉海龙
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    储杰
+                                                                你是他的同行吧   这么攻击别人   就算借鉴也是有苦劳整理的  你也不用每一篇刷评论吧~SB
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="3688"  aria-label='回复冉海龙...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-03T08:36:23+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-03 08:36:23
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3688" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3487" class="comment even thread-even depth-1">
+            <article id="div-comment-3487" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='罗彦' src='https://www.gravatar.com/avatar/03eed84abcefaeeabe0645f942a20d60?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            罗彦
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    储杰
+                                                                你确定? 那里来的内奸
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="3487"  aria-label='回复罗彦...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-05-23T14:22:38+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-05-23 14:22:38
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3487" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3483" class="comment even thread-even depth-1">
+            <article id="div-comment-3483" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='幸福--简单' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            幸福--简单
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    储杰
+                                                                心眼啊
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="3483"  aria-label='回复幸福--简单...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-05-23T09:40:22+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-05-23 09:40:22
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3483" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3453" class="comment even thread-even depth-1">
+            <article id="div-comment-3453" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='发型有点乱_Quentin' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            发型有点乱_Quentin
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        非常好 语言都被面向对象、继承啥的抽象理论束缚住了。Trait的概念很好:简单 实用 速度快 不绕概念。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="3453"  aria-label='回复发型有点乱_Quentin...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-05-20T17:06:53+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-05-20 17:06:53
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3453" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3377" class="comment even thread-even depth-1">
+            <article id="div-comment-3377" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='杜新龙' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            杜新龙
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君你好，本系列文章是否借鉴自《Modern PHP》? 请尊重知识版权
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4281.html#respond' data-id="3377"  aria-label='回复杜新龙...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-05-16T17:21:25+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-05-16 17:21:25
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3377" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">3</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="4281.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='4281' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="4281.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="4281.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        为什么使用Trait
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="4281.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        如何创建Trait
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="4281.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        如何使用Trait
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="4317.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        现代 PHP 新特性系列（四） —— 生成器的创建和使用
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4341.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        现代 PHP 新特性系列（五） —— 闭包和匿名函数
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4396.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        现代 PHP 新特性系列（六） —— Zend Opcache
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4422.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        现代 PHP 新特性系列（七） —— 内置的 HTTP 服务器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6015.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        laravel-amount —— Model 中自动转换金额的 Trait
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

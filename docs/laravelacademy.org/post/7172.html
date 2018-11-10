@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— PHP 变量的创建、存储和检索 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="7172.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="7172.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="7172.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="7172.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="7172.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../modern-php.1">
+                现代PHP
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../php-extension">
+                扩展开发
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ PHP 内核与扩展开发系列] 变量在内核中的实现 —— PHP 变量的创建、存储和检索</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ PHP 内核与扩展开发系列] 变量在内核中的实现 —— PHP 变量的创建、存储和检索</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="7172.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-05-18T23:08:22+08:00">2017-05-18</time>
+                    <time class="updated" datetime="2017-05-18T23:16:16+08:00">2017-05-18 23:16:16</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                792 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0">创建变量</h3>
+<p>我们已经知道 PHP 变量在内核中其实是通过 <code>zval</code> 结构来实现的，也初步了解如何设置一个 <code>zval</code> 结构的类型和值。这一节我们将在前两节的基础上，彻底掌握对 <code>zval</code> 结构的操控，期间将引入很多超棒的新宏。</p>
+<p>在编码的时候，很希望在内核中创建的 <code>zval</code> 可以让用户在 PHP 语言里以变量的形式使用，为了实现这个功能，我们首先要创建一个 <code>zval</code>。最容易想到的办法便是创建一个 <code>zval</code> 指针，然后申请一块内存并让指针指向它。如果你脑海里浮现出了 <code>malloc(sizeof(zval))</code> 的影子，那么请你立即刹车，不要用<code>malloc</code> 来做这件事情，内核给我们提供了相应的宏来处理这件事，理由和以前一样：为了代码漂亮并保持版本升级时的兼容性。这个宏是：<code>MAKE_STD_ZVAL(pzv)</code>。这个宏会用内核的方式来申请一块内存并将其地址赋给 <code>pzv</code>，并初始化它的 <code>refcount</code> 和 <code>is_ref</code> 两个属性，更棒的是，它不但会自动处理内存不足问题，还会在内存中选择最优的位置来申请。</p>
+<p>除了 <code>MAKE_STD_ZVAL()</code> 宏函数，<code>ALLOC_INIT_ZVAL()</code> 宏函数也是用来干这件事的，唯一的不同是它会将 <code>pzv</code> 所指的 <code>zval</code> 的类型设置为 <code>IS_NULL</code>。</p>
+<p>申请完空间后，我们便可以给这个 <code>zval</code> 赋值了。基于已经介绍的宏，也许我们需要 <code>Z_TYPE_P(p) = IS_NULL</code> 来设置其是 <code>NULL</code> 类型，并通过 <code>Z_SOMEVAL</code> 形式的宏来为它赋值，但是现在你有了更好更简单的选择。</p>
+<p>内核中提供一些宏来简化我们的操作，可以只用一步便设置好 <code>zval</code> 的类型和值。</p>
+<table>
+<thead>
+<tr>
+<th>新宏</th>
+<th>其它宏的实现方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZVAL_NULL(pvz); (注意这个Z和VAL之间没有下划线！)</td>
+<td>Z_TYPE_P(pzv) = IS_NULL;</td>
+</tr>
+<tr>
+<td>ZVAL_BOOL(pzv, b); (将pzv所指的zval设置为IS_BOOL类型，值是b)</td>
+<td>Z_TYPE_P(pzv) = IS_BOOL;</p>
+<p>Z_BVAL_P(pzv) = b ? 1 : 0;</td>
+</tr>
+<tr>
+<td>ZVAL_TRUE(pzv); (将pzv所指的zval设置为IS_BOOL类型，值是true)</td>
+<td>ZVAL_BOOL(pzv, 1);</td>
+</tr>
+<tr>
+<td>ZVAL_FALSE(pzv); (将pzv所指的zval设置为IS_BOOL类型，值是false)</td>
+<td>ZVAL_BOOL(pzv, 0);</td>
+</tr>
+<tr>
+<td>ZVAL_LONG(pzv, l); (将pzv所指的zval设置为IS_LONG类型，值是l)</td>
+<td>Z_TYPE_P(pzv) = IS_LONG;</p>
+<p>Z_LVAL_P(pzv) = l;</td>
+</tr>
+<tr>
+<td>ZVAL_DOUBLE(pzv, d); (将pzv所指的zval设置为IS_DOUBLE类型，值是d)</td>
+<td>Z_TYPE_P(pzv) = IS_DOUBLE;<br />
+Z_DVAL_P(pzv) = d;</td>
+</tr>
+<tr>
+<td>ZVAL_STRINGL(pzv, str, len, dup);</td>
+<td>Z_TYPE_P(pzv) = IS_STRING;</p>
+<p>Z_STRLEN_P(pzv) = len;</p>
+<pre>if (dup) {
+
+    Z_STRVAL_P(pzv) = estrndup(str, len + 1);
+
+} else {
+
+    Z_STRVAL_P(pzv) = str;
+
+}</pre>
+</td>
+</tr>
+<tr>
+<td>ZVAL_STRING(pzv, str, dup);</td>
+<td>ZVAL_STRINGL(pzv, str, strlen(str), dup);</td>
+</tr>
+<tr>
+<td>ZVAL_RESOURCE(pzv, res);</td>
+<td>Z_TYPE_P(pzv) = IS_RESOURCE;</p>
+<p>Z_RESVAL_P(pzv) = res;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ZVAL_STRINGL(pzv,str,len,dup) 中的 dup 参数</strong></p>
+<p>先阐述一下 <code>ZVAL_STRINGL(pzv,str,len,dup);</code>，<code>str</code> 和 <code>len</code> 两个参数很好理解，因为我们知道内核中保存了字符串的地址和它的长度，后面的 <code>dup</code> 的意思其实很简单，它指明了该字符串是否需要被复制，值为 <code>1</code> 将先申请一块新内存并复制该字符串，然后把新内存的地址赋值给 <code>pzv</code>， 为 <code>0</code> 时则直接把 <code>str</code> 的地址赋值给 <code>zval</code>。</p>
+<p>这项特性将会在你仅仅需要创建一个变量并将其指向一个已经由 Zend 内部数据内存时很有用。</p>
+<p><strong>ZVAL_STRINGL 与 ZVAL_STRING 的区别</strong></p>
+<p>如果你想在某一位置截取该字符串或已经知道了这个字符串的长度，那么可以使用宏 <code>ZVAL_STRINGL(zval, string, length, duplicate)</code> ，它显式的指定字符串长度，而不是使用 <code>strlen()</code>。这个宏将该字符串长度作为参数，但它是二进制安全的，而且速度也比 <code>ZVAL_STRING</code> 快，因为少了个<code>strlen</code>。</p>
+<p><strong>ZVAL_RESOURCE 约等于 ZVAL_LONG</strong></p>
+<p>上一节中我们说过 PHP 中的资源类型的值其实就是一个整数，所以 <code>ZVAL_RESOURCE</code> 和 <code>ZVAL_LONG</code> 的工作差不多， 只不过它会把 <code>zval</code> 的类型设置为 <code>IS_RESOURCE</code>。</p>
+<h3 id="toc_1">变量存储</h3>
+<p>我们在前面两节已经了解了 PHP 中变量的类型和值是怎样在内核中用 C 语言实现的，这一节我们将看一下内核是怎样来组织用户在 PHP 中定义的变量的。</p>
+<p>有一点对我们扩展开发者来说非常棒，那就是用户在 PHP 中定义的变量我们都可以在一个 <code>HashTable</code> 中找到，当 PHP 中定义了一个变量，内核会自动的把它的信息储存到一个用 <code>HashTable</code> 实现的符号表里。</p>
+<p>全局作用域的符号表是在调用扩展的 <code>RINIT</code> 方法(一般都是 <code>MINIT</code> 方法里)前创建的，并在<code>RSHUTDOWN</code> 方法执行后自动销毁。</p>
+<p>当用户在 PHP 中调用一个函数或者类的方法时，内核会创建一个新的符号表并激活之， 这也就是为什么我们无法在函数中使用在函数外定义的变量的原因 （因为它们分属两个符号表，一个当前作用域的，一个全局作用域的）。如果不是在一个函数里，则全局作用域的符号表处于激活状态。</p>
+<p>我们现在打开 <code>Zend/zend_globals.h</code> 文件，看一下 <code>_zend_execution_globals</code> 结构体，会在其中发现这么两个元素：</p>
+<pre><code>struct _zend_executor_globals {
+    ...
+    HashTable symbol_table;
+    HashTable *active_symbol_table;
+    ...
+};      
+</code></pre>
+<p>其中的 <code>symbol_table</code> 元素可以通过 <code>EG</code> 宏来访问，它代表着 PHP 的<strong>全局变量</strong>，如<code>$GLOBALS</code>，其实从根本上来讲，<code>$GLOBALS</code> 不过是 <code>EG(symbol_table)</code> 的一层封装而已。</p>
+<p>与之对应，下面的 <code>active_symbol_table</code> 元素也可以通过 <code>EG(active_symbol_table)</code> 的方法来访问，它代表的是处于当前作用域的变量符号表(<strong>局部变量</strong>)。</p>
+<p>我们上边也看到了，其实这两个成员在 <code>_zend_executor_globals</code> 里虽然都代表 <code>HashTable</code>， 但一个是真正的 <code>HashTable</code>，而另一个是一个指针。当我们在对 <code>HashTable</code> 进行操作的时候，往往是把它的地址传递给一些函数。所以，如果我们要对 <code>EG(symbol_table)</code> 的结果进行操作，往往需要对它进行求址操作然后用它的地址作为被调用函数的参数。</p>
+<p>下面我们用一段例子来解释下上面说的理论：</p>
+<pre><code>&lt;?php
+    $foo = 'bar';
+?&gt;
+</code></pre>
+<p>上面是一段 PHP 语言的例子，我们创建了一个变量，并把它的值设置为<code>'bar'</code>，在以后的代码中我们便可以使用 <code>$foo</code> 变量。相同的功能我们怎样在内核中实现呢？我们可以先构思一下步骤：</p>
+<ul>
+<li>创建一个 <code>zval</code> 结构，并设置其类型。</li>
+<li>设置值为<code>'bar'</code>。</li>
+<li>将其加入当前作用域的符号表，只有这样用户才能在 PHP 里使用这个变量。</li>
+</ul>
+<p>具体的代码为：</p>
+<pre><code>{
+    zval *fooval;
+
+    MAKE_STD_ZVAL(fooval);
+    ZVAL_STRING(fooval, "bar", 1);
+    ZEND_SET_SYMBOL(EG(active_symbol_table), "foo", fooval);
+}       
+</code></pre>
+<p>首先，我们声明一个 <code>zval</code> 指针，并申请一块内存。然后通过 <code>ZVAL_STRING</code> 宏将值设置为<code>'bar'</code>,最后一行的作用就是将这个 <code>zval</code> 加入到当前的符号表里去，并将其 <code>label</code> 定义成 <code>foo</code>，这样用户就可以在代码里通过 <code>$foo</code> 来使用它了。</p>
+<h3 id="toc_2">变量检索</h3>
+<p>用户在 PHP 语言里定义的变量，我们能否在内核中获取到呢？答案当然是肯定的，下面我们就看如何通过<code>zend_hash_find()</code> 函数来找到当前某个作用域下用户已经定义好的变量。<code>zend_hash_find()</code> 函数是内核提供的操作 <code>HashTable</code> 的API之一，如果你没有接触过，可以先记住怎么使用就可以了。</p>
+<pre><code>{
+    zval **fooval;
+
+    if (zend_hash_find(
+            EG(active_symbol_table), //这个参数是地址，如果我们操作全局作用域，则需要&amp;EG(symbol_table)
+            "foo",
+            sizeof("foo"),
+            (void**)&amp;fooval
+        ) == SUCCESS
+    )
+    {
+        php_printf("成功发现$foo!");
+    }
+    else
+    {
+        php_printf("当前作用域下无法发现$foo.");
+    }
+}       
+</code></pre>
+<p>首先我们定义了一个指向指针的指针，然后通过 <code>zend_hash_find</code> 去 <code>EG(active_symbol_table)</code> 作用域下寻找名称为 <code>foo($foo)</code> 的变量，如果成功找到，此函数将返回 <code>SUCCESS</code>。</p>
+<p>看完代码，你肯定有很多疑问。为什么还要进行 <code>sizeof("foo")</code> 运算，<code>fooval</code> 明明是 <code>zval**</code> 型的，为什么转成 <code>void**</code> 的？而且为什么还要进行 <code>&amp;fooval</code> 运算，<code>fooval</code> 本身不就已经是指向指针的指针了吗？:-) 问题确实很多，不要过于担心，让我们带着这些问题继续往下走。</p>
+<p>首先要说明的是，内核定义 <code>HashTable</code> 这个结构，并不是单单用来储存 PHP 语言里的变量的，其它很多地方都在应用 <code>HashTable</code> (这就是个神器)。一个 <code>HashTable</code> 有很多元素，在内核里叫做 <code>bucket</code>。然而每个 <code>bucket</code> 的大小是固定的，所以如果我们想在 <code>bucket</code> 里存储任意数据时，最好的办法便是申请一块内存保存数据，然后在 <code>bucket</code> 里保存它的指针。以 <code>zval *foo</code> 为例，内核会先申请一块足够保存指针的内存来保存 <code>foo</code>，比如这块内存的地址是 <code>p</code>，也就是 <code>p=&amp;foo</code>，并在 <code>bucket</code> 里保存 <code>p</code>，这时我们便明白了，<code>p</code> 其实就是 <code>zval **</code> 类型的。至于 <code>bucket</code> 为什么保存 <code>zval **</code> 类型的指针，而不是直接保存 <code>zval *</code> 类型的指针，我们到下一章再详细叙述。</p>
+<p>所以当我们去 <code>HashTable</code> 里寻找变量的时候，得到的值其实是一个 <code>zval</code> 的指针。</p>
+<p>如果 <code>zend_hash_find()</code> 函数找到了我们需要的数据，它将返回 <code>SUCCESS</code> 常量， 并把它的地址赋给我们在调用 <code>zend_hash_find()</code> 函数传递的 <code>fooval</code> 参数，也就是说此时 <code>fooval</code> 就指向了我们要找的数据。如果没有找到，那它不会对我们 <code>fooval</code> 参数做任何修改，并返回 <code>FAILURE</code> 常量。</p>
+<p>就去符号表里找变量而言，<code>SUCCESS</code> 和 <code>FAILURE</code> 仅代表这个变量是否存在而已。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../modern-php/php-extension" rel="category tag">
+                扩展开发
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/作用域" rel="tag">作用域</a>
+                                    ,
+                                            <a href="../tags/创建" rel="tag">创建</a>
+                                    ,
+                                            <a href="../tags/PHP" rel="tag">PHP</a>
+                                    ,
+                                            <a href="../tags/变量" rel="tag">变量</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E5%86%85%E6%A0%B8" rel="tag">内核</a>
+                                    ,
+                                            <a href="../tags/检索" rel="tag">检索</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="7172" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="7172" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="7167.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 变量的值
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="7180.html" rel="next">
+                [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 类型转化
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="7172.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='7172' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="7172.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="7172.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建变量
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7172.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        变量存储
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7172.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        变量检索
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="7159.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 变量类型
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7167.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 变量的值
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7180.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 类型转化
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7193.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 内存管理 —— 引用计数
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7261.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] Array 与 HashTable：在内核中操作数组
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

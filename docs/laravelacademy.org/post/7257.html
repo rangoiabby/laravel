@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ PHP 内核与扩展开发系列] Array 与 HashTable：操作 HashTable 的 API - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="7257.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="7257.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="7257.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="7257.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="7257.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../modern-php.1">
+                现代PHP
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../php-extension">
+                扩展开发
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ PHP 内核与扩展开发系列] Array 与 HashTable：操作 HashTable 的 API</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ PHP 内核与扩展开发系列] Array 与 HashTable：操作 HashTable 的 API</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="7257.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-06-06T23:26:30+08:00">2017-06-06</time>
+                    <time class="updated" datetime="2017-06-06T23:28:28+08:00">2017-06-06 23:28:28</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                1456 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>Zend 把与 HashTable 有关的 API 分成了好几类以便于我们查找，这些 API 的返回值大多都是常量<code>SUCCESS</code> 或者 <code>FAILURE</code>。</p>
+<h3 id="toc_0">初始化 HashTable</h3>
+<p>下面在介绍函数原型的时候都使用了 <code>ht</code>，但是我们在编写扩展的时候，一定不要使用这个名称，因为一些 PHP 宏展开后会声明这个名称的变量，进而引发命名冲突。</p>
+<p>创建并初始化一个 HashTable 非常简单，只要使用 <code>zend_hash_init</code> 函数即可，它的定义如下：</p>
+<pre><code>int zend_hash_init(
+    HashTable *ht,
+    uint nSize,
+    hash_func_t pHashFunction,
+    dtor_func_t pDestructor,
+    zend_bool persistent
+);
+</code></pre>
+<ul>
+<li><code>*ht</code> 是指针，指向一个 HashTable，我们既可以 <code>&amp;</code> 一个已存在的 HashTable 变量，也可以通过<code>emalloc()</code>、<code>pemalloc()</code> 等函数来直接申请一块内存，不过最常用的方法还是用<code>ALLOC_HASHTABLE(ht)</code> 宏来让内核自动替我们完成这项工作。<code>ALLOC_HASHTABLE(ht)</code> 所做的工作相当于 <code>ht = emalloc(sizeof(HashTable))</code>。</li>
+<li><code>nSize</code> 代表着这个 HashTable 可以拥有的元素的最大数量（HashTable 能够包含任意数量的元素， 这个值只是为了提前申请好内存，提高性能，省得不停地进行 <code>rehash</code> 操作）。在我们添加新的元素时，这个值会根据情况决定是否自动增长，有趣的是，这个值永远都是 2 的次方，如果你给它的值不是一个 2 的次方的形式，那它将自动调整成大于它的最小的2的次方值。它的计算方法就像这样：<code>nSize = pow(2, ceil(log(nSize, 2)))</code>。</li>
+<li><code>pHashFunction</code> 是早期 Zend Engine 中的一个参数，为了兼容没有去掉它，但它已经没有用处了，所以我们直接赋成 NULL 就可以了。在以前，它其实是一个钩子，用来让用户自己 hook 一个散列函数，替换 PHP 默认的 <code>DJBX33A</code> 算法实现。</li>
+<li><code>pDestructor</code> 代表着一个回调函数，当我们删除或者修改 HashTable 中其中一个元素时候便会调用，它的函数原型必须是这样的：<code>void method_name(void pElement);</code>，这里的 <code>pElement</code> 是一个指针，指向 HashTable 中将要被删除或者修改的那个数据，而数据的类型往往也是个指针。</li>
+<li><code>persistent</code> 是最后一个参数，它的含义非常简单。如果它为 <code>true</code>，那么这个 HashTable 将永远存在于内存中，而不会在 <code>RSHUTDOWN</code> 阶段自动被注销掉。此时第一个参数 <code>ht</code> 所指向的地址必须是通过 <code>pemalloc()</code> 函数申请的。</li>
+</ul>
+<p>举个例子，PHP 内核在每个请求的头部都调用了这个函数来初始化 <code>symbol_table</code>：</p>
+<pre><code>zend_hash_init(&amp;EG(symbol_table), 50, NULL, ZVAL_PTR_DTOR, 0);
+//#define ZVAL_PTR_DTOR (void (*)(void *)) zval_ptr_dtor_wrapper
+</code></pre>
+<p>如你所见，每个元素在从符号表里删除的时候（比如执行<code>"&lt;?php unset($foo);"</code>操作），都会触发<code>ZVAL_PTR_DTOR</code> 宏代表的函数来对其进行与引用计数有关的操作。因为 50 不是 2 的整数幂形式，所以它会在函数执行时被调整为 64。</p>
+<h3 id="toc_1">添加 &amp;&amp; 修改</h3>
+<p>我们有四个常用的函数来完成这项操作，它们的原型分别如下：</p>
+<pre><code>int zend_hash_add(
+    HashTable *ht,      //待操作的ht
+    char *arKey,        //索引，如"my_key"
+    uint nKeyLen,       //字符串索引的长度，如6
+    void **pData,       //要插入的数据，注意它是void **类型的
+    uint nDataSize,
+    void *pDest         //如果操作成功，则 pDest = *pData;
+);
+
+int zend_hash_update(
+    HashTable *ht,
+    char *arKey,
+    uint nKeyLen,
+    void *pData,
+    uint nDataSize,
+    void **pDest
+);
+
+int zend_hash_index_update(
+    HashTable *ht,
+    ulong h,
+    void *pData,
+    uint nDataSize,
+    void **pDest
+);
+
+int zend_hash_next_index_insert(
+    HashTable *ht,
+    void *pData,
+    uint nDataSize,
+    void **pDest
+);
+</code></pre>
+<p>前两个函数用于添加带字符串索引的数据到 HashTable 中，就像我们在 PHP 中使用的那样 <code>$foo['bar'] = 'baz';</code>，用C来完成便是：</p>
+<pre><code>zend_hash_add(fooHashTbl, "bar", sizeof("bar"), &amp;barZval, sizeof(zval*), NULL);
+</code></pre>
+<p><code>zend_hash_add()</code> 和 <code>zend_hash_update()</code> 唯一的区别就是如果这个 key 已经存在了，那么<code>zend_hash_add()</code> 将返回 <code>FAILURE</code>，而不会修改原有数据。</p>
+<p>接下来的两个函数用于向 <code>ht</code> 中添加数字索引的数据，<code>zend_hash_next_index_insert()</code> 函数则不需要索引值参数，而是自己直接计算出下一个数字索引值。但是如果我们想获取下一个元素的数字索引值，也是有办法的，可以使用<code>zend_hash_next_free_element()</code> 函数：</p>
+<pre><code>ulong nextid = zend_hash_next_free_element(ht);
+zend_hash_index_update(ht, nextid, &amp;data, sizeof(data), NULL);
+</code></pre>
+<p>所有这些函数中，如果 <code>pDest</code> 不为 NULL，内核便会修改其值为被操作的那个元素的地址。在下面的代码中这个参数也有同样的功能。</p>
+<h3 id="toc_2">查找</h3>
+<p>因为 HashTable 中有两种类型的索引值，所以需要两个函数来执行 <code>find</code> 操作。</p>
+<pre><code>int zend_hash_find(HashTable *ht, char *arKey, uint nKeyLength,void **pData);
+int zend_hash_index_find(HashTable *ht, ulong h, void **pData);
+</code></pre>
+<p>第一种就是我们处理 PHP 语言中字符串索引数组时使用的，第二种是我们处理 PHP 语言中数字索引数组使用的。我们看一个使用示例：</p>
+<pre><code>void hash_sample(HashTable *ht, sample_data *data1)
+{
+    sample_data *data2;
+    ulong targetID = zend_hash_next_free_element(ht);
+    if (zend_hash_index_update(ht, targetID, data1, sizeof(sample_data), NULL) == FAILURE) {
+           /* Should never happen */
+             return;
+    }
+    if(zend_hash_index_find(ht, targetID, (void **)&amp;data2) == FAILURE) {
+            /* Very unlikely since we just added this element */
+            return;
+    }
+    /* data1 != data2, 但是 *data1 == *data2 */
+}
+</code></pre>
+<p>除了读取，我们还需要检测某个 key 是否存在：</p>
+<pre><code>int zend_hash_exists(HashTable *ht, char *arKey, uint nKeyLen);
+int zend_hash_index_exists(HashTable *ht, ulong h);
+</code></pre>
+<p>这两个函数返回 <code>SUCCESS</code> 或者 <code>FAILURE</code>，分别代表着是否存在：</p>
+<pre><code>if( zend_hash_exists(EG(active_symbol_table), "foo", sizeof("foo")) == SUCCESS )
+{
+    /* $foo is set */
+}
+else
+{
+    /* $foo does not exist */
+}
+
+ulong zend_get_hash_value(char *arKey, uint nKeyLen);
+</code></pre>
+<p>当我们需要对同一个字符串的 key 进行多个操作时，比如先检测有没有，如果没有的话插入，然后修改等等，这时我们便可以使用 <code>zend_get_hash_value</code> 函数来对我们的操作进行加速！这个函数的返回值可以和 quick 系列函数使用，达到加速的目的（就是不再重复计算这个字符串的散列值，而直接使用已准备好的）！</p>
+<pre><code>int zend_hash_quick_add(
+    HashTable *ht,
+    char *arKey,
+    uint nKeyLen,
+    ulong hashval,
+    void *pData,
+    uint nDataSize,
+    void **pDest
+);
+
+int zend_hash_quick_update(
+    HashTable *ht,
+    char *arKey,
+    uint nKeyLen,
+    ulong hashval,
+    void *pData,
+    uint nDataSize,
+    void **pDest
+);
+
+int zend_hash_quick_find(
+    HashTable *ht,
+    char *arKey,
+    uint nKeyLen,
+    ulong hashval,
+    void **pData
+);
+
+int zend_hash_quick_exists(
+    HashTable *ht,
+    char *arKey,
+    uint nKeyLen,
+    ulong hashval
+);
+</code></pre>
+<p>虽然很意外，但你还是要接受没有 <code>zend_hash_quick_del()</code> 这个函数。quick 类函数会在下面这种场合中用到：</p>
+<pre><code>void php_sample_hash_copy(HashTable *hta, HashTable *htb, char *arKey, uint nKeyLen TSRMLS_DC)
+{
+    ulong hashval = zend_get_hash_value(arKey, nKeyLen);
+    zval **copyval;
+
+    if (zend_hash_quick_find(hta, arKey, nKeyLen, hashval, (void**)&amp;copyval) == FAILURE)
+    {
+        // 表明不存在这个索引
+        return;
+    }
+
+    // 这个 zval 已经被其它的 Hashtable 使用了，这里我们进行引用计数操作。
+    (*copyval)-&gt;refcount__gc++;
+    zend_hash_quick_update(htb, arKey, nKeyLen, hashval, copyval, sizeof(zval*), NULL);
+}
+</code></pre>
+<h3 id="toc_3">复制与合并</h3>
+<p>在 PHP 语言中，我们经常需要进行数组间的拷贝与合并操作，所以 PHP 语言中的数组在 C 语言中的实现 HashTable 也肯定会经常碰到这种情况。为了简化这一类操作，内核中早已准备好了相应的 API 供我们使用。</p>
+<pre><code>void zend_hash_copy(
+    HashTable *target,
+    HashTable *source,
+    copy_ctor_func_t pCopyConstructor,
+    void *tmp,
+    uint size
+);
+</code></pre>
+<p><code>*source</code> 中的所有元素都会通过 <code>pCopyConstructor</code> 函数拷贝到 <code>*target</code> 中去，我们还是以PHP 语言中的数组举例，<code>pCopyConstructor</code> 这个 hook 使得我们可以在拷贝变量的时候对他们的<code>ref_count</code> 进行加 <code>1</code> 操作。<code>target</code> 中原有的与 <code>source</code> 相同索引位置上的数据会被替换掉，而其它的元素则会被保留不动。<code>tmp</code> 参数是为了兼容 PHP 4.0.3 以前版本的，现在赋值为 NULL 即可。<code>size</code> 参数代表每个元素的大小，对于 PHP 语言中的数组来说，这里的便是 <code>sizeof(zval*)</code> 了。</p>
+<pre><code>void zend_hash_merge(
+    HashTable *target,
+    HashTable *source,
+    copy_ctor_func_t pCopyConstructor,
+    void *tmp,
+    uint size,
+    int overwrite
+);
+</code></pre>
+<p><code>zend_hash_merge</code> 与 <code>zend_hash_copy</code> 唯一的不同之处便是多了个 <code>int</code> 类型的 <code>overwrite</code> 参数，当其值非 0 的时候，两个函数的工作是完全一样的；如果 <code>overwrite</code> 参数为 0，则 <code>zend_hash_merge</code> 函数就不会对 <code>target</code> 中已有索引的值进行替换了。</p>
+<pre><code>typedef zend_bool (*merge_checker_func_t)(HashTable *target_ht, void *source_data, zend_hash_key *hash_key, void *pParam);
+void zend_hash_merge_ex(
+    HashTable *target,
+    HashTable *source,
+    copy_ctor_func_t pCopyConstructor, 
+    uint size,
+    merge_checker_func_t pMergeSource,
+    void *pParam
+);
+</code></pre>
+<p>这个函数又繁琐了些，与 <code>zend_hash_copy</code> 相比，其多了两个参数，多出来的 <code>pMergeSoure</code> 回调函数允许我们选择性的进行 merge，而不是全都 merge。这组功能的最终形式是允许使用合并检查器功能进行选择性复制。以下示例显示 <code>zend_hash_merge_ex</code> 用于仅复制源 HashTable 的关联索引成员（用户空间变量数组）：</p>
+<pre><code>zend_bool associative_only(HashTable *ht, void *pData, zend_hash_key *hash_key, void *pParam)
+{
+    //如果是字符串索引
+    return (hash_key-&gt;arKey &amp;&amp; hash_key-&gt;nKeyLength);
+}
+
+void merge_associative(HashTable *target, HashTable *source)
+{
+    zend_hash_merge_ex(target, source, zval_add_ref, sizeof(zval*), associative_only, NULL);
+}
+</code></pre>
+<h3 id="toc_4">遍历</h3>
+<p>在 PHP 语言中，我们有很多方法需要遍历一个数组，对于数组的本质 HashTable，我们也有很多办法来对其进行遍历操作。首先最简单的一种办法便是使用一种与 PHP 语言中 <code>foreach</code> 语句功能类似的函数——<code>zend_hash_apply</code>，它接收一个回调函数，并将 HashTable 的每一个元素都传递给它：</p>
+<pre><code>typedef int (*apply_func_t)(void *pDest TSRMLS_DC);
+void zend_hash_apply(HashTable *ht, apply_func_t apply_func TSRMLS_DC);
+</code></pre>
+<p>下面是另外一种遍历函数：</p>
+<pre><code>typedef int (*apply_func_arg_t)(void *pDest, void *argument TSRMLS_DC);
+void zend_hash_apply_with_argument(HashTable *ht, apply_func_arg_t apply_func, void *data TSRMLS_DC);
+</code></pre>
+<p>通过上面的函数可以在执行遍历时向回调函数传递任意数量的值，这在一些 DIY 操作中非常有用。</p>
+<p>上述函数对传给它们的回调函数的返回值有一个共同的约定，详细介绍下下表：</p>
+<table>
+<thead>
+<tr>
+<th>常量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZEND_HASH_APPLY_KEEP</td>
+<td>结束当前请求，进入下一个循环。与 PHP 语言 <code>foreach</code> 语句中的一次循环执行完毕或者遇到 <code>continue</code> 关键字的作用一样</td>
+</tr>
+<tr>
+<td>ZEND_HASH_APPLY_STOP</td>
+<td>跳出，与 PHP 语言 <code>foreach</code> 语句中的 <code>break</code> 关键字的作用一样</td>
+</tr>
+<tr>
+<td>ZEND_HASH_APPLY_REMOVE</td>
+<td>删除当前的元素，然后继续处理下一个。相当于在PHP语言中：<code>unset($foo[$key]);continue;</code></td>
+</tr>
+</tbody>
+</table>
+<p>我们来看一下 PHP 语言中的 <code>foreach</code> 循环：</p>
+<pre><code>&lt;?php
+foreach($arr as $val) {
+    echo "The value is: $val\n";
+}
+?&gt;
+</code></pre>
+<p>那我们的回调函数在 C 语言中应该这样写：</p>
+<pre><code>int php_sample_print_zval(zval **val TSRMLS_DC)
+{
+    // 重新copy一个zval，防止破坏原数据
+    zval tmpcopy = **val;
+    zval_copy_ctor(&amp;tmpcopy);
+
+    // 转换为字符串
+    INIT_PZVAL(&amp;tmpcopy);
+    convert_to_string(&amp;tmpcopy);
+
+    // 开始输出
+    php_printf("The value is: ");
+    PHPWRITE(Z_STRVAL(tmpcopy), Z_STRLEN(tmpcopy));
+    php_printf("\n");
+
+    //毁尸灭迹
+    zval_dtor(&amp;tmpcopy);
+
+    //返回，继续遍历下一个
+    return ZEND_HASH_APPLY_KEEP;
+}
+</code></pre>
+<p>遍历我们的 HashTable：</p>
+<pre><code>//生成一个名为arrht、元素为 zval* 类型的HashTable
+zend_hash_apply(arrht, php_sample_print_zval TSRMLS_CC);
+</code></pre>
+<p>再次提醒，保存在 HashTable 中的元素并不是真正的最终变量，而是指向它的一个指针。我们的上面的遍历函数接收的是一个 <code>zval**</code> 类型的参数。</p>
+<pre><code>typedef int (*apply_func_args_t)(void *pDest,int num_args, va_list args, zend_hash_key *hash_key);
+void zend_hash_apply_with_arguments(HashTable *ht, apply_func_args_t apply_func, int numargs, ...);
+</code></pre>
+<p>为了能在遍历的同时接收索引的值，我们必须使用第三种形式的 <code>zend_hash_apply</code>，就像 PHP 语言中这样的功能：</p>
+<pre><code>&lt;?php
+foreach($arr as $key =&gt; $val)
+{
+    echo "The value of $key is: $val\n";
+}
+?&gt;
+</code></pre>
+<p>为了配合 <code>zend_hash_apply_with_arguments()</code> 函数，需要对遍历执行函数做一些小小的改动，使其接受索引作为一个参数：</p>
+<pre><code>int php_sample_print_zval_and_key(zval **val, int num_args, va_list args, zend_hash_key *hash_key)
+{
+    // 重新copy一个zval，防止破坏原数据
+    zval tmpcopy = **val;
+    // tsrm_ls is needed by output functions
+    TSRMLS_FETCH();
+    zval_copy_ctor(&amp;tmpcopy);
+    INIT_PZVAL(&amp;tmpcopy);
+
+    // 转换为字符串
+    convert_to_string(&amp;tmpcopy);
+
+    // 执行输出
+    php_printf("The value of ");
+    if (hash_key-&gt;nKeyLength)
+    {
+        // 如果是字符串类型的key
+            PHPWRITE(hash_key-&gt;arKey, hash_key-&gt;nKeyLength);
+       }
+    else
+    {
+            // 如果是数字类型的key
+            php_printf("%ld", hash_key-&gt;h);
+    }
+
+    php_printf(" is: ");
+    PHPWRITE(Z_STRVAL(tmpcopy), Z_STRLEN(tmpcopy));
+    php_printf("\n");
+
+    // 毁尸灭迹
+    zval_dtor(&amp;tmpcopy);
+    // continue
+    return ZEND_HASH_APPLY_KEEP;
+}
+</code></pre>
+<p>执行遍历：</p>
+<pre><code>zend_hash_apply_with_arguments(arrht, php_sample_print_zval_and_key, 0);
+</code></pre>
+<p>这个函数通过 C 语言中的可变参数特性来接收参数。</p>
+<p>当我们检查这个 <code>hash_key</code> 是字符串类型还是数字类型时，是通过 <code>nKeyLength</code> 属性来检测的，而不是 <code>arKey</code> 属性。这是因为内核有时候会在 <code>arKey</code> 属性里留些脏数据，但 <code>nKeyLength</code> 属性是安全的，可以放心使用，甚至对于空字符串索引，它也照样能处理。比如：<code>$foo[''] = "Bar";</code> 索引的值是NULL 字符，但它的长度却是包括最后这个 NULL 字符的，所以为 1。</p>
+<p><strong>向前遍历</strong></p>
+<p>有时我们希望不用回调函数也能遍历一个数组的数据，为了实现这个功能，内核特意的为每个 HashTable 加了个属性：内部指针。我们还是以 PHP 语言中的数组举例，有以下函数来处理它所对应的那个 HashTable 的内部指针：<code>reset()</code>、<code>key()</code>、<code>current()</code>、<code>next()</code>、<code>prev()</code>、<code>each()</code> 和 <code>end()</code>。</p>
+<pre><code>&lt;?php
+    $arr = array('a'=&gt;1, 'b'=&gt;2, 'c'=&gt;3);
+    reset($arr);
+    while (list($key, $val) = each($arr)) {
+        /* Do something with $key and $val */
+    }
+    reset($arr);
+    $firstkey = key($arr);
+    $firstval = current($arr);
+    $bval = next($arr);
+    $cval = next($arr);
+?&gt;
+</code></pre>
+<p>Zend 内核中有一组操作 HashTable 的功能与以上函数功能类似的函数：</p>
+<pre><code>/* reset() */
+void zend_hash_internal_pointer_reset(HashTable *ht);
+
+/* key() */
+int zend_hash_get_current_key(HashTable *ht, char **strIdx, unit *strIdxLen, ulong *numIdx, zend_bool duplicate);
+
+/* current() */
+int zend_hash_get_current_data(HashTable *ht, void **pData);
+
+/* next()/each() */
+int zend_hash_move_forward(HashTable *ht);
+
+/* prev() */
+int zend_hash_move_backwards(HashTable *ht);
+
+/* end() */
+void zend_hash_internal_pointer_end(HashTable *ht);
+
+/* 其他 */
+int zend_hash_get_current_key_type(HashTable *ht);
+int zend_hash_has_more_elements(HashTable *ht);
+</code></pre>
+<p>PHP 语言中的 <code>next()</code>、<code>prev()</code>、<code>end()</code> 函数在移动完指针之后，都通过调用<code>zend_hash_get_current_data()</code> 函数来获取当前所指的元素并返回。而 <code>each()</code> 虽然和 <code>next()</code> 很像，却是使用 <code>zend_hash_get_current_key()</code> 函数的返回值来作为它的返回值。</p>
+<p>现在我们用另外一种方法来实现上面的 <code>foreach</code>：</p>
+<pre><code>void php_sample_print_var_hash(HashTable *arrht)
+{
+
+    for(
+    zend_hash_internal_pointer_reset(arrht);
+    zend_hash_has_more_elements(arrht) == SUCCESS;
+    zend_hash_move_forward(arrht))
+    {
+        char *key;
+        uint keylen;
+        ulong idx;
+        int type;
+        zval **ppzval, tmpcopy;
+
+        type = zend_hash_get_current_key_ex(arrht, &amp;key, &amp;keylen, &amp;idx, 0, NULL);
+        if (zend_hash_get_current_data(arrht, (void**)&amp;ppzval) == FAILURE)
+        {
+            /* Should never actually fail
+             * since the key is known to exist. */
+            continue;
+        }
+
+        //重新copy一个zval，防止破坏原数据
+        tmpcopy = **ppzval;
+        zval_copy_ctor(&amp;tmpcopy);
+        INIT_PZVAL(&amp;tmpcopy);
+
+        convert_to_string(&amp;tmpcopy);
+
+        /* Output */
+        php_printf("The value of ");
+        if (type == HASH_KEY_IS_STRING)
+        {
+            /* String Key / Associative */
+            PHPWRITE(key, keylen);
+        } else {
+            /* Numeric Key */
+            php_printf("%ld", idx);
+        }
+        php_printf(" is: ");
+        PHPWRITE(Z_STRVAL(tmpcopy), Z_STRLEN(tmpcopy));
+        php_printf("\n");
+        /* Toss out old copy */
+        zval_dtor(&amp;tmpcopy);
+    }
+}
+</code></pre>
+<p>上面的代码你应该都能看懂了，唯一还没接触到的可能是 <code>zend_hash_get_current_key()</code> 函数的返回值，它的返回值见下表：</p>
+<table>
+<thead>
+<tr>
+<th>常量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HASH_KEY_IS_STRING</td>
+<td>当前元素的索引是字符串类型的</td>
+</tr>
+<tr>
+<td>HASH_KEY_IS_LONG</td>
+<td>当前元素的索引是数字型的</td>
+</tr>
+<tr>
+<td>HASH_KEY_NON_EXISTANT</td>
+<td>HashTable 中的内部指针已经移动到尾部，不指向任何元素。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="toc_5">删除</h3>
+<p>内核中一共预置了四个删除 HashTable 元素的函数，头两个是用户删除某个确定索引的数据：</p>
+<pre><code>int zend_hash_del(HashTable *ht, char *arKey, uint nKeyLen);
+int zend_hash_index_del(HashTable *ht, ulong h);
+</code></pre>
+<p>它们两个分别用来删除字符串索引和数字索引的数据，操作完成后都返回 <code>SUCCESS</code> 或者 <code>FAILURE</code> 表示成功或失败。回顾一下最上面的叙述，当一个元素被删除时，会激活 HashTable 的 <code>destructor</code> 回调函数：</p>
+<pre><code>void zend_hash_clean(HashTable *ht);
+void zend_hash_destroy(HashTable *ht);
+</code></pre>
+<p>前者用于将 HashTable 中的元素全部删除，而后者是将这个 HashTable 自身也毁灭掉。现在让我们来完整的回顾一下 HashTable 的创建、添加和删除操作：</p>
+<pre><code>int sample_strvec_handler(int argc, char **argv TSRMLS_DC)
+{
+    HashTable *ht;
+
+    //分配内存
+    ALLOC_HASHTABLE(ht);
+
+    //初始化
+    if (zend_hash_init(ht, argc, NULL, ZVAL_PTR_DTOR, 0) == FAILURE) {
+        FREE_HASHTABLE(ht);
+        return FAILURE;
+    }
+
+    //填充数据
+    while (argc) {
+        zval *value;
+        MAKE_STD_ZVAL(value);
+        ZVAL_STRING(value, argv[argc], 1);
+        argv++;
+        if (zend_hash_next_index_insert(ht, (void**)&amp;value,
+                            sizeof(zval*)) == FAILURE) {
+            /* 添加失败则跳过 */
+            zval_ptr_dtor(&amp;value);
+        }
+    }
+
+    //完成工作
+    process_hashtable(ht);
+
+    //毁尸灭迹
+    zend_hash_destroy(ht);
+
+    FREE_HASHTABLE(ht);
+    return SUCCESS;
+}
+</code></pre>
+<h3 id="toc_6">排序、比较、临界值</h3>
+<p>针对 HashTable 操作的 Zend API 中有很多都需要回调函数。首先让我们来处理一下对 HashTable 中元素大小比较的问题：</p>
+<pre><code>typedef int (*compare_func_t)(void *a, void *b TSRMLS_DC);
+</code></pre>
+<p>这很像PHP语言中 <code>usort</code> 函数需要的参数，它将比较两个值 <code>a</code> 与 <code>b</code>，如果<code>*a &gt; *b</code>，则返回 1，相等则返回 0，否则返回 -1。下面是 <code>zend_hash_minmax</code> 函数的声明，它就需要我们上面声明的那个类型的函数作为回调函数：<code>int zend_hash_minmax(HashTable *ht, compare_func_t compar, int flag, void **pData TSRMLS_DC);</code>，这个函数的功能我们从它的名称中便能肯定，它用来比较HashTable 中的元素大小。如果 <code>flag==0</code> 则返回最小值，否则返回最大值！</p>
+<p>下面让我们来利用这个函数来对用户端定义的所有函数根据函数名找到最大值与最小值(大小写不敏感)：</p>
+<pre><code>// 先定义一个比较函数，作为 zend_hash_minmax 的回调函数
+int fname_compare(zend_function *a, zend_function *b TSRMLS_DC)
+{
+    return strcasecmp(a-&gt;common.function_name, b-&gt;common.function_name);
+}
+
+void php_sample_funcname_sort(TSRMLS_D)
+{
+    zend_function *fe;
+    if (zend_hash_minmax(EG(function_table), fname_compare, 0, (void **)&amp;fe) == SUCCESS)
+    {
+        php_printf("Min function: %s\n", fe-&gt;common.function_name);
+    }
+    if (zend_hash_minmax(EG(function_table), fname_compare, 1, (void **)&amp;fe) == SUCCESS)
+    {
+        php_printf("Max function: %s\n", fe-&gt;common.function_name);
+    }
+}
+</code></pre>
+<p><code>zend_hash_compare()</code> 也需要回调函数，它的功能是将 HashTable 看作一个整体与另一个 HashTable 做比较，如果前者大于后者返回 1，相等返回 0，否则返回 -1：</p>
+<pre><code>int zend_hash_compare(HashTable *hta, HashTable *htb, compare_func_t compar, zend_bool ordered TSRMLS_DC);
+</code></pre>
+<p>默认情况下它往往是先判断各个 HashTable 元素的个数，个数多的最大。如果两者的元素个数一样多，就比较它们各自的每一个元素。</p>
+<p>另外一个重要的需要回调函数的 API 便是排序函数，它需要的回调函数形式是这样的：</p>
+<pre><code>typedef void (*sort_func_t)(void **Buckets, size_t numBuckets, size_t sizBucket, compare_func_t comp TSRMLS_DC);
+</code></pre>
+<p>此回调将被触发一次，并将 HashTable 中所有 Buckets（元素）向量以一系列指针方式接收。根据排序功能自己的逻辑，在使用或不使用比较回调的情况下，这些 Bucket 可能会在向量内进行交换。在实际情况中，<code>sizBucket</code> 将始终是 <code>sizeof(Bucket *)</code>。</p>
+<p>除非你计划实现自己的方法来替代 <code>bubbleort</code>，否则您不需要自己实现排序功能。一个预定义的排序方法<code>zend_qsort</code> 已经存在，用作 <code>zend_hash_sort()</code> 的回调，你只需要实现比较功能即可：</p>
+<pre><code>int zend_hash_sort(HashTable *ht, sort_func_t sort_func, compare_func_t compare_func, int renumber TSRMLS_DC);
+</code></pre>
+<p>最后一个参数如果为 <code>TRUE</code>，则会抛弃 HashTable 中原有的索引-键关系，将对排列好的新值赋予新的数字键值。PHP 语言中的 <code>sort</code> 函数实现如下：</p>
+<pre><code>zend_hash_sort(target_hash, zend_qsort, array_data_compare, 1 TSRMLS_CC);
+</code></pre>
+<p><code>array_data_compare</code> 是一个返回 <code>compare_func_t</code> 类型数据的函数，它将按照 HashTable 中<code>zval*</code> 值的大小进行排序。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../modern-php/php-extension" rel="category tag">
+                扩展开发
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/排序" rel="tag">排序</a>
+                                    ,
+                                            <a href="../tags/删除" rel="tag">删除</a>
+                                    ,
+                                            <a href="../tags/索引" rel="tag">索引</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%95%B0%E7%BB%84" rel="tag">数组</a>
+                                    ,
+                                            <a href="../tags/创建" rel="tag">创建</a>
+                                    ,
+                                            <a href="../tags/PHP" rel="tag">PHP</a>
+                                    ,
+                                            <a href="../tags/合并" rel="tag">合并</a>
+                                    ,
+                                            <a href="../tags/遍历" rel="tag">遍历</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E5%86%85%E6%A0%B8" rel="tag">内核</a>
+                                    ,
+                                            <a href="../tags/HashTable" rel="tag">HashTable</a>
+                                    ,
+                                            <a href="../tags/添加" rel="tag">添加</a>
+                                    ,
+                                            <a href="../tags/查找" rel="tag">查找</a>
+                                    ,
+                                            <a href="../tags/比较" rel="tag">比较</a>
+                                    ,
+                                            <a href="../tags/修改" rel="tag">修改</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="7257" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="7257" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="7243.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ PHP 内核与扩展开发系列] Array 与 HashTable：数组与链表
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="7261.html" rel="next">
+                [ PHP 内核与扩展开发系列] Array 与 HashTable：在内核中操作数组
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="7257.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='7257' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="7257.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="7257.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        初始化 HashTable
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7257.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        添加 &amp;&amp; 修改
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7257.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        查找
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7257.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        复制与合并
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7257.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        遍历
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7257.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        删除
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7257.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        排序、比较、临界值
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="2965.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 数据库 —— 迁移
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7172.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— PHP 变量的创建、存储和检索
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7243.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] Array 与 HashTable：数组与链表
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7261.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] Array 与 HashTable：在内核中操作数组
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7265.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] PHP 中的资源类型：复合数据类型 —— 资源
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

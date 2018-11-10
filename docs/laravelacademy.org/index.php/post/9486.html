@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于七牛云 PHP SDK + Laravel 文件存储实现 Laravel 学院静态资源云存储及 CDN 加速 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9486.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9486.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9486.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9486.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9486.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../basic">
+                Laravel教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于七牛云 PHP SDK + Laravel 文件存储实现 Laravel 学院静态资源云存储及 CDN 加速</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于七牛云 PHP SDK + Laravel 文件存储实现 Laravel 学院静态资源云存储及 CDN 加速</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9486.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-07-29T23:03:11+08:00">2018-07-29</time>
+                    <time class="updated" datetime="2018-07-31T22:53:04+08:00">2018-07-31 22:53:04</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                1902 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/dd03064a0f2ce90968b77a4b51b6d055.png" alt="七牛云存储" /></p>
+<h3 id="toc_0">背景</h3>
+<p>随着云服务的流行，将图片等静态文件存储到云服务提供商，然后通过CDN的方式获取成为了静态文件存储与加载的通用解决方案，这样做的好处是显而易见的，一方面可以免除在自己的系统上实现文件分布式存储（对大型系统而言），将专业的事情交给专业的人去做；另一方面，CDN获取静态文件可以极大节省服务器带宽，有效提高系统高峰期的吞吐能力，学院正是通过这种方式解决了网站访问速度的问题，用1M带宽撑起学院每日数万的访问量。</p>
+<p>现在提供云存储的服务商也很多，阿里云、腾讯云这类整体云服务解决方案提供商自然提供了类似的服务，此外还有一些专业的云存储服务提供商，比如七牛云、又拍云等，由于老版学院使用的是七牛云，所以新版学院继续沿用，以减少新平台的学习成本。</p>
+<h3 id="toc_1">云存储实现</h3>
+<p>基于 Laravel 实现文件云存储很简单，因为 <a href="../../post/8965.html">Laravel 文件系统</a>本身支持文件的本地存储和云存储，只不过默认支持的是 AWS 云存储，和<a href="../../post/9485.html">前面一篇教程</a>中搜索的实现思路一致，Laravel 的强大之处在于为其它驱动的存储提供了扩展支持，我们只要仿照自带的存储驱动实现为自定义的存储驱动编写一个扩展类即可，这里就是基于七牛云驱动的文件存储了。</p>
+<h4 id="toc_2">初始化配置文件</h4>
+<p>七牛云官方提供了 PHP SDK，我们基于这个 SDK 来实现上层功能，首先安装这个 SDK：</p>
+<pre><code>composer require qiniu/php-sdk</code></pre>
+<p>为了使用这个 SDK，还需要注册一个七牛云账号，然后去 个人中心-&gt;密钥管理 页面获取 AccessKey/SecretKey 信息，编辑 <code>.env</code> 配置文件修改相关配置如下：</p>
+<pre><code>FILESYSTEM_CLOUD=qiniu
+QINIU_ACCESS_KEY=你的七牛云AccessKey
+QINIU_SECRET_KEY=你的七牛云SecretKey
+QINIU_DEFAULT_REGION=你的默认区域，比如z0
+QINIU_BUCKET=你的bucket（通过在对象存储中新增存储空间获取）
+QINIU_URL=你的静态 CDN URL</code></pre>
+<p>然后修改配置文件 <code>config/filesystems.php</code>，新增七牛云存储相关配置：</p>
+<pre><code>'disks' =&gt; [
+
+    ... // Laravel 自带配置信息
+
+    'qiniu' =&gt; [
+        'driver' =&gt; 'qiniu',
+        'key' =&gt; env('QINIU_ACCESS_KEY'),
+        'secret' =&gt; env('QINIU_SECRET_KEY'),
+        'region' =&gt; env('QINIU_DEFAULT_REGION'),
+        'bucket' =&gt; env('QINIU_BUCKET'),
+        'url' =&gt; env('QINIU_URL')
+    ],
+],</code></pre>
+<h4 id="toc_3">编写七牛云存储适配器类</h4>
+<p>然后我们需要为七牛云存储编写一个 Laravel 文件存储驱动适配器：</p>
+<pre><code>&lt;?php
+
+namespace App\Services\FileSystem;
+
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\Config;
+use Qiniu\Auth;
+use Qiniu\Storage\BucketManager;
+use Qiniu\Storage\UploadManager;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+
+class QiniuAdapter extends AbstractAdapter
+{
+
+    protected $uploadManager;
+    protected $bucketManager;
+    private $accessKey;
+    private $accessSecret;
+    private $bucketName;
+    private $token;
+
+    public function __construct($prefix = '')
+    {
+        $this-&gt;uploadManager = new UploadManager();
+        $this-&gt;accessKey = \config('filesystems.disks.qiniu.key');
+        $this-&gt;accessSecret = \config('filesystems.disks.qiniu.secret');
+        $this-&gt;bucketName = \config('filesystems.disks.qiniu.bucket');
+        $auth = new Auth($this-&gt;accessKey, $this-&gt;accessSecret);
+        $this-&gt;bucketManager = new BucketManager($auth);
+        $this-&gt;token = $auth-&gt;uploadToken($this-&gt;bucketName);
+        $this-&gt;setPathPrefix($prefix);
+    }
+
+    /**
+     * Write a new file.
+     *
+     * @param string $path
+     * @param string $contents
+     * @param Config $config Config object
+     *
+     * @return array|false false on failure file meta data on success
+     */
+    public function write($path, $contents, Config $config)
+    {
+        return $this-&gt;upload($path, $contents);
+    }
+
+    /**
+     * Write a new file using a stream.
+     *
+     * @param string $path
+     * @param resource $resource
+     * @param Config $config Config object
+     *
+     * @return array|false false on failure file meta data on success
+     */
+    public function writeStream($path, $resource, Config $config)
+    {
+        return $this-&gt;upload($path, $resource, true);
+    }
+
+    /**
+     * Update a file.
+     *
+     * @param string $path
+     * @param string $contents
+     * @param Config $config Config object
+     *
+     * @return array|false false on failure file meta data on success
+     */
+    public function update($path, $contents, Config $config)
+    {
+        return $this-&gt;upload($path, $contents);
+    }
+
+    /**
+     * Update a file using a stream.
+     *
+     * @param string $path
+     * @param resource $resource
+     * @param Config $config Config object
+     *
+     * @return array|false false on failure file meta data on success
+     */
+    public function updateStream($path, $resource, Config $config)
+    {
+        return $this-&gt;upload($path, $resource, true);
+    }
+
+    /**
+     * Rename a file.
+     *
+     * @param string $path
+     * @param string $newpath
+     *
+     * @return bool
+     */
+    public function rename($path, $newpath)
+    {
+        $path = $this-&gt;applyPathPrefix($path);
+        $newpath = $this-&gt;applyPathPrefix($newpath);
+        $error = $this-&gt;bucketManager-&gt;rename($this-&gt;bucketName, $path, $newpath);
+        return $error == null ? true : false;
+    }
+
+    /**
+     * Copy a file.
+     *
+     * @param string $path
+     * @param string $newpath
+     *
+     * @return bool
+     */
+    public function copy($path, $newpath)
+    {
+        $path = $this-&gt;applyPathPrefix($path);
+        $newpath = $this-&gt;applyPathPrefix($newpath);
+        $error = $this-&gt;bucketManager-&gt;copy($this-&gt;bucketName, $path, $this-&gt;bucketName, $newpath);
+        return $error == null ? true : false;
+    }
+
+    /**
+     * Delete a file.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function delete($path)
+    {
+        $this-&gt;applyPathPrefix($path);
+        $error = $this-&gt;bucketManager-&gt;delete($this-&gt;bucketName, $path);
+        return $error == null ? true : false;
+    }
+
+    /**
+     * Delete a directory.
+     *
+     * @param string $dirname
+     *
+     * @return bool
+     */
+    public function deleteDir($dirname)
+    {
+        throw new \BadFunctionCallException('暂不支持该操作');
+    }
+
+    /**
+     * Create a directory.
+     *
+     * @param string $dirname directory name
+     * @param Config $config
+     *
+     * @return array|false
+     */
+    public function createDir($dirname, Config $config)
+    {
+        throw new \BadFunctionCallException('暂不支持该操作');
+    }
+
+    /**
+     * Set the visibility for a file.
+     *
+     * @param string $path
+     * @param string $visibility
+     *
+     * @return array|false file meta data
+     */
+    public function setVisibility($path, $visibility)
+    {
+        throw new \BadFunctionCallException('暂不支持该操作');
+    }
+
+    /**
+     * Check whether a file exists.
+     *
+     * @param string $path
+     *
+     * @return array|bool|null
+     */
+    public function has($path)
+    {
+        $path = $this-&gt;applyPathPrefix($path);
+        $stat = $this-&gt;bucketManager-&gt;stat($this-&gt;bucketName, $path);
+        if ($stat[0] == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Read a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function read($path)
+    {
+        $path = $this-&gt;applyPathPrefix($path);
+        list($fileInfo, $error) = $this-&gt;bucketManager-&gt;stat($this-&gt;bucketName, $path);
+        if ($fileInfo) {
+            return $fileInfo;
+        } else {
+            throw new FileNotFoundException('对应文件不存在');
+        }
+    }
+
+    /**
+     * Read a file as a stream.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function readStream($path)
+    {
+        throw new \BadFunctionCallException('暂不支持该操作');
+    }
+
+    /**
+     * List contents of a directory.
+     *
+     * @param string $directory
+     * @param bool $recursive
+     *
+     * @return array
+     */
+    public function listContents($directory = '', $recursive = false)
+    {
+        return $this-&gt;bucketManager-&gt;listFiles($this-&gt;bucketName);
+    }
+
+    /**
+     * Get all the meta data of a file or directory.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getMetadata($path)
+    {
+        return $this-&gt;read($path);
+    }
+
+    /**
+     * Get the size of a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getSize($path)
+    {
+        $fileInfo = $this-&gt;read($path);
+        return $fileInfo['fsize'];
+    }
+
+    /**
+     * Get the mimetype of a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getMimetype($path)
+    {
+        $fileInfo = $this-&gt;read($path);
+        return $fileInfo['fileType'];
+    }
+
+    /**
+     * Get the last modified time of a file as a timestamp.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getTimestamp($path)
+    {
+        $fileInfo = $this-&gt;read($path);
+        return $fileInfo['putTime'];
+    }
+
+    /**
+     * Get the visibility of a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getVisibility($path)
+    {
+        throw new \BadFunctionCallException('暂不支持该操作');
+    }
+
+    protected function upload(string $path, $contents, $stream = false)
+    {
+        $path = $this-&gt;applyPathPrefix($path);
+        try {
+            if ($stream) {
+                $response = $this-&gt;uploadManager-&gt;put($this-&gt;token, $path, $contents);
+            } else {
+                $response = $this-&gt;uploadManager-&gt;putFile($this-&gt;token, $path, $contents);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+        list($uploadResult, $error) = $response;
+        if ($uploadResult) {
+            return $uploadResult;
+        } else {
+            throw new UploadException('上传文件到七牛失败：' . $error-&gt;message());
+        }
+    }
+}</code></pre>
+<p>编写好适配器后需要在 <code>AppServiceProvider</code> 提供的 <code>boot</code> 方法中注册这个适配器：</p>
+<pre><code>// 注册新的云存储驱动
+Storage::extend('qiniu', function ($app, $config) {
+    return new Filesystem(new QiniuAdapter('storage'));
+});</code></pre>
+<p>编写好以上代码之后，就可以通过类似如下方式存储图片：</p>
+<pre><code>Storage::disk('qiniu')-&gt;write('test/academy/logo.png', storage_path('app/public/images/logo.png'));</code></pre>
+<p>我们在具体实现的过程中，可以在文件存储本地之后顺便将其存储到云存储中，在获取图片的时候通过 <code>.env</code> 中配置的域名加上上面保存的路径就可以获取到图片了。</p>
+<h3 id="toc_4">镜像存储 &amp; 融合CDN</h3>
+<p>七牛云还提供了镜像存储功能，通过这种方式我们一行代码都不用写，只需若干配置即可完成七牛云图片存储和 CDN 加速，在对象存储中选择一个存储空间：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/8370218c851eb3b0d039d0ccd0e54c1e.jpg" alt="对象存储" /></p>
+<p>点击镜像存储填写镜像源（这里的镜像源即自己网站的地址）：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/4c063d35ed776ee1e8ca79fb58099596.jpg" alt="镜像存储" /></p>
+<p>然后配置绑定的融合 CDN 域名，比如 <code>http://static.laravelacademy.org</code>（这个域名需要在域名提供商处做 <code>CNAME</code> 解析），这样就完成配置了，接下来在自己的网站上将所有对静态资源的访问域名替换成融合 CDN 域名，这样当我们访问类似如下资源：</p>
+<pre><code>http://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png</code></pre>
+<p>首先会去七牛 CDN 缓存中查找是否有这个资源，如果有的话直接返回，没有的话会回源到网站上查找这个资源：</p>
+<pre><code>http://laravelacademy.org/wp-content/uploads/2017/09/logo.png</code></pre>
+<p>如果这个资源不存在，返回404，如果存在则将其上传到七牛对象存储中，并保存到 CDN 缓存中以便下次获取直接返回，从而达到 CDN 加速，降低自己网站带宽负载的目的。</p>
+<p>需要注意的是，如果静态资源有变动，比如 CSS、JavaScript 文件，需要在变动后通过刷新文件的方式刷新融合 CDN 中的缓存资源，否则不会立即生效：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/e550e6d6b73812d08f7855ecce2867e1.jpg" alt="刷新CDN缓存" /></p>
+<h3 id="toc_5">防盗链设置</h3>
+<p>为了降低云存储CDN带宽费用，对图片进行防盗链设置很有必要，防盗链主要用于阻止第三方站点（如采集站点）对我方站点静态资源的引用（主要是图片），损耗我方宝贵的带宽资源，在七牛云中，设置图片防盗链也很简单，在<code>融合CDN-&gt;域名管理</code>列表页选择你要设置防盗链的域名，比如学院这边是 <code>static.laravelacademy.org</code>，点击<code>配置</code>链接，进入配置页面，下拉该页面到如下位置：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/8ecbff5ec74b0a485557b11a539df866.jpg" alt="域名配置页面" /></p>
+<p>点击「修改配置」按钮，参照学院配置对自己的站点进行防盗链设置：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/6418a4a4dd1ea19c39e9cd68e4b82c9f.jpg" alt="七牛防盗链设置" /></p>
+<p>主要涉及到三个配置：第一，开启防盗链，阻止第三方站点对己方站点图片的访问，第二，启用白名单功能，从自己站点访问图片是允许的，第三，允许空 Referer 对站点图片的访问，主要用于支持将图片分享到社交媒体（QQ、微信之类）。</p>
+<p>修改完成后点击确定按钮，就配置好了，非常方便。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/basic" rel="category tag">
+                Laravel教程
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/文件系统" rel="tag">文件系统</a>
+                                    ,
+                                            <a href="../tags/云存储" rel="tag">云存储</a>
+                                    ,
+                                            <a href="../tags/CDN" rel="tag">CDN</a>
+                                    ,
+                                            <a href="../tags/七牛云" rel="tag">七牛云</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%89%A9%E5%B1%95" rel="tag">扩展</a>
+                                    ,
+                                            <a href="../tags/适配器" rel="tag">适配器</a>
+                                    ,
+                                            <a href="../tags/静态资源" rel="tag">静态资源</a>
+                                    ,
+                                            <a href="../tags/加速" rel="tag">加速</a>
+                                    ,
+                                            <a href="../tags/带宽" rel="tag">带宽</a>
+                                    ,
+                                            <a href="../tags/镜像存储" rel="tag">镜像存储</a>
+                                    ,
+                                            <a href="../tags/防盗链" rel="tag">防盗链</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9486" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9486" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9485.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于迅搜（xunsearch） + Laravel Scout 实现 Laravel 学院全文搜索功能（支持多模型搜索）
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9488.html" rel="next">
+                Laravel + Vue 使用示例系列：构建一个类似 Twitter 的 Web 应用
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        4 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-11252" class="comment even thread-even depth-1">
+            <article id="div-comment-11252" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Laragh' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/57ebc5c1a2920c033563fc3440dedfe0-32x32.png' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Chasers9527" target="_blank">Laragh</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                <p>好的</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9486.html#respond' data-id="11252"  aria-label='回复Laragh...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-01T08:48:50+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-01 08:48:50
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11252" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11250" class="comment even thread-even depth-1">
+            <article id="div-comment-11250" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Chasers9527" target="_blank">
+                                Laragh
+                            </a>
+                                                                <p>防盗链设置教程已经追加到文章末尾了</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9486.html#respond' data-id="11250"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-31T22:54:05+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-31 22:54:05
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11250" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11239" class="comment even thread-even depth-1">
+            <article id="div-comment-11239" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Chasers9527" target="_blank">
+                                Laragh
+                            </a>
+                                                                <p>七牛云里面可以配置的 很简单 我明天补一下好了</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9486.html#respond' data-id="11239"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-30T22:06:20+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-30 22:06:20
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11239" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11238" class="comment even thread-even depth-1">
+            <article id="div-comment-11238" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Laragh' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/57ebc5c1a2920c033563fc3440dedfe0-32x32.png' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Chasers9527" target="_blank">Laragh</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>学院君，防盗链能在后面讲一下么？？</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9486.html#respond' data-id="11238"  aria-label='回复Laragh...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-30T19:55:53+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-30 19:55:53
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11238" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9486.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9486' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9486.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9486.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        背景
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9486.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        云存储实现
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9486.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        初始化配置文件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9486.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        编写七牛云存储适配器类
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9486.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        镜像存储 &amp; 融合CDN
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9486.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        防盗链设置
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="153.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel 精选资源大全（持续更新）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3181.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 服务 —— 文件系统/云存储
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3850.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在 Laravel 5 中集成七牛云存储实现云存储功能
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6071.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] 综合话题 —— 文件存储
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6885.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 综合话题 —— 文件系统&amp;云存储
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

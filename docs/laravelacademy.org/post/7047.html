@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.4 文档 ] 测试 —— 浏览器测试（Laravel Dusk） - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="7047.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="7047.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="7047.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="7047.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="7047.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_4">
+                Laravel 5.4
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.4 文档 ] 测试 —— 浏览器测试（Laravel Dusk）</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.4 文档 ] 测试 —— 浏览器测试（Laravel Dusk）</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="7047.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-04-24T00:00:58+08:00">2017-04-24</time>
+                    <time class="updated" datetime="2017-04-23T23:59:24+08:00">2017-04-23 23:59:24</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                6800 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0">1、简介</h3>
+<p>Laravel Dusk 提供了优雅的、易于使用的浏览器自动测试 API。默认情况下，Dusk 不强制你在机器上安装 JDK 或 Selenium，取而代之地，Dusk 基于独立安装的 <a href="https://sites.google.com/a/chromium.org/chromedriver/home" target="_blank" rel="noopener noreferrer">ChromeDriver</a>。不过，你可以使用任意其他兼容 Selenium 的驱动。</p>
+<h3 id="toc_1">2、安装</h3>
+<p>开始之前，需要添加 Composer 依赖 <code>laravel/dusk</code> 到项目：</p>
+<pre><code>composer require laravel/dusk
+</code></pre>
+<p>安装完 Dusk 后，需要注册服务提供者 <code>Laravel\Dusk\DuskServiceProvider</code>，不过，你需要在 <code>AppServiceProvider</code> 的 <code>register</code> 方法中注册该提供者，因为它提供了让其他用户登录的权限，以便限制 Dusk 的有效环境：</p>
+<pre><code>use Laravel\Dusk\DuskServiceProvider;
+
+/**
+ * 注册应用服务.
+ *
+ * @return void
+ */
+public function register()
+{
+    if ($this-&gt;app-&gt;environment('local', 'testing')) {
+        $this-&gt;app-&gt;register(DuskServiceProvider::class);
+    }
+}
+</code></pre>
+<p>接下来，运行 Artisan 命令 <code>dusk:install</code>：</p>
+<pre><code>php artisan dusk:install
+</code></pre>
+<p>运行完该命令后，会在 <code>tests</code> 目录下新建一个 <code>Browser</code> 目录并包含一个测试示例。接下来，在 <code>.env</code> 文件中设置环境变量 <code>APP_URL</code>，该变量值需要和你在浏览器中用于访问应用的URL相匹配。</p>
+<p>要运行测试，使用 Artisan 命令 <code>dusk</code>。<code>dusk</code> 命令接收任意 <code>phpunit</code> 支持的参数：</p>
+<pre><code>php artisan dusk
+</code></pre>
+<h4 id="toc_2">使用其它浏览器</h4>
+<p>默认情况下，Dusk 使用 Google Chrome 和独立安装的 <a href="https://sites.google.com/a/chromium.org/chromedriver/home" target="_blank" rel="noopener noreferrer">ChromeDriver</a> 来运行浏览器测试，不过，你也可以启动自己的 Selenium 服务器并在浏览器中进行测试。</p>
+<p>开始之前，打开 <code>tests/DuskTestCase.php</code> 文件，该文件是应用的 Dusk 测试用例基类。 在该文件中，你可以移除对 <code>startChromeDriver</code> 方法的调用，这样，就可以阻止 Dusk 自动启动 ChromeDriver：</p>
+<pre><code>/**
+ * Prepare for Dusk test execution.
+ *
+ * @beforeClass
+ * @return void
+ */
+public static function prepare()
+{
+    // static::startChromeDriver();
+}
+</code></pre>
+<p>接下来，可以简单编辑 <code>driver</code> 方法连接到你所选择的URL和接口，此外，你可以编辑需要传递给 WebDriver 的“所需功能”：</p>
+<pre><code>/**
+ * 创建 RemoteWebDriver 实例.
+ *
+ * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+ */
+protected function driver()
+{
+    return RemoteWebDriver::create(
+        'http://localhost:4444', DesiredCapabilities::phantomjs()
+    );
+}
+</code></pre>
+<h3 id="toc_3">3、快速入门</h3>
+<h4 id="toc_4">生成测试</h4>
+<p>要生成一个 Dusk 测试，使用 Artisan 命令 <code>dusk:make</code>，生成的测试位于 <code>tests/Browser</code> 目录：</p>
+<pre><code>php artisan dusk:make LoginTest
+</code></pre>
+<h4 id="toc_5">运行测试</h4>
+<p>要运行浏览器测试，使用 Artisan 命令 <code>dusk</code>：</p>
+<pre><code>php artisan dusk
+</code></pre>
+<p><code>dusk</code> 命令接收任意 PHPUnit 支持的参数，所以你可以为给定 <a href="https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group" target="_blank" rel="noopener noreferrer">group</a> 运行测试：</p>
+<pre><code>php artisan dusk --group=foo
+</code></pre>
+<p><strong>手动启动ChromeDriver</strong></p>
+<p>默认情况下，Dusk 会自动尝试启动 ChromeDriver，如果在你的系统上不生效，你可以在运行 <code>dusk</code> 命令前手动启动 ChromeDriver。如果你选择了手动启动 ChromeDriver，则需要注释掉 <code>tests/DuskTestCase.php</code> 文件中的如下这行代码：</p>
+<pre><code>/**
+ * Prepare for Dusk test execution.
+ *
+ * @beforeClass
+ * @return void
+ */
+public static function prepare()
+{
+    // static::startChromeDriver();
+}
+</code></pre>
+<p>此外，如果你不是在 9515 端口上启动ChromeDriver，如果在同一个类中编辑 <code>driver</code> 方法：</p>
+<pre><code>/**
+ * Create the RemoteWebDriver instance.
+ *
+ * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+ */
+protected function driver()
+{
+    return RemoteWebDriver::create(
+        'http://localhost:9515', DesiredCapabilities::chrome()
+    );
+}
+</code></pre>
+<h4 id="toc_6">环境处理</h4>
+<p>要想在运行测试时强制 Dusk 使用自己的环境文件，可以在项目根目录下创建一个 <code>.env.dusk.{environment}</code> 文件，例如，如果你是在 <code>local</code> 环境中启动 <code>dusk</code> 命令，需要创建 <code>.env.dusk.local</code> 文件。</p>
+<p>运行测试的时候，Dusk 会备份 <code>.env</code> 文件，并将 Dusk 环境文件重命名为 <code>.env</code>。一旦测试完成，<code>.env</code>文件会被恢复。</p>
+<h4 id="toc_7">创建浏览器</h4>
+<p>作为入门，我们编写一个测试来验证可以登录到应用，生成测试之后，编辑测试类将其导航到登录页面，输入认证信息，点击登录按钮。要创建浏览器实例，调用 <code>browse</code> 方法：</p>
+<pre><code>&lt;?php
+
+namespace Tests\Browser;
+
+use App\User;
+use Tests\DuskTestCase;
+use Laravel\Dusk\Chrome;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+class ExampleTest extends DuskTestCase
+{
+    use DatabaseMigrations;
+
+    /**
+     * A basic browser test example.
+     *
+     * @return void
+     */
+    public function testBasicExample()
+    {
+        $user = factory(User::class)-&gt;create([
+            'email' =&gt; 'taylor@laravel.com',
+        ]);
+
+        $this-&gt;browse(function ($browser) use ($user) {
+            $browser-&gt;visit('/login')
+                    -&gt;type('email', $user-&gt;email)
+                    -&gt;type('password', 'secret')
+                    -&gt;press('Login')
+                    -&gt;assertPathIs('/home');
+        });
+    }
+}
+</code></pre>
+<p>正如你在上面示例中所看到的，<code>browse</code> 方法接收一个回调，浏览器实例会通过 Dusk 被自动传递给这个回调并且作为主要对象和应用进行交互并生成断言。</p>
+<blockquote><p>注：该测试可用于测试通过 Artisan 命令 <code>make:auth</code> 生成的登录页面。</p></blockquote>
+<p><strong>创建多个浏览器</strong></p>
+<p>有时候你需要多个浏览器以便完成测试，例如，在测试与web套接字进行交互的聊天室页面时就需要多个浏览器。要创建多个浏览器，只需在调用 <code>browse</code> 方法时在回调标识中指明需要的浏览器即可：</p>
+<pre><code>$this-&gt;browse(function ($first, $second) {
+    $first-&gt;loginAs(User::find(1))
+          -&gt;visit('/home')
+          -&gt;waitForText('Message');
+
+    $second-&gt;loginAs(User::find(2))
+           -&gt;visit('/home')
+           -&gt;waitForText('Message')
+           -&gt;type('message', 'Hey Taylor')
+           -&gt;press('Send');
+
+    $first-&gt;waitForText('Hey Taylor')
+          -&gt;assertSee('Jeffrey Way');
+});
+</code></pre>
+<h4 id="toc_8">认证</h4>
+<p>我们经常会测试需要认证的页面，可以使用 Dusk 的 <code>loginAs</code> 方法用于避免在每个测试中与登录页面进行交互，<code>loginAs</code> 方法接收用户ID或用户模型实例：</p>
+<pre><code>$this-&gt;browse(function ($first, $second) {
+    $first-&gt;loginAs(User::find(1))
+          -&gt;visit('/home');
+});
+</code></pre>
+<h3 id="toc_9">4、与元素交互</h3>
+<h4 id="toc_10">点击链接</h4>
+<p>要点击链接，可以使用浏览器实例上的 <code>clickLink</code> 方法，<code>clickLink</code> 方法将会点击包含给定文本的链接：</p>
+<pre><code>$browser-&gt;clickLink($linkText);
+</code></pre>
+<blockquote><p>注：该方法通过 jQuery 进行交互，如果 jQuery 在页面上无效，Dusk 会自动将其注入到页面，以便在测试期间生效。</p></blockquote>
+<h4 id="toc_11">文本、值 &amp; 属性</h4>
+<p><strong>获取 &amp; 设置值</strong></p>
+<p>Dusk 提供了多个方法用于和页面元素的当前显示文本、值和属性进行交互，例如，要获取匹配给定选择器的元素值，使用 <code>value</code> 方法：</p>
+<pre><code>// 获取值...
+$value = $browser-&gt;value('selector');
+
+// 设置值...
+$browser-&gt;value('selector', 'value');
+</code></pre>
+<p><strong>获取文本</strong></p>
+<p><code>text</code> 方法可用于获取匹配给定选择器的元素显示文本：</p>
+<pre><code>$text = $browser-&gt;text('selector');
+</code></pre>
+<p><strong>获取属性</strong></p>
+<p>最后，<code>attribute</code>方法可用于获取匹配给定选择器的元素属性：</p>
+<pre><code>$attribute = $browser-&gt;attribute('selector', 'value');
+</code></pre>
+<h4 id="toc_12">使用表单</h4>
+<p><strong>输入值</strong></p>
+<p>Dusk 提供了多个方法与表单和输入元素进行交互，首先，让我们看一个输入文本到一个输入字段的例子：</p>
+<pre><code>$browser-&gt;type('email', 'taylor@laravel.com');
+</code></pre>
+<p>注意，尽管 <code>type</code> 方法在需要的时候可以接收，但是我们不实必须要传递 CSS 选择器到该方法。如果没有提供 CSS 选择器，Dusk 会搜索包含给定 <code>name</code> 属性的输入字段，最后，Dusk 会尝试查找包含给定 <code>name</code> 属性的 <code>textarea</code>。</p>
+<p>你可以使用 <code>clear</code> 方法“清除”输入的值：</p>
+<pre><code>$browser-&gt;clear('email');
+</code></pre>
+<p><strong>下拉框</strong></p>
+<p>要在下拉选择框中选择值，可以使用 <code>select</code> 方法。和 <code>type</code> 方法一样，<code>select</code> 方法不需要完整的 CSS 选择器，当传递值到 <code>select</code> 方法时，需要传递底层 option 值而不是显示文本：</p>
+<pre><code>$browser-&gt;select('size', 'Large');
+</code></pre>
+<p>你可以通过省略第二个参数来选择一个随机的option：</p>
+<pre><code>$browser-&gt;select('size');
+</code></pre>
+<p><strong>复选框</strong></p>
+<p>要“选择”复选字段，可以使用 <code>check</code> 方法，和其它输入相关方法一样，不需要穿入完整的 CSS 选择器，如果找不到精准匹配的选择器，Dusk 会通过 <code>name</code> 属性搜索响应的复选框：</p>
+<pre><code>$browser-&gt;check('terms');
+
+$browser-&gt;uncheck('terms');
+</code></pre>
+<p><strong>单选按钮</strong></p>
+<p>要“选择”一个单选按钮选项，可以使用 <code>radio</code> 方法，和其它输入相关方法一样，不需要完整的 CSS 选择器，如果找不到精准匹配的选择器，Dusk 会搜索匹配 <code>name</code> 和 <code>value</code> 属性的单选框：</p>
+<pre><code>$browser-&gt;radio('version', 'php7');
+</code></pre>
+<h4 id="toc_13">附加文件</h4>
+<p><code>attach</code> 方法可用于附加文件到 <code>file</code> 输入元素，和其它输入相关方法一样，也不需要完整的 CSS 选择器，如果精准匹配的选择器找不到，Dusk 会通过 <code>name</code> 属性搜索匹配的文件输入：</p>
+<pre><code>$browser-&gt;attach('photo', __DIR__.'/photos/me.png');
+</code></pre>
+<h4 id="toc_14">使用键盘</h4>
+<p><code>keys</code> 方法允许你提供比 <code>type</code> 方法更多的复杂输入序列到给定元素。例如，你可以存放编辑键及对应输入值，在本例中，<code>shift</code>键会被存放而<code>taylor</code>被输入到与给定选择器匹配的元素中。输入<code>taylor</code>后，<code>otwell</code>会以不带任何编辑键的形式被输入：</p>
+<pre><code>$browser-&gt;keys('selector', ['{shift}', 'taylor'], 'otwell');
+</code></pre>
+<p>你甚至还可以发送“热键”到包含应用的主CSS选择器上：</p>
+<pre><code>$browser-&gt;keys('.app', ['{command}', 'j']);
+</code></pre>
+<p>注：所有编辑键都被包裹在 <code>{}</code> 中，并匹配定义在 <code>Facebook\WebDriver\WebDriverKeys</code> 类中的常量，这些常量<a href="https://github.com/facebook/php-webdriver/blob/community/lib/WebDriverKeys.php" target="_blank" rel="noopener noreferrer">可以在GitHub上找到</a>。</p>
+<h4 id="toc_15">使用鼠标</h4>
+<p><strong>点击元素</strong></p>
+<p><code>click</code> 方法可用于点击与给定选择器匹配的元素：</p>
+<pre><code>$browser-&gt;click('.selector');
+</code></pre>
+<p><strong>鼠标悬停</strong></p>
+<p><code>mouseover</code> 方法可以在你将鼠标悬停在与给定选择器匹配的元素上时使用：</p>
+<pre><code>$browser-&gt;mouseover('.selector');
+</code></pre>
+<p><strong>拖拽</strong></p>
+<p><code>drag</code> 方法可用于拖放与给定选择器匹配的元素到另一个元素：</p>
+<pre><code>$browser-&gt;drag('.from-selector', '.to-selector');
+</code></pre>
+<p>或者，你可以在单个方向上拖放元素：</p>
+<pre><code>$browser-&gt;dragLeft('.selector', 10);
+$browser-&gt;dragRight('.selector', 10);
+$browser-&gt;dragUp('.selector', 10);
+$browser-&gt;dragDown('.selector', 10);
+</code></pre>
+<h4 id="toc_16">选择器作用域</h4>
+<p>有时候你可能只想要在某个给定选择器上执行一系列操作，例如，你可能想要在某个表格中断言文本是否存在然后在同一个表格中点击按钮。你可以使用 <code>with</code> 方法来完成这一功能，传递给 <code>with</code> 方法的回调中所有被执行的操作都被限制在给定的选择器中：</p>
+<pre><code>$browser-&gt;with('.table', function ($table) {
+    $table-&gt;assertSee('Hello World')
+          -&gt;clickLink('Delete');
+});
+</code></pre>
+<h4 id="toc_17">等待元素</h4>
+<p>当测试到广泛使用 JavaScript 的应用时，经常需要等待特定元素或数据加载完成之后才能进行测试。Dusk 让这种测试变得简单，通过使用多种方法，你可以在页面上等待元素变得可访问，甚至直到给定 JavaScript 表达式值为 <code>true</code>。</p>
+<p><strong>等待</strong></p>
+<p>如果你需要暂停测试指定毫秒数，可以使用 <code>pause</code> 方法：</p>
+<pre><code>$browser-&gt;pause(1000);
+</code></pre>
+<p><strong>等待选择器</strong></p>
+<p><code>waitFor</code> 方法可用于暂停测试执行直到匹配给定 CSS 选择器的元素在页面上显示。默认情况下，这将会在抛出异常前暂停测试最多5秒，如果需要的话，你可以传递自定义超时时间作为该方法的第二个参数：</p>
+<pre><code>// 最多等待选择器5s...
+$browser-&gt;waitFor('.selector');
+
+// 最多等待选择器1s...
+$browser-&gt;waitFor('.selector', 1);
+</code></pre>
+<p><strong>选择器作用域（有效的话）</strong></p>
+<p>某些情况下，你可能想要等待给定选择器然后和匹配给定选择器的元素进行交互。例如，你可能想要等待直到模态窗口有效然后在该窗口中按下“OK”按钮。<code>whenAvailable</code> 方法可以用于此种案例。给定回调中的所有元素操作执行都会限制在特定选择器中：</p>
+<pre><code>$browser-&gt;whenAvailable('.modal', function ($modal) {
+    $modal-&gt;assertSee('Hello World')
+          -&gt;press('OK');
+});
+</code></pre>
+<p><strong>等待文本</strong></p>
+<p><code>waitForText</code> 方法可用于等到给定文本在页面上显示：</p>
+<pre><code>// 最多等待文本5s...
+$browser-&gt;waitForText('Hello World');
+
+// 最多等待文本1s...
+$browser-&gt;waitForText('Hello World', 1);
+</code></pre>
+<p><strong>等待链接</strong></p>
+<p><code>waitForLink</code> 方法可用于等到给定链接文本在页面上显示：</p>
+<pre><code>// 最多等待链接5s...
+$browser-&gt;waitForLink('Create');
+
+// 最多等待链接1s...
+$browser-&gt;waitForLink('Create', 1);
+</code></pre>
+<p><strong>等待JavaScript表达式</strong></p>
+<p>有时候你可能想要暂定测试直到JavaScript表达式值为<code>true</code>。你可以简单通过 <code>waitUntil</code> 方法完成这一功能。当暂停表达式时，不需要包含 <code>return</code> 关键词或者结束分号：</p>
+<pre><code>// Wait a maximum of five seconds for the expression to be true...
+$browser-&gt;waitUntil('App.dataLoaded');
+
+$browser-&gt;waitUntil('App.data.servers.length &gt; 0');
+
+// Wait a maximum of one second for the expression to be true...
+$browser-&gt;waitUntil('App.data.servers.length &gt; 0', 1);
+</code></pre>
+<h3 id="toc_18">5、有效的断言</h3>
+<p>Dusk 提供了多种断言用于应用测试，所有有效的断言罗列如下：</p>
+<table>
+<thead>
+<tr>
+<th>断言</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$browser-&gt;assertTitle($title)</code></td>
+<td>断言页面标题匹配给定文本</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertTitleContains($title)</code></td>
+<td>断言页面标题包含给定文本</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertPathIs('/home')</code></td>
+<td>断言当前路径匹配给定路径</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertQueryStringHas($name, $value)</code></td>
+<td>断言给定查询字符串参数存在并包含给定值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertQueryStringMissing($name)</code></td>
+<td>断言给定查询字符串参数缺失</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertHasCookie($name)</code></td>
+<td>断言给定cookie存在</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertCookieValue($name, $value)</code></td>
+<td>断言cookie包含给定值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertPlainCookieValue($name, $value)</code></td>
+<td>断言未加密cookie包含给定值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertSee($text)</code></td>
+<td>断言给定文本在页面存在</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertDontSee($text)</code></td>
+<td>断言给定文本在页面不存在</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertSeeIn($selector, $text)</code></td>
+<td>断言给定文本在指定选择器中存在</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertDontSeeIn($selector, $text)</code></td>
+<td>断言给定文本在指定选择器中不存在</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertSeeLink($linkText)</code></td>
+<td>断言给定链接在页面中存在</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertDontSeeLink($linkText)</code></td>
+<td>断言给定链接在页面中不存在</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertInputValue($field, $value)</code></td>
+<td>断言给定输入字段包含给定值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertInputValueIsNot($field, $value)</code></td>
+<td>断言给定输入字段不包含给定值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertChecked($field)</code></td>
+<td>断言给定复选框被选中</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertNotChecked($field)</code></td>
+<td>断言给定复选框未被选中</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertRadioSelected($field, $value)</code></td>
+<td>断言给定单选框被选中</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertRadioNotSelected($field, $value)</code></td>
+<td>断言给定单选框未被选中</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertSelected($field, $value)</code></td>
+<td>断言给定下拉框包含给定选择值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertNotSelected($field, $value)</code></td>
+<td>断言给定下拉框不包含给定选择值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertValue($selector, $value)</code></td>
+<td>断言匹配给定选择器的元素包含给定值</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertVisible($selector)</code></td>
+<td>断言匹配给定选择器的元素可以访问</td>
+</tr>
+<tr>
+<td><code>$browser-&gt;assertMissing($selector)</code></td>
+<td>断言匹配给定选择器的元素不可以访问</td>
+</tr>
+</tbody>
+</table>
+<h3 id="toc_19">6、页面</h3>
+<p>有时候，测试需要多个复杂动作在一个序列中执行，这会使得测试代码难以阅读和理解。页面允许你使用单个方法定义优雅的可以在给定页面执行的动作，页面还允许你定义指向应用或单个页面的通用选择器的快捷方式。</p>
+<h4 id="toc_20">生成页面</h4>
+<p>要生成页面对象，使用 Artisan 命令 <code>dusk:page</code> 即可。所有页面对象都位于 <code>tests/Browser/Pages</code> 目录：</p>
+<pre><code>php artisan dusk:page Login
+</code></pre>
+<h4 id="toc_21">配置页面</h4>
+<p>默认情况下，页面有三个方法：<code>url</code>、<code>assert</code> 和 <code>elements</code>，下面我们来讨论 <code>url</code> 和 <code>assert</code>，至于 <code>elements</code>，我们将会在后续选择器速记中详细讨论。</p>
+<p><strong>url方法</strong></p>
+<p><code>url</code> 方法会返回代表页面的 URL 路径，Dusk 会在浏览器中导航到页面时使用这个 URL：</p>
+<pre><code>/**
+ * Get the URL for the page.
+ *
+ * @return string
+ */
+public function url()
+{
+    return '/login';
+}
+</code></pre>
+<p><strong>assert方法</strong></p>
+<p><code>assert</code> 方法会生成必要的断言来验证浏览器确实在给定页面，完成这个方法不是必须的；不过，你可以在需要的时候生成这些断言。这些断言将会在导航到页面时自动运行：</p>
+<pre><code>/**
+ * Assert that the browser is on the page.
+ *
+ * @return void
+ */
+public function assert(Browser $browser)
+{
+    $browser-&gt;assertPathIs($this-&gt;url());
+}
+</code></pre>
+<h4 id="toc_22">导航到页面</h4>
+<p>页面被配置后，可以使用 <code>visit</code> 方法导航到该页面：</p>
+<pre><code>use Tests\Browser\Pages\Login;
+
+$browser-&gt;visit(new Login);
+</code></pre>
+<p>有时候，你可能已经在给定页面上了，并且需要“加载”页面选择器和方法到当前测试上下文，这在点击按钮以及重定向到给定页面时很常见。在本例中，我们能可以在加载页面时使用 <code>on</code> 方法：</p>
+<pre><code>use Tests\Browser\Pages\CreatePlaylist;
+
+$browser-&gt;visit('/dashboard')
+        -&gt;clickLink('Create Playlist')
+        -&gt;on(new CreatePlaylist)
+        -&gt;assertSee('@create');
+</code></pre>
+<h4 id="toc_23">速记选择器</h4>
+<p>页面的 <code>elements</code> 方法允许你为页面的 CSS 选择器定义快速的、易记的快捷方式，例如，让我们为应用登录页面的“email”输入定义一个快捷方式：</p>
+<pre><code>/**
+ * Get the element shortcuts for the page.
+ *
+ * @return array
+ */
+public function elements()
+{
+    return [
+        '@email' =&gt; 'input[name=email]',
+    ];
+}
+</code></pre>
+<p>现在，你可以在任意你想要试用完整CSS选择器的地方使用速记选择器：</p>
+<pre><code>$browser-&gt;type('@email', 'taylor@laravel.com');
+</code></pre>
+<p><strong>全局速记选择器</strong></p>
+<p>安装完 Dusk 后，一个基本的 <code>Page</code> 类会生成到 <code>tests/Browser/Pages</code> 目录下。该类包含一个可用于定义全局速记选择器的 <code>siteElement</code> 方法，所谓全局速记选择器，指的是在整个应用中生效的速记选择器：</p>
+<pre>/**
+ * Get the global element shortcuts for the site.
+ *
+ * @return array
+ */
+public static function siteElements()
+{
+    return [
+        '@element' =&gt; '#selector',
+    ];
+}</pre>
+<h4 id="toc_24">页面方法</h4>
+<p>除了页面定义的默认方法外，你还可以定义额外的方法用于测试。例如，假设我们正在构建一个音乐管理应用，应用页面常用的功能就是创建一个播放列表，我们不必在每次测试的时候重复编写创建播放列表的逻辑，只需在页面类中定义一个 <code>createPlaylist</code> 方法即可：</p>
+<pre><code>&lt;?php
+
+namespace Tests\Browser\Pages;
+
+use Laravel\Dusk\Browser;
+
+class Dashboard extends Page
+{
+    // Other page methods...
+
+    /**
+     * Create a new playlist.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  string  $name
+     * @return void
+     */
+    public function createPlaylist(Browser $browser, $name)
+    {
+        $browser-&gt;type('name', $name)
+                -&gt;check('share')
+                -&gt;press('Create Playlist');
+    }
+}
+</code></pre>
+<p>定义好方法后，可以在任意使用该页面的测试中使用，浏览器实例会自动传递给页面方法：</p>
+<pre><code>use Tests\Browser\Pages\Dashboard;
+
+$browser-&gt;visit(new Dashboard)
+        -&gt;createPlaylist('My Playlist')
+        -&gt;assertSee('My Playlist');
+</code></pre>
+<h3 id="toc_25">7、继续集成</h3>
+<h4 id="toc_26">Travis CI</h4>
+<p>要在 Travis 上运行 Dusk 测试，需要使用 <code>sudo</code> 权限，由于 Travis CI 并不是一个图形化的环境，我们还需要一些额外的操作步骤以便浏览 Chrome 浏览器。此外，我们将会使用 <code>php artisan serve</code> 来浏览 PHP 的内置 Web 服务器：</p>
+<pre><code>sudo: required
+dist: trusty
+
+before_script:
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
+    - ./vendor/laravel/dusk/bin/chromedriver-linux &amp;
+    - cp .env.testing .env
+    - php artisan serve &amp;
+
+script:
+    - php artisan dusk
+</code></pre>
+<h4 id="toc_27">Circle CI</h4>
+<p>如果你在使用 Circle CI 运行 Dusk 测试，可以使用这个配置文件作为起点，和 Travis CI 一样，我们使用 <code>php artisan serve</code> 命令浏览 PHP 的内置服务器：</p>
+<pre><code>test:
+    pre:
+        - "./vendor/laravel/dusk/bin/chromedriver-linux":
+            background: true
+        - cp .env.testing .env
+        - "php artisan serve":
+            background: true
+
+    override:
+        - php artisan dusk
+</code></pre>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_4" rel="category tag">
+                Laravel 5.4
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%B5%8B%E8%AF%95" rel="tag">测试</a>
+                                    ,
+                                            <a href="../tags/断言" rel="tag">断言</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%A1%A8%E5%8D%95" rel="tag">表单</a>
+                                    ,
+                                            <a href="../tags/浏览器" rel="tag">浏览器</a>
+                                    ,
+                                            <a href="../tags/Chrome" rel="tag">Chrome</a>
+                                    ,
+                                            <a href="../tags/5.4" rel="tag">5.4</a>
+                                    ,
+                                            <a href="../tags/Dusk" rel="tag">Dusk</a>
+                                    ,
+                                            <a href="../tags/元素" rel="tag">元素</a>
+                                    ,
+                                            <a href="../tags/交互" rel="tag">交互</a>
+                                    ,
+                                            <a href="../tags/Selenium" rel="tag">Selenium</a>
+                                    ,
+                                            <a href="../tags/Travis" rel="tag">Travis</a>
+                                    ,
+                                            <a href="../tags/Circle" rel="tag">Circle</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="7047" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="7047" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="7043.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.4 文档 ] 测试 —— HTTP 测试
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="7053.html" rel="next">
+                [ Laravel 5.4 文档 ] 测试 —— 数据库
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        1 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-8664" class="comment even thread-even depth-1">
+            <article id="div-comment-8664" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='dominator88' src='https://www.gravatar.com/avatar/8ee501ea9ed1f60b293acd04c56af27e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            dominator88
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        1) Tests\Browser\ExampleTest::testBasicExample
+Facebook\WebDriver\Exception\WebDriverCurlException: Curl error thrown for http POST to /session with params: {"desiredCapabilities":{"browserName":"chrome","platform":"ANY","chromeOptions":{"binary":"","args":["--disable-gpu","--headless"]}}}
+
+Failed to receive SOCKS5 connect request ack.
+
+报错了
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7047.html#respond' data-id="8664"  aria-label='回复dominator88...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-11-10T17:47:24+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-11-10 17:47:24
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8664" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="7047.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='7047' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="7047.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="7047.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        1、简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        2、安装
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用其它浏览器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3、快速入门
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        生成测试
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        运行测试
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        环境处理
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建浏览器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        认证
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4、与元素交互
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        点击链接
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        文本、值 &amp; 属性
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用表单
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        附加文件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用键盘
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用鼠标
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        选择器作用域
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        等待元素
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5、有效的断言
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6、页面
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        生成页面
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        配置页面
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_22">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        导航到页面
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_23">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        速记选择器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_24">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        页面方法
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_25">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        7、继续集成
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_26">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Travis CI
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7047.html#toc_27">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Circle CI
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="238.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 服务 —— 测试
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3274.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 服务 —— 测试
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6242.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] 测试 —— 应用测试
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8571.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 测试系列 —— 浏览器测试：使用 Laravel Dusk 进行浏览器测试
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9012.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 测试系列 —— 浏览器测试
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

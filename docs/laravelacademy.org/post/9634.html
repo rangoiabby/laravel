@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十四） —— 使用 Vue Mixins 在高德地图上对咖啡店点标记进行筛选过滤 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9634.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9634.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9634.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9634.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9634.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../api-app">
+                API 应用
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十四） —— 使用 Vue Mixins 在高德地图上对咖啡店点标记进行筛选过滤</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十四） —— 使用 Vue Mixins 在高德地图上对咖啡店点标记进行筛选过滤</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9634.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-10-15T00:18:18+08:00">2018-10-15</time>
+                    <time class="updated" datetime="2018-10-15T00:18:18+08:00">2018-10-15 00:18:18</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                337 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>在<a href="9633.html">上一篇教程</a>中我们在应用首页通过 Vue Mixins 实现了对咖啡店的筛选过滤，在这篇教程中，我们将复用上一篇教程中的过滤处理函数通过 Vue Mixins 实现在高德地图上对咖啡店点标记进行筛选过滤的功能，实现思路和上篇教程类似，只不过前者是对列表数据进行过滤，而本篇教程是在地图上对点标记进行过滤。</p>
+<h3 id="toc_0">第一步：创建高德地图过滤组件</h3>
+<p>和上篇教程的 <code>CafeFilter</code> 组件类似，我们首先需要为地图上的咖啡店标记创建过滤组件，在<br />
+<code>resources/assets/js/components/cafes</code> 目录下创建 <code>CafeMapFilter.vue</code> 作为高德地图过滤组件，并初始化代码如下：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    @import '~@/abstracts/_variables.scss';
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div id="cafe-map-filter"&gt;
+
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    export default {
+
+    }
+&lt;/script&gt;</code></pre>
+<p>然后我们修改 <code>resources/assets/js/components/cafes/CafeMap.vue</code> 的模板代码如下（这篇教程中的 <code>CafeMap.vue</code> 组件类似于上篇教程的 <code>CafeCard.vue</code> 组件）：</p>
+<pre><code>&lt;div id="cafe-map-container"&gt;
+    &lt;div id="cafe-map"&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>同时在 <code>style</code> 中为 <code>div#cafe-map-container</code> 添加样式代码：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    div#cafe-map-container {
+        position: absolute;
+        top: 50px;
+        left: 0px;
+        right: 0px;
+        bottom: 50px;
+
+        div#cafe-map {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+        }
+    }
+&lt;/style&gt;</code></pre>
+<p>接下来，我们在 <code>CafeMap.vue</code> 组件中引入 <code>CafeMapFilter.vue</code> 组件：</p>
+<pre><code>import CafeMapFilter from './CafeMapFilter.vue';</code></pre>
+<p>定义相应的 <code>components</code> 属性：  </p>
+<pre><code>components: {
+    CafeMapFilter
+},</code></pre>
+<p>并且在 <code>template</code> 模板中紧随 <code>cafe-map</code> 之后引入地图过滤组件：</p>
+<pre><code>&lt;div id="cafe-map"&gt;
+
+&lt;/div&gt;
+&lt;cafe-map-filter&gt;&lt;/cafe-map-filter&gt;</code></pre>
+<p>在 <code>CafeMapFilter.vue</code> 组件中添加样式代码如下：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    @import '~@/abstracts/_variables.scss';
+
+    div#cafe-map-filter{
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+        padding: 5px;
+        z-index: 999999;
+        position: absolute;
+        right: 45px;
+        top: 50px;
+        width: 25%;
+    }
+&lt;/style&gt;</code></pre>
+<p>这样，运行 <code>npm run dev</code> 重新编译前端资源后，在咖啡店列表（<code>http://roast.test/#/cafes</code>）页面右上角就可以看到过滤组件了，只不过现在该组件里还没有任何内容：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/5daeba5ed8b105d3cd573d219b870266.jpg" alt="" /></p>
+<h3 id="toc_1">第二步：添加文本过滤器到组件</h3>
+<p>接下来我们就来为地图过滤组件填充内容，和 <code>CafeFilter.vue</code> 组件类似，首先，我们将文本搜索框添加到 <code>CafeMapFilter.vue</code> 文件的模板代码中作为文本过滤器：</p>
+<pre><code>&lt;div id="cafe-map-filter"&gt;
+    &lt;div class="grid-container"&gt;
+        &lt;div class="grid-x grid-padding-x"&gt;
+            &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                &lt;label&gt;搜索&lt;/label&gt;
+                &lt;input type="text" v-model="textSearch" placeholder="搜索"/&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>然后在 <code>data</code> 返回数据模型中添加 <code>textSearch</code>，以便和视图进行双向绑定：</p>
+<pre><code>data() {
+   return {
+       textSearch: ''
+   }
+}</code></pre>
+<h3 id="toc_2">第三步：是否是烘焙店过滤器</h3>
+<p>在地图过滤组件中，为了简单起见，我们省略了标签过滤器，接下来，将是否是烘焙店勾选框作为过滤条件添加到 <code>CafeMapFilter.vue</code> 中，紧随上一步的文本搜索框之后：</p>
+<pre><code>&lt;div class="is-roaster-container"&gt;
+    &lt;input type="checkbox" v-model="isRoaster"/&gt; &lt;label&gt;烘焙店&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+<p>同样，在 <code>data</code> 返回数据模型中添加 <code>isRoaster</code> 属性，默认值为 <code>false</code>：</p>
+<pre><code>data() {
+   return {
+       textSearch: '',
+       isRoaster: false
+   }
+}</code></pre>
+<h3 id="toc_3">第四步：添加冲泡方法过滤器到组件</h3>
+<p>再然后是冲泡方法过滤器，我们现在 <code>data</code> 返回数据模型中添加相应的 <code>brewMethods</code> 属性，并将其初始化为空数组：</p>
+<pre><code>data() {
+  return {
+      textSearch: '',
+      isRoaster: false,
+      brewMethods: []
+  }
+},</code></pre>
+<p>然后通过计算属性 <code>cafeBrewMethods</code> 从  Vuex 中获取全局支持的所有冲泡方法，以便作为筛选条件：</p>
+<pre><code>computed: {
+   cafeBrewMethods() {
+       return this.$store.getters.getBrewMethods;
+   },
+},</code></pre>
+<p>在模板代码中紧随是否是烘焙店勾选框之后添加如下冲泡方法选择组件：</p>
+<pre><code>&lt;div class="brew-methods-container"&gt;
+  &lt;div class="filter-brew-method" v-on:click="toggleBrewMethodFilter( method.method )" v-bind:class="{'active' : brewMethods.indexOf( method.method ) &gt; -1 }" v-for="method in cafeBrewMethods"&gt;
+    {{ method.method }}
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>在 <code>methods</code> 方法中定义冲泡方法选中/取消选中处理函数 <code>toggleBrewMethodFilter</code>： </p>
+<pre><code>methods: {
+   toggleBrewMethodFilter(method) {
+       if (this.brewMethods.indexOf(method) &gt; -1) {
+           this.brewMethods.splice(this.brewMethods.indexOf(method), 1);
+       } else {
+           this.brewMethods.push(method);
+       }
+   },
+}</code></pre>
+<p>最后在 <code>style</code> 中添加冲泡方法选择元素样式：</p>
+<pre><code>div.filter-brew-method{
+  display: inline-block;
+  height: 30px;
+  text-align: center;
+  border: 1px solid #ededed;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  color: #7F5F2A;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+
+  &amp;.active{
+    border-bottom: 4px solid $primary-color;
+  }
+}</code></pre>
+<h3 id="toc_4">第五步：完成地图过滤功能</h3>
+<p>最后，我们还要在 <code>CafeMapFilter.vue</code> 中引入事件总线，以便监听并触发过滤条件变更事件：</p>
+<pre><code>import { EventBus } from '../../event-bus.js';</code></pre>
+<p>通过 <code>watch</code> 监听过滤条件字段的变动并进行处理：</p>
+<pre><code>watch: {
+   textSearch() {
+       this.updateFilterDisplay();
+   },
+
+   isRoaster() {
+       this.updateFilterDisplay();
+   },
+
+   brewMethods() {
+       this.updateFilterDisplay();
+   }
+},</code></pre>
+<p>最后在 <code>methods</code> 中定义过滤条件变更处理函数 <code>updateFilterDisplay</code>：</p>
+<pre><code>updateFilterDisplay(){
+  EventBus.$emit('filters-updated', {
+    text: this.textSearch,
+    tags: [],
+    roaster: this.isRoaster,
+    brew_methods: this.brewMethods
+  });
+}</code></pre>
+<p>过滤条件变更后触发全局事件 <code>filters-updated</code>，这样监听该事件的代码就会执行相应的回调函数进行处理。这里，需要注意的是，我们在设置事件属性时传入了 <code>tags</code> 属性，以免我们在上一篇教程中定义的监听代码在执行回调函数的时候会报错。</p>
+<p>以上 <code>CafeMapFilter.vue</code> 组件的实现思路和 <code>CafeFilter.vue</code> 完全一致，不做过多赘述。接下来我们在 <code>CafeMap.vue</code> 中实现在高德地图上根据过滤组件中的过滤条件对咖啡店点标记进行筛选过滤的功能。</p>
+<h3 id="toc_5">第六步：在 CafeMap 中监听过滤条件变更</h3>
+<p>在 <code>CafeMap.vue</code> 中引入事件总线，以便对过滤条件变更进行监听和处理：</p>
+<pre><code>import { EventBus } from '../../event-bus.js';</code></pre>
+<p>我们在 <code>mounted</code> 中定义监听代码：</p>
+<pre><code>mounted() {
+   this.map = new AMap.Map('cafe-map', {
+       center: [this.latitude, this.longitude],
+       zoom: this.zoom
+   });
+   this.clearMarkers();
+   this.buildMarkers();
+
+   // 监听 filters-updated 事件过滤点标记
+   EventBus.$on('filters-updated', function (filters) {
+       this.processFilters(filters);
+   }.bind(this));
+},</code></pre>
+<p>当过滤条件变更时，会调用 <code>processFilters</code> 方法对地图上的咖啡店点标记进行过滤。</p>
+<h3 id="toc_6">第八步：实现 processFilters 方法</h3>
+<p>最后，我们需要在 <code>CafeMap.vue</code> 的 <code>methods</code> 中实现 <code>processFilters</code> 方法。在此之前，需要先引入上篇教程创建的若干过滤处理函数：</p>
+<pre><code>import { CafeIsRoasterFilter } from '../../mixins/filters/CafeIsRoasterFilter.js';
+import { CafeBrewMethodsFilter } from '../../mixins/filters/CafeBrewMethodsFilter.js';
+import { CafeTextFilter } from '../../mixins/filters/CafeTextFilter.js';</code></pre>
+<p>并定义 <code>mixins</code> 数组：</p>
+<pre><code>mixins: [
+   CafeIsRoasterFilter,
+   CafeBrewMethodsFilter,
+   CafeTextFilter
+],</code></pre>
+<p>在 <code>buildMarkers</code> 方法中新建点标记 <code>marker</code> 对象时传入额外的咖啡店模型数据以便在点标记过滤时从点标记对象中获取相应的咖啡店数据，进而实现过滤功能：</p>
+<pre><code>// 遍历所有咖啡店创建点标记
+for (var i = 0; i &lt; this.cafes.length; i++) {
+
+     // 为每个咖啡店创建点标记并设置经纬度
+     var marker = new AMap.Marker({
+         position: new AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
+         title: this.cafes[i].location_name,
+         icon: icon,
+         extData: { 
+             'cafe': this.cafes[i]
+         }
+     });
+
+     ...</code></pre>
+<p>做好以上准备工作后，就可以编写 <code>processFilters</code> 方法了： </p>
+<pre><code>processFilters(filters) {
+  for (var i = 0; i &lt; this.markers.length; i++) {
+      if (filters.text === ''
+          &amp;&amp; filters.roaster === false
+          &amp;&amp; filters.brew_methods.length === 0) {
+          this.markers[i].setMap(this.map);
+      } else {
+          var textPassed = false;
+          var brewMethodsPassed = false;
+          var roasterPassed = false;
+
+          if (filters.roaster &amp;&amp; this.processCafeIsRoasterFilter(this.markers[i].getExtData().cafe)) {
+              roasterPassed = true;
+          } else if (!filters.roaster) {
+              roasterPassed = true;
+          }
+
+          if (filters.text !== '' &amp;&amp; this.processCafeTextFilter(this.markers[i].getExtData().cafe, filters.text)) {
+              textPassed = true;
+          } else if (filters.text === '') {
+              textPassed = true;
+          }
+
+          if (filters.brew_methods.length !== 0 &amp;&amp; this.processCafeBrewMethodsFilter(this.markers[i].getExtData().cafe, filters.brew_methods)) {
+              brewMethodsPassed = true;
+          } else if (filters.brew_methods.length === 0) {
+              brewMethodsPassed = true;
+          }
+
+          if (roasterPassed &amp;&amp; textPassed &amp;&amp; brewMethodsPassed) {
+              this.markers[i].setMap(this.map);
+          } else {
+              this.markers[i].setMap(null);
+          }
+      }
+  }
+},</code></pre>
+<p>至此，我们已经完成了所有编码工作。运行 <code>npm run dev</code> 重新编译前端资源，访问咖啡店列表页 <code>http://roast.test/#/cafes</code>，页面显示如下：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/22c15886820ee43f73a803a27cfb70e6.jpg" alt="" /></p>
+<p>选择适当的过滤条件，即可在地图上对咖啡店点标记进行过滤筛选：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/37148cbaa94bdfa09e448e6faeccb3b0.jpg" alt="" /></p>
+<blockquote>
+<p>注：项目的完整代码位于 <a href="https://github.com/nonfu/roastapp">nonfu/roastapp</a>。</p>
+</blockquote>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/api-app" rel="category tag">
+                API 应用
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="../tags/Roast" rel="tag">Roast</a>
+                                    ,
+                                            <a href="../tags/过滤" rel="tag">过滤</a>
+                                    ,
+                                            <a href="../tags/Mixin" rel="tag">Mixin</a>
+                                    ,
+                                            <a href="../tags/Vue" rel="tag">Vue</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E7%BB%84%E4%BB%B6" rel="tag">组件</a>
+                                    ,
+                                            <a href="../tags/高德地图" rel="tag">高德地图</a>
+                                    ,
+                                            <a href="../tags/点标记" rel="tag">点标记</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9634" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9634" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9633.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十三） —— 通过 Vue Mixins 在前端首页对咖啡店进行过滤筛选
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9635.html" rel="next">
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十五） —— 优化高德地图多个点标记信息窗体显示 &amp; 引入 Google Analytics 进行单页面应用访问统计
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9634.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9634' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9634.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9634.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第一步：创建高德地图过滤组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9634.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第二步：添加文本过滤器到组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9634.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第三步：是否是烘焙店过滤器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9634.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第四步：添加冲泡方法过滤器到组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9634.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第五步：完成地图过滤功能
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9634.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第六步：在 CafeMap 中监听过滤条件变更
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9634.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第八步：实现 processFilters 方法
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="9618.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十三） —— 通过 Vue 组件、Vue Router、Vuex 和 Laravel 实现表单提交
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9623.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十六） —— 通过 Vue + 高德地图 JS API 在地图上标记咖啡店
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9624.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十七） —— 在高德地图上自定义咖啡店点标记图标并显示信息窗体
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9632.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十二） —— 咖啡店标签前端输入及显示功能实现
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9633.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十三） —— 通过 Vue Mixins 在前端首页对咖啡店进行过滤筛选
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

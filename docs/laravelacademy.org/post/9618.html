@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十三） —— 通过 Vue 组件、Vue Router、Vuex 和 Laravel 实现表单提交 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9618.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9618.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9618.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9618.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9618.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../api-app">
+                API 应用
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十三） —— 通过 Vue 组件、Vue Router、Vuex 和 Laravel 实现表单提交</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十三） —— 通过 Vue 组件、Vue Router、Vuex 和 Laravel 实现表单提交</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9618.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-09-26T19:50:55+08:00">2018-09-26</time>
+                    <time class="updated" datetime="2018-09-26T19:56:28+08:00">2018-09-26 19:56:28</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                1215 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>在这篇教程中，我们来为咖啡店添加一些数据。我们构建这个应用的目的是为了帮助咖啡爱好者找到下一杯咖啡，所以首先需要让认证用户可以提交咖啡店到应用，不论何时在单页面应用中处理表单，都需要让 Laravel API 和调用 JavaScript 路由并更新 Vuex 储存数据的 Vuex 模块协同工作。听起来需要做的事情很多，但如果我们将它们拆解开来各个击破，也没有那么复杂。</p>
+<h3 id="toc_0">第一步：回顾我们现在有什么</h3>
+<p>我们在 Laravel API 中定义了一个路由来处理新增咖啡店，该路由需要一下参数：</p>
+<ul>
+<li>名称</li>
+<li>地址</li>
+<li>城市</li>
+<li>省份</li>
+<li>邮编</li>
+</ul>
+<p>这些只是一个咖啡店的基本参数，后面还会添加更多。</p>
+<p>我们还有一个 Vue Router 路由 <code>/cafes/new</code> 用来在前端处理新增咖啡店以及一个用于新增咖啡店的模板文件：<code>/resources/assets/js/pages/NewCafe.vue</code>。</p>
+<p>我们已经做好了以上准备工作，并且在 <code>/resources/assets/js/api/cafe.js</code> 文件中还有一个接收上述 5 个参数来提交一个咖啡店的 JavaScript API 调用：<code>postAddNewCafe</code>，但是还有一些工作要做：</p>
+<ul>
+<li>添加一个提交新咖啡店的表单到 <code>NewCafe.vue</code> 文件</li>
+<li>发送请求动作到 <code>Cafes</code> 模块以便提交新咖啡店</li>
+<li>通过 JavaScript API 提交新咖啡店到 Laravel API</li>
+<li>将处理结果返回给前端，尤其是 Vuex 模块</li>
+<li>重新加载咖啡店并更新 Vuex 模块</li>
+</ul>
+<p>以上就是基于 API + Vue 驱动的单页面应用添加内容到数据库的基本流程，接下来我们就按照这个基本流程一步一步来操作。</p>
+<h3 id="toc_1">第二步：添加表单到 NewCafe.vue 页面</h3>
+<p>首先打开 <code>/resources/assets/js/pages/NewCafe.vue</code> 文件，现在这个页面空的，我们将新增咖啡店表单插入到这个模板中：</p>
+<pre><code>&lt;template&gt;
+    &lt;div class="page"&gt;
+        &lt;form&gt;
+            &lt;div class="grid-container"&gt;
+                &lt;div class="grid-x grid-padding-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;Name
+                            &lt;input type="text" placeholder="咖啡店名"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;Address
+                            &lt;input type="text" placeholder="地址"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;City
+                            &lt;input type="text" placeholder="城市"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;State
+                            &lt;input type="text" placeholder="省份"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;Zip
+                            &lt;input type="text" placeholder="邮编"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p>注意：</p>
+<ul>
+<li>我们使用的是 Zurb Foundation 6.4 XY-Grid 栅格系统进行布局，其中某些风格已经预定义好了，如果你想了解更多关于这个栅格布局的内容，可以查看<a href="https://foundation.zurb.com/sites/docs/forms.html">官方文档</a>。</li>
+<li>我为 <code>&lt;div&gt;</code> 容器中新增了 <code>class</code> 属性 <code>page</code>，对应的样式定义位于 <code>/resources/assets/sass/layouts/_page.scss</code>。</li>
+</ul>
+<p>接下来需要在页面中设置模型，在页面组件中添加一个 <code>data()</code> 函数并以对象方式返回模型数据：</p>
+<pre><code>export default {
+    data() {
+        return {
+            name: '',
+            address: '',
+            city: '',
+            state: '',
+            zip: ''
+        }
+    }
+}</code></pre>
+<p>现在我们需要通过 <code>v-model</code> 将模型数据和表单输入框绑定起来，Vue 会帮助我们同步模型数据和表单元素，并且这个同步是双向的，关于 <code>v-model</code> 指令可以参考 <a href="https://cn.vuejs.org/v2/guide/forms.html">Vue 官方文档</a>了解更多明细：</p>
+<pre><code>&lt;div class="page"&gt;
+    &lt;form&gt;
+        &lt;div class="grid-container"&gt;
+            &lt;div class="grid-x grid-padding-x"&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;Name
+                        &lt;input type="text" placeholder="咖啡店名" v-model="name"&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;Address
+                        &lt;input type="text" placeholder="地址" v-model="address"&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;City
+                        &lt;input type="text" placeholder="城市" v-model="city"&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;State
+                        &lt;input type="text" placeholder="省份" v-model="state"&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;Zip
+                        &lt;input type="text" placeholder="邮编" v-model="zip"&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;</code></pre>
+<p>至此，我们的表单组件已经构建完成了，它具备在模型数据和表单元素之间双向同步数据的功能。</p>
+<p>运行 <code>npm run dev</code> 重新构建项目后就可以通过 <code>http://roast.test/#/cafes/new</code> 访问新增咖啡店页面了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/09/243ff085181a37a87f9cb75cf7f7adc3.jpg" alt="" /></p>
+<p>如果你打开开发者工具中 Vue 查看器，在表单中输入数据就可以看到数据会同步到数据模型中：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/09/f69b11d7674f60e752462b421790f564.jpg" alt="" /></p>
+<p>最后，我们为这个表单添加一个提交按钮，并为表单提交创建一个点击处理方法 <code>submitNewCafe</code>，完整代码如下：</p>
+<pre><code>&lt;style&gt;
+
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div class="page"&gt;
+        &lt;form&gt;
+            &lt;div class="grid-container"&gt;
+                &lt;div class="grid-x grid-padding-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;名称
+                            &lt;input type="text" placeholder="咖啡店名" v-model="name"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;地址
+                            &lt;input type="text" placeholder="地址" v-model="address"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;城市
+                            &lt;input type="text" placeholder="城市" v-model="city"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;省份
+                            &lt;input type="text" placeholder="省份" v-model="state"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;邮编
+                            &lt;input type="text" placeholder="邮编" v-model="zip"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;a class="button" v-on:click="submitNewCafe()"&gt;提交&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    export default {
+        data() {
+            return {
+                name: '',
+                address: '',
+                city: '',
+                state: '',
+                zip: ''
+            }
+        },
+        methods: {
+            submitNewCafe: function () {
+
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>这样每次用户点击「提交」按钮，都会调用 <code>submitNewCafe</code> 方法来处理新增咖啡店操作（目前留空）。</p>
+<h3 id="toc_2">第三步：提交新增的咖啡店数据</h3>
+<p>我们在上一步已经定义好了表单数据模型和视图，现在我们来编写 <code>submitNewCafe</code> 方法提交收集的表单数据。</p>
+<p>由于我们是在 Vuex 模块上调用处理动作，所以需要在 Vuex 上分发一个 <code>addCafe</code> 动作方法（下一步实现该方法），同时以 JSON 对象方式将表单数据传递给该 <code>addCafe</code> 方法：</p>
+<pre><code>submitNewCafe: function () {
+    this.$store.dispatch('addCafe', {
+        name: this.name,
+        address: this.address,
+        city: this.city,
+        state: this.state,
+        zip: this.zip
+    });
+}</code></pre>
+<h3 id="toc_3">第四步：在 Vuex 模块中处理新增操作</h3>
+<p>很显然，我们紧接着要做的就是实现上一步中要分发的 <code>addCafe</code> 方法，打开 <code>/resources/assets/js/modules/cafes.js</code> 编辑 Vuex 模块 <code>cafes</code>。</p>
+<p>首先，需要添加一个变量 <code>cafeAddStatus</code> 到 <code>state</code> 以便跟踪咖啡店添加状态：</p>
+<pre><code>state: {
+    cafes: [],
+    cafesLoadStatus: 0,
+
+    cafe: {},
+    cafeLoadStatus: 0,
+
+    cafeAddStatus: 0
+},</code></pre>
+<p>然后，将 <code>addCafe</code> 方法添加到 <code>actions</code> 中，紧随 <code>loadCafe</code> 之后：</p>
+<pre><code>addCafe( { commit, state, dispatch }, data ){
+
+}</code></pre>
+<p>需要注意的是 <code>addCafe</code> 的方法签名，第一个参数中包含了 <code>dispatch</code>，我们可以通过它从 Vuex 模块中分发动作，比如新增咖啡店后重新加载 Cafes 模块，第二个参数 <code>data</code> 就是我们在上一步传递过来的表单数据了。</p>
+<p>我们已经在 <a href="9508.html">通过 Axios 库构建 API 请求</a> 这篇教程中定义好了前端 API 请求（位于 <code>resources/assets/js/api/cafe.js</code>），其中包含新增咖啡店请求，在 <code>addCafe</code> 方法中，我们将添加如下代码调用之前定义好的 API 发送请求:</p>
+<pre><code>addCafe( { commit, state, dispatch }, data ){
+    // 状态1表示开始添加
+    commit( 'setCafeAddStatus', 1 );
+
+    CafeAPI.postAddNewCafe( data.name, data.address, data.city, data.state, data.zip )
+            .then( function( response ){
+                // 状态2表示添加成功
+                commit( 'setCafeAddStatus', 2 );
+                dispatch( 'loadCafes' );
+            })
+            .catch( function(){
+                // 状态3表示添加失败
+                commit( 'setCafeAddStatus', 3 );
+            });
+}</code></pre>
+<p>最后记得在 <code>mutations</code> 中新增 <code>setCafeAddStatus</code> 方法：</p>
+<pre><code>setCafeAddStatus(state, status) {
+    state.cafeAddStatus = status;
+}</code></pre>
+<p>在 <code>getters</code> 中新增 <code>getCafeAddStatus</code> 方法：</p>
+<pre><code>getCafeAddStatus( state) {
+    return state.cafeAddStatus;
+}</code></pre>
+<p>至此，前端工作已经全部完成了。</p>
+<h3 id="toc_4">第五步：回顾 Laravel 的处理并构建应用</h3>
+<p>相应的 Laravel 后端 API 也已经在 <a href="9507.html">实现 Laravel 后端 API 接口</a> 这篇教程中定义好了：<code>POST /api/v1/cafes</code>。所以我们现在要做的就是通过 <code>npm run dev</code> 重新构建前端资源文件并通过 <code>http://roast.test/#/cafes/new</code> 页面新增一个咖啡店：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/09/ae486fedef2e01218328e04d0067f948.jpg" alt="" /></p>
+<p>点击「提交」按钮，添加成功后就可以在数据库看到新增的数据了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/09/119e7ab20ea1d20a83956ec882350bd2.jpg" alt="" /></p>
+<p>访问首页 <code>http://roast.test/#/home</code>，在 Vue 组件和 Vuex 模块中也都可以看到刚刚新增的咖啡店了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/09/b50f52ca0a63fc7848ecb9f1efe37554.jpg" alt="" /></p>
+<p>至此，我们已经成功在 Roast 应用中通过提交表单完成新增咖啡店的功能。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/api-app" rel="category tag">
+                API 应用
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/Vue" rel="tag">Vue</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="../tags/Roast" rel="tag">Roast</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%A1%A8%E5%8D%95" rel="tag">表单</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E7%BB%84%E4%BB%B6" rel="tag">组件</a>
+                                    ,
+                                            <a href="../tags/Vuex" rel="tag">Vuex</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%B7%AF%E7%94%B1" rel="tag">路由</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9618" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9618" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9518.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十二） —— 为 Vue Router 添加页面布局
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9619.html" rel="next">
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十四） —— 通过 JavaScript 和 Laravel 验证表单请求
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        12 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-11783" class="comment even thread-even depth-1">
+            <article id="div-comment-11783" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr_White_DT' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/0e665837dd6a553fb3dfb84f6d349405-32x32.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Mr_White_DT" target="_blank">Mr_White_DT</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                <p>OK</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11783"  aria-label='回复Mr_White_DT...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-30T17:14:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-30 17:14:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11783" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11778" class="comment even thread-even depth-1">
+            <article id="div-comment-11778" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Mr_White_DT" target="_blank">
+                                Mr_White_DT
+                            </a>
+                                                                <p>我是说修改下数据库字段定义 或者看第十五篇教程把经纬度设置逻辑补上：<a href="9621.html">https://laravelacademy.org/post/9621.html</a></p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11778"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-30T11:25:10+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-30 11:25:10
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11778" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11774" class="comment even thread-even depth-1">
+            <article id="div-comment-11774" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr_White_DT' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/0e665837dd6a553fb3dfb84f6d349405-32x32.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Mr_White_DT" target="_blank">Mr_White_DT</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                <p>我在添加数据的时候判断了，空的时候给0。。。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11774"  aria-label='回复Mr_White_DT...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-29T16:00:20+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-29 16:00:20
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11774" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11773" class="comment even thread-even depth-1">
+            <article id="div-comment-11773" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Mr_White_DT" target="_blank">
+                                Mr_White_DT
+                            </a>
+                                                                <p>设置为允许为NULL吧</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11773"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-29T15:53:05+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-29 15:53:05
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11773" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11768" class="comment even thread-even depth-1">
+            <article id="div-comment-11768" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr_White_DT' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/0e665837dd6a553fb3dfb84f6d349405-32x32.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Mr_White_DT" target="_blank">Mr_White_DT</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                <p>学院君，我看了下数据库，decimal类型的两个字段不是不能为null吗？还是说我给看漏了。。。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11768"  aria-label='回复Mr_White_DT...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-29T10:52:01+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-29 10:52:01
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11768" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11764" class="comment even thread-even depth-1">
+            <article id="div-comment-11764" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='第五焱陽' src='https://avatars2.githubusercontent.com/u/16681022?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/shenglin-php" target="_blank">第五焱陽</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                <p>意思是你终于来了，</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11764"  aria-label='回复第五焱陽...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-28T13:36:28+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-28 13:36:28
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11764" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11762" class="comment even thread-even depth-1">
+            <article id="div-comment-11762" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/shenglin-php" target="_blank">
+                                第五焱陽
+                            </a>
+                                                                <p>什么鬼。。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11762"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-27T19:25:50+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-27 19:25:50
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11762" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11759" class="comment even thread-even depth-1">
+            <article id="div-comment-11759" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Chasers9527" target="_blank">
+                                Laragh
+                            </a>
+                                                                <p>明智如你</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11759"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-27T19:19:06+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-27 19:19:06
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11759" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11758" class="comment even thread-even depth-1">
+            <article id="div-comment-11758" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Mr_White_DT" target="_blank">
+                                Mr_White_DT
+                            </a>
+                                                                <p>感谢有你！</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11758"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-27T19:15:38+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-27 19:15:38
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11758" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11757" class="comment even thread-even depth-1">
+            <article id="div-comment-11757" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='第五焱陽' src='https://avatars2.githubusercontent.com/u/16681022?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/shenglin-php" target="_blank">第五焱陽</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>lei了lei了，那个男人他lei了，rua！</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9618.html#respond' data-id="11757"  aria-label='回复第五焱陽...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-27T15:26:42+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-27 15:26:42
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11757" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/9618.html/page/2#comments">2</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/post/9618.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9618.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9618' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9618.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9618.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第一步：回顾我们现在有什么
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9618.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第二步：添加表单到 NewCafe.vue 页面
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9618.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第三步：提交新增的咖啡店数据
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9618.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第四步：在 Vuex 模块中处理新增操作
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9618.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第五步：回顾 Laravel 的处理并构建应用
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="9504.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（五） —— 引入 Vue 2、Vue Router 和 Vuex
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9506.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（六） —— 通过 Vue Router 配置前端路由
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9508.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（八） —— 通过 Axios 库构建 API 请求
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9513.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十） —— 在 Vue 组件中使用 Vuex 模块
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9518.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十二） —— 为 Vue Router 添加页面布局
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

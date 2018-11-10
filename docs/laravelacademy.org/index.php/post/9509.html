@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（九） —— 构建 Vuex 模块 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9509.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9509.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9509.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9509.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9509.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../api-app">
+                API 应用
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（九） —— 构建 Vuex 模块</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（九） —— 构建 Vuex 模块</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9509.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-08-14T09:34:57+08:00">2018-08-14</time>
+                    <time class="updated" datetime="2018-08-17T11:22:21+08:00">2018-08-17 11:22:21</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                1568 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>在<a href="../../post/9508.html">上一篇教程</a>中，我们在 <code>resources/assets/js/api/cafe.js</code> 文件中通过 JavaScript 的 Axios 库构建了一些调用 Laravel 后端 API 路由的方法。在这一篇教程中我们需要将从 API 接口获取的数据保存下来以便在单页面应用中使用，而这正是 Vuex 模块可以大展拳脚的地方。</p>
+<p>在 <a href="https://vuex.vuejs.org/zh/">Vuex 文档</a>中将 Vuex 定位成专为 Vue.js 应用程序开发的状态管理模式，它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。听上去有点抽象，翻译过来就是可以在多个组件和页面中使用的单点数据。为什么我们需要这个？因为随着构建的应用越来越大，单页面也会变得越来越复杂，在多个地方使用数据会非常麻烦。例如，假设你有一份登录到应用的用户数据，有了 Vuex 模块之后，你无需通过用户名将用户作为参数传递到不同的组件，只需将其保存到 Vuex 模块中，然后在任何地方都可以访问这个模块来获取数据。</p>
+<p>Vuex 在跟踪应用程序中的数据状态方面也非常有用。如果你使用了 Vue 开发工具，就可以查看每个模块包含的数据以及如何访问它。</p>
+<p>Vuex 在一开始有点难以理解，因为这是一种全新的保存数据的方式，好在 <a href="https://vuex.vuejs.org/zh/">Vuex 官方文档</a> 非常详尽，你可以通过它们深入学习。不是所有的应用都需要 Vuex 来存储数据，但是如果你在构建一个大型的单页面应用，并且需要以更优雅地方式来处理数据，那么 Vuex 是一个不错的选择。</p>
+<h3 id="toc_0">第一步：配置 resources/assets/js/store.js</h3>
+<p>我们之前已经创建过一个初始化的 <code>store.js</code> 文件，现在需要打开这个文件，并添加一些代码来实现一个初始化的数据存储器。</p>
+<p>首先，需要在 <code>store.js</code> 顶部导入 Vue 和 Vuex：</p>
+<pre><code>/**
+ * Import Vue and Vuex
+ */
+import Vue from 'vue'
+import Vuex from 'vuex'</code></pre>
+<p>接下来，要告知 Vue 使用 Vuex 作为数据存储器，这将会扩展 Vue 实例具备使用 Vuex 数据存储器所需要的方法。将下面这行代码放到导入 Vue 和 Vuex 之后的地方：</p>
+<pre><code>/**
+ * Initializes Vuex on Vue.
+ */
+Vue.use( Vuex )</code></pre>
+<p>最后，我们将会从 <code>store.js</code> 文件导出一个新的 Vuex 数据存储器。这样我们就可以将其应用到 Vue 实例并让所有模块在各个组件和路由中都可以访问。将下面这段代码放到 <code>store.js</code> 末尾：</p>
+<pre><code>/**
+ * Export the data store.
+ */
+export default new Vuex.Store({
+    modules: {
+
+    }
+});</code></pre>
+<p>这样我们就有了一个最基本的数据存储器配置，我们可以在其基础上轻松实现模块扩展。</p>
+<h3 id="toc_1">第二步：安装 es6-promise 支持 IE 数据存储</h3>
+<p>上述配置在 IE 11 下不能正常工作，因为 IE 11 不支持 promise，需要通过 NPM 安装 <code>es6-promise</code>：</p>
+<pre><code>npm install es6-promise --save-dev</code></pre>
+<p>然后在 <code>resources/assets/js/store.js</code> 文件顶部加入如下这段代码：</p>
+<pre><code>/**
+ * Adds the promise polyfill for IE 11
+ */
+require('es6-promise').polyfill();</code></pre>
+<p>最终版本的 <code>store.js</code> 文件内容如下：</p>
+<pre><code>/*
+ |-------------------------------------------------------------------------------
+ | VUEX store.js
+ |-------------------------------------------------------------------------------
+ | Builds the data store from all of the modules for the Roast app.
+ */
+
+/**
+ * Adds the promise polyfill for IE 11
+ */
+require('es6-promise').polyfill();
+
+/**
+ * Import Vue and Vuex
+ */
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+/**
+ * Initializes Vuex on Vue.
+ */
+Vue.use( Vuex )
+
+/**
+ * Export our data store.
+ */
+export default new Vuex.Store({
+    modules: {
+
+    }
+});</code></pre>
+<h3 id="toc_2">第三步：新增数据存储器到 Vue 实例</h3>
+<p>现在数据存储器已经构建好了，需要将其添加到 Vue 中，Vue 实例位于 <code>resources/assets/js/app.js</code>，打开该文件，在</p>
+<pre><code>import router from './routes.js'`）</code></pre>
+<p>之后添加如下这行代码：</p>
+<pre><code>import store from './store.js'</code></pre>
+<p>这将会引入我们上几步创建的数据存储器，接下来，我们需要通过数据存储器来扩展 Vue 实例：</p>
+<pre><code>new Vue({
+    router,
+    store
+}).$mount('#app');</code></pre>
+<p>现在我们就可以在应用中使用整个 Vue 全家桶了！下面我们将新增一些模块并使其可以正常工作。</p>
+<h3 id="toc_3">第四步：新增 Vuex 模块 cafes.js</h3>
+<p>首先需要在 <code>resources/assets/js/modules</code> 目录下创建一个名为 <code>cafes.js</code> 的文件，我们将在这个文件中管理所有的咖啡店数据，然后在整个应用中使用这些数据。从这里，也可以看到单页面应用的优点：一次加载页面，将数据存储到  Vuex 模块，到处使用，只有在需要重新加载页面时才重新加载。</p>
+<p>现在 <code>cafes.js</code> 文件还是空的，下一步就来配置这个文件。</p>
+<h3 id="toc_4">第五步：配置 Vuex 模块的 state 属性</h3>
+<p>在 <code>resources/assets/js/modules/cafes.js</code> 文件中，首先从 <code>api</code> 目录下导入咖啡店相关 API，我们将使用其中的 API 请求方法来加载数据：</p>
+<pre><code>/*
+|-------------------------------------------------------------------------------
+| VUEX modules/cafes.js
+|-------------------------------------------------------------------------------
+| The Vuex data store for the cafes
+*/
+
+import CafeAPI from '../api/cafe.js';</code></pre>
+<p>现在我们将会导出一个常量作为咖啡店模块，在导入 <code>CafeAPI</code> 的下面添加如下这段代码：</p>
+<pre><code>export const cafes = {
+
+}</code></pre>
+<p>这就是我们要添加到数据存储器的模块，稍后我们会将其导入到数据存储器。</p>
+<p>接下来，我们需要设置上述 Vuex 模块的四个属性（<a href="https://vuex.vuejs.org/zh/guide/state.html">state</a>、<a href="https://vuex.vuejs.org/zh/guide/actions.html">actions</a>、<a href="https://vuex.vuejs.org/zh/guide/mutations.html">mutations</a>、<a href="https://vuex.vuejs.org/zh/guide/getters.html">getters</a>）。</p>
+<p>首先，添加一个空的 <code>state</code> 对象：</p>
+<pre><code>export const cafes = {
+    state: {
+
+    }
+}</code></pre>
+<p>该状态是所有我们想要跟踪数据的状态，在 <code>cafes</code> 模块中有两个需要跟踪的数据：咖啡店数组，以及存储单个咖啡店的对象。分别对应返回所有咖啡店和单个咖啡店的 API。我们会这样初始化这两个数据：</p>
+<pre><code>export const cafes = {
+    state: {
+        cafes: [],
+        cafe: {}
+    }
+}</code></pre>
+<p>根据经验，我们经常遇到的一个问题是显示加载状态。在单页面应用中，加载状态至关重要。HTML/CSS 和其他页面功能通常会在向等待数据加载的用户提供不良UX的数据之前加载。对于我们在状态中跟踪的每个数据，我会为跟踪加载状态的数据状态添加相应的变量。这样我就可以读取这个变量来确定是否显示加载状态。 随着 Vue 被激活，数据被加载后，这个变量会更新，使用该变量的组件也会更新，并相应地显示到页面。相应的状态变量定义如下：</p>
+<pre><code>export const cafes = {
+    state: {
+        cafes: [],
+        cafesLoadStatus: 0,
+        cafe: {},
+        cafeLoadStatus: 0
+    },
+}</code></pre>
+<p>我通常定义状态码如下：</p>
+<ul>
+<li><code>status = 0</code> -&gt; 数据尚未加载</li>
+<li><code>status = 1</code> -&gt; 数据开始加载</li>
+<li><code>status = 2</code> -&gt; 数据加载成功</li>
+<li><code>status = 3</code> -&gt; 数据加载失败</li>
+</ul>
+<p>这样我们就可以基于数据加载状态在需要的时候相应的提示信息。</p>
+<h3 id="toc_5">第六步：配置 Vuex 模块的 actions 属性</h3>
+<p><code>actions</code> 在模块中用于被调用来修改状态。在本教程中，我们会调用一个 action 用于发起 API 请求并提交 <code>mutations</code>。<code>mutations</code> 我们会在下一步中实现。</p>
+<p>在 <code>actions</code> 对象中我们可以添加方法来加载所有咖啡店和单个咖啡店信息：</p>
+<pre><code>export const cafes = {
+    state: {
+        cafes: [],
+        cafesLoadStatus: 0,
+
+        cafe: {},
+        cafeLoadStatus: 0
+    },
+
+    actions: {
+        loadCafes( { commit } ){
+
+        },
+        loadCafe( { commit }, data ){
+
+        }
+    }
+};</code></pre>
+<p>上述代码 <code>actions</code> 部分有两个需要注意的地方：</p>
+<ul>
+<li>每个方法都包含一个名为 <code>commit</code> 的析构参数，该参数通过 Vuex 传入，允许我们提交 <code>mutations</code>。你还可以传入其他的析构参数，要了解更多关于参数析构的细节，可以参考 <a href="https://github.com/lukehoban/es6features#destructuring">lukehoban/es6features</a> 这个 Github 项目。</li>
+<li><code>loadCafe</code> 动作包含了一个名为 <code>data</code> 的第二个参数。该参数是一个对象，包含我们想要加载的咖啡店的 ID。</li>
+</ul>
+<p>现在，我们来实现这两个方法：</p>
+<pre><code>actions: {
+    loadCafes( { commit } ){
+        commit( 'setCafesLoadStatus', 1 );
+
+        CafeAPI.getCafes()
+            .then( function( response ){
+                commit( 'setCafes', response.data );
+                commit( 'setCafesLoadStatus', 2 );
+            })
+            .catch( function(){
+                commit( 'setCafes', [] );
+                commit( 'setCafesLoadStatus', 3 );
+            });
+    },
+
+    loadCafe( { commit }, data ){
+        commit( 'setCafeLoadStatus', 1 );
+
+        CafeAPI.getCafe( data.id )
+            .then( function( response ){
+                commit( 'setCafe', response.data );
+                commit( 'setCafeLoadStatus', 2 );
+            })
+            .catch( function(){
+                commit( 'setCafe', {} );
+                commit( 'setCafeLoadStatus', 3 );
+            });
+
+    }
+},</code></pre>
+<p>首先需要注意的是 <code>commit</code> 函数，该函数用于提交一个 mutation，我们会在下一步设置 <code>mutations</code>。再次重申，<code>state</code> 中的每个数据片段都应该有一个与之对应的 mutation。在上面两个方法中，我们都提交了所使用的状态的加载状态，接下来，调用 API 来加载想要加载的指定信息状态，这些 API 调用定义在 <code>resources/assets/js/api/cafe.js</code> 文件中，之后链式调用 <code>then</code> 和 <code>catch</code> 方法，前者在 API 请求成功后调用，后者在 API 请求失败后调用，<code>response</code> 变量会传递到这两个方法，以便获取响应数据和请求头。</p>
+<h3 id="toc_6">第七步：配置 Vuex 模块的 mutations 属性</h3>
+<p><code>mutations</code> 定义了数据的更新方式，每个模块都有 <code>state</code>，每个 <code>state</code> 都需要对应的 mutation 来更新，完整工作流如下：</p>
+<ul>
+<li>用户调用一个 action</li>
+<li>该 action 加载/计算数据</li>
+<li>该 action 提交一个 mutation</li>
+<li>state 被更新</li>
+<li>getter 将更新后的 state 返回给组件</li>
+<li>组件被更新</li>
+</ul>
+<p>以上工作流可以通过多种方式来实现，不过相较于 jQuery 或 vanilla JS 的实现，使用 Vuex 更加简单。</p>
+<p>我们已经定义了 <code>state</code> 和 <code>actions</code>，现在是时候实现 <code>mutations</code> 了，我们在配置 <code>actions</code> 时已经看到了 <code>mutations</code> 的调用，现在只需实现其功能代码即可：</p>
+<pre><code>mutations: {
+    setCafesLoadStatus( state, status ){
+
+    },
+
+    setCafes( state, cafes ){
+
+    },
+
+    setCafeLoadStatus( state, status ){
+
+    },
+
+    setCafe( state, cafe ){
+
+    }
+},</code></pre>
+<p>所有 <code>mutations</code> 所做的工作都是设置 <code>state</code>，所以第一个参数是 <code>state</code>，这里的 <code>state</code> 是局部模块 state 而不是全局 state，所以我们在第六步中配置的 <code>state</code> 可以被访问，第二个参数是 <code>state</code> 更新后的数据，所以最终实现如下：</p>
+<pre><code>mutations: {
+    setCafesLoadStatus( state, status ){
+      state.cafesLoadStatus = status;
+    },
+
+    setCafes( state, cafes ){
+      state.cafes = cafes;
+    },
+
+    setCafeLoadStatus( state, status ){
+      state.cafeLoadStatus = status;
+    },
+
+    setCafe( state, cafe ){
+      state.cafe = cafe;
+    }
+},</code></pre>
+<p>在每个 mutation 中，我们将局部模块的 <code>state</code> 数据设置为传入的更新后数据，这也正是每个 mutation 所要做的操作。接下来，我们将会配置 <code>getters</code>。</p>
+<h3 id="toc_7">第八步：配置 Vuex 模块的 getters 属性</h3>
+<p>到目前为止，我们已经有了想要跟踪的 <code>state</code> 数据，从 API 接口获取数据的 <code>actions</code>，以及用于设置 <code>state</code> 的 <code>mutations</code>，现在需要定义 <code>getters</code> 从模块中获取数据。</p>
+<p>我们的 <code>getters</code> 对象需要像这样添加到 <code>cafes</code> 模块中：</p>
+<pre><code>getters: {
+
+}</code></pre>
+<p>接下来，需要为每一个 <code>state</code> 数据的获取定义一个方法：</p>
+<pre><code>getters: {
+    getCafesLoadStatus( state ){
+      return state.cafesLoadStatus;
+    },
+
+    getCafes( state ){
+      return state.cafes;
+    },
+
+    getCafeLoadStatus( state ){
+      return state.cafeLoadStatus;
+    },
+
+    getCafe( state ){
+      return state.cafe;
+    }
+}</code></pre>
+<p>每个 getter 方法都会传入一个局部模块 state 作为参数并返回相应的 state 数据，这就是 <code>getters</code> 所做的全部工作了！现在我们可以在组件中使用所有这些数据了。</p>
+<p>至此，我们的 Vuex 模块已经全部定义好了：</p>
+<pre><code>/*
+ |-------------------------------------------------------------------------------
+ | VUEX modules/cafes.js
+ |-------------------------------------------------------------------------------
+ | The Vuex data store for the cafes
+ */
+
+import CafeAPI from '../api/cafe.js';
+
+export const cafes = {
+    /**
+     * Defines the state being monitored for the module.
+     */
+    state: {
+        cafes: [],
+        cafesLoadStatus: 0,
+
+        cafe: {},
+        cafeLoadStatus: 0
+    },
+    /**
+     * Defines the actions used to retrieve the data.
+     */
+    actions: {
+        loadCafes( { commit } ){
+            commit( 'setCafesLoadStatus', 1 );
+
+            CafeAPI.getCafes()
+                .then( function( response ){
+                    commit( 'setCafes', response.data );
+                    commit( 'setCafesLoadStatus', 2 );
+                })
+                .catch( function(){
+                    commit( 'setCafes', [] );
+                    commit( 'setCafesLoadStatus', 3 );
+                });
+        },
+
+        loadCafe( { commit }, data ){
+            commit( 'setCafeLoadStatus', 1 );
+
+            CafeAPI.getCafe( data.id )
+                .then( function( response ){
+                    commit( 'setCafe', response.data );
+                    commit( 'setCafeLoadStatus', 2 );
+                })
+                .catch( function(){
+                    commit( 'setCafe', {} );
+                    commit( 'setCafeLoadStatus', 3 );
+                });
+
+        }
+    },
+    /**
+     * Defines the mutations used
+     */
+    mutations: {
+        setCafesLoadStatus( state, status ){
+            state.cafesLoadStatus = status;
+        },
+
+        setCafes( state, cafes ){
+            state.cafes = cafes;
+        },
+
+        setCafeLoadStatus( state, status ){
+            state.cafeLoadStatus = status;
+        },
+
+        setCafe( state, cafe ){
+            state.cafe = cafe;
+        }
+    },
+    /**
+     * Defines the getters used by the module
+     */
+    getters: {
+        getCafesLoadStatus( state ){
+            return state.cafesLoadStatus;
+        },
+
+        getCafes( state ){
+            return state.cafes;
+        },
+
+        getCafeLoadStatus( state ){
+            return state.cafeLoadStatus;
+        },
+
+        getCafe( state ){
+            return state.cafe;
+        }
+    }
+};</code></pre>
+<h3 id="toc_8">第九步：将 Vuex 模块添加到数据存储器</h3>
+<p>最后，我们还要告诉 Vuex 数据存储器使用 <code>cafes</code> 模块，打开 <code>resources/assets/js/store.js</code> 文件，紧随</p>
+<pre><code>Vue.use( Vuex )</code></pre>
+<p>之后添加如下这段代码：</p>
+<pre><code>/**
+ * Imports all of the modules used in the application to build the data store.
+ */
+import { cafes } from './modules/cafes.js'</code></pre>
+<p>并且修改默认导出数据存储器代码如下：</p>
+<pre><code>export default new Vuex.Store({
+    modules: {
+        cafes
+    }
+});</code></pre>
+<h3 id="toc_9">小结</h3>
+<p>在这篇教程中，我们创建了一个 Vuex 存储器并为咖啡店配置了一个 Vuex 模块。要想看到对应的效果，编译前端资源后（<code>npm run dev</code>），可以在开发环境访问 <code>http://roast.test</code> 并打开开发者工具，切换到 Vue 标签页，在 Vuex 部分就可以看到 <code>state</code> 和 <code>getters</code> 属性：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/08/0cbee5b707594bed06dfcb639f02d329.jpg" alt="Vuex Module in Chrome Dev tools" /></p>
+<p>下一篇教程中我们演示如何在 Vue 组件中使用 Vuex 模块。</p>
+<blockquote>
+<p>项目源码位于 Github 上：<a href="https://github.com/nonfu/roastapp">nonfu/roastapp</a>。</p>
+</blockquote>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/api-app" rel="category tag">
+                API 应用
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/Roast" rel="tag">Roast</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="../tags/Vuex" rel="tag">Vuex</a>
+                                    ,
+                                            <a href="../tags/Vue" rel="tag">Vue</a>
+                                    ,
+                                            <a href="../tags/模块" rel="tag">模块</a>
+                                    ,
+                                            <a href="../tags/数据存储" rel="tag">数据存储</a>
+                                    ,
+                                            <a href="../tags/Mutation" rel="tag">Mutation</a>
+                                    ,
+                                            <a href="../tags/getter" rel="tag">getter</a>
+                                    ,
+                                            <a href="../tags/action" rel="tag">action</a>
+                                    ,
+                                            <a href="../tags/state" rel="tag">state</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9509" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9509" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9508.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（八） —— 通过 Axios 库构建 API 请求
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9513.html" rel="next">
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十） —— 在 Vue 组件中使用 Vuex 模块
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        2 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-12051" class="comment even thread-even depth-1">
+            <article id="div-comment-12051" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='吴亲库里' src='https://www.gravatar.com/avatar/298fe05605e76252a1bbb770439ea5a7?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/吴亲库里" target="_blank">吴亲库里</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>应该是实例化的是Vue,我有个地方小写，显示difined,但是找不到这个小写的在哪。。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9509.html#respond' data-id="12051"  aria-label='回复吴亲库里...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-03T23:02:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-03 23:02:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12051" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-12050" class="comment even thread-even depth-1">
+            <article id="div-comment-12050" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='吴亲库里' src='https://www.gravatar.com/avatar/298fe05605e76252a1bbb770439ea5a7?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/吴亲库里" target="_blank">吴亲库里</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>app.js:56072 Uncaught ReferenceError: vue is not defined  ,点进去看报错的地方</p>
+<p>/**</p>
+<ul>
+<li>Initializes Vuex on Vue.
+<em>/
+vue.use(<strong>WEBPACK_IMPORTED_MODULE_1_vuex</strong>[&quot;a&quot; /</em> default */]);</li>
+</ul>
+<p>这里报的错，不懂vue，对着你的代码，还是没找出是什么错</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9509.html#respond' data-id="12050"  aria-label='回复吴亲库里...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-03T22:52:03+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-03 22:52:03
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12050" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9509.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9509' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9509.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9509.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第一步：配置 resources/assets/js/store.js
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第二步：安装 es6-promise 支持 IE 数据存储
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第三步：新增数据存储器到 Vue 实例
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第四步：新增 Vuex 模块 cafes.js
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第五步：配置 Vuex 模块的 state 属性
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第六步：配置 Vuex 模块的 actions 属性
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第七步：配置 Vuex 模块的 mutations 属性
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第八步：配置 Vuex 模块的 getters 属性
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第九步：将 Vuex 模块添加到数据存储器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9509.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        小结
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="9498.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（一） —— 初始化 Laravel 单页面应用
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9504.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（五） —— 引入 Vue 2、Vue Router 和 Vuex
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9508.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（八） —— 通过 Axios 库构建 API 请求
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9513.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十） —— 在 Vue 组件中使用 Vuex 模块
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9518.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十二） —— 为 Vue Router 添加页面布局
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

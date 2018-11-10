@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.3 文档 ] 综合话题 —— 事件广播 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="6026.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="6026.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="6026.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="6026.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="6026.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_3">
+                Laravel 5.3
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.3 文档 ] 综合话题 —— 事件广播</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.3 文档 ] 综合话题 —— 事件广播</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="6026.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2016-09-18T14:57:33+08:00">2016-09-18</time>
+                    <time class="updated" datetime="2016-09-18T14:58:21+08:00">2016-09-18 14:58:21</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                12437 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0"><strong>1、简介</strong></h3>
+<p>在很多现代 Web 应用中，Web 套接字（WebSockets）被用于实现实时更新的用户接口。当一些数据在服务器上被更新，通常一条消息通过 websocket 连接被发送给客户端处理。这为我们提供了一个更强大的、更有效的选择来持续拉取应用的更新。</p>
+<p>为帮助你构建这样的应用，Laravel 让通过 websocket 连接广播事件变得简单。广播 Laravel 事件允许你在服务端和客户端 JavaScript 框架之间共享同一事件名。</p>
+<p>注：在深入了解事件广播之前，确保你已经阅读并理解Laravel事件与监听器相关文档。</p>
+<h4 id="toc_1"><strong>配置</strong></h4>
+<p>应用的所有事件广播配置选项都存放在 <code>config/broadcasting.php</code> 配置文件中。Laravel 开箱支持多种广播驱动：<a href="https://pusher.com/" target="_blank">Pusher</a>、Redis以及一个服务于本地开发和调试的日志驱动。此外，还提供了一个<code>null</code>驱动用于完全禁止事件广播。每一个驱动在<code>config/broadcasting.php</code>配置文件中都有一个配置示例。</p>
+<p><strong>广播服务提供者</strong></p>
+<p>在广播任意事件之前，首先需要注册<code>App\Providers\BroadcastServiceProvider</code>。在新安装的Laravel应用中，你只需要取消<code>config/app.php</code>配置文件中<code>providers</code>数组内对应服务提供者之前的注释即可。该提供者允许你注册广播认证路由和回调。</p>
+<p><b>CSRF令牌</b></p>
+<p><a href="6026.html#ipt_kb_toc_6026_14">Laravel Echo</a>需要访问当前session的CSRF令牌（token），如果有效的话，Echo将会从JavaScript变量<code>Laravel.csrfToken</code>中获取令牌。如果你运行过Artisan命令<code>make:auth</code>的话，该对象定义在<code>resources/views/layouts/app.blade.php</code>布局文件中。如果你没有使用这个布局，你可以在应用的HTML元素<code>head</code>中定义一个<code>meta</code>标签：</p>
+<pre>&lt;meta name="csrf-token" content="{{ csrf_token() }}"&gt;</pre>
+<h4 id="toc_2"><b>驱动预备知识</b></h4>
+<p><b>Pusher</b></p>
+<p>如果你准备通过<a href="https://pusher.com/" target="_blank">Pusher</a>广播事件，需要使用Composer包管理器安装对应的Pusher PHP SDK：</p>
+<pre>composer require pusher/pusher-php-server</pre>
+<p>接下来，你需要在<code>config/broadcasting.php</code>配置文件中配置你的Pusher证书。一个配置好的Pusher示例已经包含在这个文件中，你可以按照这个模板进行修改，指定自己的Pusher key、secret和应用ID即可。</p>
+<p>使用Pusher和<a href="6026.html#ipt_kb_toc_6026_14">Laravel Echo</a>的时候，需要在安装某个Echo实例的时候指定<code>pusher</code>作为期望的广播：</p>
+<pre>import Echo from "laravel-echo"
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'your-pusher-key'
+});</pre>
+<p><b>Redis</b></p>
+<p>如果你使用Redis广播，需要安装Predis库：</p>
+<pre>composer require predis/predis</pre>
+<p>Redis广播使用Redis的pub/sub功能进行广播；不过，你需要将其和能够接受Redis消息的Websocket服务器进行配对以便将消息广播到Websocket频道。</p>
+<p>当Redis广播发布事件时，事件将会被发布到指定的频道上，传递的数据是一个JSON格式的字符串，其中包含了事件名称、数据明细<code>data</code>、以及生成事件socket ID的用户。</p>
+<p><b>Socket.IO</b></p>
+<p>如果你想配对Redis广播和Socket.IO服务器，则需要在应用的HTML元素<code>head</code>中引入Socket.IO JavaScript库：</p>
+<pre>&lt;script src="https://cdn.socket.io/socket.io-1.4.5.js"&gt;&lt;/script&gt;</pre>
+<p>接下来，你需要使用<code>socket.io</code>连接器和<code>host</code>来实例化Echo。例如，如果你的应用和socket服务器运行在了<code>app.dev</code>上，那么需要注意实例化Echo：</p>
+<pre>import Echo from "laravel-echo"
+
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: 'http://app.dev:6001'
+});</pre>
+<p>最后，需要运行一个与之兼容的Socket.IO服务器。Laravel并未内置一个Socket.IO服务器实现，不过，这里有一个第三方实现的Socket.IO驱动：<a href="https://github.com/tlaverdure/laravel-echo-server" target="_blank">tlaverdure/laravel-echo-server</a>。</p>
+<p><strong>队列预备知识</strong></p>
+<p>在开始介绍广播事件之前，还需要配置并运行一个队列监听器。所有事件广播都通过队列任务来完成以便应用的响应时间不受影响。</p>
+<h3 id="toc_3"><strong>2、概念概览</strong></h3>
+<p>Laravel的事件广播允许你使用基于驱动的WebSockets将服务器端端事件广播到客户端JavaScript应用。目前，Laravel使用Pusher和Redis驱动，这些事件可以通过JavaScript包Laravel Echo在客户端被轻松消费。</p>
+<p>事件通过“频道”进行广播，这些频道可以是公共的，也可以是私有的，应用的任何访问者都可以不经认证和授权注册到一个共有的频道，不过，想要注册到私有频道，用户必须经过认证和授权才能监听该频道。</p>
+<h4 id="toc_4"><b>使用示例应用</b></h4>
+<p>在深入了解每个事件广播组件之前，让我们先通过一个电商网站作为示例对整体有个大致的了解。这里我们不会讨论Pusher和Laravel Echo的配置细节，这些将会放在文档的其它章节进行讨论。</p>
+<p>在我们的应用中，假设我们有一个页面允许用户查看订单的物流状态，我们还假设当应用进行订单状态更新处理时会触发一个<code>ShippingStatusUpdated</code>事件：</p>
+<pre>event(new ShippingStatusUpdated($update));</pre>
+<p><strong>ShouldBroadcast接口</strong></p>
+<p>当用户查看某个订单时，我们不希望他们必须刷新页面来查看更新状态。取而代之地，我们希望在创建时将更新广播到应用。因此，我们需要标记<code>ShippingStatusUpdated</code>事件实现<code>ShouldBroadcast</code>接口，这样，Laravel就会在触发事件时广播该事件：</p>
+<pre>&lt;?php
+
+namespace App\Events;
+
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class ShippingStatusUpdated implements ShouldBroadcast
+{
+    //
+}</pre>
+<p><code><br />
+ShouldBroadcast</code>接口要求事件类定义一个<code>broadcastOn</code>方法，该方法会返回事件将要广播的频道。事件类生成时一个空的方法存根已经定义，我们所要做的只是填充其细节。我们只想要订单的创建者能够察看状态更新，所以我们将这个事件广播在一个与订单绑定的私有频道上：</p>
+<pre><code>/**
+ * Get the channels the event should broadcast on.
+ *
+ * @return array
+ */
+public function broadcastOn()
+{
+    return new PrivateChannel('order.'.$this-&gt;update-&gt;order_id);
+}</code></pre>
+<p><b>授权频道</b></p>
+<p>记住，用户必须经过授权之后才能监听私有频道。我们可以在<code>BroadcastServiceProvider</code>的<code>boot</code>方法中定义频道授权规则。在本例中，我们需要验证任意试图监听<code>order.1</code>频道的用户确实是订单的创建者：</p>
+<pre>Broadcast::channel('order.*', function ($user, $orderId) {
+    return $user-&gt;id === Order::findOrNew($orderId)-&gt;user_id;
+});</pre>
+<p><code>channel</code>方法接收两个参数：频道的名称以及返回<code>true</code>或<code>false</code>以表明用户是否被授权可以监听频道的回调。</p>
+<p>所有授权回调都接收当前认证用户作为第一个参数以及任意额外通配符参数作为随后参数，在本例中，我们使用<code>*</code>字符标识频道名称的ID部分是一个通配符。</p>
+<p><b>监听事件广播</b></p>
+<p>接下来要做的就是在JavaScript中监听事件。我们可以使用Laravel Echo来完成这一工作。首先，我们使用<code>private</code>方法注册私有频道。然后，我们使用<code>listen</code>方法监听<code>ShippingStatusUpdated</code>事件。默认情况下，所有事件的公共属性都要包含在广播事件中：</p>
+<pre>Echo.private('order.' + orderId)
+    .listen('ShippingStatusUpdated', (e) =&gt; {
+        console.log(e.update);
+    });</pre>
+<h3 id="toc_5"><strong>3、定义广播事件</strong></h3>
+<p>要告诉 Laravel 给定事件应该被广播，需要在事件类上实现<code>Illuminate\Contracts\Broadcasting\ShouldBroadcast</code> 接口，这个接口已经在Laravel框架生成的事件类中导入了，你只需要将其添加到事件即可。</p>
+<p><code>ShouldBroadcast</code> 接口要求你实现一个方法：<code>broadcastOn</code>。该方法应该返回一个事件广播频道或频道数组。这些频道必须是<code>Channel</code>、<code>PrivateChannel</code>或<code>PresenceChannel</code>的实例，Channel频道表示任意用户可以注册的公共频道，而<code>PrivateChannels</code>或<code>PresenceChannels</code>则代表需要进行频道授权的私有频道：</p>
+<pre>&lt;?php
+
+namespace App\Events;
+
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class ServerCreated implements ShouldBroadcast
+{
+    use SerializesModels;
+
+    public $user;
+
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct(User $user)
+    {
+        $this-&gt;user = $user;
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
+    public function broadcastOn()
+    {
+        return new PrivateChannel('user.'.$this-&gt;user-&gt;id);
+    }
+}</pre>
+<p>然后，你只需要正常触发这个事件即可。一旦事件被触发，队列任务会自动通过指定广播驱动广播该事件。</p>
+<h4 id="toc_6"><b>广播数据</b></h4>
+<p>如果某个事件被广播，其所有的 <code>public</code> 属性都会按照事件负载（payload）自动序列化和广播，从而允许你从 JavaScript 中访问所有<code>public</code> 数据，因此，举个例子，如果你的事件有一个单独的包含 Eloquent 模型的 <code>$user</code> 属性，广播负载定义如下：</p>
+<pre>{
+    "user": {
+    "id": 1,
+        "name": "Patrick Stewart"
+        ...
+    }
+}</pre>
+<p>不过，如果你希望对广播负载有更加细粒度的控制，可以添加 <code>broadcastWith</code> 方法到事件，该方法会返回你想要通过事件广播的数组数据：</p>
+<pre>/**
+ * 获取广播数据
+ *
+ * @return array
+ */
+public function broadcastWith(){
+    return ['user' =&gt; $this-&gt;user-&gt;id];
+}</pre>
+<h4 id="toc_7"><b>广播队列</b></h4>
+<p>默认情况下，每个广播事件都放置在配置文件 <code>queue.php</code> 中指定的默认队列连接中，你可以通过在事件类上定义一个 <code>broadcastQueue</code> 属性来自定义广播使用的队列。该属性需要指定广播时你想要使用的队列名称：</p>
+<pre>/**
+ * The name of the queue on which to place the event.
+ *
+ * @var string
+ */
+public $broadcastQueue = 'your-queue-name';
+</pre>
+<h3 id="toc_8"><strong>4、授权频道</strong></h3>
+<p>私有频道要求你授权当前认证用户可以监听的频道。这可以通过向Laravel发送包含频道名称的HTTP请求然后让应用判断该用户是否可以监听频道来实现。使用Laravel Echo的时候，授权注册到私有频道的HTTP请求会自动发送，不过，你也需要定义相应路由来响应这些请求。</p>
+<h4 id="toc_9"><b>定义授权路由</b></h4>
+<p>庆幸的是，Laravel让定义响应频道授权请求的路由变得简单，在Laravel自带的 <code>BroadcastServiceProvider</code> 中，你可以看到 <code>Broadcast::routes</code> 方法的调用，该方法会注册 <code>/broadcasting/auth</code> 路由来处理授权请求：</p>
+<pre>Broadcast::routes();</pre>
+<p><code>Broadcast::routes</code> 方法将会自动将路由放置到<code>web</code>中间件组，不过，你也可以传递一个路由属性数组到这个方法以便自定义分配的属性：</p>
+<pre>Broadcast::routes($attributes);</pre>
+<h4 id="toc_10"><b>定义授权回调</b></h4>
+<p>接下来，我们需要定义执行频道授权的逻辑，和定义授权路由一样，这也是通过 <code>BroadcastServiceProvider</code> 中的 <code>boot</code> 方法来完成。在这个方法中，你可以使用 <code>Broadcast::channel</code> 方法来注册频道授权回调：</p>
+<pre>Broadcast::channel('order.*', function ($user, $orderId) {
+    return $user-&gt;id === Order::findOrNew($orderId)-&gt;user_id;
+});</pre>
+<p><code>channel</code> 方法接收两个参数：频道名称和返回<code>true</code>或<code>false</code>以标识用户是否授权可以监听该频道的回调。</p>
+<p>所有授权回调都接收当前认证用户作为第一个参数以及任意额外通配符参数作为其他参数。在本例中，我们使用*字符来标识频道名称的ID部分是一个通配符。</p>
+<h3 id="toc_11"><strong>5、广播事件</strong></h3>
+<p>定义好事件并标记其实现 <code>ShouldBroadcast</code> 接口后，你所要做的就是使用<code>event</code>方法触发该事件。事件分发器将会注意事件是否实现了 <code>ShouldBroadcast</code> 接口，如果是的话就将其放置到广播队列中：</p>
+<pre>event(new ShippingStatusUpdated($update));</pre>
+<h4 id="toc_12"><b>只广播给其他人</b></h4>
+<p>构建使用事件广播的应用时，你还可以使用 <code>broadcast</code> 函数替代 <code>event</code> 函数，和<code>event</code>函数一样， <code>broadcast</code> 函数将事件分发到服务器端监听器：</p>
+<pre>broadcast(new ShippingStatusUpdated($update));</pre>
+<p>不过， <code>broadcast</code> 函数还暴露了 <code>toOthers</code> 方法以便允许你从广播接收者中排除当前用户：</p>
+<pre>broadcast(new ShippingStatusUpdated($update))-&gt;toOthers();</pre>
+<p>为了更好地理解 <code>toOthers</code> 方法，我们先假设有一个任务列表应用，在这个应用中，用户可以通过输入任务名称创建一个新的任务，而要创建一个任务，应用需要发送请求到 <code>/task</code> ，在这里，会广播任务创建并返回一个JSON格式的新任务。当你的JavaScript应用从服务端接收到响应后，会直接将这个新任务插入到任务列表：</p>
+<pre>this.$http.post('/task', task)
+    .then((response) =&gt; {
+        this.tasks.push(response.data);
+    });</pre>
+<p>不过，还记得吗？我们还广播了任务创建，如果你的JavaScript应用正在监听这个事件以便添加任务到任务列表，就会在列表中出现重复任务：一个来自服务端，一个来自广播。</p>
+<p>你可以通过使用 <code>toOthers</code> 方法来解决这个问题，该方法告知广播不要讲事件广播给当前用户。</p>
+<p><strong>配置</strong></p>
+<p>当你初始化Laravel Echo实例的时候，需要给连接分配一个socket ID。如果你使用的是Vue和Vue资源，这个socket ID会以 <code>X-Socket-ID</code> 头的方式自动添加到每个输出请求，Laravel会从请求头中解析这个socket ID并告知广播不要广播到带有这个socket ID的连接。</p>
+<p>如果你没有使用Vue和Vue资源，则需要手动配置JavaScript应用发送 <code>X-Socket-ID</code> 请求头。你可以使用 <code>Echo.socketId</code> 方法获取这个socket ID：</p>
+<pre>var socketId = Echo.socketId();</pre>
+<h3 id="toc_13"><strong>6、接收广播</strong></h3>
+<h4 id="toc_14"><b>安装Laravel Echo</b></h4>
+<p>Laravel Echo 是一个JavaScript库，有了它之后，注册到频道监听Laravel广播的事件将变得轻而易举。你可以通过NPM包管理器安装Echo，在本例中，我们还会安装 <code>pusher-js</code> 包，因为我们将会使用Pusher进行广播：</p>
+<pre>npm install --save laravel-echo pusher-js</pre>
+<p>创建好Echo之后，就可以在应用的JavaScript中创建一个新的Echo实例，做这件事的最佳位置当然是在Laravel自带的<code>resources/assets/js/bootstrap.js</code> 文件的底部：</p>
+<pre>import Echo from "laravel-echo"
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'your-pusher-key'
+});</pre>
+<p>创建一个使用 <code>pusher</code> 连接器的Echo实例时，还可以指定一个 <code>cluster</code> 以及连接是否需要加密：</p>
+<pre>window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'your-pusher-key',
+    cluster: 'eu',
+    encrypted: true
+});</pre>
+<h4 id="toc_15"><b>监听事件</b></h4>
+<p>安装并初始化Echo之后，就可以开始监听事件广播了。首先，使用 <code>channel</code> 方法获取一个频道实例，然后调用 <code>listen</code> 方法监听指定事件：</p>
+<pre>Echo.channel('orders')
+    .listen('OrderShipped', (e) =&gt; {
+        console.log(e.order.name);
+    });
+</pre>
+<p>如果你想要监听一个私有频道上的事件，可以使用 <code>private</code> 方法，你仍然可以在其后调用 <code>listen</code> 方法在单个频道监听多个事件：</p>
+<pre>Echo.private('orders')
+    .listen(...)
+    .listen(...)
+    .listen(...);
+</pre>
+<h4 id="toc_16"><b>命名空间</b></h4>
+<p>你可能已经注意到在上述例子中我们并没有指定事件类的完整命名空间，这是因为Echo会默认事件都位于 <code>App\Events</code> 命名空间下。不过，你可以在实例化Echo的时候通过传递配置选项 <code>namespace</code> 来配置根命名空间：</p>
+<pre>window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'your-pusher-key',
+    namespace: 'App.Other.Namespace'
+});
+</pre>
+<p>另外，使用Echo注册事件的时候你可以在事件类前面加上<code>.</code>前缀，这样你就可以指定完整的类名了：</p>
+<pre>Echo.channel('orders')
+    .listen('.Namespace.Event.Class', (e) =&gt; {
+        //
+    });
+</pre>
+<h3 id="toc_17"><strong>7、存在频道（Presence Channel）</strong></h3>
+<p>存在频道构建于私有频道之上，并且暴露了额外功能：获知谁注册到频道。基于这一点，我们可以构建强大的、协作的应用功能，例如当其他用户访问同一个页面时通知当前用户。</p>
+<h4 id="toc_18"><b>授权存在频道</b></h4>
+<p>所有存在频道同时也是私有频道，因此，用户必须被授权访问权限。不过，当定义存在频道的授权回调时，如果用户被授权加入频道不要返回<code>true</code>，取而代之地，你应该返回关于该用户数据的数组。</p>
+<p>授权回调返回的数据在JavaScript应用的存在频道事件监听器中使用，如果用户没有被授权加入存在频道，应该返回<code>false</code>或<code>null</code>：</p>
+<pre>Broadcast::channel('chat.*', function ($user, $roomId) {
+    if ($user-&gt;canJoinRoom($roomId)) {
+        return ['id' =&gt; $user-&gt;id, 'name' =&gt; $user-&gt;name];
+    }
+});</pre>
+<h4 id="toc_19"><b>加入授权频道</b></h4>
+<p>要加入存在频道，可以使用Echo的<code>join</code>方法，<code>join</code>方法会返回一个 <code>PresenceChannel</code> 实现，并暴露 <code>listen</code> 方法，从而允许你注册到 <code>here</code> 、 <code>joining</code> 和 <code>leaving</code> 事件：</p>
+<pre>Echo.join('chat.' + roomId)
+    .here((users) =&gt; {
+        //
+    })
+    .joining((user) =&gt; {
+        console.log(user.name);
+    })
+    .leaving((user) =&gt; {
+        console.log(user.name);
+    });</pre>
+<p><code>here</code> 回调会在频道加入成功后立即执行，并接收一个包含所有其他注册到该频道的用户信息数组。 <code>joining</code> 方法会在新用户加入频道时执行， <code>leaving</code> 方法则在用户离开频道时执行。</p>
+<h4 id="toc_20"><b>广播到存在频道</b></h4>
+<p>存在频道可以像公共或私有频道一样接收事件，以聊天室为例，我们可能想要广播 <code>NewMessage</code> 事件到房间的存在频道，要实现这个，需要从事件的 <code>broadcastOn</code> 方法返回 <code>PresenceChannel</code> 实例：</p>
+<pre>/**
+ * Get the channels the event should broadcast on.
+ *
+ * @return Channel|array
+ */
+public function broadcastOn()
+{
+    return new PresenceChannel('room.'.$this-&gt;message-&gt;room_id);
+}
+</pre>
+<p>和公共或私有频道一样，存在频道事件可以使用 <code>broadcast</code> 函数进行广播。和其他事件一样，你可以使用 <code>toOthers</code> 方法从所有接收广播的用户中排除当前用户：</p>
+<pre>broadcast(new NewMessage($message));
+broadcast(new NewMessage($message))-&gt;toOthers();
+</pre>
+<p>你可以通过Echo的 listen 方法监听加入事件：</p>
+<pre>Echo.join('chat.' + roomId)
+    .here(...)
+    .joining(...)
+    .leaving(...)
+    .listen('NewMessage', (e) =&gt; {
+        //
+    });
+</pre>
+<h3 id="toc_21"><strong>8、通知</strong></h3>
+<p>通过配对事件广播和通知，JavaScript应用可以在事件发生时无需刷新当前页面接收新的通知。首先，确保你已经通读广播通知频道文档。</p>
+<p>配置好使用广播频道的通知后，可以通过使用Echo的 <code>notification</code> 方法监听广播事件，记住，频道名称应该和接收通知的类名保持一致：</p>
+<pre>Echo.private('App.User.' + userId)
+    .notification((notification) =&gt; {
+        console.log(notification.type);
+    });
+</pre>
+<p>在这个例子中，所有通过 <code>broadcast</code> 频道发送给 <code>App\User</code> 实例的通知都会被这个回调接收。Laravel框架内置的 <code>BroadcastServiceProvider</code> 中包含了一个针对 <code>App.User.*</code> 频道的频道授权回调。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_3" rel="category tag">
+                Laravel 5.3
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E4%BA%8B%E4%BB%B6" rel="tag">事件</a>
+                                    ,
+                                            <a href="../tags/Redis" rel="tag">Redis</a>
+                                    ,
+                                            <a href="../tags/广播" rel="tag">广播</a>
+                                    ,
+                                            <a href="../tags/Pusher" rel="tag">Pusher</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E9%98%9F%E5%88%97" rel="tag">队列</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%8E%88%E6%9D%83" rel="tag">授权</a>
+                                    ,
+                                            <a href="../tags/5.3" rel="tag">5.3</a>
+                                    ,
+                                            <a href="../tags/Echo" rel="tag">Echo</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E9%80%9A%E7%9F%A5" rel="tag">通知</a>
+                                    ,
+                                            <a href="../tags/WebSocket" rel="tag">WebSocket</a>
+                                    ,
+                                            <a href="../tags/频道" rel="tag">频道</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="6026" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="6026" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="6009.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.3 文档 ] 安全 —— 哈希（Hashing）
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="6035.html" rel="next">
+                [ Laravel 5.3 文档 ] 综合话题 —— 缓存
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        13 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-9387" class="comment even thread-even depth-1">
+            <article id="div-comment-9387" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='sadf' src='https://www.gravatar.com/avatar/23ac4c8cd4ac42542aa2c329257af46e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            sadf
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        私有频道定义授权回掉的时候，第一次参数是监听的频道，第二个参数是匿名函数，匿名函数的参数是如果传入的？本例中的$user和$orderId是如何传入的？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="9387"  aria-label='回复sadf...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-16T10:33:56+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-16 10:33:56
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9387" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9356" class="comment even thread-even depth-1">
+            <article id="div-comment-9356" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        报什么错
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="9356"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-12T23:03:16+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-12 23:03:16
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9356" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9355" class="comment even thread-even depth-1">
+            <article id="div-comment-9355" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='sadf' src='https://www.gravatar.com/avatar/23ac4c8cd4ac42542aa2c329257af46e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            sadf
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        执行 npm install 的时候出现一堆的警告和错误
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="9355"  aria-label='回复sadf...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-12T22:30:17+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-12 22:30:17
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9355" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9354" class="comment even thread-even depth-1">
+            <article id="div-comment-9354" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='sadf' src='https://www.gravatar.com/avatar/23ac4c8cd4ac42542aa2c329257af46e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            sadf
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        执行 npm install 出现了一对的警告和错误
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="9354"  aria-label='回复sadf...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-12T22:29:48+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-12 22:29:48
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9354" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9353" class="comment even thread-even depth-1">
+            <article id="div-comment-9353" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='sadf' src='https://www.gravatar.com/avatar/23ac4c8cd4ac42542aa2c329257af46e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            sadf
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        前端基础比较少，我按照http://laravelacademy.org/post/5351.html  执行gulp那块出错
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="9353"  aria-label='回复sadf...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-12T22:23:44+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-12 22:23:44
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9353" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9344" class="comment even thread-even depth-1">
+            <article id="div-comment-9344" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        算
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="9344"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-11T21:33:01+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-11 21:33:01
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9344" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9342" class="comment even thread-even depth-1">
+            <article id="div-comment-9342" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='XiaoSong' src='https://www.gravatar.com/avatar/8414aaaf6f76505e8d990faa5d4d8916?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            XiaoSong
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        真的真的好难 算是laravel高手进阶之路了吧
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="9342"  aria-label='回复XiaoSong...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-11T13:46:02+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-11 13:46:02
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9342" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8726" class="comment even thread-even depth-1">
+            <article id="div-comment-8726" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='laravellearner' src='https://www.gravatar.com/avatar/db17bd274a71927e3f3bec27e1e442f1?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            laravellearner
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        有没有 在restful api 中的使用案例呢
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="8726"  aria-label='回复laravellearner...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-11-16T23:53:44+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-11-16 23:53:44
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8726" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-5350" class="comment even thread-even depth-1">
+            <article id="div-comment-5350" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='lookas2001' src='https://www.gravatar.com/avatar/36572bbb404ec71a571dcddd54c23657?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            lookas2001
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        laravel 5.1可以使用laravelecho吗？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="5350"  aria-label='回复lookas2001...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-10-01T13:53:56+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-10-01 13:53:56
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="5350" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-5184" class="comment even thread-even depth-1">
+            <article id="div-comment-5184" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    Lord007
+                                                                嗯 可以
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='6026.html#respond' data-id="5184"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-09-19T08:42:02+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-09-19 08:42:02
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="5184" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/6026.html/page/2#comments">2</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/post/6026.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="6026.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='6026' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="6026.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="6026.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        1、简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        配置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        驱动预备知识
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        2、概念概览
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用示例应用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3、定义广播事件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        广播数据
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        广播队列
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4、授权频道
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        定义授权路由
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        定义授权回调
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5、广播事件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        只广播给其他人
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6、接收广播
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        安装Laravel Echo
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        监听事件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        命名空间
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        7、存在频道（Presence Channel）
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        授权存在频道
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        加入授权频道
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        广播到存在频道
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="6026.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        8、通知
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="5351.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel 5.3 新特性系列 —— 深入探讨 Laravel Echo 使用：实时聊天室
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6851.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 综合话题 —— 事件广播
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8379.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 进阶系列 —— Laravel 中服务端与客户端事件广播实现
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8945.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 进阶系列 —— 广播
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9408.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Pusher + Vue 通过事件广播构建实时聊天室应用
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

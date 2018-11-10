@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            PHP 安全三板斧（五）：过滤、验证和转义之转义篇 &amp; Blade 模板引擎避免 XSS 攻击原理探究 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="4699.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="4699.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="4699.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="4699.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="4699.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../modern-php.1">
+                现代PHP
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../best-practice">
+                最佳实践
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">PHP 安全三板斧（五）：过滤、验证和转义之转义篇 &amp; Blade 模板引擎避免 XSS 攻击原理探究</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">PHP 安全三板斧（五）：过滤、验证和转义之转义篇 &amp; Blade 模板引擎避免 XSS 攻击原理探究</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="4699.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2016-06-02T02:03:30+08:00">2016-06-02</time>
+                    <time class="updated" datetime="2018-09-21T15:33:44+08:00">2018-09-21 15:33:44</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                8142 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0"><strong>PHP 转义实现</strong></h3>
+<p>
+把输出渲染成网页或API响应时，一定要转义输出，这也是一种防护措施，能避免渲染恶意代码，造成XSS攻击，还能防止应用的用户无意中执行恶意代码。</p>
+<p>我们可以使用前面提到的<code>htmlentities</code>函数转移输出，该函数的第二个参数一定要使用<code>ENT_QUOTES</code>，让这个函数转义单引号和双引号，而且，还要在第三个参数中指定合适的字符编码（通常是UTF-8），下面的例子演示了如何在渲染前转义HTML输出：
+</p>
+<pre>&lt;?php
+$output = '&lt;p&gt;&lt;script&gt;alert("欢迎来到Laravel学院！")&lt;/script&gt;&lt;/p&gt;';
+echo htmlentities($output, ENT_QUOTES, 'UTF-8');</pre>
+<p>
+如果不转义直接输出，会弹出提示框：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2016/06/alert.png" alt="alert" width="443" height="174"></p>
+<p>转义之后输出变成：
+</p>
+<pre>&lt;p&gt;&lt;script&gt;alert("欢迎访问Laravel学院!");&lt;/script&gt;&lt;/p&gt;</pre>
+<p>
+现代PHP支持许多模板引擎，这些模板引擎在底层已经为了做好了转义处理，比如现在流行的<a href="https://packagist.org/packages/twig/twig">twig/twig</a>和<a href="https://packagist.org/packages/smarty/smarty">smarty/smarty</a>都会自动转义输出。这种默认处理方式很赞，为PHP Web应用提供了有力的安全保障。
+</p>
+<h3 id="toc_1"><strong>Blade 模板引擎避免XSS攻击原理</strong></h3>
+<p>
+Laravel使用的模板引擎是Blade，关于Blade的使用可以参考其<a href="2865.html">官方文档</a>，这里我们简单探讨下Laravel底层如何对输出进行转义处理。</p>
+<p>一般我们在Laravel中返回视图内容会这么做：
+</p>
+<pre>return view('test', ['data'=&gt;$data]);</pre>
+<p>
+这是一个很简单的例子，意味着我们会在<code>resources/views</code>目录下找到<code>test.blade.php</code>视图文件，然后将<code>$data</code>变量传入其中，并将最终渲染结果作为响应的内容返回给用户。那么这一过程经历了哪些底层源码的处理，如果<code>$data</code>变量中包含脚本代码（如JavaScript脚本），又该怎么去处理呢？接下来我们让来一窥究竟。</p>
+<p>首先我们从辅助函数<code>view</code>入手，当然这里我们也可以使用<code>View:make</code>，但是简单起见，我们一般用<code>view</code>函数，该函数定义在<code>Illuminate\Foundation\helpers.php</code>文件中：
+</p>
+<pre>function view($view = null, $data = [], $mergeData = [])
+{
+    $factory = app(ViewFactory::class);
+    if (func_num_args() === 0) {
+        return $factory;
+    }
+
+    return $factory-&gt;make($view, $data, $mergeData);
+}
+</pre>
+<p>
+该函数中的逻辑是从容器中取出视图工厂接口<code>ViewFactory</code>对应的实例<code>$factory</code>（该绑定关系在<code>Illuminate\View\ViewServiceProvider</code>的<code>register</code>方法中注册，此外这里还注册了模板引擎解析器<code>EngineResolver</code>，包括<code>PhpEngine</code>和载入<code>BladeCompiler</code>的<code>CompilerEngine</code>，以及视图文件查找器<code>FileViewFinder</code>，一句话，这里注册了视图解析所需的所有服务），如果传入了参数，则调用<code>$factory</code>上的<code>make</code>方法：
+</p>
+<pre>public function make($view, $data = [], $mergeData = [])
+{
+    if (isset($this-&gt;aliases[$view])) {
+        $view = $this-&gt;aliases[$view];
+    }
+
+    $view = $this-&gt;normalizeName($view);
+
+    $path = $this-&gt;finder-&gt;find($view);
+
+    $data = array_merge($mergeData, $this-&gt;parseData($data));
+
+    $this-&gt;callCreator($view = new View($this, $this-&gt;getEngineFromPath($path), $view, $path, $data));
+
+    return $view;
+}
+</pre>
+<p>
+这个方法位于<code>Illuminate\View\Factory</code>，这里所做的事情是获取视图文件的完整路径，合并传入变量，<code>$this-&gt;getEngineFromPath</code>会通过视图文件后缀获取相应的模板引擎，比如我们使用<code>.blade.php</code>结尾的视图文件则获得到的是<code>CompilerEngine</code>（即Blade模板引擎），否则将获取到<code>PhpEngine</code>，然后我们根据相应参数实例化View（<code>Illuminate\View\View</code>）对象并返回。需要注意的是<code>View</code>类中重写了<code>__toString</code>方法：
+</p>
+<pre>public function __toString()
+{
+    return $this-&gt;render();
+}
+</pre>
+<p>
+所以当我们打印<code>$view</code>实例的时候，实际上会调用<code>View</code>类的<code>render</code>方法，所以下一步我们理所应当研究<code>render</code>方法做了些什么：
+</p>
+<pre>public function render(callable $callback = null)
+{
+    try {
+        $contents = $this-&gt;renderContents();
+        $response = isset($callback) ? call_user_func($callback, $this, $contents) : null;
+
+        // Once we have the contents of the view, we will flush the sections if we are
+        // done rendering all views so that there is nothing left hanging over when
+        // another view gets rendered in the future by the application developer.
+        $this-&gt;factory-&gt;flushSectionsIfDoneRendering();
+
+        return ! is_null($response) ? $response : $contents;
+    } catch (Exception $e) {
+        $this-&gt;factory-&gt;flushSections();
+
+        throw $e;
+    } catch (Throwable $e) {
+        $this-&gt;factory-&gt;flushSections();
+ 
+        throw $e;
+    }
+}
+</pre>
+<p>
+这里重点是<code>$this-&gt;renderContents()</code>方法，我们继续深入研究<code>View</code>类中的<code>renderContents</code>方法：
+</p>
+<pre>protected function renderContents()
+{
+    // We will keep track of the amount of views being rendered so we can flush
+    // the section after the complete rendering operation is done. This will
+    // clear out the sections for any separate views that may be rendered.
+    $this-&gt;factory-&gt;incrementRender();
+    $this-&gt;factory-&gt;callComposer($this);
+
+    $contents = $this-&gt;getContents();
+
+    // Once we've finished rendering the view, we'll decrement the render count
+    // so that each sections get flushed out next time a view is created and
+    // no old sections are staying around in the memory of an environment.
+    $this-&gt;factory-&gt;decrementRender();
+
+    return $contents;
+}
+</pre>
+<p>
+我们重点关注<code>$this-&gt;getContents()</code>这里，进入<code>getContents</code>方法：
+</p>
+<pre>protected function getContents()
+{
+    return $this-&gt;engine-&gt;get($this-&gt;path, $this-&gt;gatherData());
+}
+</pre>
+<p>
+我们在前面已经提到，这里的<code>$this-&gt;engine</code>对应CompilerEngine（<code>Illuminate\View\Engines\CompilerEngine</code>），所以我们进入<code>CompilerEngine</code>的<code>get</code>方法：
+</p>
+<pre>public function get($path, array $data = [])
+{
+    $this-&gt;lastCompiled[] = $path;
+    // If this given view has expired, which means it has simply been edited since
+    // it was last compiled, we will re-compile the views so we can evaluate a
+    // fresh copy of the view. We'll pass the compiler the path of the view.
+    if ($this-&gt;compiler-&gt;isExpired($path)) {
+        $this-&gt;compiler-&gt;compile($path);
+    }
+
+    $compiled = $this-&gt;compiler-&gt;getCompiledPath($path);
+
+    // Once we have the path to the compiled file, we will evaluate the paths with
+    // typical PHP just like any other templates. We also keep a stack of views
+    // which have been rendered for right exception messages to be generated.
+    $results = $this-&gt;evaluatePath($compiled, $data);
+
+    array_pop($this-&gt;lastCompiled);
+
+    return $results;
+}</pre>
+<p>
+同样我们在之前提到，<code>CompilerEngine</code>使用的<code>compiler</code>是<code>BladeCompiler</code>，所以<code>$this-&gt;compiler</code>也就是Blade编译器，我们先看<code>$this-&gt;compiler-&gt;compile($path);</code>这一行（首次运行或者编译好的视图模板已过期会进这里），进入<code>BladeCompiler</code>的<code>compile</code>方法：
+</p>
+<pre>public function compile($path = null)
+{
+    if ($path) {
+        $this-&gt;setPath($path);
+    }
+    if (! is_null($this-&gt;cachePath)) {
+        $contents = $this-&gt;compileString($this-&gt;files-&gt;get($this-&gt;getPath()));
+
+        $this-&gt;files-&gt;put($this-&gt;getCompiledPath($this-&gt;getPath()), $contents);
+    }
+}
+</pre>
+<p>
+这里我们做的事情是先编译视图文件内容，然后将编译好的内容存放到视图编译路径（<code>storage\framework\views</code>）下对应的文件（一次编译，多次运行，以提高性能），这里我们重点关注的是<code>$this-&gt;compileString</code>方法，该方法中使用了<a href="http://php.net/manual/zh/function.token-get-all.php">token_get_all</a>函数将视图文件代码分割成多个片段，如果片段是数组的话则循环调用<code>$this-&gt;parseToken</code>方法：
+</p>
+<pre>protected function parseToken($token)
+{
+    list($id, $content) = $token;
+    if ($id == T_INLINE_HTML) {
+        foreach ($this-&gt;compilers as $type) {
+            $content = $this-&gt;{"compile{$type}"}($content);
+        }
+    }
+
+    return $content;
+}</pre>
+<p>
+来到这里，我们已经很接近真相了，针对HTML代码（含Blade指令代码），循环调用<code>compileExtensions</code>、<code>compileStatements</code>、<code>compileComments</code>和<code>compileEchos</code>方法，我们重点关注输出方法<code>compileEchos</code>，Blade引擎默认提供了<code>compileRawEchos</code>、<code>compileEscapedEchos</code>和<code>compileRegularEchos</code>三种输出方法，对应的指令分别是<code>{!! !!}</code>、<code>{{{ }}}</code>和<code>{{ }}</code>，顾名思义，<code>compileRawEchos</code>对应的是原生输出：
+</p>
+<pre>protected function compileRawEchos($value)
+{
+    $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', $this-&gt;rawTags[0], $this-&gt;rawTags[1]);
+    $callback = function ($matches) {
+        $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
+
+        return $matches[1] ? substr($matches[0], 1) : '&lt;?php echo '.$this-&gt;compileEchoDefaults($matches[2]).'; ?&gt;'.$whitespace;
+    };
+
+    return preg_replace_callback($pattern, $callback, $value);
+}
+</pre>
+<p>
+即Blade视图中以<code>{!! !!}</code>包裹的变量会原生输出HTML，如果要显示图片、链接，推荐这种方式。</p>
+<p><code>{{{}}}</code>对应的<code>CompileEscapedEchos</code>，这个在Laravel 4.2及以前版本中用于转义，现在已经替换成了<code>{{}}</code>，即调用<code>compileRegularEchos</code>方法：
+</p>
+<pre>protected function compileRegularEchos($value)
+{
+    $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', $this-&gt;contentTags[0], $this-&gt;contentTags[1]);
+    $callback = function ($matches) {
+        $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
+
+        $wrapped = sprintf($this-&gt;echoFormat, $this-&gt;compileEchoDefaults($matches[2]));
+
+        return $matches[1] ? substr($matches[0], 1) : '&lt;?php echo '.$wrapped.'; ?&gt;'.$whitespace;
+    };
+
+    return preg_replace_callback($pattern, $callback, $value);
+}
+</pre>
+<p>
+其中<code>$this-&gt;echoFormat</code>对应<code>e(%s)</code>，无独有偶，<code>compileEscapedEchos</code>中也用到这个方法：
+</p>
+<pre>protected function compileEscapedEchos($value)
+{
+    $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', $this-&gt;escapedTags[0], $this-&gt;escapedTags[1]);
+    $callback = function ($matches) {
+        $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
+
+        return $matches[1] ? $matches[0] : '&lt;?php echo e('.$this-&gt;compileEchoDefaults($matches[2]).'); ?&gt;'.$whitespace;
+    };
+
+    return preg_replace_callback($pattern, $callback, $value);
+
+}
+</pre>
+<p>
+辅助函数<code>e()</code>定义在<code>Illuminate\Support\helpers.php</code>中：
+</p>
+<pre>function e($value)
+{
+    if ($value instanceof Htmlable) {
+        return $value-&gt;toHtml();
+    }
+    return htmlentities($value, ENT_QUOTES, 'UTF-8', false);
+}
+</pre>
+<p>
+其作用就是对输入的值进行转义。</p>
+<p>经过这样的转义，视图中的<code>{{ $data }}</code>或被编译成<code>&lt;?php echo $data?&gt;</code>，最终如何将<code>$data</code>传入视图输出，我们再回到<code>CompilerEngine</code>的<code>get</code>方法，看这一段：
+</p>
+<pre>$results = $this-&gt;evaluatePath($compiled, $data);
+</pre>
+<p>
+<code>evaluatePath</code>中传入了编译后的视图文件路径和传入的变量<code>$data</code>，该方法定义如下：
+</p>
+<pre>protected function evaluatePath($__path, $__data)
+{
+   $obLevel = ob_get_level();ob_start();
+
+    extract($__data, EXTR_SKIP);
+
+    // We'll evaluate the contents of the view inside a try/catch block so we can
+    // flush out any stray output that might get out before an error occurs or
+    // an exception is thrown. This prevents any partial views from leaking.
+    try {
+        include $__path;
+    } catch (Exception $e) {
+        $this-&gt;handleViewException($e, $obLevel);
+    } catch (Throwable $e) {
+        $this-&gt;handleViewException(new FatalThrowableError($e), $obLevel);
+    }
+
+    return ltrim(ob_get_clean());
+}</pre>
+<p>
+这里面调用了PHP系统函数<a href="http://php.net/extract">extract</a>将传入变量从数组中导入当前符号表（通过<code>include $__path</code>引入），其作用也就是将编译后视图文件中的变量悉数替换成传入的变量值（通过键名映射）。</p>
+<p>好了，这就是Blade视图模板从渲染到输出的基本过程，可以看到我们通过<code>{{}}</code>来转义输出，从而达到避免XSS攻击的目的。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../modern-php/best-practice" rel="category tag">
+                最佳实践
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%A7%86%E5%9B%BE" rel="tag">视图</a>
+                                    ,
+                                            <a href="../tags/Blade" rel="tag">Blade</a>
+                                    ,
+                                            <a href="../tags/HTML" rel="tag">HTML</a>
+                                    ,
+                                            <a href="../tags/PHP" rel="tag">PHP</a>
+                                    ,
+                                            <a href="../tags/XSS" rel="tag">XSS</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E5%AE%89%E5%85%A8" rel="tag">安全</a>
+                                    ,
+                                            <a href="../tags/转义" rel="tag">转义</a>
+                                    ,
+                                            <a href="../tags/htmlentities" rel="tag">htmlentities</a>
+                                    ,
+                                            <a href="../tags/View" rel="tag">View</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;7 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="4699" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="4699" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;7 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="4628.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                最佳实践系列（四）—— PHP 安全三板斧：过滤、验证和转义之验证篇 &amp; Laravel底层字段验证实现
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="4764.html" rel="next">
+                最佳实践系列（六）：PHP 开发者如何做好密码保护 &amp; Laravel 底层密码存储和验证实现
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        6 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-11726" class="comment even thread-even depth-1">
+            <article id="div-comment-11726" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Mr_White_DT" target="_blank">
+                                Mr_White_DT
+                            </a>
+                                                                <p>感谢反馈 已处理</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4699.html#respond' data-id="11726"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-21T15:34:06+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-21 15:34:06
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11726" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11725" class="comment even thread-even depth-1">
+            <article id="div-comment-11725" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr_White_DT' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/0e665837dd6a553fb3dfb84f6d349405-32x32.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Mr_White_DT" target="_blank">Mr_White_DT</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>echo htmlentities($output, ENT_QUOTES, ‘UTF-8');  utf-8前边的单引号是中文的。。。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4699.html#respond' data-id="11725"  aria-label='回复Mr_White_DT...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-21T14:28:25+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-21 14:28:25
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11725" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4240" class="comment even thread-even depth-1">
+            <article id="div-comment-4240" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='晶雷' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            晶雷
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我们可以使用前面提到的htmlentities函数转移输出,这里应该是转义输出 <img src="http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/0b/tootha_org.gif" /> 
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4699.html#respond' data-id="4240"  aria-label='回复晶雷...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-12T15:30:17+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-12 15:30:17
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4240" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3768" class="comment even thread-even depth-1">
+            <article id="div-comment-3768" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='begin' src='https://www.gravatar.com/avatar/955b4fda737cffb0c7e7f45ec5b7830a?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            begin
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        勤奋的站长。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4699.html#respond' data-id="3768"  aria-label='回复begin...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-10T15:30:38+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-10 15:30:38
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3768" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3677" class="comment even thread-even depth-1">
+            <article id="div-comment-3677" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                有空常来~
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4699.html#respond' data-id="3677"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-02T22:48:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-02 22:48:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3677" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3670" class="comment even thread-even depth-1">
+            <article id="div-comment-3670" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='东东' src='https://www.gravatar.com/avatar/a73fcd3460947c796f188e9d8f1ce793?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            东东
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        网站内容很丰富，不错！支持一个
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='4699.html#respond' data-id="3670"  aria-label='回复东东...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-02T17:59:10+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-02 17:59:10
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3670" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="4699.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='4699' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="4699.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="4699.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        PHP 转义实现
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="4699.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Blade 模板引擎避免XSS攻击原理
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="2865.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 基础 —— Blade 模板引擎
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4610.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        最佳实践系列（三）—— PHP 安全三板斧：过滤、验证和转义之过滤篇 &amp; Laravel底层SQL注入规避
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4628.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        最佳实践系列（四）—— PHP 安全三板斧：过滤、验证和转义之验证篇 &amp; Laravel底层字段验证实现
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4764.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        最佳实践系列（六）：PHP 开发者如何做好密码保护 &amp; Laravel 底层密码存储和验证实现
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8464.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel 代码开发最佳实践（持续更新）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

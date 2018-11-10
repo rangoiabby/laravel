@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            Laravel 5.1 中基于 Dropzone.js 实现图片拖拽上传及删除功能 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="3703.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="3703.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="3703.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="3703.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="3703.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../project.1">
+                项目
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../packages">
+                扩展包
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">Laravel 5.1 中基于 Dropzone.js 实现图片拖拽上传及删除功能</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">Laravel 5.1 中基于 Dropzone.js 实现图片拖拽上传及删除功能</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="3703.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2016-03-23T11:18:32+08:00">2016-03-23</time>
+                    <time class="updated" datetime="2016-03-23T11:18:32+08:00">2016-03-23 11:18:32</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                11224 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <blockquote><p>注：本教程代码适用于Laravel 5.1版本。</p></blockquote>
+<h3 id="toc_0"><b>1、概述</b></h3>
+<p><a href="http://www.dropzonejs.com/" target="_blank">Dropzone</a>是目前最好的免费文件拖拽上传库，它拥有很多特性和选项以便你可以使用多种方式来自定义。</p>
+<p>在Laravel项目集成Dropzone对没有经验的新手来说有点棘手，所以接下来我想你给你们展示最优雅的解决方案。</p>
+<p>这篇教程将包括以下内容：</p>
+<ul>
+<li>自动图片上传</li>
+<li>通过Ajax请求从Dropzone预览中直接移除图片</li>
+<li>上传图片计数器</li>
+<li>保存完整尺寸图片和图标尺寸版本</li>
+<li>使用Intervention Image包调整图片尺寸和编码</li>
+<li>保存图片数据到数据库</li>
+<li>在服务器端生成唯一的图片名称</li>
+</ul>
+<p>如果你还需要上传或裁剪图片，请参考上一篇教程：<a href="3677.html">在 Laravel 5 中使用 jQuery 插件 Croppic + Intervention Image 实现图片上传和裁剪</a>。</p>
+<p>本教程的完整代码已公开在GitHub上：<a href="https://github.com/codingo-me/dropzone-laravel-image-upload" target="_blank">https://github.com/codingo-me/dropzone-laravel-image-upload</a></p>
+<p>最终演示效果图如下：</p>
+<h3 id="toc_1"><img class="alignnone size-full wp-image-3704" src="https://static.laravelacademy.org/wp-content/uploads/2016/03/2016-03-23_110225.jpg" alt="Laravel 5中使用Dropzone实现图片上传及删除" width="862" height="380" /><br />
+<b>2、项目基本配置</b></h3>
+<p>这里我们安装一个新的Laravel应用并创建包含数据库凭证信息的.env文件。</p>
+<p>此外我们还要从<a href="https://github.com/enyo/dropzone/tree/master/dist" target="_blank">https://github.com/enyo/dropzone/tree/master/dist</a>下载样式和脚本文件，这些文件存放到<code>public/packages/dropzone</code>。</p>
+<p>前端我们还是使用Bootstrap，相关文件存放在<code>public/packages/bootstrap</code>。</p>
+<p>上面已经提到我们要使用Intervention Image扩展包来处理上传图片，并且这里我们会在Blade模板中用到html辅助函数，所以我们需要安装相关依赖，安装Intervention Image请参考：<a href="3585.html">在 Laravel 5 中集成 Intervention Image 实现对图片的创建、修改和压缩处理</a>，而安装html请参考：<a href="3672.html">Laravel 5 中使用 HtmlBuilder 及 URL::asset() 引入站内或站外的 css 和 js 文件</a>。</p>
+<h3 id="toc_2"><b>3、视图</b></h3>
+<p>本教程只包含单个页面用于上传图片，尽管这样我还是喜欢将布局和具体实现页面分开，我们编辑布局文件<code>layout.blade.php</code>如下：</p>
+<pre class=" language-php" title="layout.blade.php"><code class=" language-php"><span class="token markup"><span class="token doctype">&lt;!DOCTYPE html&gt;</span></span>
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>html <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>head<span class="token punctuation">&gt;</span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>meta <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>title<span class="token punctuation">&gt;</span></span></span>Image upload in Laravel <span class="token number">5.1</span> with Dropzone<span class="token punctuation">.</span>js<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>title<span class="token punctuation">&gt;</span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>meta <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+
+    <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> <span class="token constant">HTML</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">style</span><span class="token punctuation">(</span><span class="token string">'/packages/bootstrap/css/bootstrap.min.css'</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">}</span>
+    <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> <span class="token constant">HTML</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">style</span><span class="token punctuation">(</span><span class="token string">'/assets/css/style.css'</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">}</span>
+    <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> <span class="token constant">HTML</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">script</span><span class="token punctuation">(</span>'https<span class="token punctuation">:</span><span class="token comment" spellcheck="true">//code.jquery.com/jquery-2.1.4.min.js') !!}</span>
+
+    @<span class="token keyword">yield</span><span class="token punctuation">(</span><span class="token string">'head'</span><span class="token punctuation">)</span>
+
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>head<span class="token punctuation">&gt;</span></span></span>
+
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>body<span class="token punctuation">&gt;</span></span></span>
+
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>navbar navbar-default<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>navbar-header<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>button <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>navbar-toggle<span class="token punctuation">"</span></span> <span class="token attr-name">data-toggle</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>collapse<span class="token punctuation">"</span></span> <span class="token attr-name">data-target</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>.navbar-collapse<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>icon-bar<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>icon-bar<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>icon-bar<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>button<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>a <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>navbar-brand<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>Dropzone <span class="token operator">+</span> Laravel<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>a<span class="token punctuation">&gt;</span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>navbar-collapse collapse<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>ul <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>nav navbar-nav<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>li<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>a <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>Upload<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>a<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>li<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>ul<span class="token punctuation">&gt;</span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>br<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>br<span class="token punctuation">&gt;</span></span></span>
+
+@<span class="token keyword">yield</span><span class="token punctuation">(</span><span class="token string">'content'</span><span class="token punctuation">)</span>
+
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>body<span class="token punctuation">&gt;</span></span></span>
+
+@<span class="token keyword">yield</span><span class="token punctuation">(</span><span class="token string">'footer'</span><span class="token punctuation">)</span>
+<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>html<span class="token punctuation">&gt;</span></span></span></code></pre>
+<p>接下来我们创建上传图片的视图文件<code>pages/upload.blade.php</code>：</p>
+<pre class=" language-php" title="upload.blade.php"><code class=" language-php">@<span class="token keyword">extends</span><span class="token punctuation">(</span><span class="token string">'layout'</span><span class="token punctuation">)</span>
+
+@<span class="token function">section</span><span class="token punctuation">(</span><span class="token string">'head'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> <span class="token constant">HTML</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">style</span><span class="token punctuation">(</span><span class="token string">'/packages/dropzone/dropzone.css'</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">}</span>
+@stop
+
+@<span class="token function">section</span><span class="token punctuation">(</span><span class="token string">'footer'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> <span class="token constant">HTML</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">script</span><span class="token punctuation">(</span><span class="token string">'/packages/dropzone/dropzone.js'</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">}</span>
+    <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> <span class="token constant">HTML</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">script</span><span class="token punctuation">(</span><span class="token string">'/assets/js/dropzone-config.js'</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">}</span>
+@stop
+
+@<span class="token function">section</span><span class="token punctuation">(</span><span class="token string">'content'</span><span class="token punctuation">)</span>
+
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>row<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>col-md-offset-1 col-md-10<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jumbotron how-to-create<span class="token punctuation">"</span></span> <span class="token punctuation">&gt;</span></span></span>
+
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>h3<span class="token punctuation">&gt;</span></span></span>Images <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>photoCounter<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>h3<span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>br <span class="token punctuation">/&gt;</span></span></span>
+
+                <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> Form<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'url'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token function">route</span><span class="token punctuation">(</span><span class="token string">'upload-post'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'class'</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token string">'dropzone'</span><span class="token punctuation">,</span> <span class="token string">'files'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token string">'id'</span><span class="token operator">=</span><span class="token operator">&gt;</span><span class="token string">'real-dropzone'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">}</span>
+
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-message<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fallback<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>input <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">multiple</span> <span class="token punctuation">/&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dropzone-previews<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dropzonePreview<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>h4<span class="token style-attr language-css"><span class="token attr-name"> style</span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span><span class="token property">color</span><span class="token punctuation">:</span>#428bca<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>Drop images in this area  <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>glyphicon glyphicon-hand-down<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>h4<span class="token punctuation">&gt;</span></span></span>
+
+                <span class="token punctuation">{</span><span class="token operator">!</span><span class="token operator">!</span> Form<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">}</span>
+
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jumbotron how-to-create<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>ul<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>li<span class="token punctuation">&gt;</span></span></span>Images are uploaded <span class="token keyword">as</span> soon <span class="token keyword">as</span> you drop them<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>li<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>li<span class="token punctuation">&gt;</span></span></span>Maximum allowed size of image is <span class="token constant">8MB</span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>li<span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>ul<span class="token punctuation">&gt;</span></span></span>
+
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+    <span class="token markup"><span class="token comment" spellcheck="true">&lt;!-- Dropzone Preview Template --&gt;</span></span>
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>preview-template<span class="token punctuation">"</span></span><span class="token style-attr language-css"><span class="token attr-name"> style</span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-preview dz-file-preview<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-image<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>img <span class="token attr-name">data-dz-thumbnail</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-details<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-size<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">data-dz-size</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-filename<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">data-dz-name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-progress<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-upload<span class="token punctuation">"</span></span> <span class="token attr-name">data-dz-uploadprogress</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-error-message<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>span <span class="token attr-name">data-dz-errormessage</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>span<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-success-mark<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>svg <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>54px<span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>54px<span class="token punctuation">"</span></span> <span class="token attr-name">viewBox</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0 0 54 54<span class="token punctuation">"</span></span> <span class="token attr-name">version</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1.1<span class="token punctuation">"</span></span> <span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.w3.org/2000/svg<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>xlink</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.w3.org/1999/xlink<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>sketch</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.bohemiancoding.com/sketch/ns<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token comment" spellcheck="true">&lt;!-- Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch --&gt;</span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>title<span class="token punctuation">&gt;</span></span></span>Check<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>title<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>desc<span class="token punctuation">&gt;</span></span></span>Created with Sketch<span class="token punctuation">.</span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>desc<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>defs<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>defs<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>g <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Page-1<span class="token punctuation">"</span></span> <span class="token attr-name">stroke</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>none<span class="token punctuation">"</span></span> <span class="token attr-name">stroke-width</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">fill</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>none<span class="token punctuation">"</span></span> <span class="token attr-name">fill-rule</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>evenodd<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">sketch:</span>type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>MSPage<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>path <span class="token attr-name">d</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Oval-2<span class="token punctuation">"</span></span> <span class="token attr-name">stroke-opacity</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0.198794158<span class="token punctuation">"</span></span> <span class="token attr-name">stroke</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#747474<span class="token punctuation">"</span></span> <span class="token attr-name">fill-opacity</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0.816519475<span class="token punctuation">"</span></span> <span class="token attr-name">fill</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#FFFFFF<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">sketch:</span>type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>MSShapeGroup<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>path<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>g<span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>svg<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>div <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dz-error-mark<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>svg <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>54px<span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>54px<span class="token punctuation">"</span></span> <span class="token attr-name">viewBox</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0 0 54 54<span class="token punctuation">"</span></span> <span class="token attr-name">version</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1.1<span class="token punctuation">"</span></span> <span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.w3.org/2000/svg<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>xlink</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.w3.org/1999/xlink<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>sketch</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://www.bohemiancoding.com/sketch/ns<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token comment" spellcheck="true">&lt;!-- Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch --&gt;</span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>title<span class="token punctuation">&gt;</span></span></span>error<span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>title<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>desc<span class="token punctuation">&gt;</span></span></span>Created with Sketch<span class="token punctuation">.</span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>desc<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>defs<span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>defs<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>g <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Page-1<span class="token punctuation">"</span></span> <span class="token attr-name">stroke</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>none<span class="token punctuation">"</span></span> <span class="token attr-name">stroke-width</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">fill</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>none<span class="token punctuation">"</span></span> <span class="token attr-name">fill-rule</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>evenodd<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">sketch:</span>type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>MSPage<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>g <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Check-+-Oval-2<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">sketch:</span>type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>MSLayerGroup<span class="token punctuation">"</span></span> <span class="token attr-name">stroke</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#747474<span class="token punctuation">"</span></span> <span class="token attr-name">stroke-opacity</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0.198794158<span class="token punctuation">"</span></span> <span class="token attr-name">fill</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#FFFFFF<span class="token punctuation">"</span></span> <span class="token attr-name">fill-opacity</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0.816519475<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span>
+                            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;</span>path <span class="token attr-name">d</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Oval-2<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">sketch:</span>type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>MSShapeGroup<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span></span><span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>path<span class="token punctuation">&gt;</span></span></span>
+                        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>g<span class="token punctuation">&gt;</span></span></span>
+                    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>g<span class="token punctuation">&gt;</span></span></span>
+                <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>svg<span class="token punctuation">&gt;</span></span></span>
+            <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+
+        <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+    <span class="token markup"><span class="token tag"><span class="token punctuation">&lt;/</span>div<span class="token punctuation">&gt;</span></span></span>
+    <span class="token markup"><span class="token comment" spellcheck="true">&lt;!-- End Dropzone Preview Template --&gt;</span></span>
+
+@stop</code></pre>
+<p>在上传视图的<code>head</code>部分我们引入了Dropzone的默认样式，在<code>footer</code>部分我们传递默认的JavaScript文件以及我们自己的Dropzone配置文件。</p>
+<div title="upload.blade.php">
+<p>内容部分包含两个部分，首先是上传表单然后是隐藏的图片预览区域，我是从Dropzone官网下载的预览模板代码，在配置文件中使用这个模板告诉Dropzone哪段HTML用于上传图片预览。</p>
+<h3 id="toc_3"><b>4、Dropzone配置</b></h3>
+<p>查看完整的Dropzone配置项列表参考<a href="http://www.dropzonejs.com/#configuration-options" target="_blank">这里</a>，对本项目来说我想从Dropzone一个一个上传文件，因为这样的话我就不需要循环遍历文件上传，并行上传文件数限制为100并且每个文件大小不能超过8M。</p>
+<p>每个图片预览都对应一个删除链接，点击该链接Dropzone就会触发<code>removedfile</code>事件，该事件会创建上传/删除的Ajax请求，如果响应状态码是200，则对应图片计数器减少。</p>
+<pre title="dropzone-config.js"><code>var photo_counter = 0;
+Dropzone.options.realDropzone = {
+
+    uploadMultiple: false,
+    parallelUploads: 100,
+    maxFilesize: 8,
+    previewsContainer: '#dropzonePreview',
+    previewTemplate: document.querySelector('#preview-template').innerHTML,
+    addRemoveLinks: true,
+    dictRemoveFile: 'Remove',
+    dictFileTooBig: 'Image is bigger than 8MB',
+
+    // The setting up of the dropzone
+    init:function() {
+
+        this.on("removedfile", function(file) {
+
+            $.ajax({
+                type: 'POST',
+                url: 'upload/delete',
+                data: {id: file.name},
+                dataType: 'html',
+                success: function(data){
+                    var rep = JSON.parse(data);
+                    if(rep.code == 200)
+                    {
+                        photo_counter--;
+                        $("#photoCounter").text( "(" + photo_counter + ")");
+                    }
+
+                }
+            });
+
+        } );
+    },
+    error: function(file, response) {
+        if($.type(response) === "string")
+            var message = response; //dropzone sends it's own error messages in string
+        else
+            var message = response.message;
+        file.previewElement.classList.add("dz-error");
+        _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i &lt; _len; _i++) {
+            node = _ref[_i];
+            _results.push(node.textContent = message);
+        }
+        return _results;
+    },
+    success: function(file,done) {
+        photo_counter++;
+        $("#photoCounter").text( "(" + photo_counter + ")");
+    }}</code></pre>
+<p>该配置文件底部如果上传成功图片计数器增加。</p>
+<h3 id="toc_4"><b>5、上传逻辑</b></h3>
+<p>我习惯将特定逻辑放到Repository类，在本项目中我使用 <code>ImageRepository</code>这个类，该类存放在<code>app/Logic/Image/ImageRepository.php</code>。</p>
+<p>目前这个类只做两件事，上传单个文件以及删除指定文件，我们将整个Repository类注入到<code>ImageController</code>中：</p>
+<pre title="ImageController.php"><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Logic\Image\ImageRepository;use Illuminate\Support\Facades\Input;
+
+class ImageController extends Controller{
+    protected $image;
+
+    public function __construct(ImageRepository $imageRepository)
+    {
+        $this-&gt;image = $imageRepository;
+    }
+
+    public function getUpload()
+    {
+        return view('pages.upload');
+    }
+
+    public function postUpload()
+    {
+        $photo = Input::all();
+        $response = $this-&gt;image-&gt;upload($photo);
+        return $response;
+
+    }
+
+    public function deleteUpload()
+    {
+
+        $filename = Input::get('id');
+
+        if(!$filename)
+        {
+            return 0;
+        }
+
+        $response = $this-&gt;image-&gt;delete( $filename );
+
+        return $response;
+    }}</code></pre>
+<p>因此对这个控制器而言我需要三个路由：显示上传表单，上传以及删除请求：</p>
+<pre title="routes.php"><code>Route::get('/', ['as' =&gt; 'upload', 'uses' =&gt; 'ImageController@getUpload']);
+Route::post('upload', ['as' =&gt; 'upload-post', 'uses' =&gt;'ImageController@postUpload']);
+Route::post('upload/delete', ['as' =&gt; 'upload-remove', 'uses' =&gt;'ImageController@deleteUpload']);</code></pre>
+<p><code>ImageController</code>的<code>postUpload</code>方法将用户上传请求转发到<code>ImageRepository</code>类对应的<code>upload</code>方法。这个<code>upload</code>方法首先会验证输入，然后为上传文件分配唯一的文件名，再然后保存原始尺寸图片到指定目录，同时将图标尺寸图片保存到其它目录，此外还要保存到数据库以便Laravel可以跟踪图片上传记录。为此我们需要创建迁移文件并运行迁移命令：</p>
+<pre title="Image Table Migration File"><code>&lt;?php
+
+use Illuminate\Database\Schema\Blueprint;use Illuminate\Database\Migrations\Migration;
+
+class CreateImages extends Migration{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('images', function (Blueprint $table) {
+            $table-&gt;increments('id');
+            $table-&gt;text('original_name');
+            $table-&gt;text('filename');
+            $table-&gt;timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('images');
+    }}</code></pre>
+<p>我已经提过了上传文件将会保存为两种尺寸，此外可能还要生成缩略图并对图片编码，要实现这些功能，我们需要使用Intervention Image扩展包：</p>
+<pre title="ImageRepository.php"><code>&lt;?php
+
+namespace App\Logic\Image;
+
+use App\Models\Image;use Illuminate\Support\Facades\Validator;use Illuminate\Support\Facades\Response;use Illuminate\Support\Facades\Config;use Illuminate\Support\Facades\File;use Intervention\Image\ImageManager;
+
+class ImageRepository{
+    public function upload( $form_data )
+    {
+
+        $validator = Validator::make($form_data, Image::$rules, Image::$messages);
+
+        if ($validator-&gt;fails()) {
+
+            return Response::json([
+                'error' =&gt; true,
+                'message' =&gt; $validator-&gt;messages()-&gt;first(),
+                'code' =&gt; 400
+            ], 400);
+
+        }
+
+        $photo = $form_data['file'];
+
+        $originalName = $photo-&gt;getClientOriginalName();
+        $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - 4);
+
+        $filename = $this-&gt;sanitize($originalNameWithoutExt);
+        $allowed_filename = $this-&gt;createUniqueFilename( $filename );
+
+        $filenameExt = $allowed_filename .'.jpg';
+
+        $uploadSuccess1 = $this-&gt;original( $photo, $filenameExt );
+
+        $uploadSuccess2 = $this-&gt;icon( $photo, $filenameExt );
+
+        if( !$uploadSuccess1 || !$uploadSuccess2 ) {
+
+            return Response::json([
+                'error' =&gt; true,
+                'message' =&gt; 'Server error while uploading',
+                'code' =&gt; 500
+            ], 500);
+
+        }
+
+        $sessionImage = new Image;
+        $sessionImage-&gt;filename      = $allowed_filename;
+        $sessionImage-&gt;original_name = $originalName;
+        $sessionImage-&gt;save();
+
+        return Response::json([
+            'error' =&gt; false,
+            'code'  =&gt; 200
+        ], 200);
+
+    }
+
+    public function createUniqueFilename( $filename )
+    {
+        $full_size_dir = Config::get('images.full_size');
+        $full_image_path = $full_size_dir . $filename . '.jpg';
+
+        if ( File::exists( $full_image_path ) )
+        {
+            // Generate token for image
+            $imageToken = substr(sha1(mt_rand()), 0, 5);
+            return $filename . '-' . $imageToken;
+        }
+
+        return $filename;
+    }
+
+    /**
+     * Optimize Original Image
+     */
+    public function original( $photo, $filename )
+    {
+        $manager = new ImageManager();
+        $image = $manager-&gt;make( $photo )-&gt;encode('jpg')-&gt;save(Config::get('images.full_size') . $filename );
+
+        return $image;
+    }
+
+    /**
+     * Create Icon From Original
+     */
+    public function icon( $photo, $filename )
+    {
+        $manager = new ImageManager();
+        $image = $manager-&gt;make( $photo )-&gt;encode('jpg')-&gt;resize(200, null, function($constraint){$constraint-&gt;aspectRatio();})-&gt;save( Config::get('images.icon_size')  . $filename );
+
+        return $image;
+    }
+
+    /**
+     * Delete Image From Session folder, based on original filename
+     */
+    public function delete( $originalFilename)
+    {
+
+        $full_size_dir = Config::get('images.full_size');
+        $icon_size_dir = Config::get('images.icon_size');
+
+        $sessionImage = Image::where('original_name', 'like', $originalFilename)-&gt;first();
+
+
+        if(empty($sessionImage))
+        {
+            return Response::json([
+                'error' =&gt; true,
+                'code'  =&gt; 400
+            ], 400);
+
+        }
+
+        $full_path1 = $full_size_dir . $sessionImage-&gt;filename . '.jpg';
+        $full_path2 = $icon_size_dir . $sessionImage-&gt;filename . '.jpg';
+
+        if ( File::exists( $full_path1 ) )
+        {
+            File::delete( $full_path1 );
+        }
+
+        if ( File::exists( $full_path2 ) )
+        {
+            File::delete( $full_path2 );
+        }
+
+        if( !empty($sessionImage))
+        {
+            $sessionImage-&gt;delete();
+        }
+
+        return Response::json([
+            'error' =&gt; false,
+            'code'  =&gt; 200
+        ], 200);
+    }
+
+    function sanitize($string, $force_lowercase = true, $anal = false)
+    {
+        $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&amp;", "*", "(", ")", "_", "=", "+", "[", "{", "]",
+            "}", "\\", "|", ";", ":", "\"", "'", "&amp;#8216;", "&amp;#8217;", "&amp;#8220;", "&amp;#8221;", "&amp;#8211;", "&amp;#8212;",
+            "â€”", "â€“", ",", "&lt;", ".", "&gt;", "/", "?");
+        $clean = trim(str_replace($strip, "", strip_tags($string)));
+        $clean = preg_replace('/\s+/', "-", $clean);
+        $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
+
+        return ($force_lowercase) ?
+            (function_exists('mb_strtolower')) ?
+                mb_strtolower($clean, 'UTF-8') :
+                strtolower($clean) :
+            $clean;
+    }}</code></pre>
+<p>上传方法会验证<code>Image</code>模型中指定的字段规则，目前该规则只是限定上传图片的扩展。</p>
+<p>在<code>upload</code>方法之后我们使用<code>reateUniqueFilename</code>方法为图片返回唯一文件名。</p>
+<p>当唯一文件名返回后，我们将图片和对应文件名传递到<code>original</code>方法，该方法负责保存完整尺寸图片，对小尺寸图标图片我们使用<code>icon</code>方法进行处理。</p>
+<p>这两个尺寸图片都保存好了之后，系统会在图片表<code>images</code>中创建一条新纪录。</p>
+<p>你可能已经注意到了我将图片上传目录存放在了配置文件中，当然你可以自定义存放目录或者直接使用Laravel内置的方法。</p>
+<pre title="images.php"><code>&lt;?php
+
+return [
+    'full_size'   =&gt; env('UPLOAD_FULL_SIZE'),
+    'icon_size'   =&gt; env('UPLOAD_ICON_SIZE'),
+];</code></pre>
+<p>要让应用正常工作还需要将<code>.env.example</code>文件拷贝到<code>.env</code>文件，并且设置相应的配置值。注意到最后两个配置项的上传目录需要以<code>/</code>结尾，以我本地配置为例：</p>
+<pre>UPLOAD_FULL_SIZE=F:/xampp/htdocs/nonfu/dropzone-laravel-image-upload/public/images/full_size/
+UPLOAD_ICON_SIZE=F:/xampp/htdocs/nonfu/dropzone-laravel-image-upload/public/images/icon_size/</pre>
+<p>删除方法接收文件名并检查数据库中是否包含，然后在对应文件在是否存在于指定目录，如果两项都符合则该图片会被删除。</p>
+<p>想要更加轻松地使用DropzoneJS实现图片上传，可以使用Laravel扩展包<a href="https://github.com/codingo-me/dropzoner" target="_blank">Dropzoner</a>。</p>
+<blockquote><p>声明：本文为译文，原文：<a href="https://tuts.codingo.me/laravel-5-1-and-dropzone-js-auto-image-uploads-with-removal-links">https://tuts.codingo.me/laravel-5-1-and-dropzone-js-auto-image-uploads-with-removal-links</a></p></blockquote>
+</div>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../project/packages" rel="category tag">
+                扩展包
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/删除" rel="tag">删除</a>
+                                    ,
+                                            <a href="../tags/Ajax" rel="tag">Ajax</a>
+                                    ,
+                                            <a href="../tags/图片" rel="tag">图片</a>
+                                    ,
+                                            <a href="../tags/Intervention&#32;Image" rel="tag">Intervention Image</a>
+                                    ,
+                                            <a href="../tags/上传" rel="tag">上传</a>
+                                    ,
+                                            <a href="../tags/Dropzone" rel="tag">Dropzone</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;4 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="3703" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="3703" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;4 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="3677.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                在 Laravel 5 中使用 jQuery 插件 Croppic + Intervention Image 实现图片上传和裁剪
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="3708.html" rel="next">
+                使用 Laravel Generator 快速为 Laravel 应用生成CRUD、API、测试用例代码 —— 介绍篇
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        12 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-8348" class="comment even thread-even depth-1">
+            <article id="div-comment-8348" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='flyjay' src='https://www.gravatar.com/avatar/9a465934d0b569c0832d4dec636eb591?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            flyjay
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    白月
+                                                                能写个教程共享一下吗？我拖拽上传可以了，但没有显示删除，不知道那个drop-config.js该怎么定义，一直出错啊。。
+Uncaught ReferenceError: Dropzone is not defined
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="8348"  aria-label='回复flyjay...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-09-23T17:18:33+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-09-23 17:18:33
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8348" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4359" class="comment even thread-even depth-1">
+            <article id="div-comment-4359" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='此人已死' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            此人已死
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    牛儿吃草
+                                                                这个dropzone是基于ajax提交的。。不是普通的表单那样提交 所以不需要foreach那样验证，不过两种方法我都已经弄明白了。不过dropzone 4.0以上版本配置上有些改动 非常好用的一个插件，不过需要花点时间来研究。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="4359"  aria-label='回复此人已死...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-22T21:51:54+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-22 21:51:54
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4359" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4325" class="comment even thread-even depth-1">
+            <article id="div-comment-4325" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='此人已死' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            此人已死
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        批量验证怎么弄呢 如果是name="img[]"  validation要放到foreach里面一个个验证？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="4325"  aria-label='回复此人已死...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-21T10:55:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-21 10:55:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4325" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3760" class="comment even thread-even depth-1">
+            <article id="div-comment-3760" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='网虫资源网' src='https://www.gravatar.com/avatar/5abfbd7efc76c0fce2554926d61d0beb?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            网虫资源网
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        楼主 谢太太笼统了点。。。  在这我支持一点需要修改的才是 正常的地方 laravel5.2的支持一、HtmlBuilder 会在5.2中出错 5.2已经废弃singleton改用singleton二、上面说明需要创建创建迁移文件没有详细说明搜索class CreateImages extends Migration这是需要创建的迁移文件的代码三、既然创建数据库迁移文件 当然需要数据库模型类app目录下创建模型类app/Models/Image.php代码如下&lt;?phpnamespace AppModels;use IlluminateDatabaseEloquentModel;class Image extends Model{    public static $rules = [        'file' =&gt; 'required|mimes:png,gif,jpeg,jpg,bmp'    ];    public static $messages = [        'file.mimes' =&gt; 'Uploaded file is not in image format',        'file.required' =&gt; 'Image is required'    ];}
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="3760"  aria-label='回复网虫资源网...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-08T16:16:34+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-08 16:16:34
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3760" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-2621" class="comment even thread-even depth-1">
+            <article id="div-comment-2621" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/junior-huang" target="_blank">
+                                junior.huang
+                            </a>
+                                                                listener的使用参考laravel事件文档：http://laravelacademy.org/post/3162.html
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="2621"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-03-25T10:05:17+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-03-25 10:05:17
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="2621" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-2620" class="comment even thread-even depth-1">
+            <article id="div-comment-2620" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    幸福--简单
+                                                                哈哈 都一样的
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="2620"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-03-25T10:00:21+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-03-25 10:00:21
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="2620" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-2617" class="comment even thread-even depth-1">
+            <article id="div-comment-2617" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='eriksome' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            eriksome
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        好难搞啊 html css js ajax php sql 什么多要懂.做iOS表示好难啊
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="2617"  aria-label='回复eriksome...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-03-25T00:49:26+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-03-25 00:49:26
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="2617" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-2616" class="comment even thread-even depth-1">
+            <article id="div-comment-2616" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='eriksome' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            eriksome
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    小皓
+                                                                求composer 安装方法 AppListeners 使用教程.
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="2616"  aria-label='回复eriksome...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-03-25T00:35:07+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-03-25 00:35:07
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="2616" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-2601" class="comment even thread-even depth-1">
+            <article id="div-comment-2601" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='eriksome' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            eriksome
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我只用github 上提供的composer 安装方法, 可以才view中上传图片,
+这给怎么使用啊 学院君
+https://github.com/codingo-me/dropzoner
+  Example Listener
+
+This is a simple listener for ImageWasUploaded events.
+
+server_filename);
+    }
+}
+
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="2601"  aria-label='回复eriksome...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-03-24T20:03:02+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-03-24 20:03:02
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="2601" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-2587" class="comment even thread-even depth-1">
+            <article id="div-comment-2587" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='eriksome' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            eriksome
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我上传文件夹放在/public/images.env配置中UPLOAD_FULL_SIZE=?????   相对路径怎么写啊 学院君
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3703.html#respond' data-id="2587"  aria-label='回复eriksome...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-03-24T12:32:01+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-03-24 12:32:01
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="2587" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/3703.html/page/2#comments">2</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/post/3703.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="3703.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='3703' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="3703.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="3703.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        1、概述
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3703.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        2、项目基本配置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3703.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3、视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3703.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4、Dropzone配置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3703.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5、上传逻辑
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="640.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在Laravel资源路由中如何使用GET请求直接删除资源
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2690.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在 Laravel 5.1 中使用 Intervention Image 包将图片颜色变灰
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3585.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在 Laravel 5 中集成 Intervention Image 实现对图片的创建、修改和压缩处理
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3677.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在 Laravel 5 中使用 jQuery 插件 Croppic + Intervention Image 实现图片上传和裁剪
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4973.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在 Laravel 5 中集成 Pjax 实现无刷新加载页面的扩展包 —— Laravel Pjax
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

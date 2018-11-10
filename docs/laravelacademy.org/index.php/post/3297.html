@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.2 文档 ] 新手入门指南 —— 带用户功能的任务管理系统 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="3297.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="3297.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="3297.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="3297.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="3297.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_2">
+                Laravel 5.2
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.2 文档 ] 新手入门指南 —— 带用户功能的任务管理系统</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.2 文档 ] 新手入门指南 —— 带用户功能的任务管理系统</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="3297.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2016-02-06T15:32:49+08:00">2016-02-06</time>
+                    <time class="updated" datetime="2016-02-06T17:10:59+08:00">2016-02-06 17:10:59</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                27284 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0"><strong>1、简介</strong></h3>
+<p>本进阶指南提供了对Laravel框架更深入的介绍，包括数据库迁移、Eloquent ORM、路由、认证、授权、依赖注入、验证、视图以及Blade模板。如果你对Laravel框架或其他PHP框架已经有了基本的认识，本章节将是你新的起点，如果你完全还是新手，请从<a href="../../post/3291.html">新手入门指南</a>开始。</p>
+<p>本节的示例仍然是构建一个任务系统，但是在上一节基础上，本任务系统将允许用户注册登录，同样完整的代码已经放到GitHub上：<a href="https://github.com/laravel/quickstart-intermediate" target="_blank">https://github.com/laravel/quickstart-intermediate</a>。</p>
+<h3 id="toc_1"><strong>2、安装</strong></h3>
+<h5><b>安装Laravel</b></h5>
+<p>首先你需要安装一个新的Laravel应用。你可以使用<a href="../../post/3291.html">Homestead虚拟机</a>或者本地PHP开发环境来运行应用。开发环境准备完毕后，可以使用Composer来安装应用：</p>
+<pre>composer create-project laravel/laravel quickstart --prefer-dist
+</pre>
+<h5><b>安装Quickstart项目</b></h5>
+<p>你可以继续往下阅读，也可以选择去GitHub下载项目源码并在本地运行：</p>
+<pre>git clone https://github.com/laravel/quickstart-intermediate quickstart
+cd quickstart
+composer install
+php artisan migrate
+</pre>
+<p>关于构建本地开发环境的详细文档可查看<a href="../../post/3291.html">Homestead</a>和<a href="../../post/2720.html">安装</a>文档。</p>
+<h3 id="toc_2"><strong>3、准备好数据库</strong></h3>
+<h4 id="toc_3"><strong>3.1 数据库迁移</strong></h4>
+<p>首先，我们使用迁移来定于处理所有任务的数据库。Laravel的数据库迁移使用平滑、优雅的PHP代码来提供一个简单的方式定义和修改数据表结构。团队成员们无需在本地数据库手动添加或删除列，只需要简单运行你提交到源码控制系统中的迁移即可。</p>
+<h5><strong>users表</strong></h5>
+<p>由于我们允许用户注册，所以需要一张用来存储用户的表。幸运的是 Laravel已经自带了这个迁移用于创建基本的users表，我们不需要手动生成。该迁移文件默认位于<code>database/migrations</code>目录下。</p>
+<h5><strong>tasks表</strong></h5>
+<p>接下来，让我们来创建用于处理所有任务的数据表<code>tasks</code>。我们使用Artisan命令<code>make:migration</code>来为<code>tasks</code>生成一个新的数据库迁移：</p>
+<pre>php artisan make:migration create_tasks_table --create=tasks
+</pre>
+<p>生成的新迁移文件位于<code>database/migrations</code>目录下。你可能已经注意到了，<code>make:migration</code>命令已经在迁移文件中添加了自增ID和时间戳。我们将编辑该文件添加更多的字段到任务表<code>tasks</code>：</p>
+<pre>&lt;?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateTasksTable extends Migration{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('tasks', function (Blueprint $table) {
+            $table-&gt;increments('id');
+            $table-&gt;integer('user_id')-&gt;index();
+            $table-&gt;string('name');
+            $table-&gt;timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    { 
+        Schema::drop('tasks');
+    }
+}
+</pre>
+<p>其中，<code>user_id</code>用于建立<code>tasks</code>表与<code>users</code>表之间的关联。</p>
+<p>要运行迁移，可以使用<code>migrate</code>命令。如果你使用的是Homestead，需要在虚拟机中运行该命令，因为你的主机不能直接访问Homestead上的数据库：</p>
+<pre>php artisan migrate
+</pre>
+<p>该命令将会创建迁移中定义的尚未创建的所有数据表。如果你使用MySQL客户端（如Navicat For MySQL）查看数据表，你将会看到新的<code>users</code>表和<code>tasks</code>表。下一步，我们将要定义Eloquent ORM模型。</p>
+<h4 id="toc_4"><strong>3.2 Eloquent模型</strong></h4>
+<p>Eloquent是Laravel默认的ORM，Eloquent使用“模型”这一概念使得从数据库存取数据变得轻松。通常，每个Eloquent模型都对应一张数据表。</p>
+<h5><strong>User模型</strong></h5>
+<p>首先，我们一个与<code>users</code>表相对应的模型<code>User</code>。Laravel已经自带了这一模型<code>app/User</code>，所以我们不需要重复创建了。</p>
+<h5><strong>Task模型</strong></h5>
+<p>接下来，我们来定义与<code>tasks</code>表相对应的模型Task。同样，我们使用Artisan命令来生成模型类，在本例中，我们使用<code>make:model</code>命令：</p>
+<pre>php artisan make:model Task
+</pre>
+<p>该模型位于应用的<code>app</code>目录下，默认情况下，该模型类是空的。我们不需要明确告诉Eloquent模型对应哪张表，Laravel底层会有一个映射规则，这一点在之前<a href="../../post/2995.html">Eloquent文档</a>已有说明，按照规则，这里<code>Task</code>模型默认对应<code>tasks</code>表。</p>
+<p>接下来，让我们在<code>Task</code>模型类中加一些代码。首先，我们声明模型上的name属性支持“批量赋值”（关于批量赋值说明可查看<a href="../../post/984.html#ipt_kb_toc_984_3">这篇文章</a>）：</p>
+<pre>&lt;?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Task extends Model{
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name'];
+}
+</pre>
+<p>我们将在后续添加路由到应用中学习更多如何使用Eloquent模型。当然，你也可以先去查看完整的<a href="../../post/2995.html">Eloquent文档</a>了解更多。</p>
+<h4 id="toc_5"><strong>3.3 Eloquent关联关系</strong></h4>
+<p>现在，模型已经定义好了，我们需要将它们关联起来。例如，一个<code>User</code>实例对应多个<code>Task</code>实例，而一个<code>Task</code>实例从属于某个<code>User</code>。定义关联关系后将允许我们更方便的获取关联模型：</p>
+<pre>$user = App\User::find(1);
+
+foreach ($user-&gt;tasks as $task) {
+    echo $task-&gt;name;
+}
+</pre>
+<h5><strong>tasks关联关系</strong></h5>
+<p>首先，我们在<code>User</code>模型中定义<code>tasks</code>关联关系。Eloquent关联关系被定义成模型的方法，并且支持多种不同的关联关系类型（查看完整的<a href="../../post/3011.html">Eloquent关联关系文档</a>了解更多）。在本例中，我们将会在<code>User</code>模型中定义<code>tasks</code>方法并在其中调用Eloquent提供的<code>hasMany</code>方法：</p>
+<pre>&lt;?php
+
+namespace App;
+// Namespace Imports...
+class User extends Model implements AuthenticatableContract,
+AuthorizableContract,CanResetPasswordContract
+{
+    use Authenticatable, Authorizable, CanResetPassword;
+
+    // Other Eloquent Properties...
+
+    /**
+     * Get all of the tasks for the user.
+     */
+    public function tasks()
+    {
+        return $this-&gt;hasMany(Task::class);
+    }
+}
+</pre>
+<h5><strong>user关联关系</strong></h5>
+<p>接下来，我们会在<code>Task</code>模型中定义<code>user</code>关联关系。同样，我们将其定义为模型的方法。在本例中，我们使用Eloquent提供的<code>belongsTo</code>方法来定义该关联关系：</p>
+<pre>&lt;?php
+
+namespace App;
+
+use App\User;
+use Illuminate\Database\Eloquent\Model;
+
+class Task extends Model{
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name'];
+
+    /**
+     * Get the user that owns the task.
+     */
+    public function user()
+    {
+        return $this-&gt;belongsTo(User::class);
+    }
+}
+</pre>
+<p>好极了！现在我们已经定义好了关联关系，接下来可以正式开始创建控制器了！</p>
+<h3 id="toc_6"><strong>4、路由</strong></h3>
+<p>在<a href="../../post/3291.html">新手入门指南</a>创建的任务管理系统中，我们在<code>routes.php</code>中使用闭包定义所有的业务逻辑。而实际上，大部分应用都会使用<a href="../../post/2816.html">控制器</a>来组织路由。</p>
+<h4 id="toc_7"><strong>4.1 显示视图</strong></h4>
+<p>我们还保留一个路由使用闭包：/路由，该路由是用于展示给游客的引导页，我们将在该路由中渲染欢迎页面。</p>
+<p>在Laravel中，所有的HTML模板都位于<code>resources/views</code>目录，并且我们使用<code>view</code>函数从路由中返回其中一个模板：</p>
+<pre>Route::get('/', function () {
+    return view('welcome');
+});
+</pre>
+<p>当然，我们需要创建这个视图，稍后就会。</p>
+<h4 id="toc_8"><strong>4.2 用户认证</strong></h4>
+<p>此外，我们还要让用户注册并登录到应用。通常，在web应用中构建整个登录认证层是一件相当冗长乏味的工作，然而，由于它是一个如此通用的需求，Laravel试图将这一过程变得简单而轻松。</p>
+<p>首先，注意到新安装的Laravel应用中已经包含了<code>app/Http/Controllers/AuthController</code>这个控制器，该控制器中使用了一个特殊的<code>AuthenticatesAndRegistersUsers</code> trait，而这个trait中包含了用户注册登录的所必须的相关逻辑。</p>
+<h5><strong>认证路由&amp;视图</strong></h5>
+<p>那么接下来我们该怎么做呢？我们仍然需要创建注册和登录模板并定义指向认证控制器<code>AuthController</code>的路由。我们可以通过Artisan命令make:auth来完成所有工作：</p>
+<p><code>php artisan make:auth --views</code></p>
+<p>注：如果你想要查看这些视图的完整示例，可以去下载相应的GitHub项目：<a href="https://github.com/laravel/quickstart-intermediate" target="_blank">https://github.com/laravel/quickstart-intermediate</a></p>
+<p>接下来，我们还要添加认证路由到路由文件，我们可以通过使用Route门面上的auth方法来实现这一目的，该方法会注册我们所需的所有认证路由，包括注册、登录和密码重置：<br />
+<code>// Authentication Routes...</code><br />
+Route::auth();</p>
+<h4 id="toc_9"><strong>4.3 任务控制器</strong></h4>
+<p>由于我们需要获取和保存任务，所以还需要使用Artisan命令创建一个<code>TaskController</code>，生成的控制器位于<code>app/Http/Controllers</code>目录：</p>
+<pre>php artisan make:controller TaskController
+</pre>
+<p>现在这个控制器已经生成了，让我们去<code>app/Http/routes.php</code>中定义一些指向该控制器的路由吧：</p>
+<pre>Route::get('/tasks', 'TaskController@index');
+Route::post('/task', 'TaskController@store');
+Route::delete('/task/{task}', 'TaskController@destroy');
+</pre>
+<h5><strong>设置所有任务路由需要登录才能访问</strong></h5>
+<p>对本应用而言，我们想要所有任务需要登录用户才能访问，换句话说，用户必须登录到系统才能创建新任务。所以，我们需要限制访问任务路由的用户为登录用户。Laravel使用<a href="../../post/2803.html">中间件</a>来处理这种限制。</p>
+<p>如果要限制登录用户才能访问该控制器的所有动作，可以在控制器的构造函数中添加对<code>middleware</code>方法的调用。所有有效的路由中间件都定义在app/Http/Kernel.php文件中。在本例中，我们想要定义一个<code>auth</code>中间件到<code>TaskController</code>上的所有动作：</p>
+<pre>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class TaskController extends Controller{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this-&gt;middleware('auth');
+    }
+}
+</pre>
+<h3 id="toc_10"><strong>5、创建布局&amp;视图</strong></h3>
+<p>本应用仍然只有一个视图，该视图包含了用于添加新任务的表单和显示已存在任务的列表。为了让你更直观的查看该视图，我们将已完成的应用截图如下：</p>
+<p><a href="../../wp-content/uploads/2015/10/basic-overview.png"><img class="alignnone size-full wp-image-1704" src="https://static.laravelacademy.org/wp-content/uploads/2015/10/basic-overview.png" alt="basic-overview" width="479" height="550" /></a></p>
+<h4 id="toc_11"><strong>5.1 定义布局</strong></h4>
+<p>几乎所有的web应用都会在不同界面共享同一布局，例如，本应用顶部的导航条将会在每个页面显示。Laravel使用Blade让不同页面共享这些公共特性变得简单。</p>
+<p>正如我们之前讨论的，所有Laravel视图都存放在<code>resources/views</code>中，因此，我们在<code>resources/views/layouts/app.blade.php</code>中定义一个新的布局视图，<code>.blade.php</code>扩展表明框架使用Blade模板引擎来渲染视图，当然，你可以使用原生的PHP模板，然而，Blade提供了的标签语法可以帮助我们编写更加清爽、简短的模板。</p>
+<p>编辑app.blade.php内容如下：</p>
+<pre>// resources/views/layouts/app.blade.php
+&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Laravel Quickstart - Advanced&lt;/title&gt;
+
+        &lt;!-- CSS And JavaScript --&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;div class="container"&gt;
+            &lt;nav class="navbar navbar-default"&gt;
+                &lt;!-- Navbar Contents --&gt;
+            &lt;/nav&gt;
+        &lt;/div&gt;
+
+        @yield('content')
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>注意布局中的<code>@yield('content')</code>部分，这是一个Blade指令，用于指定继承布局的子页面在这里可以注入自己的内容。接下来，我们来定义使用该布局的子视图来提供主体内容。</p>
+<h4 id="toc_12"><strong>5.2 定义子视图</strong></h4>
+<p>好了，我们已经创建了应用的布局视图，下面我们需要定义一个包含创建新任务的表单和已存在任务列表的视图，该视图文件存放在<code>resources/views/tasks.blade.php</code>，对应<code>TaskController</code>中的<code>index</code>方法。</p>
+<p>我们将跳过Bootstrap CSS的样板文件而只专注在我们所关注的事情上，不要忘了，你可以从<a href="https://github.com/laravel/quickstart-intermediate" target="_blank">GitHub</a>下载本应用的所有资源：</p>
+<pre>// resources/views/tasks.blade.php
+
+@extends('layouts.app')
+
+@section('content')
+
+    &lt;!-- Bootstrap Boilerplate... --&gt;
+
+    &lt;div class="panel-body"&gt;
+        &lt;!-- Display Validation Errors --&gt;
+        @include('common.errors')
+
+        &lt;!-- New Task Form --&gt;
+        &lt;form action="/task" method="POST" class="form-horizontal"&gt;
+            {{ csrf_field() }}
+
+            &lt;!-- Task Name --&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label for="task" class="col-sm-3 control-label"&gt;Task&lt;/label&gt;
+
+                &lt;div class="col-sm-6"&gt;
+                    &lt;input type="text" name="name" id="task-name" class="form-control"&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Add Task Button --&gt;
+            &lt;div class="form-group"&gt;
+                &lt;div class="col-sm-offset-3 col-sm-6"&gt;
+                    &lt;button type="submit" class="btn btn-default"&gt;
+                        &lt;i class="fa fa-plus"&gt;&lt;/i&gt; Add Task
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+
+    &lt;!-- TODO: Current Tasks --&gt;
+@endsection
+</pre>
+<h5><strong>一些需要解释的地方</strong></h5>
+<p>在继续往下之前，让我们简单谈谈这个模板。首先，我们使用<code>@extends</code>指令告诉Blade我们要使用定义在<code>resources/views/layouts/app.blade.php</code>的布局，所有<code>@section('content')</code>和<code>@endsection</code>之间的内容将会被注入到<code>app.blade.php</code>布局的<code>@yield('contents')</code>指令位置。</p>
+<p>@include('common.errors')指令会加载 resources/views/common/errors.blade.php模板，我们后续会定义这个模板。</p>
+<p>现在，我们已经为应用定义了基本的布局和视图，然后我们回到<code>TaskController</code>的<code>index</code>方法：</p>
+<pre>/**
+ * Display a list of all of the user's task.
+ *
+ * @param Request $request
+ * @return Response
+ */
+public function index(Request $request){
+    return view('tasks.index');
+}
+</pre>
+<p>接下来，让我们继续添加代码到<code>POST /task</code>路由的控制器方法来处理表单输入并添加新任务到数据库。</p>
+<h3 id="toc_13"><strong>6、添加任务</strong></h3>
+<h4 id="toc_14"><strong>6.1 验证表单输入</strong></h4>
+<p>现在我们已经在视图中定义了表单，接下来需要编写代码到<code>TaskController@store</code>方法来处理表单请求并创建一个新任务。</p>
+<p>对这个表单而言，我们将<code>name</code>字段设置为必填项，而且长度不能超过255个字符。如果表单验证失败，将会跳转到<code>/tasks</code>页面，并且将错误信息存放到一次性session中：</p>
+<pre>/**
+ * Create a new task.
+ *
+ * @param Request $request
+ * @return Response
+ */
+public function store(Request $request){
+    $this-&gt;validate($request, [
+        'name' =&gt; 'required|max:255',
+    ]);
+
+    // Create The Task...
+}
+</pre>
+<p>如果你已经看过新手入门教程，那么你可能会注意到这里的验证代码与之前大不相同，这是因为我们现在在控制器中，可以方便地调用<code>ValidatesRequests</code> trait（包含在Laravel控制器基类中）提供的<code>validate</code>方法。</p>
+<p>我们甚至不需要手动判读是否验证失败然后重定向。如果验证失败，用户会自动被重定向到来源页面，而且错误信息也会被存放到一次性Session中。简直太棒了，有木有！</p>
+<h5><strong>$errors变量</strong></h5>
+<p>我们在视图中使用了<code>@include('common.errors')</code>指令来渲染表单验证错误信息，<code>common.errors</code>允许我们在所有页面以统一格式显示错误信息。我们定义<code>common.errors</code>内容如下：</p>
+<pre>// resources/views/common/errors.blade.php
+
+@if (count($errors) &gt; 0)
+    &lt;!-- Form Error List --&gt;
+    &lt;div class="alert alert-danger"&gt;
+        &lt;strong&gt;Whoops! Something went wrong!&lt;/strong&gt;
+
+        &lt;br&gt;&lt;br&gt;
+
+        &lt;ul&gt;
+        @foreach ($errors-&gt;all() as $error)
+            &lt;li&gt;{{ $error }}&lt;/li&gt;
+        @endforeach
+        &lt;/ul&gt;
+    &lt;/div&gt;
+@endif
+</pre>
+<blockquote><p>注：<code>$errors</code>变量在每个Laravel视图中都可以访问，如果没有错误信息的话它就是一个空的<code>ViewErrorBag</code>实例。</p></blockquote>
+<h4 id="toc_15"><strong>6.2 创建任务</strong></h4>
+<p>现在输入验证已经做好了，接下来正式开始创建一个新任务。一旦新任务创建成功，页面会跳转到<code>/tasks</code>。要创建任务，可以借助Eloquent模型的关联关系。</p>
+<p>大部分Laravel的关联关系提供了<code>save</code>方法，该方法接收一个关联模型实例并且会在保存到数据库之前自动设置外键值到关联模型上。在本例中，<code>save</code>方法会自动将当前用户登录认证用户的ID赋给给给定任务的<code>user_id</code>属性。我们通过<code>$request-&gt;user()</code>获取当前登录用户实例：</p>
+<pre>/**
+ * Create a new task.
+ *
+ * @param Request $request
+ * @return Response
+ */
+public function store(Request $request){
+    $this-&gt;validate($request, [
+        'name' =&gt; 'required|max:255',
+    ]);
+
+    $request-&gt;user()-&gt;tasks()-&gt;create([
+        'name' =&gt; $request-&gt;name,
+    ]);
+
+    return redirect('/tasks');
+}
+</pre>
+<p>很好，到了这里，我们已经可以成功创建任务，接下来，我们继续添加代码到视图来显示所有任务列表。</p>
+<h3 id="toc_16"><strong>7、显示已存在的任务</strong></h3>
+<p>首先，我们需要编辑<code>TaskController@index</code>传递所有已存在任务到视图。<code>view</code>函数接收一个数组作为第二个参数，我们可以将数据通过该数组传递到视图中：</p>
+<pre>/**
+ * Display a list of all of the user's task.
+ *
+ * @param Request $request
+ * @return Response
+ */
+public function index(Request $request){
+    $tasks = Task::where('user_id', $request-&gt;user()-&gt;id)-&gt;get();
+
+    return view('tasks.index', [
+        'tasks' =&gt; $tasks,
+    ]);
+}
+</pre>
+<p>这里，我们还要讲讲Laravel的依赖注入，这里我们将<code>TaskRepository</code>注入到<code>TaskController</code>，以方便对<code>Task</code>模型所有数据的访问和使用。</p>
+<h4 id="toc_17"><strong>7.1 依赖注入</strong></h4>
+<p>Laravel的<a href="../../post/2910.html">服务容器</a>是整个框架中最重要的特性，在看完快速入门教程后，建议去研习下服务容器的文档。</p>
+<h5><strong>创建Repository</strong></h5>
+<p>正如我们之前提到的，我们想要定义一个<code>TaskRepository</code>来处理所有对<code>Task</code>模型的数据访问，随着应用的增长当你需要在应用中共享一些Eloquent查询时这就变得特别有用。</p>
+<p>因此，我们创建一个<code>app/Repositories</code>目录并在其中创建一个<code>TaskRepository</code>类。记住，Laravel项目的<code>app</code>文件夹下的所有目录都使用 PSR-4 自动加载标准被自动加载，所以你可以在其中随心所欲地创建需要的目录：</p>
+<pre>&lt;?php
+
+namespace App\Repositories;
+
+use App\User;
+use App\Task;
+
+class TaskRepository{
+    /**
+     * Get all of the tasks for a given user.
+     *
+     * @param User $user
+     * @return Collection
+     */
+    public function forUser(User $user)
+    {
+        return Task::where('user_id', $user-&gt;id)
+            -&gt;orderBy('created_at', 'asc')
+            -&gt;get();
+    }
+}
+</pre>
+<h5><strong>注入Repository</strong></h5>
+<p>Repository创建好了之后，可以简单通过在<code>TaskController</code>的构造函数中以类型提示的方式注入该Repository，然后就可以在<code>index</code>方法中使用 —— 由于Laravel使用容器来解析所有控制器，所以我们的依赖会被自动注入到控制器实例：</p>
+<pre>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Task;use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Repositories\TaskRepository;
+
+class TaskController extends Controller{
+    /**
+     * The task repository instance.
+     * 
+     * @var TaskRepository
+     */  
+    protected $tasks;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param TaskRepository $tasks 
+     * @return void
+     */
+    public function __construct(TaskRepository $tasks)
+    {
+        $this-&gt;middleware('auth');
+        $this-&gt;tasks = $tasks;
+    }
+
+    /**
+     * Display a list of all of the user's task.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        return view('tasks.index', [
+            'tasks' =&gt; $this-&gt;tasks-&gt;forUser($request-&gt;user()),
+        ]);
+    }
+}
+</pre>
+<h4 id="toc_18"><strong>7.2 显示任务</strong></h4>
+<p>数据被传递到视图后，我们可以在<code>tasks/index.blade.php</code>中以表格形式显示所有任务。Blade中使用<code>@foreach</code>处理循环数据：</p>
+<pre>@extends('layouts.app')
+
+@section('content')
+     &lt;!-- Create Task Form... --&gt;
+
+    &lt;!-- Current Tasks --&gt;
+    @if (count($tasks) &gt; 0)
+        &lt;div class="panel panel-default"&gt;
+            &lt;div class="panel-heading"&gt;
+                Current Tasks
+            &lt;/div&gt;
+
+            &lt;div class="panel-body"&gt;
+                &lt;table class="table table-striped task-table"&gt;
+
+                &lt;!-- Table Headings --&gt;
+                &lt;thead&gt;
+                    &lt;th&gt;Task&lt;/th&gt;
+                    &lt;th&gt;&amp;nbsp;&lt;/th&gt;
+                &lt;/thead&gt;
+
+                &lt;!-- Table Body --&gt;
+                &lt;tbody&gt;
+                @foreach ($tasks as $task)
+                    &lt;tr&gt;
+                        &lt;!-- Task Name --&gt;
+                        &lt;td class="table-text"&gt;
+                            &lt;div&gt;{{ $task-&gt;name }}&lt;/div&gt;
+                        &lt;/td&gt;
+
+                        &lt;td&gt;
+                            &lt;!-- TODO: Delete Button --&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                @endforeach
+                &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    @endif
+@endsection
+</pre>
+<p>至此，本应用基本完成。但是，当任务完成时我们还没有途径删除该任务，接下来我们就来处理这件事。</p>
+<h3 id="toc_19"><strong>8、删除任务</strong></h3>
+<h4 id="toc_20"><strong>8.1 添加删除按钮</strong></h4>
+<p>我们在<code>tasks/index.blade.php</code>视图中留了一个“TODO”注释用于放置删除按钮。当删除按钮被点击时，<code>DELETE /task</code>请求被发送到应用后台并触发<code>TaskController@destroy</code>方法：</p>
+<pre>&lt;tr&gt;
+    &lt;!-- Task Name --&gt;
+    &lt;td class="table-text"&gt;
+        &lt;div&gt;{{ $task-&gt;name }}&lt;/div&gt;
+    &lt;/td&gt;
+
+    &lt;!-- Delete Button --&gt;
+    &lt;td&gt;
+        &lt;form action="/task/{{ $task-&gt;id }}" method="POST"&gt;
+            {{ csrf_field() }}
+            {{ method_field('DELETE') }}
+
+            &lt;button&gt;Delete Task&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+</pre>
+<h5><strong>关于方法伪造</strong></h5>
+<p>尽管我们使用的路由是<code>Route::delete</code>，但我们在删除按钮表单中使用的请求方法为<code>POST</code>，HTML表单只支持GET和POST两种请求方式，因此我们需要使用某种方式来伪造<code>DELETE</code>请求。</p>
+<p>我们可以在表单中通过输出<code>method_field('DELETE')</code>来伪造<code>DELETE</code>请求，该函数生成一个隐藏的表单输入框，然后Laravel识别出该输入并使用其值覆盖实际的HTTP请求方法。生成的输入框如下：</p>
+<pre>&lt;input type="hidden" name="_method" value="DELETE"&gt;
+</pre>
+<h4 id="toc_21"><strong>8.2 路由模型绑定</strong></h4>
+<p>现在，我们准备在<code>TaskController</code>中定义<code>destroy</code>方法，但是，在此之前，让我们回顾下路由中对删除任务的定义：</p>
+<pre>Route::delete('/task/{task}', 'TaskController@destroy');
+</pre>
+<p>对应控制器TaskController中删除方法destroy定义如下：</p>
+<pre><code>
+/**
+ * Destroy the given task.
+ *
+ * @param  Request  $request
+ * @param  Task  $task
+ * @return Response</code>
+ */
+public function destroy(Request $request, Task $task){
+    //
+}
+</pre>
+<p>由于路由中的<code>{task}</code>变量与控制器方法中的<code>$task</code>变量相匹配，Laravel的<a href="../../post/2784.html#route-model-binding">隐式模型绑定</a>特性将会自动注入相应的<code>Task</code>模型实例到<code>destroy</code>方法中。</p>
+<h4 id="toc_22"><strong>8.3 用户授权</strong></h4>
+<p>现在，我们已经将<code>Task</code>实例注入到<code>destroy</code>方法；然而，我们并不能保证当前登录认证用户是给定任务的实际拥有人。例如，一些恶意请求可能尝试通过传递随机任务ID到<code>/tasks/{task}</code>链接删除另一个用户的任务。因此，我们需要使用Laravel的授权功能来确保当前登录用户拥有对注入到路由中的<code>Task</code>实例进行删除的权限。</p>
+<h5><strong>创建Policy</strong></h5>
+<p>Laravel使用“策略”来将授权逻辑组织到单个类中，通常，每个策略都对应一个模型，因此，让我们使用Artisan命令创建一个<code>TaskPolicy</code>，生成的文件位于<code>app/Policies/TaskPolicy.php</code>：</p>
+<pre>php artisan make:policy TaskPolicy
+</pre>
+<p>接下来，让我们添加<code>destroy</code>方法到策略中，该方法会获取一个<code>User</code>实例和一个<code>Task</code>实例。该方法简单检查用户ID和任务的<code>user_id</code>值是否相等。实际上，所有的策略方法都会返回<code>true</code>或<code>false</code>：</p>
+<pre>&lt;?php
+
+namespace App\Policies;
+
+use App\User;
+use App\Task;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class TaskPolicy{
+    use HandlesAuthorization;
+
+    /**
+     * Determine if the given user can delete the given task.
+     *
+     * @param User $user
+     * @param Task $task
+     * @return bool
+     */
+    public function destroy(User $user, Task $task)
+    {
+        return $user-&gt;id === $task-&gt;user_id;
+    }
+}
+</pre>
+<p>最后，我们需要关联<code>Task</code>模型和<code>TaskPolicy</code>，这可以通过在<code>app/Providers/AuthServiceProvider.php</code>文件的<code>policies</code>属性中添加注册来实现，注册后会告知Laravel无论何时我们尝试授权动作到<code>Task</code>实例时该使用哪个策略类进行判断：</p>
+<pre>/**
+ * The policy mappings for the application.
+ *
+ * @var array
+ */
+protected $policies = [
+    'App\Task' =&gt; 'App\Policies\TaskPolicy',
+];
+</pre>
+<h5><strong>授权动作</strong></h5>
+<p>现在我们编写好了策略，让我们在<code>destroy</code>方法中使用它。所有的Laravel控制器中都可以调用<code>authorize</code>方法，该方法由<code>AuthorizesRequest</code> trait提供：</p>
+<pre>/**
+ * Destroy the given task.
+ *
+ * @param Request $request
+ * @param Task $task
+ * @return Response
+ */
+public function destroy(Request $request, Task $task){
+    $this-&gt;authorize('destroy', $task);
+    // Delete The Task...
+}
+</pre>
+<p>我们可以检查下该方法调用：传递给<code>authorize</code>方法的第一个参数是我们想要调用的策略方法名，第二个参数是当前操作的模型实例。由于我们在之前告诉过Laravel，<code>Task</code>模型对应的策略类是<code>TaskPolicy</code>，所以框架知道触发哪个策略类上的<code>destroy</code>方法。当前用户实例会被自动传递到策略方法，所以我们不需要手动传递。</p>
+<p>如果授权成功，代码会继续执行。如果授权失败，会抛出一个403异常并显示一个错误页面给用户。</p>
+<blockquote><p>注：除此之外，Laravel还提供了其它授权服务实现方式，可以查看<a href="../../post/577.html">授权文档</a>了解更多。</p></blockquote>
+<h4 id="toc_23"><strong>8.4 删除任务</strong></h4>
+<p>最后，让我们添加业务逻辑到路由中执行删除操作，我们可以使用Eloquent提供的<code>delete</code>方法从数据库中删除给定的模型实例。记录被删除后，跳转到<code>/tasks</code>页面：</p>
+<pre>/**
+ * Destroy the given task.
+ *
+ * @param Request $request
+ * @param Task $task
+ * @return Response
+ */
+public function destroy(Request $request, Task $task){
+    $this-&gt;authorize('destroy', $task);
+    $task-&gt;delete();
+    return redirect('/tasks');
+}
+</pre>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_2" rel="category tag">
+                Laravel 5.2
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="../tags/路由" rel="tag">路由</a>
+                                    ,
+                                            <a href="../tags/中间件" rel="tag">中间件</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5" rel="tag">依赖注入</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E8%A7%86%E5%9B%BE" rel="tag">视图</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%A8%A1%E5%9E%8B" rel="tag">模型</a>
+                                    ,
+                                            <a href="../tags/关联关系" rel="tag">关联关系</a>
+                                    ,
+                                            <a href="../tags/认证" rel="tag">认证</a>
+                                    ,
+                                            <a href="../tags/表单" rel="tag">表单</a>
+                                    ,
+                                            <a href="../tags/验证" rel="tag">验证</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%8E%88%E6%9D%83" rel="tag">授权</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%95%99%E7%A8%8B" rel="tag">教程</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5" rel="tag">增删改查</a>
+                                    ,
+                                            <a href="../tags/入门指南" rel="tag">入门指南</a>
+                                    ,
+                                            <a href="../tags/5.2" rel="tag">5.2</a>
+                                    ,
+                                            <a href="../tags/Respository" rel="tag">Respository</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;19 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="3297" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="3297" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;19 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="3291.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.2 文档 ] 新手入门指南 —— 简单任务管理系统
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="4147.html" rel="next">
+                [ Laravel 5.2 文档 ] 开始 —— Laravel Valet（Mac开发环境）
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        36 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-6977" class="comment even thread-even depth-1">
+            <article id="div-comment-6977" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='初学者' src='https://www.gravatar.com/avatar/aac853d18287031d333c5d140ac2bfe8?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            初学者
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        那个在tasksControl 中，为什么会提示我没有定义的变量$tasks呢，望解答
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="6977"  aria-label='回复初学者...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-03-11T00:28:16+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-03-11 00:28:16
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="6977" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4200" class="comment even thread-even depth-1">
+            <article id="div-comment-4200" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='南京-前方' src='https://www.gravatar.com/avatar/597a61e32f47313f0832c616fc61d3df?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            南京-前方
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    lsxiao
+                                                                后来我换了个方法 $task=Task::find(1);然后再讲$task 带入就行了
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="4200"  aria-label='回复南京-前方...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-08T11:25:41+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-08 11:25:41
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4200" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4179" class="comment even thread-even depth-1">
+            <article id="div-comment-4179" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='一 桥 夕 晖' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            一 桥 夕 晖
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    杨天罡
+                                                                对对，我测试了一下，发现TaskPolicy.php中 public function destroy(User $user, Task $task){return $user-&gt;id === $task-&gt;user_id;}返回值始终是false,不知道为什么。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="4179"  aria-label='回复一 桥 夕 晖...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-07T19:44:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-07 19:44:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4179" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4178" class="comment even thread-even depth-1">
+            <article id="div-comment-4178" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='一 桥 夕 晖' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            一 桥 夕 晖
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    杨天罡
+                                                                谢谢您，刚学什么都不懂！ <img src="http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/9d/sada_org.gif" /> 
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="4178"  aria-label='回复一 桥 夕 晖...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-07T19:40:19+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-07 19:40:19
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4178" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4175" class="comment even thread-even depth-1">
+            <article id="div-comment-4175" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='南京-前方' src='https://www.gravatar.com/avatar/597a61e32f47313f0832c616fc61d3df?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            南京-前方
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                这里我测试了几次，发现调用 $task-&gt;user_id 为null  导致授权失败。但是用public function destroy($id)    {        $task = Task::findOrFail($id);        $this-&gt;authorize('destroy', $task);        $task-&gt;delete();        return redirect('task/index');    }这个方法是OK的不知道为什么
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="4175"  aria-label='回复南京-前方...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-07T17:25:16+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-07 17:25:16
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4175" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4148" class="comment even thread-even depth-1">
+            <article id="div-comment-4148" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='一 桥 夕 晖' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            一 桥 夕 晖
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                我有测试了一下，发现destroy(Request $request,Task $task)中$task为空，为什么呢？不是有隐形模型绑定吗？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="4148"  aria-label='回复一 桥 夕 晖...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-05T10:49:40+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-05 10:49:40
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4148" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-4147" class="comment even thread-even depth-1">
+            <article id="div-comment-4147" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='一 桥 夕 晖' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            一 桥 夕 晖
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        请问学院君，我按照教程最后TaskController中的destroy方法删除失败，我把用户认证$this-&gt;authorize('destroy',$task);注释了，只保留了$task-&gt;delete();，也删除失败，这是为什么？谢谢1
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="4147"  aria-label='回复一 桥 夕 晖...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-07-05T10:27:59+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-07-05 10:27:59
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="4147" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3656" class="comment even thread-even depth-1">
+            <article id="div-comment-3656" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='发型有点乱_Quentin' src='https://www.gravatar.com/avatar/65b4cd707d2b19b6cd1c21f0b35ab085?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            发型有点乱_Quentin
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    洪劲草
+                                                                好的 我准备准备
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="3656"  aria-label='回复发型有点乱_Quentin...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-02T02:51:57+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-02 02:51:57
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3656" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3652" class="comment even thread-even depth-1">
+            <article id="div-comment-3652" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    王宏伟
+                                                                好东西要分享 给学院投稿吧
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="3652"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-01T21:46:12+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-01 21:46:12
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3652" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-3650" class="comment even thread-even depth-1">
+            <article id="div-comment-3650" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='发型有点乱_Quentin' src='https://www.gravatar.com/avatar/65b4cd707d2b19b6cd1c21f0b35ab085?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            发型有点乱_Quentin
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        在此例上追加了github账号登录功能的版本、调整了fonts.googleapi。<a href="https://github.com/jnuc093/study_quickstart-intermediate" rel="nofollow">https://github.com/jnuc093/study_quickstart-intermediate</a>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='3297.html#respond' data-id="3650"  aria-label='回复发型有点乱_Quentin...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-06-01T19:31:36+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-06-01 19:31:36
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="3650" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/3297.html/page/2#comments">2</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/3297.html/page/3#comments">3</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/3297.html/page/4#comments">4</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/index.php/post/3297.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="3297.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='3297' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="3297.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="3297.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        1、简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        2、安装
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3、准备好数据库
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3.1 数据库迁移
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3.2 Eloquent模型
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3.3 Eloquent关联关系
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4、路由
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4.1 显示视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4.2 用户认证
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4.3 任务控制器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5、创建布局&amp;视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5.1 定义布局
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5.2 定义子视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6、添加任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6.1 验证表单输入
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6.2 创建任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        7、显示已存在的任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        7.1 依赖注入
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        7.2 显示任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        8、删除任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        8.1 添加删除按钮
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        8.2 路由模型绑定
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_22">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        8.3 用户授权
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="3297.html#toc_23">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        8.4 删除任务
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="1703.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 新手入门指南 —— 简单任务管理系统
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="1718.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 新手进阶指南 —— 带用户功能的任务管理系统
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2653.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 序言 —— 发行版本说明
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3291.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 新手入门指南 —— 简单任务管理系统
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8313.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 安全系列 —— 在 Laravel 中实现对资源操作的权限控制
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

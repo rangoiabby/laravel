@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.6 文档 ] 前端开发 —— 使用进阶：通过 Laravel Mix 编译前端资源 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="8819.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="8819.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="8819.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="8819.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="8819.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_6">
+                Laravel 5.6
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.6 文档 ] 前端开发 —— 使用进阶：通过 Laravel Mix 编译前端资源</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.6 文档 ] 前端开发 —— 使用进阶：通过 Laravel Mix 编译前端资源</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="8819.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-03-08T11:08:02+08:00">2018-03-08</time>
+                    <time class="updated" datetime="2018-03-08T11:12:14+08:00">2018-03-08 11:12:14</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                8336 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0">简介</h3>
+<p><a href="https://github.com/JeffreyWay/laravel-mix" target="_blank" rel="noopener">Laravel Mix</a> 提供了一套流式 API，使用一些通用的 CSS 和 JavaScript 预处理器为 Laravel 应用定义 Webpack 构建步骤。通过简单的方法链，你可以流式定义资源管道。例如：</p>
+<pre><code>mix.js('resources/assets/js/app.js', 'public/js')
+   .sass('resources/assets/sass/app.scss', 'public/css');
+</code></pre>
+<p>如果你对如何开始使用 Webpack 和前端资源编译感到困扰，那么你会爱上 Laravel Mix。不过，并不是强制要求在开发期间使用它。你可以自由选择使用任何前端资源管道工具，或者压根不使用。</p>
+<h3 id="toc_1">安装 &amp; 设置</h3>
+<p><strong>安装 Node</strong></p>
+<p>在开始接触 Mix 之前，必须首先确保 Node.js 和 NPM 在机器上已经安装：</p>
+<pre><code>node -v
+npm -v
+</code></pre>
+<p>默认情况下，Laravel Homestead 已经包含了你所需要的一切；不过，如果你没有使用 Homestead，你也可以从<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Node 的下载页面</a>轻松的下载安装最新版本的 Node 和 NPM。</p>
+<p><strong>Laravel Mix</strong></p>
+<p>接下来，需要安装 Laravel Mix，在新安装的 Laravel 根目录下，你会发现有一个 <code>package.json</code> 文件。该文件包含你所需要的一切，和 <code>composer.json</code> 类似，只不过是用来定义 Node 依赖而非 PHP 依赖，你可以通过运行如下命令来安装需要的依赖：</p>
+<pre><code>npm install
+</code></pre>
+<p>如果你正在 Windows 系统上开发，需要在运行 <code>npm install</code> 命令时带上 <code>--no-bin-links</code>：</p>
+<pre><code>npm install --no-bin-links
+</code></pre>
+<h3 id="toc_2">运行 Mix</h3>
+<p>Mix 是位于 <a href="https://webpack.js.org/" target="_blank" rel="noopener">Webpack</a> 顶层的配置层，所以要运行 Mix 任务你只需要在运行包含在默认 <code>package.json</code> 文件中的其中某个 NPM 脚本即可：</p>
+<pre><code>// 运行所有 Mix 任务...
+npm run dev
+
+// 运行所有 Mix 任务并减少输出...
+npm run production
+</code></pre>
+<p><strong>监控前端资源改变</strong></p>
+<p><code>npm run watch</code> 命令将会持续在终端运行并监听所有相关文件的修改，Webpack将会在发现修改后自动重新编译资源文件：</p>
+<pre><code>npm run watch
+</code></pre>
+<p>你可能会发现文件变更的时候特定环境的 Webpack 不会更新，如果你遇到了这样的问题，可以考虑使用 <code>watch-poll</code> 命令：</p>
+<pre><code>npm run watch-poll
+</code></pre>
+<h3 id="toc_3">处理样式表</h3>
+<p><code>webpack.mix.js</code> 是所有资源编译的入口，可以将其看作 Webpack 的轻量级配置封装层。Mix 任务可以以方法链的方式被链在一起来定义前端资源如何被编译。</p>
+<h4 id="toc_4">Less</h4>
+<p>要将 <a href="http://lesscss.org/" target="_blank" rel="noopener">Less</a> 编译成 CSS，可以使用 <code>less</code> 方法。下面让我们来编译 <code>app.less</code> 文件到 <code>public/css/app.css</code>：</p>
+<pre><code>mix.less('resources/assets/less/app.less', 'public/css');
+</code></pre>
+<p>多次调用 <code>less</code> 方法可用于编译多个文件：</p>
+<pre><code>mix.less('resources/assets/less/app.less', 'public/css')
+   .less('resources/assets/less/admin.less', 'public/css');
+</code></pre>
+<p>如果你想要自定义编译后文件的输出位置，可以将完整的路径信息作为第二个参数传递到 <code>less</code> 方法：</p>
+<pre><code>mix.less('resources/assets/less/app.less', 'public/stylesheets/styles.css');
+</code></pre>
+<p>如果你需要覆盖<a href="https://github.com/webpack-contrib/less-loader#options" target="_blank" rel="noopener">底层 Less 插件选项</a>，可以传递一个对象作为 <code>mix.less()</code> 的第三个参数：</p>
+<pre><code>mix.less('resources/assets/less/app.less', 'public/css', {
+    strictMath: true
+});
+</code></pre>
+<h4 id="toc_5">Sass</h4>
+<p><code>sass</code> 方法允许你将 <a href="http://sass-lang.com/" target="_blank" rel="noopener">Sass</a> 编译成 CSS。你可以像这样使用该方法：</p>
+<pre><code>mix.sass('resources/assets/sass/app.scss', 'public/css');
+</code></pre>
+<p>同样，和 <code>less</code> 方法一样，你可以将多个 Sass 文件编译成单个 CSS 文件，甚至自定义结果 CSS 的输出路径：</p>
+<pre><code>mix.sass('resources/assets/sass/app.sass', 'public/css')
+   .sass('resources/assets/sass/admin.sass', 'public/css/admin');
+</code></pre>
+<p>额外的 <a href="https://github.com/sass/node-sass#options" target="_blank" rel="noopener">Node-Sass 插件选项</a>可以以第三个参数的形式提供：</p>
+<pre><code>mix.sass('resources/assets/sass/app.sass', 'public/css', {
+    precision: 5
+});
+</code></pre>
+<h4 id="toc_6">Stylus</h4>
+<p>和 Less 和 Sass 类似，<code>stylus</code> 方法允许你将 <a href="http://stylus-lang.com/" target="_blank" rel="noopener">Stylus</a> 编译成 CSS：</p>
+<pre><code>mix.stylus('resources/assets/stylus/app.styl', 'public/css');
+</code></pre>
+<p>你还可以安装额外的 Stylus 插件，例如 <a href="https://github.com/jescalan/rupture" target="_blank" rel="noopener">Rupture</a>，首先，通过 NPM 安装这个插件（<code>npm install rupture</code>）然后在调用 <code>mix.stylus()</code> 时引入它：</p>
+<pre><code>mix.stylus('resources/assets/stylus/app.styl', 'public/css', {
+    use: [
+        require('rupture')()
+    ]
+});
+</code></pre>
+<h4 id="toc_7">PostCSS</h4>
+<p><a href="http://postcss.org/" target="_blank" rel="noopener">PostCSS</a>，是一个转化 CSS 的强大工具，在 Laravel Mix 中开箱可用。默认情况下，Mix 使用了流行的 <a href="https://github.com/postcss/autoprefixer" target="_blank" rel="noopener">Autoprefixer</a> 插件来自动添加所需要的 CSS3 浏览器引擎前缀。不过，你也可以添加与应用适配的其他额外插件。首先，通过 NPM 安装需要的插件，然后在 <code>webpack.mix.js</code> 文件中引用：</p>
+<pre><code>mix.sass('resources/assets/sass/app.scss', 'public/css')
+   .options({
+        postCss: [
+            require('postcss-css-variables')()
+        ]
+   });
+</code></pre>
+<h4 id="toc_8">原生 CSS</h4>
+<p>如果你只想要将多个原生 CSS 样式文件合并到一个文件，可以使用 <code>styles</code> 方法：</p>
+<pre><code>mix.styles([
+    'public/css/vendor/normalize.css',
+    'public/css/vendor/videojs.css'
+], 'public/css/all.css');
+</code></pre>
+<h4 id="toc_9">URL 处理</h4>
+<p>因为 Laravel Mix 是基于 Webpack 开发的，所以了解一点关于 Webpack 的概念很重要。对 CSS 编译而言，Webpack 会在样式表中重写并优化所有 url() 调用，虽然这可能最初听上去很奇怪，但这确实个不折不扣的强大功能。假设我们想要编译包含图片相对 URL 的 Sass：</p>
+<pre><code>.example {
+    background: url('../images/example.png');
+}
+</code></pre>
+<blockquote><p>注：任意给定 <code>url()</code> 的绝对路径都会从 URL 重写中排除，例如，<code>url('/images/thing.png')</code> 或 <code>url('http://example.com/images/thing.png')</code> 将不会被修改。</p></blockquote>
+<p>默认情况下，Laravel Mix 和 Webpack 会找到 <code>example.png</code>，将其拷贝到 <code>public/images</code> 目录下，然后在生成的样式表中重写 <code>url()</code>，因此，编译后的 CSS 如下所示：</p>
+<pre><code>.example {
+  background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
+}
+</code></pre>
+<p>和这个功能一样有用的是，可能已存在的目录结构已经配置成你想要的方式，这种情况下，你可以禁用 <code>url()</code> 重写：</p>
+<pre><code>mix.sass('resources/assets/app/app.scss', 'public/css')
+   .options({
+      processCssUrls: false
+   });
+</code></pre>
+<p>如果添加了这项配置到 <code>webpack.mix.js</code> 文件，Mix 将不再匹配 <code>url()</code> 或拷贝资源到 <code>public</code> 目录。换句话说，编译过的 CSS 和编译前输入的一样：</p>
+<pre><code>.example {
+    background: url("../images/thing.png");
+}
+</code></pre>
+<h4 id="toc_10">Source Map</h4>
+<p>虽然 Source Map 默认被禁用，但是可以通过在 <code>webpack.mix.js</code> 文件中调用 <code>mix.sourceMaps()</code> 来激活。尽管这会带来编译/性能开销，不过在编译资源的时候可以提供额外的调试信息给浏览器的开发者工具：</p>
+<pre><code>mix.js('resources/assets/js/app.js', 'public/js')
+   .sourceMaps();
+</code></pre>
+<h3 id="toc_11">处理 JavaScript</h3>
+<p>Mix 还提供了多个特性帮助你处理 JavaScript 文件，例如编译 ECMAScript 2015，模块捆绑，最小化以及合并原生 JavaScript 文件。更妙的是，这些都是无缝集成的，不需要额外的自定义配置：</p>
+<pre><code>mix.js('resources/assets/js/app.js', 'public/js');
+</code></pre>
+<p>通过这一行代码，你可以使用如下功能：</p>
+<ul>
+<li>ES2015 语法</li>
+<li>模块</li>
+<li>编译 <code>.vue</code> 文件</li>
+<li>最小化生产环境</li>
+</ul>
+<h4 id="toc_12">提取 Vendor 库</h4>
+<p>捆绑所有应用特定 JavaScript 和 vendor 库的一个潜在缺点是进行长期缓存将变得更加困难，例如，单次更新应用代码将会强制浏览器下载所有 vendor 库，即使它们并没有更新。</p>
+<p>如果你想要频繁更新应用的 JavaScript，需要考虑对 vendor 库进行提取和拆分，这样的话，对应用代码的一个修改不会影响 <code>vendor.js</code> 文件的缓存。Mix 的 <code>extract</code> 方法可以实现这样的功能：</p>
+<pre><code>mix.js('resources/assets/js/app.js', 'public/js')
+   .extract(['vue'])
+</code></pre>
+<p><code>extract</code> 方法接收包含所有库的数组或你想要提取到 <code>vendor.js</code> 文件的模块，使用上述代码作为示例，Mix将会生成如下文件：</p>
+<ul>
+<li><code>public/js/manifest.js</code>：<em>Webpack manifest runtime</em></li>
+<li><code>public/js/vendor.js</code>：<em>vendor 库</em></li>
+<li><code>public/js/app.js</code>：<em>应用代码</em></li>
+</ul>
+<p>要避免 JavaScript 错误，确保以正确顺序加载这些文件：</p>
+<pre><code>&lt;script src="/js/manifest.js"&gt;&lt;/script&gt;
+&lt;script src="/js/vendor.js"&gt;&lt;/script&gt;
+&lt;script src="/js/app.js"&gt;&lt;/script&gt;
+</code></pre>
+<h4 id="toc_13">React</h4>
+<p>Mix 可以自动为安装 Babel 插件以便支持 React，我们可以将 <code>mix.js()</code> 调用替换为 <code>mix.react()</code> 来实现：</p>
+<pre><code>mix.react('resources/assets/js/app.jsx', 'public/js');
+</code></pre>
+<p>在这个场景背后，Mix 会下载并引入合适的 Babel 插件 <code>babel-preset-react</code>。</p>
+<h4 id="toc_14">Vanilla JS</h4>
+<p>和使用 <code>mix.styles()</code> 合并样式表类似，你可以通过 <code>scripts()</code> 方法合并并最小化任意数量的 JavaScript 文件：</p>
+<pre><code>mix.scripts([
+    'public/js/admin.js',
+    'public/js/dashboard.js'
+], 'public/js/all.js');
+</code></pre>
+<p>这一功能对那些不需要 Webpack 对 Javascript 进行编译的传统应用来说很有用。</p>
+<blockquote><p>注：<code>mix.scripts()</code> 的一个轻微调整是 <code>mix.babel()</code>，它的方法签名和 <code>scripts</code> 一样，不同之处是合并的文件会经过 Babel 编译，从而将所有 ES2015 代码转化成所有浏览器都支持的原生 JavaScript。</p></blockquote>
+<h4 id="toc_15">自定义 Webpack 配置</h4>
+<p>在场景背后，Laravel Mix 引用了预配置的 <code>webpack.config.js</code> 文件来尽可能快的启动和运行。个别情况下，你需要手动编辑这个文件。你可能有一个被引用的特定的加载器或插件，或者可能倾向于使用 Stylus 而不是 Sass，在这些情况下，你有两个选择：</p>
+<p><strong>合并自定义配置</strong></p>
+<p>Mix 提供了一个有用的 <code>webpackConfig</code> 方法，从而允许你合并任意简短的 Webpack 配置覆盖。这是一个很吸引人的选择，因为不需要你拷贝或维护自己的<code>webpack.config.js</code> 文件副本，<code>webpackConfig</code> 方法接收一个对象，该对象包含了任意你想要应用的<a href="https://webpack.js.org/configuration/" target="_blank" rel="noopener">Webpack指定配置</a>：</p>
+<pre><code>mix.webpackConfig({
+    resolve: {
+        modules: [
+            path.resolve(__dirname, 'vendor/laravel/spark/resources/assets/js')
+        ]
+    }
+});
+</code></pre>
+<p><strong>自定义配置文件</strong></p>
+<p>第二个选择是拷贝 Mix 的 <code>webpack.config.js</code> 到自己的项目根目录：</p>
+<pre><code>cp node_modules/laravel-mix/setup/webpack.config.js ./
+</code></pre>
+<p>接下来，将 <code>package.json</code> 文件中的所有 <code>--config</code> 引用指向拷贝后的新配置文件。如果你选择使用这种自定义方式，以后只要 Mix 的 <code>webpack.config.js</code> 有升级变更都要手动将变更合并到自定义的新文件。</p>
+<h3 id="toc_16">拷贝文件/目录</h3>
+<p>你可以使用 <code>copy</code> 方法拷贝文件/目录到新路径，这在将 <code>node_modules</code> 目录下的特定资源文件重新放置到 <code>public</code> 目录下时很有用：</p>
+<pre><code>mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
+</code></pre>
+<p>拷贝目录的时候，<code>copy</code> 方法将会铺平目录结构，要维持目录的原始结构，需要使用 <code>copyDirectory</code> 方法：</p>
+<pre><code>mix.copyDirectory('assets/img', 'public/img');
+</code></pre>
+<h3 id="toc_17">版本号/缓存刷新</h3>
+<p>很多开发者会给编译的前端资源添加时间戳或者唯一令牌后缀以强制浏览器加载最新版本而不是代码的缓存副本。Mix 可以使用 <code>version</code> 方法为你处理这种场景。</p>
+<p><code>version</code> 方法会自动附加唯一哈希到已编译文件名，从而方便实现缓存刷新：</p>
+<pre><code>mix.js('resources/assets/js/app.js', 'public/js')
+   .version();
+</code></pre>
+<p>生成版本文件后，还不知道提取的文件名，所以，你需要在<a href="../../post/8779.html">视图</a>中使用 Laravel 全局的 <code>mix</code> 函数来加载相应的带哈希值的前端资源。<code>mix</code> 函数会自动判当前的已哈希文件名：</p>
+<pre><code>&lt;link rel="stylesheet" href="{{ mix('css/app.css') }}"&gt;
+</code></pre>
+<p>由于版本文件在本地开发中没有什么用，你可以只在运行 <code>npm run production</code> 期间进行版本处理操作：</p>
+<pre><code>mix.js('resources/assets/js/app.js', 'public/js');
+
+if (mix.config.inProduction) {
+    mix.version();
+}
+</code></pre>
+<h3 id="toc_18">BrowserSync 重新加载</h3>
+<p><a href="https://browsersync.io/" target="_blank" rel="noopener">BrowserSync</a> 会自动监控文件修改，并将修改注入浏览器而不需要手动刷新，你可以通过调用 mix.browserSync() 方法启用该支持：</p>
+<pre><code>mix.browserSync('my-domain.test');
+
+// Or...
+
+// https://browsersync.io/docs/options
+mix.browserSync({
+    proxy: 'my-domain.test'
+});
+</code></pre>
+<p>你可以传递一个字符串（代理）或对象（BrowserSync 设置）到该方法。接下来，使用 <code>npm run watch</code> 命令来启动 Webpack 的开发服务器，现在，当你编辑一个 JavaScript 脚本或 PHP 文件时，会看到浏览器会立即刷新以响应你的修改。</p>
+<h3 id="toc_19">环境变量</h3>
+<p>你可以通过在 <code>.env</code> 文文件添加 <code>MIX_</code> 前缀将环境变量注入 Mix：</p>
+<pre><code>MIX_SENTRY_DSN_PUBLIC=http://example.com
+</code></pre>
+<p>在 <code>.env</code> 文件中定义好变量之后，可以通过 <code>process.env</code> 对象进行访问（如果在运行 <code>watch</code> 任务期间变量值有变动，需要重启任务）：</p>
+<pre><code>process.env.MIX_SENTRY_DSN_PUBLIC
+</code></pre>
+<h3 id="toc_20">通知</h3>
+<p>在有效的情况下，Mix 会自动为每个捆绑显示操作系统通知，这可以给你一个及时的反馈：编译成功还是失败。不过，某些场景下你可能希望禁止这些通知，一个典型的例子就是在生产境服务器触发 Mix。通知可以通过 <code>disableNotifications</code> 方法被停用：</p>
+<pre><code>mix.disableNotifications();
+</code></pre>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_6" rel="category tag">
+                Laravel 5.6
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="../tags/缓存" rel="tag">缓存</a>
+                                    ,
+                                            <a href="../tags/URL" rel="tag">URL</a>
+                                    ,
+                                            <a href="../tags/CSS" rel="tag">CSS</a>
+                                    ,
+                                            <a href="../tags/JavaScript" rel="tag">JavaScript</a>
+                                    ,
+                                            <a href="../tags/版本号" rel="tag">版本号</a>
+                                    ,
+                                            <a href="../tags/Sass" rel="tag">Sass</a>
+                                    ,
+                                            <a href="../tags/Less" rel="tag">Less</a>
+                                    ,
+                                            <a href="../tags/编译" rel="tag">编译</a>
+                                    ,
+                                            <a href="../tags/前端" rel="tag">前端</a>
+                                    ,
+                                            <a href="../tags/前端框架" rel="tag">前端框架</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E9%80%9A%E7%9F%A5" rel="tag">通知</a>
+                                    ,
+                                            <a href="../tags/Stylus" rel="tag">Stylus</a>
+                                    ,
+                                            <a href="../tags/Webpack" rel="tag">Webpack</a>
+                                    ,
+                                            <a href="../tags/BrowserSync" rel="tag">BrowserSync</a>
+                                    ,
+                                            <a href="../tags/Mix" rel="tag">Mix</a>
+                                    ,
+                                            <a href="../tags/5.6" rel="tag">5.6</a>
+                                    ,
+                                            <a href="../tags/Vue" rel="tag">Vue</a>
+                                    ,
+                                            <a href="../tags/React" rel="tag">React</a>
+                                    ,
+                                            <a href="../tags/PostCSS" rel="tag">PostCSS</a>
+                                    ,
+                                            <a href="../tags/Vanilla" rel="tag">Vanilla</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="8819" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="8819" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="8817.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.6 文档 ] 前端开发 —— 快速入门：JavaScript &amp; CSS 脚手架
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="8830.html" rel="next">
+                [ Laravel 5.6 文档 ] 数据库操作 —— 快速入门
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="8819.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='8819' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="8819.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="8819.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        安装 &amp; 设置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        运行 Mix
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        处理样式表
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Less
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Sass
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Stylus
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        PostCSS
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        原生 CSS
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        URL 处理
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Source Map
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        处理 JavaScript
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        提取 Vendor 库
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        React
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Vanilla JS
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        自定义 Webpack 配置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        拷贝文件/目录
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        版本号/缓存刷新
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        BrowserSync 重新加载
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        环境变量
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8819.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        通知
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="3137.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 服务 —— 集成前端资源：Laravel Elixir
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="5962.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] JavaScript &amp; CSS —— 编译资源（Laravel Elixir）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6798.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 前端 —— 编译资源（Laravel Mix）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8249.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 前端组件 —— 快速入门：JavaScript &amp; CSS 脚手架
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8254.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 前端组件 —— 使用进阶：通过 Laravel Mix 编译前端资源
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

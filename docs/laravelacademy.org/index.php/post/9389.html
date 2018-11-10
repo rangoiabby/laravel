@@ -1,0 +1,2974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel Permission 扩展包在项目中轻松实现 RBAC 权限管理功能 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9389.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9389.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9389.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9389.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9389.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../project.1">
+                项目
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../packages">
+                扩展包
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel Permission 扩展包在项目中轻松实现 RBAC 权限管理功能</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel Permission 扩展包在项目中轻松实现 RBAC 权限管理功能</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9389.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-05-23T11:09:45+08:00">2018-05-23</time>
+                    <time class="updated" datetime="2018-05-23T23:17:35+08:00">2018-05-23 23:17:35</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                14930 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>一直想整理出一篇单独在 Laravel 中基于 RBAC 实现权限管理的教程，今天总算是交上这份作业了，开始之前，先祭出最终用户权限管理的效果图镇场子：</p>
+<p><img class="alignnone size-full wp-image-9391" src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270832354895.jpg" alt="" width="1435" height="659" /></p>
+<h3 id="toc_0">项目初始化</h3>
+<p>下面正式开始今天的作业，我们基于由 Spatie 维护的 <a href="https://github.com/spatie/laravel-permission" target="_blank" rel="noopener">Laravel Permission</a> 扩展包来实现 RBAC 权限管理，Spatie 出品，必属精品。首先需要安装一个干净的 Laravel 项目，然后在项目根目录下通过 Composer 来安装扩展包依赖：</p>
+<pre><code>composer create-project laravel/laravel permission --prefer-dist
+cd permission
+composer require spatie/laravel-permission
+</code></pre>
+<p><strong>创建数据表</strong></p>
+<p>先通过如下命令将扩展包提供的数据库迁移文件发布到 <code>database/migrations</code> 目录下：</p>
+<pre><code>php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="migrations"
+</code></pre>
+<p>然后不要忘了修改 <code>.env</code> 中的数据库配置以匹配本地数据库设置，完成这一步之后就可以运行下面的命令根据数据库迁移文件生成相应的数据表了：</p>
+<pre><code>php artisan migrate
+</code></pre>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270462127569.jpg" alt="" />￼</p>
+<p>运行成功后查看数据库会发现新生成了如下数据表：</p>
+<p><img class="alignnone size-full wp-image-9392" src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270462872852.jpg" alt="" width="442" height="384" /></p>
+<p><strong>配置文件</strong></p>
+<p>接下来将扩展包提供的权限配置文件 <code>permission.php</code> 发布到 <code>config</code> 目录下以便对默认配置进行修改：</p>
+<pre><code> php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="config"
+</code></pre>
+<p>其中主要包含了默认权限、角色模型类以及对应数据表配置，一般而言，保持默认配置即可。</p>
+<p><strong>模型类调整</strong></p>
+<p>在 <code>User</code> 模型类中使用 <code>HasRoles</code> trait 提供权限相关方法：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270465753930.jpg" alt="" />￼</p>
+<p><strong>安装 Laravel Collective HTML 表单构建器</strong></p>
+<p>我们通过 Composer 安装这个扩展包依赖以便后续构建视图页面所需表单：</p>
+<pre><code>composer require laravelcollective/html
+</code></pre>
+<h3 id="toc_1">基本使用</h3>
+<p>完成上述初始化工作后，接下来我们来看一下如何使用 Laravel Permission 扩展包提供的方法来实现一些基本操作。</p>
+<p>我们可以通过以下方式创建新的角色和权限：</p>
+<pre><code>use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+$role = Role::create(['name' =&gt; 'writer']);
+$permission = Permission::create(['name' =&gt; 'edit articles']);
+</code></pre>
+<p>通过调用用户实例上的动态属性 <code>permissions</code> 获取用户所有权限：</p>
+<pre><code> $permissions = $user-&gt;permissions;
+</code></pre>
+<p>通过 <code>pluck</code> 方法获取用户角色名称：</p>
+<pre><code> $roles = $user-&gt;roles()-&gt;pluck('name');
+</code></pre>
+<p>还可以通过 Blade 指令验证登录用户是否拥有给定角色：</p>
+<pre><code>@role('writer')
+    I'm a writer!
+@else
+    I'm not a writer...
+@endrole
+
+@hasrole('writer')
+    I'm a writer!
+@else
+    I'm not a writer...
+@endhasrole
+
+@hasanyrole(Role::all())
+    I have one or more of these roles!
+@else
+    I have none of these roles...
+@endhasanyrole
+
+@hasallroles(Role::all())
+    I have all of these roles!
+@else
+    I don't have all of these roles...
+@endhasallroles
+</code></pre>
+<p>通过 <code>@can</code> 指令验证用户是否拥有给定权限：</p>
+<pre><code>@can('Edit Post')
+    I have permission to edit
+@endcan
+</code></pre>
+<h3 id="toc_2">使用实例</h3>
+<p>下面我们以为用户分配文章操作权限为例来演示如何在实践中使用 Laravel Permission 扩展包实现 RBAC 权限管理。首先我们通过如下 Artisan 命令生成用户认证相关脚手架代码：</p>
+<pre><code> php artisan make:auth
+</code></pre>
+<p>上述指令会生成用户登录注册所需的路由、控制器、视图等代码文件。我们需要对生成的代码做少许调整：</p>
+<h4 id="toc_3">登录注册控制器调整</h4>
+<p>修改 <code>RegisterController</code> 控制器的 <code>create</code> 方法如下：</p>
+<pre><code>protected function create(array $data)
+{
+    return User::create([
+        'name' =&gt; $data['name'],
+        'email' =&gt; $data['email'],
+        'password' =&gt; $data['password'],
+    ]);
+}
+</code></pre>
+<p>转而在 <code>User</code> 模型类中新增修改器方法以便在保存时对密码字段进行加密处理：</p>
+<pre><code>public function setPasswordAttribute($password) {
+    $this-&gt;attributes['password'] = bcrypt($password);
+}
+</code></pre>
+<p>修改 <code>LoginController</code> 和 <code>RegisterController</code> 控制器的 <code>redirectTo</code> 属性：</p>
+<pre><code>protected $redirectTo = '/';
+</code></pre>
+<h4 id="toc_4">布局视图文件调整</h4>
+<p>接下来编辑 <code>resources/views/layouts/app.blade.php</code> 模板文件，新增一个下拉「Admin」链接用于查看所有用户和错误文件，只有具备「Admin」角色的用户才可以看到此链接。此外，我们还创建了一个自定义的 <code>styles.css</code> 文件用于渲染 <code>resources/views/posts/index.blade.php</code> 视图样式：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="{{ config('app.locale') }}"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+
+    &lt;!-- CSRF Token --&gt;
+    &lt;meta name="csrf-token" content="{{ csrf_token() }}"&gt;
+
+    &lt;title&gt;{{ config('app.name', 'Laravel') }}&lt;/title&gt;
+
+    &lt;!-- Styles --&gt;
+    &lt;link href="{{ asset('css/styles.css') }}" rel="stylesheet"&gt;
+
+    &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"&gt;
+
+    &lt;!-- Scripts --&gt;
+    &lt;script&gt;
+        window.Laravel = {!! json_encode([
+            'csrfToken' =&gt; csrf_token(),
+        ]) !!};
+    &lt;/script&gt;
+    &lt;script src="https://use.fontawesome.com/9712be8772.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="app"&gt;
+        &lt;nav class="navbar navbar-default navbar-static-top"&gt;
+            &lt;div class="container"&gt;
+                &lt;div class="navbar-header"&gt;
+
+                    &lt;!-- Collapsed Hamburger --&gt;
+                    &lt;button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse"&gt;
+                        &lt;span class="sr-only"&gt;Toggle Navigation&lt;/span&gt;
+                        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                    &lt;/button&gt;
+
+                    &lt;!-- Branding Image --&gt;
+                    &lt;a class="navbar-brand" href="{{ url('/') }}"&gt;
+                        {{ config('app.name', 'Laravel') }}
+                    &lt;/a&gt;
+                &lt;/div&gt;
+
+                &lt;div class="collapse navbar-collapse" id="app-navbar-collapse"&gt;
+                    &lt;!-- 导航条左边 --&gt;
+                    &lt;ul class="nav navbar-nav"&gt;
+                        &lt;li&gt;&lt;a href="{{ url('/') }}"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                        @if (!Auth::guest())
+                            &lt;li&gt;&lt;a href="{{ route('posts.create') }}"&gt;New Article&lt;/a&gt;&lt;/li&gt;
+                         @endif
+                    &lt;/ul&gt;
+
+                    &lt;!-- 导航条右边 --&gt;
+                    &lt;ul class="nav navbar-nav navbar-right"&gt;
+                        &lt;!-- 登录注册链接 --&gt;
+                        @if (Auth::guest())
+                            &lt;li&gt;&lt;a href="{{ route('login') }}"&gt;Login&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="{{ route('register') }}"&gt;Register&lt;/a&gt;&lt;/li&gt;
+                        @else
+                            &lt;li class="dropdown"&gt;
+                                &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"&gt;
+                                    {{ Auth::user()-&gt;name }} &lt;span class="caret"&gt;&lt;/span&gt;
+                                &lt;/a&gt;
+
+                                &lt;ul class="dropdown-menu" role="menu"&gt;
+                                    &lt;li&gt;
+                                        @role('Admin') {{-- Laravel-permission blade 辅助函数 --}}
+                                        &lt;a href="#"&gt;&lt;i class="fa fa-btn fa-unlock"&gt;&lt;/i&gt;Admin&lt;/a&gt;
+                                        @endrole
+                                        &lt;a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"&gt;
+                                            Logout
+                                        &lt;/a&gt;
+
+                                        &lt;form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;"&gt;
+                                            {{ csrf_field() }}
+                                        &lt;/form&gt;
+                                    &lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/li&gt;
+                        @endif
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/nav&gt;
+
+        @if(Session::has('flash_message'))
+            &lt;div class="container"&gt;      
+                &lt;div class="alert alert-success"&gt;&lt;em&gt; {!! session('flash_message') !!}&lt;/em&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        @endif 
+
+        &lt;div class="row"&gt;
+            &lt;div class="col-md-8 col-md-offset-2"&gt;              
+                @include ('errors.list') {{-- 引入错误文件 --}}
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        @yield('content')
+
+    &lt;/div&gt;
+
+    &lt;!-- Scripts --&gt;
+    &lt;script src="{{ asset('js/app.js') }}"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>创建错误文件视图模板文件 <code>resources/views/errors/list.blade.php</code>：</p>
+<pre><code>@if (count($errors) &gt; 0)
+    &lt;div class="alert alert-danger"&gt;
+        &lt;ul&gt;
+            @foreach ($errors-&gt;all() as $error)
+                &lt;li&gt;{{ $error }}&lt;/li&gt;
+            @endforeach
+        &lt;/ul&gt;
+    &lt;/div&gt;
+@endif
+</code></pre>
+<p>编写 <code>public/css/styles.css</code> 文件内容如下：</p>
+<pre><code>p.teaser {
+    text-indent: 30px; 
+}
+</code></pre>
+<h4 id="toc_5">文章相关资源类</h4>
+<p>处理好布局视图文件后，接下来开始正式编码工作。首先创建文章模型类及其对应数据库迁移文件：</p>
+<pre><code>php artisan make:model Post -m
+</code></pre>
+<p>然后修改新生成的 <code>CreatePostsTable</code> 迁移类：</p>
+<pre><code>use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreatePostsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('posts', function (Blueprint $table) {
+            $table-&gt;increments('id');
+            $table-&gt;string('title');
+            $table-&gt;text('body');
+            $table-&gt;timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('posts');
+    }
+}
+</code></pre>
+<p>运行如下命令生成对应文章数据表：</p>
+<pre><code>php artisan migrate
+</code></pre>
+<p>编辑 <code>Post</code> 模型类以支持批量赋值：</p>
+<pre><code>class Post extends Model
+{
+    protected $fillable = ['title', 'body'];
+}
+</code></pre>
+<p>接下来创建文章资源控制器：</p>
+<pre><code>php artisan make:controller PostController --resource
+</code></pre>
+<p>编写新生成的 <code>PostController</code> 代码如下：</p>
+<pre><code>&lt;?php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Post;
+use Auth;
+use Session;
+
+class PostController extends Controller {
+
+    public function __construct() {
+        $this-&gt;middleware(['auth', 'clearance'])-&gt;except('index', 'show');
+    }
+
+    /**
+     * 显示文章列表
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index() {
+        $posts = Post::orderby('id', 'desc')-&gt;paginate(5); //show only 5 items at a time in descending order
+
+        return view('posts.index', compact('posts'));
+    }
+
+    /**
+     * 显示创建文章表单
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create() {
+        return view('posts.create');
+    }
+
+    /**
+     * 存储新增文章
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+
+        //验证 title 和 body 字段
+        $this-&gt;validate($request, [
+            'title'=&gt;'required|max:100',
+            'body' =&gt;'required',
+        ]);
+
+        $title = $request['title'];
+        $body = $request['body'];
+
+        $post = Post::create($request-&gt;only('title', 'body'));
+
+        // 基于保存结果显示成功消息
+        return redirect()-&gt;route('posts.index')
+            -&gt;with('flash_message', 'Article,
+             '. $post-&gt;title.' created');
+    }
+
+    /**
+     * 显示指定资源
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        $post = Post::findOrFail($id); //通过 id = $id 查找文章
+
+        return view ('posts.show', compact('post'));
+    }
+
+    /**
+     * 显示编辑文章表单
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id) {
+        $post = Post::findOrFail($id);
+
+        return view('posts.edit', compact('post'));
+    }
+
+    /**
+     * 更新文章
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id) {
+        $this-&gt;validate($request, [
+            'title'=&gt;'required|max:100',
+            'body'=&gt;'required',
+        ]);
+
+        $post = Post::findOrFail($id);
+        $post-&gt;title = $request-&gt;input('title');
+        $post-&gt;body = $request-&gt;input('body');
+        $post-&gt;save();
+
+        return redirect()-&gt;route('posts.show',
+            $post-&gt;id)-&gt;with('flash_message',
+            'Article, '. $post-&gt;title.' updated');
+
+    }
+
+    /**
+     * 删除文章
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id) {
+        $post = Post::findOrFail($id);
+        $post-&gt;delete();
+
+        return redirect()-&gt;route('posts.index')
+            -&gt;with('flash_message',
+                'Article successfully deleted');
+
+    }
+}
+</code></pre>
+<p>最后注册相应路由到 <code>app/routes/web.php</code>：</p>
+<pre><code>Route::get('/', 'PostController@index')-&gt;name('home');
+Route::resource('posts', 'PostController');
+</code></pre>
+<p>根据 <code>PostController</code> 控制器提供的方法，需要创建四个相应视图：<code>resources\views\posts\index.blade.php</code>、<code>resources\views\posts\create.blade.php</code>、<code>resources\views\posts\show.blade.php</code> 和 <code>\resources\views\posts\edit.blade.php</code>。</p>
+<p>编写 <code>index.blade.php</code> 代码如下：</p>
+<pre><code>@extends('layouts.app')
+@section('content')
+    &lt;div class="container"&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-md-10 col-md-offset-1"&gt;
+                &lt;div class="panel panel-default"&gt;
+                    &lt;div class="panel-heading"&gt;&lt;h3&gt;Posts&lt;/h3&gt;&lt;/div&gt;
+                    &lt;div class="panel-heading"&gt;Page {{ $posts-&gt;currentPage() }} of {{ $posts-&gt;lastPage() }}&lt;/div&gt;
+                    @foreach ($posts as $post)
+                        &lt;div class="panel-body"&gt;
+                            &lt;li style="list-style-type:disc"&gt;
+                                &lt;a href="{{ route('posts.show', $post-&gt;id ) }}"&gt;&lt;b&gt;{{ $post-&gt;title }}&lt;/b&gt;&lt;br&gt;
+                                    &lt;p class="teaser"&gt;
+                                       {{  str_limit($post-&gt;body, 100) }} {{-- Limit teaser to 100 characters --}}
+                                    &lt;/p&gt;
+                                &lt;/a&gt;
+                            &lt;/li&gt;
+                        &lt;/div&gt;
+                    @endforeach
+                    &lt;/div&gt;
+                    &lt;div class="text-center"&gt;
+                        {!! $posts-&gt;links() !!}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+@endsection
+</code></pre>
+<p>编写 <code>create.blade.php</code> 代码如下：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Create New Post')
+
+@section('content')
+    &lt;div class="row"&gt;
+        &lt;div class="col-md-8 col-md-offset-2"&gt;
+
+        &lt;h1&gt;Create New Post&lt;/h1&gt;
+        &lt;hr&gt;
+
+    {{-- 使用 Laravel HTML Form Collective 创建表单 --}}
+        {{ Form::open(array('route' =&gt; 'posts.store')) }}
+
+        &lt;div class="form-group"&gt;
+            {{ Form::label('title', 'Title') }}
+            {{ Form::text('title', null, array('class' =&gt; 'form-control')) }}
+            &lt;br&gt;
+
+            {{ Form::label('body', 'Post Body') }}
+            {{ Form::textarea('body', null, array('class' =&gt; 'form-control')) }}
+            &lt;br&gt;
+
+            {{ Form::submit('Create Post', array('class' =&gt; 'btn btn-success btn-lg btn-block')) }}
+            {{ Form::close() }}
+        &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>编写 <code>show.blade.php</code> 代码如下：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| View Post')
+
+@section('content')
+
+&lt;div class="container"&gt;
+
+    &lt;h1&gt;{{ $post-&gt;title }}&lt;/h1&gt;
+    &lt;hr&gt;
+    &lt;p class="lead"&gt;{{ $post-&gt;body }} &lt;/p&gt;
+    &lt;hr&gt;
+    {!! Form::open(['method' =&gt; 'DELETE', 'route' =&gt; ['posts.destroy', $post-&gt;id] ]) !!}
+    &lt;a href="{{ url()-&gt;previous() }}" class="btn btn-primary"&gt;Back&lt;/a&gt;
+    @can('Edit Post')
+    &lt;a href="{{ route('posts.edit', $post-&gt;id) }}" class="btn btn-info" role="button"&gt;Edit&lt;/a&gt;
+    @endcan
+    @can('Delete Post')
+    {!! Form::submit('Delete', ['class' =&gt; 'btn btn-danger']) !!}
+    @endcan
+    {!! Form::close() !!}
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>最后，编写 <code>edit.blade.php</code> 代码如下：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Edit Post')
+
+@section('content')
+&lt;div class="row"&gt;
+
+    &lt;div class="col-md-8 col-md-offset-2"&gt;
+
+        &lt;h1&gt;Edit Post&lt;/h1&gt;
+        &lt;hr&gt;
+            {{ Form::model($post, array('route' =&gt; array('posts.update', $post-&gt;id), 'method' =&gt; 'PUT')) }}
+            &lt;div class="form-group"&gt;
+            {{ Form::label('title', 'Title') }}
+            {{ Form::text('title', null, array('class' =&gt; 'form-control')) }}&lt;br&gt;
+
+            {{ Form::label('body', 'Post Body') }}
+            {{ Form::textarea('body', null, array('class' =&gt; 'form-control')) }}&lt;br&gt;
+
+            {{ Form::submit('Save', array('class' =&gt; 'btn btn-primary')) }}
+
+            {{ Form::close() }}
+    &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>完成上述工作后，再次访问项目首页，页面显示如下：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270604515641.jpg" alt="" />￼</p>
+<h4 id="toc_6">用户相关资源类</h4>
+<p>用户对应模型类和数据表已存在，所以我们直接从创建资源控制器开始：</p>
+<pre><code>php artisan make:controller UserController --resource
+</code></pre>
+<p>编写刚生成的 <code>UserController</code> 代码如下：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\User;
+use Auth;
+
+// 引入 laravel-permission 模型
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+// 用于输出一次性信息
+use Session;
+
+class UserController extends Controller {
+
+    public function __construct() {
+        $this-&gt;middleware(['auth', 'isAdmin']); // isAdmin 中间件让具备指定权限的用户才能访问该资源
+    }
+
+    /**
+     * 显示用户列表
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index() {
+    //Get all users and pass it to the view
+        $users = User::all(); 
+        return view('users.index')-&gt;with('users', $users);
+    }
+
+    /**
+     * 显示创建用户角色表单
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create() {
+        // 获取所有角色并将其传递到视图
+        $roles = Role::get();
+        return view('users.create', ['roles'=&gt;$roles]);
+    }
+
+    /**
+     * 在数据库中保存新创建的资源
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        // 验证 name、email 和 password 字段
+        $this-&gt;validate($request, [
+            'name'=&gt;'required|max:120',
+            'email'=&gt;'required|email|unique:users',
+            'password'=&gt;'required|min:6|confirmed'
+        ]);
+
+        $user = User::create($request-&gt;only('email', 'name', 'password')); //只获取 email、name、password 字段
+
+        $roles = $request['roles']; // 获取输入的角色字段
+        // 检查是否某个角色被选中
+        if (isset($roles)) {
+            foreach ($roles as $role) {
+                $role_r = Role::where('id', '=', $role)-&gt;firstOrFail();            
+                $user-&gt;assignRole($role_r); //Assigning role to user
+            }
+        }        
+        // 重定向到 users.index 视图并显示消息
+        return redirect()-&gt;route('users.index')
+            -&gt;with('flash_message',
+             'User successfully added.');
+    }
+
+    /**
+     * 显示指定用户
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        return redirect('users'); 
+    }
+
+    /**
+     * 显示编辑用户角色表单
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id) {
+        $user = User::findOrFail($id); // 通过给定id获取用户
+        $roles = Role::get(); // 获取所有角色
+
+        return view('users.edit', compact('user', 'roles')); // 将用户和角色数据传递到视图
+
+    }
+
+    /**
+     * 更新数据库中的给定用户
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id) {
+        $user = User::findOrFail($id); // 通过id获取给定角色
+
+        // 验证 name, email 和 password 字段
+        $this-&gt;validate($request, [
+            'name'=&gt;'required|max:120',
+            'email'=&gt;'required|email|unique:users,email,'.$id,
+            'password'=&gt;'required|min:6|confirmed'
+        ]);
+        $input = $request-&gt;only(['name', 'email', 'password']); // 获取 name, email 和 password 字段
+        $roles = $request['roles']; // 获取所有角色
+        $user-&gt;fill($input)-&gt;save();
+
+        if (isset($roles)) {        
+            $user-&gt;roles()-&gt;sync($roles);  // 如果有角色选中与用户关联则更新用户角色
+        } else {
+            $user-&gt;roles()-&gt;detach(); // 如果没有选择任何与用户关联的角色则将之前关联角色解除
+        }
+        return redirect()-&gt;route('users.index')
+            -&gt;with('flash_message',
+             'User successfully edited.');
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id) {
+        // 通过给定id获取并删除用户
+        $user = User::findOrFail($id); 
+        $user-&gt;delete();
+
+        return redirect()-&gt;route('users.index')
+            -&gt;with('flash_message',
+             'User successfully deleted.');
+    }
+}
+</code></pre>
+<p>注册相应路由到 <code>app/routes/web.php</code>：</p>
+<pre><code>Route::resource('users', 'UserController');
+</code></pre>
+<p>根据 <code>UserController</code> 控制器提供的方法需要新增三个对应视图：<code>resources\views\users\index.blade.php</code>、<code>resources\views\users\create.blade.php</code>、<code>resources\views\users\edit.blade.php</code>。</p>
+<p>编写 <code>index.blade.php</code> 视图代码如下：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Users')
+
+@section('content')
+
+&lt;div class="col-lg-10 col-lg-offset-1"&gt;
+    &lt;h1&gt;&lt;i class="fa fa-users"&gt;&lt;/i&gt; User Administration &lt;a href="{{ route('roles.index') }}" class="btn btn-default pull-right"&gt;Roles&lt;/a&gt;
+    &lt;a href="{{ route('permissions.index') }}" class="btn btn-default pull-right"&gt;Permissions&lt;/a&gt;&lt;/h1&gt;
+    &lt;hr&gt;
+    &lt;div class="table-responsive"&gt;
+        &lt;table class="table table-bordered table-striped"&gt;
+
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Name&lt;/th&gt;
+                    &lt;th&gt;Email&lt;/th&gt;
+                    &lt;th&gt;Date/Time Added&lt;/th&gt;
+                    &lt;th&gt;User Roles&lt;/th&gt;
+                    &lt;th&gt;Operations&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+
+            &lt;tbody&gt;
+                @foreach ($users as $user)
+                &lt;tr&gt;
+
+                    &lt;td&gt;{{ $user-&gt;name }}&lt;/td&gt;
+                    &lt;td&gt;{{ $user-&gt;email }}&lt;/td&gt;
+                    &lt;td&gt;{{ $user-&gt;created_at-&gt;format('F d, Y h:ia') }}&lt;/td&gt;
+                    &lt;td&gt;{{  $user-&gt;roles()-&gt;pluck('name')-&gt;implode(' ') }}&lt;/td&gt;{{-- Retrieve array of roles associated to a user and convert to string --}}
+                    &lt;td&gt;
+                    &lt;a href="{{ route('users.edit', $user-&gt;id) }}" class="btn btn-info pull-left" style="margin-right: 3px;"&gt;Edit&lt;/a&gt;
+
+                    {!! Form::open(['method' =&gt; 'DELETE', 'route' =&gt; ['users.destroy', $user-&gt;id] ]) !!}
+                    {!! Form::submit('Delete', ['class' =&gt; 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                @endforeach
+            &lt;/tbody&gt;
+
+        &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;a href="{{ route('users.create') }}" class="btn btn-success"&gt;Add User&lt;/a&gt;
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>编写 <code>create.blade.php</code> 视图代码如下：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Add User')
+
+@section('content')
+
+&lt;div class='col-lg-4 col-lg-offset-4'&gt;
+
+    &lt;h1&gt;&lt;i class='fa fa-user-plus'&gt;&lt;/i&gt; Add User&lt;/h1&gt;
+    &lt;hr&gt;
+
+    {{ Form::open(array('url' =&gt; 'users')) }}
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('name', 'Name') }}
+        {{ Form::text('name', '', array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('email', 'Email') }}
+        {{ Form::email('email', '', array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;
+
+    &lt;div class='form-group'&gt;
+        @foreach ($roles as $role)
+            {{ Form::checkbox('roles[]',  $role-&gt;id ) }}
+            {{ Form::label($role-&gt;name, ucfirst($role-&gt;name)) }}&lt;br&gt;
+
+        @endforeach
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('password', 'Password') }}&lt;br&gt;
+        {{ Form::password('password', array('class' =&gt; 'form-control')) }}
+
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('password', 'Confirm Password') }}&lt;br&gt;
+        {{ Form::password('password_confirmation', array('class' =&gt; 'form-control')) }}
+
+    &lt;/div&gt;
+
+    {{ Form::submit('Add', array('class' =&gt; 'btn btn-primary')) }}
+
+    {{ Form::close() }}
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>编写 <code>edit.blade.php</code> 视图代码如下：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Edit User')
+
+@section('content')
+
+&lt;div class='col-lg-4 col-lg-offset-4'&gt;
+
+    &lt;h1&gt;&lt;i class='fa fa-user-plus'&gt;&lt;/i&gt; Edit {{$user-&gt;name}}&lt;/h1&gt;
+    &lt;hr&gt;
+
+    {{ Form::model($user, array('route' =&gt; array('users.update', $user-&gt;id), 'method' =&gt; 'PUT')) }}{{-- Form model binding to automatically populate our fields with user data --}}
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('name', 'Name') }}
+        {{ Form::text('name', null, array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('email', 'Email') }}
+        {{ Form::email('email', null, array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;
+
+    &lt;h5&gt;&lt;b&gt;Give Role&lt;/b&gt;&lt;/h5&gt;
+
+    &lt;div class='form-group'&gt;
+        @foreach ($roles as $role)
+            {{ Form::checkbox('roles[]',  $role-&gt;id, $user-&gt;roles ) }}
+            {{ Form::label($role-&gt;name, ucfirst($role-&gt;name)) }}&lt;br&gt;
+
+        @endforeach
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('password', 'Password') }}&lt;br&gt;
+        {{ Form::password('password', array('class' =&gt; 'form-control')) }}
+
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('password', 'Confirm Password') }}&lt;br&gt;
+        {{ Form::password('password_confirmation', array('class' =&gt; 'form-control')) }}
+
+    &lt;/div&gt;
+
+    {{ Form::submit('Add', array('class' =&gt; 'btn btn-primary')) }}
+
+    {{ Form::close() }}
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>至此，用户相关控制器和视图已编写完毕，下面来看权限相关资源类。</p>
+<h4 id="toc_7">权限相关资源类</h4>
+<p>权限对应模型和数据表也已经存在了，所以只需通过以下命令创建权限资源控制器：</p>
+<pre><code>php artisan make:controller PermissionController --resource
+</code></pre>
+<p>编写 <code>PermissionController</code> 控制器代码如下：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use Auth;
+
+// 引入 laravel-permission 模型
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use Session;
+
+class PermissionController extends Controller {
+
+    public function __construct() {
+        $this-&gt;middleware(['auth', 'isAdmin']); // isAdmin 中间件让具备指定权限的用户才能访问该资源
+
+    }
+
+    /**
+     * 显示权限列表
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index() {
+        $permissions = Permission::all(); // 获取所有权限
+
+        return view('permissions.index')-&gt;with('permissions', $permissions);
+    }
+
+    /**
+     * 显示创建权限表单
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create() {
+        $roles = Role::get(); // 获取所有角色
+
+        return view('permissions.create')-&gt;with('roles', $roles);
+    }
+
+    /**
+     * 保存新创建的权限
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        $this-&gt;validate($request, [
+            'name'=&gt;'required|max:40',
+        ]);
+
+        $name = $request['name'];
+        $permission = new Permission();
+        $permission-&gt;name = $name;
+
+        $roles = $request['roles'];
+
+        $permission-&gt;save();
+
+        if (!empty($request['roles'])) { // 如果选择了角色
+            foreach ($roles as $role) {
+                $r = Role::where('id', '=', $role)-&gt;firstOrFail(); // 将输入角色和数据库记录进行匹配
+
+                $permission = Permission::where('name', '=', $name)-&gt;first(); // 将输入权限与数据库记录进行匹配
+                $r-&gt;givePermissionTo($permission);
+            }
+        }
+
+        return redirect()-&gt;route('permissions.index')
+            -&gt;with('flash_message',
+             'Permission'. $permission-&gt;name.' added!');
+
+    }
+
+    /**
+     * 显示给定权限
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        return redirect('permissions');
+    }
+
+    /**
+     * 显示编辑权限表单
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id) {
+        $permission = Permission::findOrFail($id);
+
+        return view('permissions.edit', compact('permission'));
+    }
+
+    /**
+    * 更新指定权限
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+    public function update(Request $request, $id) {
+        $permission = Permission::findOrFail($id);
+        $this-&gt;validate($request, [
+            'name'=&gt;'required|max:40',
+        ]);
+        $input = $request-&gt;all();
+        $permission-&gt;fill($input)-&gt;save();
+
+        return redirect()-&gt;route('permissions.index')
+            -&gt;with('flash_message',
+             'Permission'. $permission-&gt;name.' updated!');
+
+    }
+
+    /**
+     * 删除给定权限
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id) {
+        $permission = Permission::findOrFail($id);
+
+        // 让特定权限无法删除 
+        if ($permission-&gt;name == "Administer roles &amp; permissions") {
+            return redirect()-&gt;route('permissions.index')
+            -&gt;with('flash_message',
+             'Cannot delete this Permission!');
+        }
+
+        $permission-&gt;delete();
+
+        return redirect()-&gt;route('permissions.index')
+            -&gt;with('flash_message',
+             'Permission deleted!');
+
+    }
+}
+</code></pre>
+<p>注册相应路由到 <code>app/routes/web.php</code>：</p>
+<pre><code>Route::resource('permissions', 'PermissionController');
+</code></pre>
+<p>根据 <code>PermissionController</code> 控制器提供的方法，需要创建三个对应视图文件。</p>
+<p>首先创建 <code>resources/views/permissions/index.blade.php</code> 文件：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Permissions')
+
+@section('content')
+
+&lt;div class="col-lg-10 col-lg-offset-1"&gt;
+    &lt;h1&gt;&lt;i class="fa fa-key"&gt;&lt;/i&gt;Available Permissions
+
+    &lt;a href="{{ route('users.index') }}" class="btn btn-default pull-right"&gt;Users&lt;/a&gt;
+    &lt;a href="{{ route('roles.index') }}" class="btn btn-default pull-right"&gt;Roles&lt;/a&gt;&lt;/h1&gt;
+    &lt;hr&gt;
+    &lt;div class="table-responsive"&gt;
+        &lt;table class="table table-bordered table-striped"&gt;
+
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Permissions&lt;/th&gt;
+                    &lt;th&gt;Operation&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                @foreach ($permissions as $permission)
+                &lt;tr&gt;
+                    &lt;td&gt;{{ $permission-&gt;name }}&lt;/td&gt; 
+                    &lt;td&gt;
+                    &lt;a href="{{ URL::to('permissions/'.$permission-&gt;id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;"&gt;Edit&lt;/a&gt;
+
+                    {!! Form::open(['method' =&gt; 'DELETE', 'route' =&gt; ['permissions.destroy', $permission-&gt;id] ]) !!}
+                    {!! Form::submit('Delete', ['class' =&gt; 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                @endforeach
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;a href="{{ URL::to('permissions/create') }}" class="btn btn-success"&gt;Add Permission&lt;/a&gt;
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>接下来创建 <code>resources/views/permissions/create.blade.php</code> 视图文件：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Create Permission')
+
+@section('content')
+
+&lt;div class='col-lg-4 col-lg-offset-4'&gt;
+
+    &lt;h1&gt;&lt;i class='fa fa-key'&gt;&lt;/i&gt; Add Permission&lt;/h1&gt;
+    &lt;br&gt;
+
+    {{ Form::open(array('url' =&gt; 'permissions')) }}
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('name', 'Name') }}
+        {{ Form::text('name', '', array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;&lt;br&gt;
+    @if(!$roles-&gt;isEmpty()) //If no roles exist yet
+        &lt;h4&gt;Assign Permission to Roles&lt;/h4&gt;
+
+        @foreach ($roles as $role) 
+            {{ Form::checkbox('roles[]',  $role-&gt;id ) }}
+            {{ Form::label($role-&gt;name, ucfirst($role-&gt;name)) }}&lt;br&gt;
+
+        @endforeach
+    @endif
+    &lt;br&gt;
+    {{ Form::submit('Add', array('class' =&gt; 'btn btn-primary')) }}
+
+    {{ Form::close() }}
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>最后创建 <code>resources/views/permissions/edit.blade.php</code> 视图文件：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Edit Permission')
+
+@section('content')
+
+&lt;div class='col-lg-4 col-lg-offset-4'&gt;
+
+    &lt;h1&gt;&lt;i class='fa fa-key'&gt;&lt;/i&gt; Edit {{$permission-&gt;name}}&lt;/h1&gt;
+    &lt;br&gt;
+    {{ Form::model($permission, array('route' =&gt; array('permissions.update', $permission-&gt;id), 'method' =&gt; 'PUT')) }}{{-- Form model binding to automatically populate our fields with permission data --}}
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('name', 'Permission Name') }}
+        {{ Form::text('name', null, array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;
+    &lt;br&gt;
+    {{ Form::submit('Edit', array('class' =&gt; 'btn btn-primary')) }}
+
+    {{ Form::close() }}
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>最后创建角色相关资源类。</p>
+<h4 id="toc_8">角色相关资源类</h4>
+<p>和权限一样，对应模型类和数据表已经存在，所以也是从创建资源控制器开始：</p>
+<pre><code>php artisan make:controller RoleController --resource
+</code></pre>
+<p>编写刚生成的 <code>RoleController</code> 控制器代码如下：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use Auth;
+// 引入 laravel-permission 模型
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use Session;
+
+class RoleController extends Controller {
+
+    public function __construct() {
+        $this-&gt;middleware(['auth', 'isAdmin']); // isAdmin 中间件让具备指定权限的用户才能访问该资源
+
+    }
+
+    /**
+     * 显示角色列表
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index() {
+        $roles = Role::all();// 获取所有角色
+
+        return view('roles.index')-&gt;with('roles', $roles);
+    }
+
+    /**
+     * 显示创建角色表单
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create() {
+        $permissions = Permission::all();// 获取所有权限
+
+        return view('roles.create', ['permissions'=&gt;$permissions]);
+    }
+
+    /**
+     * 保存新创建的角色
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        //验证 name 和 permissions 字段
+        $this-&gt;validate($request, [
+                'name'=&gt;'required|unique:roles|max:10',
+                'permissions' =&gt;'required',
+            ]
+        );
+
+        $name = $request['name'];
+        $role = new Role();
+        $role-&gt;name = $name;
+
+        $permissions = $request['permissions'];
+
+        $role-&gt;save();
+        // 遍历选择的权限
+        foreach ($permissions as $permission) {
+            $p = Permission::where('id', '=', $permission)-&gt;firstOrFail(); 
+            // 获取新创建的角色并分配权限
+            $role = Role::where('name', '=', $name)-&gt;first(); 
+            $role-&gt;givePermissionTo($p);
+        }
+
+        return redirect()-&gt;route('roles.index')
+            -&gt;with('flash_message',
+             'Role'. $role-&gt;name.' added!'); 
+    }
+
+    /**
+     * 显示指定角色
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        return redirect('roles');
+    }
+
+    /**
+     * 显示编辑角色表单
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id) {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+
+        return view('roles.edit', compact('role', 'permissions'));
+    }
+
+    /**
+     * 更新角色
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id) {
+
+        $role = Role::findOrFail($id); // 通过给定id获取角色
+        // 验证 name 和 permission 字段
+        $this-&gt;validate($request, [
+            'name'=&gt;'required|max:10|unique:roles,name,'.$id,
+            'permissions' =&gt;'required',
+        ]);
+
+        $input = $request-&gt;except(['permissions']);
+        $permissions = $request['permissions'];
+        $role-&gt;fill($input)-&gt;save();
+
+        $p_all = Permission::all();//获取所有权限
+
+        foreach ($p_all as $p) {
+            $role-&gt;revokePermissionTo($p); // 移除与角色关联的所有权限            
+        }
+
+        foreach ($permissions as $permission) {
+            $p = Permission::where('id', '=', $permission)-&gt;firstOrFail(); //从数据库中获取相应权限
+            $role-&gt;givePermissionTo($p);  // 分配权限到角色
+        }
+
+        return redirect()-&gt;route('roles.index')
+            -&gt;with('flash_message',
+             'Role'. $role-&gt;name.' updated!');
+    }
+
+    /**
+     * 删除指定权限
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $role = Role::findOrFail($id);
+        $role-&gt;delete();
+
+        return redirect()-&gt;route('roles.index')
+            -&gt;with('flash_message',
+             'Role deleted!');
+
+    }
+}
+</code></pre>
+<p>注册相应路由到 <code>app/routes/web.php</code>：</p>
+<pre><code>Route::resource('roles', 'RoleController');
+</code></pre>
+<p>根据上面的 <code>RoleController</code> 控制器，需要创建三个相应的视图文件。</p>
+<p>首先创建 <code>resources/views/roles/index.blade.php</code> 视图文件：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Roles')
+
+@section('content')
+
+&lt;div class="col-lg-10 col-lg-offset-1"&gt;
+    &lt;h1&gt;&lt;i class="fa fa-key"&gt;&lt;/i&gt; Roles
+
+    &lt;a href="{{ route('users.index') }}" class="btn btn-default pull-right"&gt;Users&lt;/a&gt;
+    &lt;a href="{{ route('permissions.index') }}" class="btn btn-default pull-right"&gt;Permissions&lt;/a&gt;&lt;/h1&gt;
+    &lt;hr&gt;
+    &lt;div class="table-responsive"&gt;
+        &lt;table class="table table-bordered table-striped"&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Role&lt;/th&gt;
+                    &lt;th&gt;Permissions&lt;/th&gt;
+                    &lt;th&gt;Operation&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+
+            &lt;tbody&gt;
+                @foreach ($roles as $role)
+                &lt;tr&gt;
+
+                    &lt;td&gt;{{ $role-&gt;name }}&lt;/td&gt;
+
+                    &lt;td&gt;{{ str_replace(array('[',']','"'),'', $role-&gt;permissions()-&gt;pluck('name')) }}&lt;/td&gt;{{-- Retrieve array of permissions associated to a role and convert to string --}}
+                    &lt;td&gt;
+                    &lt;a href="{{ URL::to('roles/'.$role-&gt;id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;"&gt;Edit&lt;/a&gt;
+
+                    {!! Form::open(['method' =&gt; 'DELETE', 'route' =&gt; ['roles.destroy', $role-&gt;id] ]) !!}
+                    {!! Form::submit('Delete', ['class' =&gt; 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                @endforeach
+            &lt;/tbody&gt;
+
+        &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;a href="{{ URL::to('roles/create') }}" class="btn btn-success"&gt;Add Role&lt;/a&gt;
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>然后创建 <code>resources/views/roles/create.blade.php</code> 视图文件：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Add Role')
+
+@section('content')
+
+&lt;div class='col-lg-4 col-lg-offset-4'&gt;
+
+    &lt;h1&gt;&lt;i class='fa fa-key'&gt;&lt;/i&gt; Add Role&lt;/h1&gt;
+    &lt;hr&gt;
+
+    {{ Form::open(array('url' =&gt; 'roles')) }}
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('name', 'Name') }}
+        {{ Form::text('name', null, array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;
+
+    &lt;h5&gt;&lt;b&gt;Assign Permissions&lt;/b&gt;&lt;/h5&gt;
+
+    &lt;div class='form-group'&gt;
+        @foreach ($permissions as $permission)
+            {{ Form::checkbox('permissions[]',  $permission-&gt;id ) }}
+            {{ Form::label($permission-&gt;name, ucfirst($permission-&gt;name)) }}&lt;br&gt;
+
+        @endforeach
+    &lt;/div&gt;
+
+    {{ Form::submit('Add', array('class' =&gt; 'btn btn-primary')) }}
+
+    {{ Form::close() }}
+
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>最后创建 <code>resources/views/roles/edit.blade.php</code> 视图文件：</p>
+<pre><code>@extends('layouts.app')
+
+@section('title', '| Edit Role')
+
+@section('content')
+
+&lt;div class='col-lg-4 col-lg-offset-4'&gt;
+    &lt;h1&gt;&lt;i class='fa fa-key'&gt;&lt;/i&gt; Edit Role: {{$role-&gt;name}}&lt;/h1&gt;
+    &lt;hr&gt;
+
+    {{ Form::model($role, array('route' =&gt; array('roles.update', $role-&gt;id), 'method' =&gt; 'PUT')) }}
+
+    &lt;div class="form-group"&gt;
+        {{ Form::label('name', 'Role Name') }}
+        {{ Form::text('name', null, array('class' =&gt; 'form-control')) }}
+    &lt;/div&gt;
+
+    &lt;h5&gt;&lt;b&gt;Assign Permissions&lt;/b&gt;&lt;/h5&gt;
+    @foreach ($permissions as $permission)
+
+        {{Form::checkbox('permissions[]',  $permission-&gt;id, $role-&gt;permissions ) }}
+        {{Form::label($permission-&gt;name, ucfirst($permission-&gt;name)) }}&lt;br&gt;
+
+    @endforeach
+    &lt;br&gt;
+    {{ Form::submit('Edit', array('class' =&gt; 'btn btn-primary')) }}
+
+    {{ Form::close() }}    
+&lt;/div&gt;
+
+@endsection
+</code></pre>
+<h4 id="toc_9">权限中间件</h4>
+<p>到这里还没有结束，我们在上面的控制器中有用到 <code>isAdmin</code> 和 <code>clearance</code> 中间件，下面需要来创建并注册这两个中间件。</p>
+<p>首先创建 <code>AdminMiddleware</code> 中间件：</p>
+<pre><code>php artisan make:middleware AdminMiddleware
+</code></pre>
+<p>编写 <code>AdminMiddleware</code> 中间件代码如下：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+
+class AdminMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        $user = User::all()-&gt;count();
+        if (!($user == 1)) {
+            if (!Auth::user()-&gt;hasPermissionTo('Administer roles &amp; permissions')) // 用户是否具备此权限
+        {
+                abort('401');
+            }
+        }
+
+        return $next($request);
+    }
+}
+</code></pre>
+<p>该中间件的作用主要是用于判断指定用户是否具备管理员权限。通过上面的代码，可以看出系统的第一个用户默认是管理员，以防止第一个用户出现权限死锁的情况。</p>
+<p>接下来创建另一个中间件 <code>ClearanceMiddleware</code>：</p>
+<pre><code>php artisan make:middleware ClearanceMiddleware
+</code></pre>
+<p>编写 <code>ClearanceMiddleware</code> 代码如下：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class ClearanceMiddleware {
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next) {
+        if (Auth::user()-&gt;hasPermissionTo('Administer roles &amp; permissions')) 
+        {
+            return $next($request);  // 管理员具备所有权限
+        }
+
+        if ($request-&gt;is('posts/create')) // 文章发布权限
+        {
+            if (!Auth::user()-&gt;hasPermissionTo('Create Post'))
+            {
+                abort('401');
+            } 
+            else {
+                return $next($request);
+            }
+        }
+
+        if ($request-&gt;is('posts/*/edit')) // 文章编辑权限
+        {
+            if (!Auth::user()-&gt;hasPermissionTo('Edit Post')) {
+                abort('401');
+            } else {
+                return $next($request);
+            }
+        }
+
+        if ($request-&gt;isMethod('Delete')) // 文章删除权限
+        {
+            if (!Auth::user()-&gt;hasPermissionTo('Delete Post')) {
+                abort('401');
+            }
+            else
+            {
+                return $next($request);
+            }
+        }
+
+        return $next($request);
+    }
+}
+</code></pre>
+<p>该中间件的主要作用是判断用户是否具备给定操作的权限。</p>
+<p>将上述两个中间件注册到 <code>app/Http/kernel.php</code> 的 <code>$routeMiddleware</code> 属性中：</p>
+<pre><code>protected $routeMiddleware = [
+    ... // 其他中间件
+    'isAdmin' =&gt; AdminMiddleware::class,
+    'clearance' =&gt; ClearanceMiddleware::class
+];
+</code></pre>
+<p>最后我们为 <code>401</code> 状态码编写一个错误页面 <code>resources\views\errors\401.blade.php</code>：</p>
+<pre><code>@extends('layouts.app')
+
+@section('content')
+    &lt;div class='col-lg-4 col-lg-offset-4'&gt;
+        &lt;h1&gt;&lt;center&gt;401&lt;br&gt;
+                ACCESS DENIED&lt;/center&gt;&lt;/h1&gt;
+    &lt;/div&gt;
+
+@endsection
+</code></pre>
+<p>至此，我们已经完成了所有的编码工作，接下来对上面编写的代码进行功能测试。</p>
+<h3 id="toc_10">功能测试</h3>
+<p>根据前面的 <code>isAdmin</code> 中间件实现逻辑，系统第一个用户默认具备管理员权限，这样我们就可以通过这个用户创建必要的权限和角色。</p>
+<p>在 <code>http://permission.test/permissions</code> 页面新增四个权限 —— Create Post、Edit Post、Delete Post 以及 Administer roles &amp; permissions：</p>
+<p><img class="alignnone size-full wp-image-9393" src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270624821744.jpg" alt="" width="2426" height="836" /></p>
+<p>接下来在 <code>http://permission.test/roles</code> 页面创建几个具备相应权限的角色：</p>
+<p><img class="alignnone size-full wp-image-9394" src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270626531171.jpg" alt="" width="2454" height="738" /></p>
+<p>最后在 <code>http://permission.test/users</code> 页面将「Admin」角色分配给当前登录用户：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270627294263.jpg" alt="" />￼</p>
+<p>分配成功之后在顶部导航下拉列表中就可以看到「Admin」选项了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270628754336.jpg" alt="" />￼</p>
+<p>现在，可以点击「New Article」链接发布新文章了：</p>
+<p><img class="alignnone size-full wp-image-9395" src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270630087903.jpg" alt="" width="2336" height="1174" /></p>
+<p>这表示我们已经成功给用户分配了权限。在文章详情页，该用户（管理员）也具备增删改所有权限：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/05/15270631185124.jpg" alt="" />￼</p>
+<p>至此，我们基于 RBAC 实现权限管理的教程已经全部完结，是不是挺简单的？</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../project/packages" rel="category tag">
+                扩展包
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/用户" rel="tag">用户</a>
+                                    ,
+                                            <a href="../tags/权限" rel="tag">权限</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%89%A9%E5%B1%95%E5%8C%85" rel="tag">扩展包</a>
+                                    ,
+                                            <a href="../tags/文章" rel="tag">文章</a>
+                                    ,
+                                            <a href="../tags/RBAC" rel="tag">RBAC</a>
+                                    ,
+                                            <a href="../tags/Permission" rel="tag">Permission</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;16 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9389" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9389" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;16 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9367.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel + Botman 轻松实现微信公众号聊天机器人
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9441.html" rel="next">
+                API 鉴权新姿势 - 签名鉴权
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        40 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-11819" class="comment even thread-even depth-1">
+            <article id="div-comment-11819" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='转角遇到鬼' src='https://www.gravatar.com/avatar/84ed3ce94134eba3d1b9a3a8493fb6f7?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/转角遇到鬼" target="_blank">转角遇到鬼</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/huangwenyi159357" target="_blank">
+                                huangwenyi159357
+                            </a>
+                                                                <p>我是直接一张表都没有，好奇怪</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11819"  aria-label='回复转角遇到鬼...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-10-11T16:00:02+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-10-11 16:00:02
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11819" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11803" class="comment even thread-even depth-1">
+            <article id="div-comment-11803" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='huangwenyi159357' src='https://avatars3.githubusercontent.com/u/20662308?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/huangwenyi159357" target="_blank">huangwenyi159357</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>生成  migrate 的时候怎么少了2张表 users 表 和 password_reset 表</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11803"  aria-label='回复huangwenyi159357...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-10-09T17:54:54+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-10-09 17:54:54
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11803" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11334" class="comment even thread-even depth-1">
+            <article id="div-comment-11334" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr_White_DT' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/0e665837dd6a553fb3dfb84f6d349405-32x32.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Mr_White_DT" target="_blank">Mr_White_DT</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Mr_White_DT" target="_blank">
+                                Mr_White_DT
+                            </a>
+                                                                <p>是我把中间件注册错了</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11334"  aria-label='回复Mr_White_DT...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-09T00:50:36+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-09 00:50:36
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11334" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11333" class="comment even thread-even depth-1">
+            <article id="div-comment-11333" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr_White_DT' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/0e665837dd6a553fb3dfb84f6d349405-32x32.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Mr_White_DT" target="_blank">Mr_White_DT</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/Mr_White_DT" target="_blank">
+                                Mr_White_DT
+                            </a>
+                                                                <p>Auth::user() 打印结果为 NULL，$request-&gt;all() 打印结果为 []</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11333"  aria-label='回复Mr_White_DT...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-09T00:40:36+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-09 00:40:36
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11333" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11332" class="comment even thread-even depth-1">
+            <article id="div-comment-11332" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr_White_DT' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/0e665837dd6a553fb3dfb84f6d349405-32x32.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Mr_White_DT" target="_blank">Mr_White_DT</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>报错了，&quot;Call to a member function hasPermissionTo() on null&quot;，我登录了，也设置了这个权限，但是在中间件ClearanceMiddleware中出错了，打印Auth::user()为 null，我是用wamp跑的。。。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11332"  aria-label='回复Mr_White_DT...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-09T00:31:40+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-09 00:31:40
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11332" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11313" class="comment even thread-even depth-1">
+            <article id="div-comment-11313" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/元芳NO1" target="_blank">
+                                元芳NO1
+                            </a>
+                                                                <p>后台创建下这个权限吧：<a href="../../post/9389.html#toc_10">http://laravelacademy.org/post/9389.html#toc_10</a> 这几个权限都创建了吗</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11313"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-08T10:15:53+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-08 10:15:53
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11313" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11307" class="comment even thread-even depth-1">
+            <article id="div-comment-11307" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='元芳NO1' src='https://www.gravatar.com/avatar/fde8f3502dee0f326f89308c9dbd6882?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/元芳NO1" target="_blank">元芳NO1</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>我点 New Article连接 出现 这个问题</p>
+<p>There is no permission named <code>Administer roles &amp; permissions</code> for guard <code>web</code>.</p>
+<p>这是什么意思  我数据库permission表里 是有的</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11307"  aria-label='回复元芳NO1...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-07T20:45:37+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-07 20:45:37
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11307" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11217" class="comment even thread-even depth-1">
+            <article id="div-comment-11217" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='lala0257' src='https://avatars0.githubusercontent.com/u/20457803?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/lala0257" target="_blank">lala0257</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>如何设置超级管理员，意思是默认超级管理不需要进行设置权限.   如果给超级管理员设置权限，一旦设置出错了，其它人也没有设置全选的功能，那么这个时候超级管理员就GG了</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="11217"  aria-label='回复lala0257...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-28T08:45:44+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-28 08:45:44
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11217" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10336" class="comment even thread-even depth-1">
+            <article id="div-comment-10336" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='zhyt' src='https://www.gravatar.com/avatar/f24f9981972d713b6c82045040f52d0e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            zhyt
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        isAdmin中间件里：
+<code>
+$user = User::all()-&gt;count();
+if (!($user == 1)) { //如果数据库里用户总量不等于1
+    if (!Auth::user()-&gt;hasPermissionTo('Administer roles &amp; permissions')) //检查当前用户是否有“Admin...”权限
+</code>
+报错是因为你的数据库里不只有1个用户，而且没有Administer roles &amp; permissions权限
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="10336"  aria-label='回复zhyt...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-13T00:37:20+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-13 00:37:20
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10336" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10335" class="comment even thread-even depth-1">
+            <article id="div-comment-10335" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='zhyt' src='https://www.gravatar.com/avatar/f24f9981972d713b6c82045040f52d0e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            zhyt
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        应该是网络问题吧
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9389.html#respond' data-id="10335"  aria-label='回复zhyt...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-13T00:27:23+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-13 00:27:23
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10335" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/9389.html/page/2#comments">2</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/9389.html/page/3#comments">3</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/9389.html/page/4#comments">4</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/index.php/post/9389.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9389.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9389' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9389.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9389.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        项目初始化
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        基本使用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用实例
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        登录注册控制器调整
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        布局视图文件调整
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        文章相关资源类
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        用户相关资源类
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        权限相关资源类
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        角色相关资源类
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        权限中间件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9389.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        功能测试
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="1337.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel 5.1 中的ACL用户授权及权限检查功能实现教程
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3755.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        使用 Entrust 扩展包在 Laravel 5 中实现 RBAC 权限管理（一）：安装配置篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3761.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        使用 Entrust 扩展包在 Laravel 5 中实现 RBAC 权限管理（二）：使用篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="5978.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] 安全 —— 用户授权
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6613.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在 Voyager 后台管理系统中集成 Entrust 实现 RBAC 权限管理（一） —— 安装
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

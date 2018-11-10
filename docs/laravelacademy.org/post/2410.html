@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于Laravel开发博客应用系列 —— 联系我们 &amp; 发送邮件 &amp; 队列使用（基于数据库） - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="2410.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="2410.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="2410.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="2410.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="2410.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../blog">
+                博客系列
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于Laravel开发博客应用系列 —— 联系我们 &amp; 发送邮件 &amp; 队列使用（基于数据库）</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于Laravel开发博客应用系列 —— 联系我们 &amp; 发送邮件 &amp; 队列使用（基于数据库）</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="2410.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2015-12-07T22:11:46+08:00">2015-12-07</time>
+                    <time class="updated" datetime="2015-12-07T22:16:03+08:00">2015-12-07 22:16:03</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                15310 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>本节我们将会添加联系我们功能到博客应用，要实现该功能我们需要了解 Laravel 的邮件发送功能以及队列处理机制。</p>
+<h3 id="toc_0"><strong>1、邮件发送设置</strong></h3>
+<p>为了使用 Laravel 5.1 的邮件发送功能，首选需要配置邮件发送，配置很简单，打开 <code>.env</code> 文件，查看邮件配置部分：</p>
+<pre>MAIL_DRIVER=smtp
+MAIL_HOST=mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null</pre>
+<p>正如你所看到的，都是一些简单的配置项。</p>
+<h4 id="toc_1"><strong>配置 163 邮箱账户</strong></h4>
+<p>假设你有一个 163 邮箱账户，下面我们就以 163 邮箱为例演示如何配置邮件发送。</p>
+<p>首先，编辑 config/mail.php 文件内容如下：</p>
+<pre>// 将如下这行
+ 'from' =&gt; ['address' =&gt; null, 'name' =&gt; null],
+// 修改成
+ 'from' =&gt; ['address' =&gt; env('MAIL_FROM'), 'name' =&gt; env('MAIL_NAME')],</pre>
+<p>这一步设置邮件发送人和发送人姓名。</p>
+<p>接下来，编辑 <code>.env</code>，修改邮件配置如下：</p>
+<pre>MAIL_DRIVER=smtp
+MAIL_HOST=smtp.163.com
+MAIL_PORT=25
+MAIL_USERNAME=YOUR@EMAIL.COM
+MAIL_PASSWORD=YOUR-163-PASSWORD
+MAIL_FROM=YOUR@EMAIL.COM
+MAIL_NAME=YOUR-NAME</pre>
+<h4 id="toc_2"><strong>使用 Tinker 测试邮件发送</strong></h4>
+<p>Laravel 使用邮件视图作为模板发送邮件，所有发送邮件前首先创建一个简单的测试邮件视图模板。在 <code>resources/views/emails</code> 目录下新建一个 <code>test.blade.php</code> 文件，编辑其内容如下：</p>
+<pre>&lt;p&gt;
+    这是一封测试邮件。
+&lt;/p&gt;
+&lt;p&gt;
+    变量 &lt;code&gt;$testVar&lt;/code&gt; 的值是：
+&lt;/p&gt;
+&lt;ul&gt;
+     &lt;li&gt;&lt;strong&gt;{{ $testVar }}&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;就是这样。&lt;/p&gt;</pre>
+<p>在命令行运行 <code>artisan tinker</code> 命令发送邮件：</p>
+<p><img class="alignnone size-full wp-image-2418" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-07-20-53-06.png" alt="使用Artisan Tinker命令发送邮件" width="606" height="160" /></p>
+<p>我们使用 <code>Mail::send</code> 发送邮件，该方法第一个参数是邮件视图模板，第二个参数是传递到视图的变量数组，第三个参数是对消息进行额外处理的闭包，这里我们只是设置了收件人及邮件主题。你可以在闭包中做更多事情，更多设置可参考<a href="213.html">Laravel邮件文档</a>。</p>
+<p>上述 tinker 示例使用 163 邮箱配置，如果邮件发送成功返回1。</p>
+<p>去收件箱收取邮件，该邮件内容如下：</p>
+<p><img class="alignnone size-full wp-image-2419" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-07-20-56-30.png" alt="使用Laravel Tinker发送邮件收取" width="509" height="326" /></p>
+<h3 id="toc_3"><strong>2、添加联系我们表单</strong></h3>
+<p>现在我们知道 Laravel 邮件发送功能没有问题，接下来我们来创建联系我们表单。</p>
+<h4 id="toc_4"><strong>添加链接和路由</strong></h4>
+<p>联系我们链接应该出现在博客的每一个页面，所以我们将其放到顶部导航条中，编辑 <code>blog.partials.page-nav</code> 视图文件如下：</p>
+<pre>// 将如下区块内容
+{{-- Collect the nav links, forms, and other content for toggling --}}
+&lt;div class="collapse navbar-collapse" id="navbar-main"&gt;
+    &lt;ul class="nav navbar-nav"&gt;
+        &lt;li&gt;
+            &lt;a href="/"&gt;Home&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+
+// 替换成
+{{-- Collect the nav links, forms, and other content for toggling --}}
+&lt;div class="collapse navbar-collapse" id="navbar-main"&gt;
+    &lt;ul class="nav navbar-nav"&gt;
+        &lt;li&gt;
+            &lt;a href="/"&gt;Home&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;ul class="nav navbar-nav navbar-right"&gt;
+        &lt;li&gt;
+            &lt;a href="/contact"&gt;Contact&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</pre>
+<p>很简单，现在还需要为这个链接定义一个路由：</p>
+<pre>// 在下面这行路由下面
+get('blog/{slug}', 'BlogController@showPost');
+
+// 添加如下两行路由
+$router-&gt;get('contact', 'ContactController@showForm');
+Route::post('contact', 'ContactController@sendContactInfo');
+</pre>
+<p>注意我们直接使用了 <code>$router</code> 而不是 <code>get()</code> 函数，然后使用了 <code>Route</code> 门面而不是 <code>post()</code> 函数，这只是为了演示有多种方式来定义路由。通常我使用辅助函数来设置路由，但是有些人倾向于使用 <code>$router</code>，也有些人喜欢使用 <code>Route</code> 门面。</p>
+<p>此外 Laravel 5.1 还提供了以下辅助函数来设置路由：</p>
+<ul>
+<li>delete($uri, $action) 注册一个DELETE路由</li>
+<li>get($uri, $action) 注册一个GET路由</li>
+<li>patch($uri, $action) 注册一个PATCH路由</li>
+<li>post($uri, $action) 注册一个POST路由</li>
+<li>put($uri, $action) 注册一个PUT路由</li>
+<li>resource($name, $controller, $options) 注册一个RESTful路由</li>
+</ul>
+<p>如果要对路由进行分组，只能使用 <code>Route::group</code> 或 <code>$router-&gt;group()</code>。</p>
+<h4 id="toc_5"><strong>创建表单请求类</strong></h4>
+<p>我们知道联系表单包含用户名，邮箱地址，以及消息内容，这里我们和之前后台系统一样使用表单请求类来对表单字段进行验证。使用 Artisan 命令创建该请求类：</p>
+<pre>php artisan make:request ContactMeRequest</pre>
+<p>编辑新生成的 <code>ContactMeRequest.php</code> 文件内容如下：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Requests;
+
+use App\Http\Requests\Request;
+class ContactMeRequest extends Request
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     */
+    public function rules()
+    {
+        return [
+            'name' =&gt; 'required',
+            'email' =&gt; 'required|email',
+            'message' =&gt; 'required',
+        ];
+    }
+}</code></pre>
+<h4 id="toc_6"><strong>创建控制器</strong></h4>
+<p>下面我们创建在路由中使用的控制器：</p>
+<pre>php artisan make:controller --plain ContactController</pre>
+<p>然后编辑新生成的控制器文件 <code>ContactController.php</code> 内容如下：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+use App\Http\Requests\ContactMeRequest;
+use Illuminate\Support\Facades\Mail;
+
+class ContactController extends Controller
+{
+    /**
+     * 显示表单
+     *
+     * @return View
+     */
+    public function showForm()
+    {
+        return view('blog.contact');
+    }
+
+    /**
+     * Email the contact request
+     *
+     * @param ContactMeRequest $request
+     * @return Redirect
+     */
+    public function sendContactInfo(ContactMeRequest $request)
+    {
+        $data = $request-&gt;only('name', 'email', 'phone');
+        $data['messageLines'] = explode("\n", $request-&gt;get('message'));
+
+        Mail::send('emails.contact', $data, function ($message) use ($data) {
+            $message-&gt;subject('Blog Contact Form: '.$data['name'])
+              -&gt;to(config('blog.contact_email'))
+              -&gt;replyTo($data['email']);
+        });
+
+        return back()
+            -&gt;withSuccess("Thank you for your message. It has been sent.");
+    }
+}</code></pre>
+<p>在 <code>sendContactInfo()</code> 方法中，我们使用 <code>ContactMeRequest</code> 验证表单请求，然后使用 <code>$data</code> 填充表单数据，对 <code>message</code> 字段，我们以行为单位将其进行分割并传递给视图。</p>
+<p>再然后我们使用 <code>Mail</code> 门面发送消息，你还可以在 <code>sendContactInfo()</code> 方法中依赖注入 <code>Illuminate\Mail\Mailer</code> 对象的方式实现邮件发送。</p>
+<p>消息被发送后我们跳转到联系页面，传递发送成功消息。</p>
+<blockquote><p>注：记得添加 <code>contact_email</code> 到博客配置文件，在控制器中我们使用了 <code>config('blog.contact_email')</code> 来获取该配置值。</p></blockquote>
+<h4 id="toc_7"><b>创建视图</b></h4>
+<p>要完成联系表单功能，我们还需要创建两个视图，一个用于显示表单，一个用于定义被发送邮件视图模板。</p>
+<p>首先在 <code>resources/views/blog</code> 目录下创建 <code>contact.blade.php</code>：</p>
+<pre><code>@extends('blog.layouts.master', ['meta_description' =&gt; 'Contact Form'])
+
+@section('page-header')
+  &lt;header class="intro-header"
+          style="background-image: url('{{ page_image('contact-bg.jpg') }}')"&gt;
+    &lt;div class="container"&gt;
+      &lt;div class="row"&gt;
+        &lt;div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"&gt;
+          &lt;div class="site-heading"&gt;
+            &lt;h1&gt;Contact Me&lt;/h1&gt;
+            &lt;hr class="small"&gt;
+            &lt;h2 class="subheading"&gt;
+              Have questions? I have answers (maybe).
+            &lt;/h2&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+@stop
+
+@section('content')
+  &lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"&gt;
+        @include('admin.partials.errors')
+        @include('admin.partials.success')
+        &lt;p&gt;
+          Want to get in touch with me? Fill out the form below to send me a
+          message and I will try to get back to you within 24 hours!
+        &lt;/p&gt;
+        &lt;form action="/contact" method="post"&gt;
+          &lt;input type="hidden" name="_token" value="{!! csrf_token() !!}"&gt;
+          &lt;div class="row control-group"&gt;
+            &lt;div class="form-group col-xs-12"&gt;
+              &lt;label for="name"&gt;Name&lt;/label&gt;
+              &lt;input type="text" class="form-control" id="name" name="name"
+                     value="{{ old('name') }}"&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="row control-group"&gt;
+            &lt;div class="form-group col-xs-12"&gt;
+              &lt;label for="email"&gt;Email Address&lt;/label&gt;
+              &lt;input type="email" class="form-control" id="email" name="email"
+                     value="{{ old('email') }}"&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="row control-group"&gt;
+            &lt;div class="form-group col-xs-12 controls"&gt;
+              &lt;label for="phone"&gt;Phone Number&lt;/label&gt;
+              &lt;input type="tel" class="form-control" id="phone" name="phone"
+                     value="{{ old('phone') }}"&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="row control-group"&gt;
+            &lt;div class="form-group col-xs-12 controls"&gt;
+              &lt;label for="message"&gt;Message&lt;/label&gt;
+              &lt;textarea rows="5" class="form-control" id="message"
+                        name="message"&gt;{{ old('message') }}&lt;/textarea&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;br&gt;
+          &lt;div class="row"&gt;
+            &lt;div class="form-group col-xs-12"&gt;
+              &lt;button type="submit" class="btn btn-default"&gt;Send&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+@endsection</code></pre>
+<p>接下来在 <code>resources/views/emails</code> 目录下创建 <code>contact.blade.php</code>：</p>
+<pre><code>&lt;p&gt;
+  You have received a new message from your website contact form.&lt;/p&gt;&lt;p&gt;
+  Here are the details:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Name: &lt;strong&gt;{{ $name }}&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Email: &lt;strong&gt;{{ $email }}&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Phone: &lt;strong&gt;{{ $phone }}&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;
+  @foreach ($messageLines as $messageLine)
+    {{ $messageLine }}&lt;br&gt;
+  @endforeach
+&lt;/p&gt;
+&lt;hr&gt;</code></pre>
+<h4 id="toc_8"><strong>发送邮件</strong></h4>
+<p>联系表单功能现在已经全部完成，在浏览器地址栏中访问 <code>http://blog.app/contact</code> 来测试该功能：</p>
+<p><img class="alignnone size-full wp-image-2421" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-07-21-15-36.png" alt="Laravel 博客联系我们功能" width="811" height="524" /></p>
+<p>填写完表单后，点击“Send”提交信息。收到成功信息后，可以去邮箱收邮件，邮件内容如下：</p>
+<p><img class="alignnone size-full wp-image-2422" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-07-21-18-52.png" alt="Laravel博客联系我们收件箱邮件内容" width="547" height="374" /></p>
+<p>你可能已经注意到点击发送按钮和收到成功回复之间有一定延迟，这是因为使用了 <code>smtp</code> 邮箱驱动，该操作需要连接到对应 SMTP 服务器实现邮件发送。</p>
+<p>要减少这个延迟时间，我们可以设置队列，以便在后台异步处理这个耗时任务。</p>
+<h3 id="toc_9"><strong>3、关于队列</strong></h3>
+<p>队列允许我们延迟耗时任务的处理，例如邮件发送，从而使得 web 请求响应更快。</p>
+<h4 id="toc_10"><strong>如何工作</strong></h4>
+<p>队列实际上很容易理解：</p>
+<p><img class="alignnone size-full wp-image-2416" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/how-does-queue-work.png" alt="队列工作原理" width="450" height="300" /></p>
+<p>整个过程应该是这样：Web 请求到达处理该请求的控制器，在处理过程中，某些任务被推送到队列（比如邮件发送），然后返回响应。队列会在后台异步执行。</p>
+<h4 id="toc_11"><strong>队列驱动</strong></h4>
+<p>Laravel 为队列提供了的不同实现驱动：</p>
+<ul>
+<li><code>sync</code> - 当任务被推送到sync队列后会立即执行</li>
+<li><code>database</code> - 数据库队列会将任务存放到数据表中，该表默认是<code>jobs</code></li>
+<li><code>beanstalkd</code> - 要实现beanstalkd队列需要先配置并运行beanstalkd，而且还要使用Composer安装依赖包：<code>composer require "pda/pheanstalk=~3.0"</code></li>
+<li><code>sqs</code> - 该驱动会将任务推送到Amazon SQS队列，同样需要先使用Composer安装依赖包：<code>composer require aws/aws-sdk-php</code></li>
+<li><code>iron</code> - 该驱动会将任务推送到IronMQ，使用前需要安装依赖：<code>composer required "iron-io/iron_mq=~1.5"</code></li>
+<li><code>redis</code> - Redis队列会将任务推送到Redis数据库，使用前需要安装redis依赖：<code>composer require "presdis/presis=~1.0"</code></li>
+</ul>
+<h4 id="toc_12"><strong>使用数据库驱动</strong></h4>
+<p>这里我们使用数据库驱动实现队列。</p>
+<p>登录到 Homestead 虚拟机，运行如下迁移命令创建存放队列任务的 <code>jobs</code> 表：</p>
+<pre>php artisan queue:table 
+php artisan migrate</pre>
+<p>然后编辑 <code>.env</code> 文件并修改 <code>QUEUE_DRIVER</code> 的配置值为 <code>database</code>。</p>
+<h3 id="toc_13"><strong>4、将邮件发送任务推送到队列</strong></h3>
+<p>现在队列已经设置好了，接下来我们将邮件发送推送到队列中而不是等待邮件发送完成再返回响应给用户。</p>
+<h4 id="toc_14"><strong>修改控制器</strong></h4>
+<p>要将邮件发送任务推送到队列，只需要在控制器 <code>ContactController</code> 中做如下改动即可：</p>
+<pre><code>// 找到这一行
+Mail::send('emails.contact', $data, function ($message) use ($data) {
+
+// 然后将其修改为：
+Mail::queue('emails.contact', $data, function ($message) use ($data) {</code></pre>
+<p>就是这么简单！</p>
+<h4 id="toc_15"><strong>邮件在哪</strong></h4>
+<p>再次测试联系我们表单，点击“Send"之后没有任何延迟就会跳转到成功页面。</p>
+<p>但是，如果仅仅这样你就以为完事的话那就错了，你将永远无法接收到邮件。</p>
+<p>为什么？</p>
+<p>因为后台没有运行对队列进行处理的轮询命令，接下来我们就要来做这件事。</p>
+<h4 id="toc_16"><strong>运行 queue:work</strong></h4>
+<p>要处理队列中的任务，需要手动运行 Artisan 命令：<code>queue:work</code>。</p>
+<p>如果队列为空，这个命令什么也不会做。一旦有任务推送到队列中，该命令会捕获任务并执行它。</p>
+<h3 id="toc_17"><strong>5、自动处理队列</strong></h3>
+<p><code>queue:work</code> 命令有个缺陷，就是每次有新任务推送到队列后需要手动登录到服务器并运行该命令，任务才会被执行，这显然是不合理的，对此我们可以使用一些自动化解决方案。</p>
+<p>一种方式是将 <code>artisan queue:listen</code> 命令加入到服务器启动脚本中，该命令会在新任务推送到队列时自动调用 <code>artisan queue:work</code>。这种方案的问题是 <code>queue:listen </code> 命令会一直挂在那里，消耗 CPU 资源，而且一旦命令挂掉，新的任务还是无法执行，更好的解决方案是使用 Supervisor 来运行 <code>queue:listen</code>。</p>
+<h4 id="toc_18"><strong>使用 Supervisor 运行 queue:listen</strong></h4>
+<p>Supervisor 是 *nix 系统上用于监控和管理进程的工具，我们这里不深入探究如何安装这个工具，如果你使用 Homestead 作为本地开发环境，则该工具已经为我们安装好了。</p>
+<p>以 Homestead 上预装的 Supervisor 为例，在 <code>/etc/supervisor/conf.d</code> 目录下创建 <code>blog.conf</code>，并编辑该文件内容如下：</p>
+<pre><code>[program:blog-queue-listen]
+command=php /home/vagrant/Code/blog/artisan queue:listen
+user=vagrant
+process_name=%(program_name)s_%(process_num)d
+directory=/home/vagrant/Code/blog
+stdout_logfile=/home/vagrant/Code/blog/storage/logs/supervisord.log
+redirect_stderr=true
+numprocs=1</code></pre>
+<p>保存该文件后关闭在正在运行的 Supervisor 服务，然后使用如下命令重新启动 Supervisor：</p>
+<pre>sudo supervisord -c /etc/supervisor/supervisord.conf</pre>
+<p>使用如下命令可以查看所有正在监听的队列：</p>
+<pre>sudo supervisorctl status</pre>
+<p>这样，推送到队列的任务就可以正常被执行了。</p>
+<h4 id="toc_19"><strong>使用调度命令</strong></h4>
+<p>对小的站点而言还有一种方式是使用调度任务每分钟运行一次 <code>queue:work</code>，或者每五分钟，这可以通过使用 Laravel 5.1 的命令行调度器来完成。</p>
+<p>编辑 <code>app/Console/Kernel.php</code> 文件如下：</p>
+<pre><code>// 修改如下这个方法
+/**
+ * Define the application's command schedule.
+ *
+ * @param  Schedule  $schedule
+ * @return void
+ */
+protected function schedule(Schedule $schedule)
+{
+    // Run once a minute
+    $schedule-&gt;command('queue:work')-&gt;cron('* * * * * *');
+}</code></pre>
+<p>这将会每分钟运行一次 <code>queue:work</code>，你还可以通过如下方式修改运行频率：</p>
+<pre><code>// 每5分钟运行一次
+$schedule-&gt;command('queue:work')-&gt;everyFiveMinutes();
+
+// 一天运行一次
+$schedule-&gt;command('queue:work')-&gt;daily();
+
+// 每个星期一早上8:15运行
+$schedule-&gt;command('queue:work')-&gt;weeklyOn(1, '8:15');</code></pre>
+<p>要查看更多配置详情可查看<a href="235.html">Laravel任务调度文档</a>。</p>
+<p>下一步需要编辑服务器的 <code>crontab</code> 设置调度命令。编辑 <code>crontab</code> 并添加如下这行调度任务：</p>
+<pre><code>* * * * * php /path/to/artisan schedule:run 1&gt;&gt; /dev/null 2&gt;&amp;1</code></pre>
+<blockquote><p>注：需要将 /path/to 修改成项目根目录，比如在Homestead上是 <code>/home/vagrant/Code/blog</code>。</p></blockquote>
+<p>这将会调用 Artisan 运行任何当前调度任务，并将输出发送到空设备。</p>
+<h3 id="toc_20"><strong>6、队列任务</strong></h3>
+<p>队列的另一个使用场景是异步任务。我们在控制器中使用 <code>$this-&gt;dispatch(new JobName)</code> 分发任务，但是这些任务只是被推送到队列，只有当运行 <code>queue:work</code> 或者其它处理队列任务 的操作执行时这些队列任务才会执行。</p>
+<p>更多关于队列任务的详情请查看<a href="222.html">Laravel队列文档</a>。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/blog" rel="category tag">
+                博客系列
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%95%B0%E6%8D%AE%E5%BA%93" rel="tag">数据库</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E9%98%9F%E5%88%97" rel="tag">队列</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E9%82%AE%E4%BB%B6" rel="tag">邮件</a>
+                                    ,
+                                            <a href="../tags/SMTP" rel="tag">SMTP</a>
+                                    ,
+                                            <a href="../tags/任务" rel="tag">任务</a>
+                                    ,
+                                            <a href="../tags/Supervisor" rel="tag">Supervisor</a>
+                                    ,
+                                            <a href="../tags/调度" rel="tag">调度</a>
+                                    ,
+                                            <a href="../tags/Cron" rel="tag">Cron</a>
+                                    ,
+                                            <a href="../tags/博客" rel="tag">博客</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;17 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="2410" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="2410" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;17 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="2371.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于Laravel开发博客应用系列 —— 前台功能优化：给博客换上漂亮的主题 &amp; 完善博客功能
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="2438.html" rel="next">
+                基于 Laravel 开发博客应用系列 —— 添加评论、RSS 订阅和站点地图功能实现
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        25 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-7833" class="comment even thread-even depth-1">
+            <article id="div-comment-7833" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='YangWaWa' src='https://www.gravatar.com/avatar/783a8328920ee2a90263be3dec062f2e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            YangWaWa
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        composer包 加载那一块 iron依赖 reuqired 应该是 require 
+redis依赖 presis应该是 presdis
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="7833"  aria-label='回复YangWaWa...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-07-17T20:04:56+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-07-17 20:04:56
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7833" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7671" class="comment even thread-even depth-1">
+            <article id="div-comment-7671" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        没有配置邮件发送人
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="7671"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-06-19T11:29:17+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-06-19 11:29:17
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7671" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7670" class="comment even thread-even depth-1">
+            <article id="div-comment-7670" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Alpha' src='https://www.gravatar.com/avatar/c7b2506a8390d6ce01fc50805da9dafb?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Alpha
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <code>Swift_TransportException with message 'Cannot send message without a sender address'</code>
+这时候什么情况？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="7670"  aria-label='回复Alpha...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-06-19T00:49:11+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-06-19 00:49:11
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7670" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7268" class="comment even thread-even depth-1">
+            <article id="div-comment-7268" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='qwedsa' src='https://www.gravatar.com/avatar/89e8130c8169f075fb3778a5b8351ca5?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            qwedsa
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君，在laravel5.2队列中，使用了php artisan queue:word --damon时，如何解决内存溢出的问题？？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="7268"  aria-label='回复qwedsa...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-04-12T15:08:27+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-04-12 15:08:27
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7268" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7218" class="comment even thread-even depth-1">
+            <article id="div-comment-7218" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='lg23' src='https://www.gravatar.com/avatar/b31e576552c55e9d2e3f02d818d64ab4?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            lg23
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君！不好意思，又来骚扰了，
+root@server:/etc/supervisor/conf.d# supervisorctl status
+blog-queue-listen:blog-queue-listen_0   RUNNING   pid 1635, uptime 0:01:23
+root@server:/etc/supervisor/conf.d#
+
+这样的提示，算不算正确配置了。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="7218"  aria-label='回复lg23...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-04-05T22:43:48+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-04-05 22:43:48
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7218" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7217" class="comment even thread-even depth-1">
+            <article id="div-comment-7217" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='lg23' src='https://www.gravatar.com/avatar/b31e576552c55e9d2e3f02d818d64ab4?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            lg23
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我的代码路径是在 etc/vagrant/blog/app 目录下,所以这里我的路径这样写，同博客中有所不同。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="7217"  aria-label='回复lg23...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-04-05T22:19:25+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-04-05 22:19:25
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7217" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7216" class="comment even thread-even depth-1">
+            <article id="div-comment-7216" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='lg23' src='https://www.gravatar.com/avatar/b31e576552c55e9d2e3f02d818d64ab4?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            lg23
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        不知道大家配置数据库时，是否正常以下是我的配置文件内容：
+ [program:blog-queue-listen]
+  2 command=php /etc/vagrant/blog/app/artisan queue:listen
+  3 user=vagrant
+  4 process_name=%(program_name)s_%(process_num)d
+  5 directory=/etc/vagrant/blog/app
+  6 stdout_logfile=/etc/vagrant/blog/app/storage/logs/supervisord.log
+  7 redirect_stderr=true
+  8 numprocs=1
+报错内容如下：
+root@server:/etc/supervisor/conf.d# supervisord -c /etc/supervisor/supervisord.conf
+Error: The directory named as part of the path /etc/vagrant/blog/app/storage/logs/supervisord.log does not exist. in section 'program:blog-queue-listen' (file: '/etc/supervisor/conf.d/blog.conf')
+For help, use /usr/bin/supervisord -h
+谁有些情况，能否帮忙看看。谢谢
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="7216"  aria-label='回复lg23...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-04-05T21:57:27+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-04-05 21:57:27
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7216" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-6962" class="comment even thread-even depth-1">
+            <article id="div-comment-6962" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='李虎啸' src='https://www.gravatar.com/avatar/4b0aa1f8623c814bb0eaf20356ff4f0a?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            李虎啸
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        老师 5.4 把send方法改成queue 就报错
+Only mailables may be queued.   send正常 ,咋回事啊
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="6962"  aria-label='回复李虎啸...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-03-09T15:43:15+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-03-09 15:43:15
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="6962" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-6900" class="comment even thread-even depth-1">
+            <article id="div-comment-6900" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Iceneet' src='https://www.gravatar.com/avatar/f2f81d86700e0aadbfb3e941870dbdc8?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Iceneet
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        ....嗯 重新退出tinker就好了.。。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="6900"  aria-label='回复Iceneet...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-03-04T16:32:07+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-03-04 16:32:07
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="6900" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-6898" class="comment even thread-even depth-1">
+            <article id="div-comment-6898" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Iceneet' src='https://www.gravatar.com/avatar/f2f81d86700e0aadbfb3e941870dbdc8?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Iceneet
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        Swift_TransportException with message 'Cannot send message without a sender address'
+..为什么报这个错误。。  email.php和env里面的参数都设置了。。 求帮忙
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2410.html#respond' data-id="6898"  aria-label='回复Iceneet...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-03-04T16:25:55+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-03-04 16:25:55
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="6898" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/2410.html/page/2#comments">2</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/2410.html/page/3#comments">3</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/post/2410.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="2410.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='2410' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="2410.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="2410.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        1、邮件发送设置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        配置 163 邮箱账户
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用 Tinker 测试邮件发送
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        2、添加联系我们表单
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        添加链接和路由
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建表单请求类
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建控制器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        发送邮件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3、关于队列
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        如何工作
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        队列驱动
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用数据库驱动
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4、将邮件发送任务推送到队列
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        修改控制器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        邮件在哪
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        运行 queue:work
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5、自动处理队列
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用 Supervisor 运行 queue:listen
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用调度命令
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2410.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6、队列任务
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="222.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 服务 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="235.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 服务 —— 任务调度
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="469.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Lumen 5.1 文档 ] 更多特性 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3252.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 服务 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6922.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 综合话题 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

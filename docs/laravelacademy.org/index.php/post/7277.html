@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ PHP 内核与扩展开发系列] PHP 中的资源类型：持久资源 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="7277.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="7277.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="7277.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="7277.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="7277.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../modern-php.1">
+                现代PHP
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../php-extension">
+                扩展开发
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ PHP 内核与扩展开发系列] PHP 中的资源类型：持久资源</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ PHP 内核与扩展开发系列] PHP 中的资源类型：持久资源</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="7277.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-06-11T23:58:38+08:00">2017-06-11</time>
+                    <time class="updated" datetime="2017-06-12T21:39:04+08:00">2017-06-12 21:39:04</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                1034 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>通常情况下，像资源这类复合类型的数据都会占用大量的硬件资源，比如内存、CPU以及网络带宽。对于使用频率超级高的数据库连接，我们可以获取一个长连接，使其不会在脚本结束后自动销毁，一旦创建便可以在各个请求中直接使用，从而减少每次创建它的消耗。MySQL 的长连接在 PHP 内核中其实就是一种持久资源。</p>
+<h3 id="toc_0">内存分配</h3>
+<p>前面的章节里我们接触了 <code>emalloc()</code> 之类的以 <code>e</code> 开头的内存管理函数，通过它们申请的内存都会被内核自动的进行垃圾回收的操作。而对于一个持久资源来说，我们是绝对不希望它在脚本结束后被回收的。</p>
+<p>假设需要在我们的资源中同时保存文件名和文件句柄两个数据，就需要自己定义这个结构了：</p>
+<pre><code>typedef struct _php_sample_descriptor_data
+{
+    char *filename;
+    FILE *fp;
+} php_sample_descriptor_data;
+</code></pre>
+<p>当然，因为结构变了，我们之前的代码也需要跟着改动。这里还没有涉及到持久资源，仅仅是换了一种资源结构</p>
+<pre><code>static void php_sample_descriptor_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+{
+    php_sample_descriptor_data *fdata = (php_sample_descriptor_data *)rsrc-&gt;ptr;
+    fclose(fdata-&gt;fp);
+    efree(fdata-&gt;filename);
+    efree(fdata);
+}
+
+ZEND_FUNCTION(academy_sample_fopen)
+{
+    php_sample_descriptor_data *fdata;
+    FILE *fp;
+    char *filename, *mode;
+    int filename_len, mode_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &amp;filename, &amp;filename_len, &amp;mode, &amp;mode_len) == FAILURE)
+    {
+        RETURN_NULL();
+    }
+    if (!filename_len || !mode_len) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid filename or mode length");
+        RETURN_FALSE;
+    }
+    fp = fopen(filename, mode);
+    if (!fp)
+    {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unable to open %s using mode %s", filename, mode);
+        RETURN_FALSE;
+    }
+    fdata = emalloc(sizeof(php_sample_descriptor_data));
+    fdata-&gt;fp = fp;
+    fdata-&gt;filename = estrndup(filename, filename_len);
+    ZEND_REGISTER_RESOURCE(return_value, fdata, academy_sample_descriptor);
+}
+
+ZEND_FUNCTION(academy_sample_fwrite)
+{
+    php_sample_descriptor_data *fdata;
+    zval *file_resource;
+    char *data;
+    int data_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs", &amp;file_resource, &amp;data, &amp;data_len) == FAILURE )
+    {
+        RETURN_NULL();
+    }
+    ZEND_FETCH_RESOURCE(fdata, php_sample_descriptor_data*, &amp;file_resource, -1, PHP_SAMPLE_DESCRIPTOR_RES_NAME, academy_sample_descriptor);
+    RETURN_LONG(fwrite(data, 1, data_len, fdata-&gt;fp));
+}
+</code></pre>
+<p>接下来我们来重写 <code>academy_sample_fclose()</code> 函数：</p>
+<pre><code>ZEND_FUNCTION(academy_sample_fclose)
+{
+    php_sample_descriptor_data *fdata;
+    zval *file_resource;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &amp;file_resource) == FAILURE)
+    {
+        RETURN_NULL();
+    }
+
+    ZEND_FETCH_RESOURCE(fdata, php_sample_descriptor_data*, &amp;file_resource, -1, PHP_SAMPLE_DESCRIPTOR_RES_NAME, academy_sample_descriptor);
+    zend_hash_index_del(&amp;EG(regular_list), Z_RESVAL_P(file_resource));
+    RETURN_TRUE;
+}
+</code></pre>
+<p>我们还可以在内核中获取每个资源对应的文件名称了：</p>
+<pre><code>ZEND_FUNCTION(academy_sample_fname) { 
+    php_sample_descriptor_data *fdata; 
+    zval *file_resource; 
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &amp;file_resource) == FAILURE ) { 
+        RETURN_NULL(); 
+    } 
+    ZEND_FETCH_RESOURCE(fdata, php_sample_descriptor_data*, &amp;file_resource, -1, PHP_SAMPLE_DESCRIPTOR_RES_NAME, academy_sample_descriptor); 
+    RETURN_STRING(fdata-&gt;filename, 1); 
+}
+</code></pre>
+<p>现在编译运行，所有代码的结果都非常正确：</p>
+<pre><code>&lt;?php
+$fp = academy_sample_fopen("/tmp/test", "a");
+academy_sample_fwrite($fp, "laravel academy");
+var_dump(academy_sample_fname($fp));
+academy_sample_fclose($fp);
+var_dump(file_get_contents("/tmp/test"));
+</code></pre>
+<p>运行结果如下：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/06/14971946532370.jpg" alt="" />￼</p>
+<p>现在，是时候引入持久资源了！</p>
+<h3 id="toc_1">延迟析构</h3>
+<p>在前面我们删除一个资源的时候，其实是去 <code>EG(regular_list)</code> 中将其删掉，<code>EG(regular_list)</code> 存储着所有只用于当前请求的资源。</p>
+<p>持久资源存储在另一个 HashTable 中：<code>EG(persistent_list)</code>。其与 <code>EG(regular_list)</code> 有个明显的区别，那就是它每个值的索引都是字符串类型的，而且它的每个值也不会在每次请求结束后被释放掉，只能手动通过 <code>zend_hash_del()</code> 来删除，或者在进程结束后类似于 <code>MSHUTDOWN</code> 阶段将<code>EG(persistent_list)</code> 整体清除，最常见的情景便是操作系统关闭了Web Server。</p>
+<p><code>EG(persistent_list)</code> 对其元素也有自己的 dtor 回调函数，和 <code>EG(regular_list)</code> 一样，它将根据其值的类型去调用不同的回调函数，我们这一次注册回调函数的时候，需要用到<code>zend_register_list_destructors_ex()</code> 函数的第二个参数，第一个则被赋成 <code>NULL</code>。<br />
+在底层的实现中，持久的和正常的资源是分别在不同的地方存储的，也分别拥有各自不同的释放函数。但在我们为脚本提供的函数中，却希望能够封装这种差异，从而使我们的用户使用起来更加方便快捷：</p>
+<pre><code>static int academy_sample_descriptor_persist;
+
+static void php_sample_descriptor_dtor_persistent(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+{
+    php_sample_descriptor_data *fdata = (php_sample_descriptor_data*)rsrc-&gt;ptr;
+    fclose(fdata-&gt;fp);
+    pefree(fdata-&gt;filename, 1);
+    pefree(fdata, 1);
+}
+
+ZEND_MINIT_FUNCTION(academy_sample_resource)
+{
+    academy_sample_descriptor = zend_register_list_destructors_ex(php_sample_descriptor_dtor, NULL, PHP_SAMPLE_DESCRIPTOR_RES_NAME, module_number);
+    academy_sample_descriptor_persist = zend_register_list_destructors_ex(NULL, php_sample_descriptor_dtor_persistent, PHP_SAMPLE_DESCRIPTOR_RES_NAME, module_number);
+    return SUCCESS;
+}
+</code></pre>
+<p>我们并没有为这两种资源起不同的名字，以防使用户产生疑惑。现在我们的 PHP 扩展中引进了一种新的资源，所以我们需要改写一下上面的函数，尽量使用户使用时感觉不到这种差异。</p>
+<pre><code>//academy_sample_fopen()
+PHP_FUNCTION(academy_sample_fopen)
+{
+    php_sample_descriptor_data *fdata;
+    FILE *fp;
+    char *filename, *mode;
+    int filename_len, mode_len;
+    zend_bool persist = 0;
+
+    //类比一下mysql_connect函数的最后一个参数
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss|b", &amp;filename, &amp;filename_len, &amp;mode, &amp;mode_len, &amp;persist) == FAILURE)
+    {
+        RETURN_NULL();
+    }
+    if (!filename_len || !mode_len)
+    {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Invalid filename or mode length");
+        RETURN_FALSE;
+    }
+
+    fp = fopen(filename, mode);
+    if (!fp)
+    {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unable to open %s using mode %s",filename, mode);
+        RETURN_FALSE;
+    }
+
+    if (!persist) {
+        fdata = emalloc(sizeof(php_sample_descriptor_data));
+        fdata-&gt;filename = estrndup(filename, filename_len);
+        fdata-&gt;fp = fp;
+        ZEND_REGISTER_RESOURCE(return_value, fdata, academy_sample_descriptor);
+    } else {
+        zend_rsrc_list_entry le;
+        char *hash_key;
+        int hash_key_len;
+
+        fdata = pemalloc(sizeof(php_sample_descriptor_data),1);
+        fdata-&gt;filename = pemalloc(filename_len + 1, 1);
+        memcpy(fdata-&gt;filename, filename, filename_len + 1);
+        fdata-&gt;fp = fp;
+
+        //在EG(regular_list)中存一份
+        ZEND_REGISTER_RESOURCE(return_value, fdata, academy_sample_descriptor_persist);
+
+        //在EG(persistent_list)中再存一份
+        le.type = academy_sample_descriptor_persist;
+        le.ptr = fdata;
+        hash_key_len = spprintf(&amp;hash_key, 0, "sample_descriptor:%s:%s", filename, mode);
+        zend_hash_update(&amp;EG(persistent_list), hash_key, hash_key_len + 1,(void*)&amp;le, sizeof(zend_rsrc_list_entry), NULL);
+        efree(hash_key);
+    }
+}
+</code></pre>
+<p>在持久资源时，因为我们在 <code>EG(regular_list)</code> 中也保存了一份，所以脚本中我们资源类型的变量在实现中仍然是保存着一个资源 ID，我们可以用它来进行之前章节所做的工作。将其添加到 <code>EG(persistent_list)</code> 中时，我们进行的操作流程几乎和 <code>ZEND_REGISTER_RESOURCE()</code> 宏函数一样，唯一的不同便是索引由之前的数字类型换成了字符串类型。当一个保存在 <code>EG(regular_list)</code> 中的持久资源被脚本释放时，内核会在 <code>EG(regular_list)</code> 寻找它对应的 dtor 函数，但它找到的是 NULL，因为我们在使用 <code>zend_register_list_destructors_ex()</code> 函数声明这种资源类型时，第一个参数的值为 NULL。所以此时这个资源不会被任何 dtor 函数调用，可以继续存在于内存中，任脚本流逝，请求更迭。当 Web 服务器的进程执行完毕后，内核会扫描 <code>EG(persistent_list)</code> 的 dtor，并调用我们已经定义好的释放函数。在我们定义的释放函数中，一定要记得使用 <code>pfree</code> 函数来释放内存，而不是 <code>efree</code>。</p>
+<h3 id="toc_2">资源复用</h3>
+<p>创建持久资源的目的是为了使用它，而不是让它来浪费内存的，我们再次重写一下 <code>academy_sample_open()</code> 函数，这一次我们将检测需要创建的资源是否已经在 <code>persistent_list</code> 中存在了。</p>
+<pre><code>PHP_FUNCTION(academy_sample_fopen)
+{
+    php_sample_descriptor_data *fdata;
+    FILE *fp;
+    char *filename, *mode, *hash_key;
+    int filename_len, mode_len, hash_key_len;
+    zend_bool persist = 0;
+    zend_rsrc_list_entry *existing_file;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss|b", &amp;filename, &amp;filename_len, &amp;mode, &amp;mode_len, &amp;persist) == FAILURE)
+    {
+        RETURN_NULL();
+    }
+
+    if (!filename_len || !mode_len)
+    {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING,"Invalid filename or mode length");
+        RETURN_FALSE;
+    }
+
+    //看看是否已经存在，如果已经存在就直接使用，不再创建
+    hash_key_len = spprintf(&amp;hash_key, 0, "sample_descriptor:%s:%s", filename, mode);
+    if (zend_hash_find(&amp;EG(persistent_list), hash_key, hash_key_len + 1, (void **)&amp;existing_file) == SUCCESS)
+    {
+        //存在一个，直接使用！
+        ZEND_REGISTER_RESOURCE(return_value, existing_file-&gt;ptr, academy_sample_descriptor_persist);
+        efree(hash_key);
+        return;
+    }
+
+    fp = fopen(filename, mode);
+    if (!fp)
+    {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unable to open %s using mode %s", filename, mode);
+        RETURN_FALSE;
+    }
+
+    if (!persist) {
+        fdata = emalloc(sizeof(php_sample_descriptor_data));
+        fdata-&gt;filename = estrndup(filename, filename_len);
+        fdata-&gt;fp = fp;
+        ZEND_REGISTER_RESOURCE(return_value, fdata, academy_sample_descriptor);
+    } else {
+        zend_rsrc_list_entry le;
+        fdata = pemalloc(sizeof(php_sample_descriptor_data),1);
+        fdata-&gt;filename = pemalloc(filename_len + 1, 1);
+        memcpy(fdata-&gt;filename, filename, filename_len + 1);
+        fdata-&gt;fp = fp;
+        ZEND_REGISTER_RESOURCE(return_value, fdata, academy_sample_descriptor_persist);
+
+        /* 在 persistent_list 中存一份*/
+        le.type = academy_sample_descriptor_persist;
+        le.ptr = fdata;
+
+        //hash_key在上面已经被创建了
+        zend_hash_update(&amp;EG(persistent_list), hash_key, hash_key_len + 1,(void*)&amp;le, sizeof(zend_rsrc_list_entry), NULL);
+    }
+    efree(hash_key);
+}
+</code></pre>
+<p>因为所有的 PHP 扩展都共用同一个 HashTable 来保存持久资源，所以我们在为资源的索引起名时，一定要唯一，同时必须简单，方便我们在其它的函数中构造出来。</p>
+<h3 id="toc_3">有效性检测</h3>
+<p>一旦我们打开一个本地文件，便可以一直占有它的操作句柄，保证随时可以打开它。但是对于一些存在于远程计算机上的资源，比如 MySQL 连接、HTTP 链接，虽然我们仍然握着与服务器的连接，但是这个连接在服务器端可能已经被关闭了，在本地我们就无法再用它来做一些有价值的工作了。</p>
+<p>所以，当我们使用资源，尤其是持久资源时，一定要保证获取出来的资源仍然是有效的、可以使用的。如果它失效了，我们必须将其从 persistent list 中移除。下面就是一个检测 socket 有效性的例子：</p>
+<pre><code>if (zend_hash_find(&amp;EG(persistent_list), hash_key, hash_key_len + 1, (void**)&amp;socket) == SUCCESS)
+{
+    if (php_sample_socket_is_alive(socket-&gt;ptr))
+    {
+        ZEND_REGISTER_RESOURCE(return_value, socket-&gt;ptr, academy_sample_socket);
+        return;
+    }
+    zend_hash_del(&amp;EG(persistent_list), hash_key, hash_key_len + 1);
+}
+</code></pre>
+<p>如你所见，资源失效后，我们只要把它从 HashTable 中删除就行了，这一步操作同样会激活我们设置的回调函数。</p>
+<h3 id="toc_4">获取更多资源类型</h3>
+<p>现在我们已经可以创建资源类型并生成新的资源，还能将持久资源与普通资源使用的差异性封装起来。但是如果用户对一个持久资源调用 <code>academy_sample_fwrite()</code> 时并不会正常工作，先想一下内核是如何通过一个数字在 <code>regular_list</code> 中获取最终资源的：</p>
+<pre><code>ZEND_FETCH_RESOURCE(
+    fdata,
+    php_sample_descriptor_data*,
+    &amp;file_resource,
+    -1,
+    PHP_SAMPLE_DESCRIPTOR_RES_NAME,
+    academy_sample_descriptor
+);
+</code></pre>
+<p><code>academy_sample_descriptor</code> 可以保证你获取到的资源确实是这种类型的，绝不会出现你想要一个文件句柄，却返回给你一个 MySQL 连接的情况。这种验证是必须的，但有时你又想绕过这种验证，因为我们放在<code>persistenst_list</code> 中的资源是 <code>academy_sample_descruotor_persist</code> 类型的，所以当我们把它复制到 <code>regular_list</code> 中时，它也是 <code>academy_sample_descructor_persist</code> 类型的，所以如果我们想获取它，貌似只有两种方法，要么修改类型，要么再写一个新的 <code>sample_write_persistent</code> 函数的实现。或者极端一些，在 <code>academy_sample_write</code> 函数里进行复杂的判断。但是如果<code>academy_sample_write()</code> 函数能同时接收它们两种类型的资源多好啊！</p>
+<p>事情没有这么复杂，我们确实可以在 <code>academy_sample_write()</code> 函数里获取资源时同时指定两种类型。那就是使用 <code>ZEND_FETCH_RESOURCE2()</code> 宏函数，它与 <code>ZEND_FETCH_RESOURCE()</code> 宏函数的唯一区别就是它可以接收两种类型参数：</p>
+<pre><code>ZEND_FETCH_RESOURCE2(
+    fdata,
+    php_sample_descriptor_data*,
+    &amp;file_resource,
+    -1,
+    PHP_SAMPLE_DESCRIPTOR_RES_NAME,
+    academy_sample_descriptor,
+    academy_sample_descriptor_persist
+);
+</code></pre>
+<p>现在，只要资源 ID 对应的最终资源类型是 <code>persistent</code> 或者 <code>non-persistent</code> 中的一种便可以正常通过验证了。</p>
+<p>什么，你想设置三种甚至更多的类型？那你只能直接使用 <code>zend_fetch_resource()</code> 函数了：</p>
+<pre><code>// 一种类型的
+fp = (FILE*) zend_fetch_resource(
+    &amp;file_descriptor TSRMLS_CC, 
+        -1,
+        PHP_SAMPLE_DESCRIPTOR_RES_NAME, 
+        NULL,
+        1, 
+        academy_sample_descriptor
+);
+ZEND_VERIFY_RESOURCE(fp);
+</code></pre>
+<p>想看看 <code>ZEND_FETCH_RESOURCE2()</code> 宏函数的实现么？</p>
+<pre><code>//两种类型的
+fp = (FILE*) zend_fetch_resource(
+        &amp;file_descriptor TSRMLS_CC, 
+        -1,
+        PHP_SAMPLE_DESCRIPTOR_RES_NAME, 
+        NULL,
+        2, 
+        academy_sample_descriptor, 
+        academy_sample_descriptor_persist
+);
+ZEND_VERIFY_RESOURCE(fp);
+</code></pre>
+<p>再给力一些，三种类型的：</p>
+<pre><code>fp = (FILE*) zend_fetch_resource(
+    &amp;file_descriptor TSRMLS_CC, 
+    -1,
+    PHP_SAMPLE_DESCRIPTOR_RES_NAME, 
+    NULL,
+    3, 
+    academy_sample_descriptor, 
+    academy_sample_descriptor_persist,
+    academy_sample_othertype
+);
+ZEND_VERIFY_RESOURCE(fp);
+</code></pre>
+<p>话都说到这份上了，你肯定知道四种、五种、更多种类型的应该怎么调用了。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../modern-php/php-extension" rel="category tag">
+                扩展开发
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/资源" rel="tag">资源</a>
+                                    ,
+                                            <a href="../tags/PHP" rel="tag">PHP</a>
+                                    ,
+                                            <a href="../tags/内存" rel="tag">内存</a>
+                                    ,
+                                            <a href="../tags/复用" rel="tag">复用</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E5%86%85%E6%A0%B8" rel="tag">内核</a>
+                                    ,
+                                            <a href="../tags/数据类型" rel="tag">数据类型</a>
+                                    ,
+                                            <a href="../tags/持久化" rel="tag">持久化</a>
+                                    ,
+                                            <a href="../tags/长连接" rel="tag">长连接</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="7277" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="7277" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="7265.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ PHP 内核与扩展开发系列] PHP 中的资源类型：复合数据类型 —— 资源
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="7285.html" rel="next">
+                [ PHP 内核与扩展开发系列] 类与面向对象：如何定义一个类
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="7277.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='7277' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="7277.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="7277.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        内存分配
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7277.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        延迟析构
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7277.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        资源复用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7277.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        有效性检测
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7277.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        获取更多资源类型
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="7159.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 变量类型
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7185.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 内存管理 —— 内存分配与释放
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7193.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 内存管理 —— 引用计数
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7265.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] PHP 中的资源类型：复合数据类型 —— 资源
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7377.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 流式访问：流的概览
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

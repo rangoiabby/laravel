@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十九） —— 通过 Vue.js 实现动态表单一次提交多个咖啡店位置信息 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9626.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9626.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9626.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9626.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9626.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../api-app">
+                API 应用
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十九） —— 通过 Vue.js 实现动态表单一次提交多个咖啡店位置信息</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十九） —— 通过 Vue.js 实现动态表单一次提交多个咖啡店位置信息</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9626.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-10-05T23:55:32+08:00">2018-10-05</time>
+                    <time class="updated" datetime="2018-10-27T00:23:25+08:00">2018-10-27 00:23:25</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                538 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p><a href="../../post/9625.html">上一篇教程</a>中，我们创建了相应的数据表结构来存储咖啡店与冲泡方法的多对多关联以及获取方法，现在我们需要在其基础上来调整新增咖啡店表单：由于一个咖啡店可能有多个分店，我们可能需要多个位置字段（具体数目未知），因此需要一个动态表单。通过 Vue.js 我们可以轻松实现这样的动态表单。</p>
+<h3 id="toc_0">第一步：构思新的 NewCafe.vue 组件功能</h3>
+<p>很显然，我们需要对 <code>NewCafe.vue</code> 表单组件进行重构，在此之前，需要先构思下我们要实现什么样的功能。</p>
+<p>我们已经实现了新增咖啡店功能，但是这个表单只支持单个地理位置，而有些咖啡店可能散布在多个地方（可以理解为多个分店），这些分店都有一个共同的父节点（可以理解为总店），它们共享同一个咖啡店名称、网址、简介等信息。每个咖啡店，不管是总店还是分店，都会支持多个冲泡方法，最后我们会将总店和分店信息分别存储到 <code>cafes</code> 表的不同记录中，并且以某种方式进行关联。</p>
+<p>总店和分店区别主要体现在：</p>
+<ul>
+<li>具体地址</li>
+<li>位置名称（唯一标识位置）</li>
+<li>冲泡方法</li>
+</ul>
+<p>在具体的提交表单中，需要提供一个添加位置的按钮来添加标识咖啡店位置的字段以及移除位置的按钮来移除与之关联的位置字段，这样，发送给服务器的数据结构也将需要做相应的调整，因此，不仅仅是渲染表单的 HTML 需要调整，还需要调整 Vuex 模块方法和 API 调用，在<a href="../../post/9625.html#toc_5">上一篇教程</a>中，我们已经设置好用于存放冲泡方法的 Vuex 模块 <code>brewMethods</code>，除此之外，还需要做如下这些调整：</p>
+<ul>
+<li>保存咖啡店的分发动作</li>
+<li>提交咖啡店到服务器端 JavaScript API</li>
+<li>更新服务器端验证逻辑来接收新的表单数据</li>
+<li>修改服务器端保存数据到数据库的业务逻辑</li>
+</ul>
+<p>接下来，我们将按照这个思路一步一步完成本教程需要实现的动态表单提交功能。</p>
+<h3 id="toc_1">第二步：开始编辑 NewCafe.vue 组件代码</h3>
+<p>打开 <code>resources/assets/js/pages/NewCafe.vue</code> 组件文件，首先需要从 <code>data()</code> 方法中移除老的地址相关字段，然后添加 <code>locations</code> 数组以及几个新的字段，同时从 <code>validations</code> 中移除老的验证字段并添加 <code>locations</code> 数组以及 <code>oneLocation</code> 等新字段验证规则，这样，新的 <code>data()</code> 方法代码如下：</p>
+<pre><code>data() {
+   return {
+       name: '',
+       locations: [],
+       website: '',
+       description: '',
+       roaster: false,
+       validations: {
+           name: {
+               is_valid: true,
+               text: ''
+           },
+           locations: [],
+           oneLocation: {
+               is_valid: true,
+               text: ''
+           },
+           website: {
+               is_valid: true,
+               text: ''
+           }
+       }
+   }
+},</code></pre>
+<p><code>locations</code> 数组用于存放所有新增的位置字段数据，<code>validations</code> 中的 <code>locations</code> 数组也会包含每个位置字段的验证规则，这样就能确保添加的每个位置字段数据都是有效的。<code>oneLocation</code> 验证规则用于确保咖啡店至少包含一个位置信息。而 <code>website</code> 和 <code>description</code> 都是新增的字段，用于表示咖啡店的网址和简介信息。</p>
+<p>接下来，需要添加 <code>addLocation()</code> 方法到 <code>methods</code> 方法列表中，该方法用于新增一个位置区块到表单中，并在组件创建后进行调用，<code>addLocation()</code> 方法代码如下：</p>
+<pre><code>addLocation() {
+    this.locations.push({name: '', address: '', city: '', state: '', zip: '', methodsAvailable: []});
+    this.validations.locations.push({
+        address: {
+            is_valid: true,
+            text: ''
+        },
+        city: {
+            is_valid: true,
+            text: ''
+        },
+        state: {
+            is_valid: true,
+            text: ''
+        },
+        zip: {
+            is_valid: true,
+            text: ''
+        }
+    });
+},</code></pre>
+<p>该方法所做的事情就是将一个位置对象推送到 <code>locations</code> 字段，其中包含名称、地址、城市、省份和邮编以及有效的冲泡方法数组，然后将位置对象中的某些字段验证规则推送到 <code>validations.locations</code> 字段，我们在验证规则中去掉了 <code>name</code> 和 <code>methodsAvailable</code> 属性，这是因为对 <code>name</code> 字段而言，如果空的话，我们将使用咖啡店已经存在的名称字段，并且这个字段也不是必需的；而对 <code>methodsAvailable</code> 字段而言，当添加咖啡店时，你可能还不知道所有的冲泡方法。</p>
+<p>这样，通过动态绑定，就可以在调用该方法时在表单中插入一个咖啡店位置填写区块了，我们在组件创建时调用上述方法来添加位置区块：</p>
+<pre><code>created(){
+    this.addLocation();
+},</code></pre>
+<p>这将会初始化我们的第一个位置（提交表单时至少有一个咖啡店位置，可以将这个位置作为总店位置，其他新增的位置作为分店位置）。</p>
+<h3 id="toc_2">第三步：添加填充表单模板</h3>
+<p>在这一步中，我们需要为所有输入字段定义一个可视化的显示模板，首先，我们将原来模板中的地址、城市、省份和邮编字段都删除，因为这些字段已经并入到位置模块里面，并且新增一些字段：</p>
+<pre><code>&lt;div class="page"&gt;
+    &lt;form&gt;
+        &lt;div class="grid-container"&gt;
+            &lt;div class="grid-x grid-padding-x"&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;名称
+                        &lt;input type="text" placeholder="咖啡店名" v-model="name"&gt;
+                    &lt;/label&gt;
+                    &lt;span class="validation" v-show="!validations.name.is_valid"&gt;{{ validations.name.text }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;网址
+                        &lt;input type="text" placeholder="网址" v-model="website"&gt;
+                    &lt;/label&gt;
+                    &lt;span class="validation" v-show="!validations.website.is_valid"&gt;{{ validations.website.text }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;简介
+                        &lt;input type="text" placeholder="简介" v-model="description"&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="grid-x grid-padding-x" v-for="(location, key) in locations"&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;h3&gt;位置&lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="large-6 medium-6 small-12 cell"&gt;
+                    &lt;label&gt;位置名称
+                        &lt;input type="text" placeholder="位置名称" v-model="locations[key].name"&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class="large-6 medium-6 small-12 cell"&gt;
+                    &lt;label&gt;详细地址
+                        &lt;input type="text" placeholder="详细地址" v-model="locations[key].address"&gt;
+                    &lt;/label&gt;
+                    &lt;span class="validation" v-show="!validations.locations[key].address.is_valid"&gt;{{ validations.locations[key].address.text }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="large-6 medium-6 small-12 cell"&gt;
+                    &lt;label&gt;城市
+                        &lt;input type="text" placeholder="城市" v-model="locations[key].city"&gt;
+                    &lt;/label&gt;
+                    &lt;span class="validation" v-show="!validations.locations[key].city.is_valid"&gt;{{ validations.locations[key].city.text }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="large-6 medium-6 small-12 cell"&gt;
+                    &lt;label&gt;省份
+                        &lt;input type="text" placeholder="省份" v-model="locations[key].state"&gt;
+                    &lt;/label&gt;
+                    &lt;span class="validation" v-show="!validations.locations[key].state.is_valid"&gt;{{ validations.locations[key].state.text }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="large-6 medium-6 small-12 cell"&gt;
+                    &lt;label&gt;邮编
+                        &lt;input type="text" placeholder="邮编" v-model="locations[key].zip"&gt;
+                    &lt;/label&gt;
+                    &lt;span class="validation" v-show="!validations.locations[key].zip.is_valid"&gt;{{ validations.locations[key].zip.text }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;label&gt;支持的冲泡方法&lt;/label&gt;
+                    &lt;span class="brew-method" v-for="brewMethod in brewMethods"&gt;
+                        &lt;input v-bind:id="'brew-method-'+brewMethod.id+'-'+key" type="checkbox"
+                               v-bind:value="brewMethod.id"
+                               v-model="locations[key].methodsAvailable"&gt;
+                        &lt;label v-bind:for="'brew-method-'+brewMethod.id+'-'+key"&gt;{{ brewMethod.method }}&lt;/label&gt;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;a class="button" v-on:click="removeLocation(key)"&gt;移除位置&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="grid-x grid-padding-x"&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;a class="button" v-on:click="addLocation()"&gt;新增位置&lt;/a&gt;
+                &lt;/div&gt;
+                &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                    &lt;a class="button" v-on:click="submitNewCafe()"&gt;提交表单&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;</code></pre>
+<p>这里我们所做的就是将模板中原来的那个只能设置单个位置信息的表单替换成一个可以动态新增/移除位置字段的表单。</p>
+<p>首先我们来看下这段代码：</p>
+<pre><code>&lt;div class="grid-x grid-padding-x" v-for="(location, key) in locations"&gt;</code></pre>
+<p>它会遍历 <code>locations</code> 数组中的所有位置信息并解析 <code>location</code> 和 <code>key</code> 字段，分别表示位置数据和位置索引。我们会使用 <code>key</code> 来实现每个表单输入字段于数据模型的双向绑定：</p>
+<pre><code>&lt;div class="large-6 medium-6 small-12 cell"&gt;
+     &lt;label&gt;位置名称
+         &lt;input type="text" placeholder="位置名称" v-model="locations[key].name"&gt;
+     &lt;/label&gt;
+&lt;/div&gt;</code></pre>
+<p><code>locations[key].name</code> 通过 <code>key</code> 引用了位置对象 <code>locations</code> 对应索引中的 <code>name</code> 属性值。所有其他位置字段的关联逻辑与此一致，不再赘述。此外，我们还通过相应的字段验证规则来决定是否显示对应字段验证错误信息：</p>
+<pre><code>&lt;span class="validation" v-show="!validations.locations[key].address.is_valid"&gt;{{ validations.locations[key].address.text }}&lt;/span&gt;</code></pre>
+<p>在设置完咖啡店位置信息后，我们还渲染了支持的冲泡方法选择列表：</p>
+<pre><code>&lt;div class="large-12 medium-12 small-12 cell"&gt;
+    &lt;label&gt;支持的冲泡方法&lt;/label&gt;
+    &lt;span class="brew-method" v-for="brewMethod in brewMethods"&gt;
+        &lt;input v-bind:id="'brew-method-'+brewMethod.id+'-'+key" type="checkbox" v-bind:value="brewMethod.id" v-model="locations[key].methodsAvailable"&gt;
+        &lt;label v-bind:for="'brew-method-'+brewMethod.id+'-'+key"&gt;{{ brewMethod.method }}&lt;/label&gt;
+    &lt;/span&gt;
+&lt;/div&gt;</code></pre>
+<p>这里我们为某个分店支持的冲泡方法提供了选择列表：我们通过 <code>v-model</code> 将其和 <code>locations[key].methodsAvailable</code> 进行绑定，并通过遍历 <code>brewMethods</code> （查询冲泡方法 API 获取）动态设置每个复选框的 <code>id</code> 和 <code>value</code> 属性值。</p>
+<p>最后，添加一个移除按钮来移除与之关联的位置信息：</p>
+<pre><code>&lt;div class="large-12 medium-12 small-12 cell"&gt;
+    &lt;a class="button" v-on:click="removeLocation(key)"&gt;移除位置&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+<p>如果你一不小心添加了太多的位置信息，可以通过这个按钮逐个移除。点击该按钮会调用 <code>removeLocation</code> 方法并将位置索引 <code>key</code> 作为参数传入，然后通过 <code>splice</code> 从数组中删除指定 <code>key</code> 对应的位置数据和验证规则。需要将这个方法添加到 <code>methods</code> 对象中：</p>
+<pre><code>removeLocation(key) {
+    this.locations.splice(key, 1);
+    this.validations.locations.splice(key, 1);
+},</code></pre>
+<p>在循环体之外，还定义了一个新增按钮来新增位置区块：</p>
+<pre><code>&lt;div class="large-12 medium-12 small-12 cell"&gt;
+    &lt;a class="button" v-on:click="addLocation()"&gt;新增位置&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+<p>点击该按钮会调用 <code>addLocation</code> 方法在表单中插入位置区块。</p>
+<h3 id="toc_3">第四步：在表单中引入冲泡方法数据</h3>
+<p>我们在上一步中已经遍历过 <code>brewMethods</code> 数组，该数组代表所有支持的冲泡方法数据，需要从<a href="../../post/9625.html#toc_5">上一篇教程</a>定义的 Vuex 存储中获取，我们已经在 <code>Layout.vue</code> 中加载这个数据了，所以可以直接拿来使用，只需将其添加到计算属性中即可：</p>
+<pre><code>computed: {
+    brewMethods() {
+        return this.$store.getters.getBrewMethods;
+    }
+},</code></pre>
+<h3 id="toc_4">第五步：验证动态表单</h3>
+<p>由于我们可以给咖啡店添加任意数量的位置信息，因此验证动态表单最困难的部分就是不知道要验证多少数据，好在，我们已经准备好了 <code>locations</code> 字段及其验证规则数组来处理这些位置字段验证，为此需要重写 <code>validateNewCafe</code> 方法中的位置字段验证代码：</p>
+<pre><code>for (var index in this.locations) {
+    if (this.locations.hasOwnProperty(index)) {
+        // 确保地址字段不为空
+        if (this.locations[index].address.trim() === '') {
+            validNewCafeForm = false;
+            this.validations.locations[index].address.is_valid = false;
+            this.validations.locations[index].address.text = 'Please enter an address for the new cafe!';
+        } else {
+            this.validations.locations[index].address.is_valid = true;
+            this.validations.locations[index].address.text = '';
+        }
+    }
+
+    // 确保城市字段不为空
+    if (this.locations[index].city.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.locations[index].city.is_valid = false;
+        this.validations.locations[index].city.text = 'Please enter a city for the new cafe!';
+    } else {
+        this.validations.locations[index].city.is_valid = true;
+        this.validations.locations[index].city.text = '';
+    }
+
+    // 确保省份字段不为空
+    if (this.locations[index].state.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.locations[index].state.is_valid = false;
+        this.validations.locations[index].state.text = 'Please enter a state for the new cafe!';
+    } else {
+        this.validations.locations[index].state.is_valid = true;
+        this.validations.locations[index].state.text = '';
+    }
+
+    // 确保邮编字段不为空
+    if (this.locations[index].zip.trim() === '' || !this.locations[index].zip.match(/(^\d{6}$)/)) {
+        validNewCafeForm = false;
+        this.validations.locations[index].zip.is_valid = false;
+        this.validations.locations[index].zip.text = 'Please enter a valid zip code for the new cafe!';
+    } else {
+        this.validations.locations[index].zip.is_valid = true;
+        this.validations.locations[index].zip.text = '';
+    }
+}</code></pre>
+<p>这段代码会遍历所有的位置数据并验证每个字段。具体的验证逻辑和之前一致，除此之外，还为 <code>website</code> 字段添加了 URL 验证规则：</p>
+<pre><code>// 确保网址是有效的 URL
+if (this.website.trim !== '' &amp;&amp; !this.website.match(/^((https?):\/\/)?([w|W]{3}\.)+[a-zA-Z0-9\-\.]{3,}\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/)) {
+    validNewCafeForm = false;
+    this.validations.website.is_valid = false;
+    this.validations.website.text = '请输入有效的网址 URL';
+} else {
+    this.validations.website.is_valid = true;
+    this.validations.website.text = '';
+}</code></pre>
+<p><code>description</code> 字段可以为空，就不写验证规则了。</p>
+<h3 id="toc_5">第六步：更新 addCafe 分发动作</h3>
+<p>接下来我们需要重写传递表单数据到 Vuex 动作的方法从而保存新的咖啡店数据，在 <code>submitNewCafe()</code> 方法中，我们需要添加额外的字段并重新组织地址字段信息：</p>
+<pre><code>submitNewCafe: function () {
+    if (this.validateNewCafe()) {
+        this.$store.dispatch('addCafe', {
+            name: this.name,
+            locations: this.locations,
+            website: this.website,
+            description: this.description,
+            roaster: this.roaster
+        });
+    }
+}, </code></pre>
+<p>现在我们已经将所有位置信息以 <code>locations</code> 数组方式传递，并新增了 <code>website</code>、 <code>description</code> 和 <code>roaster</code> 参数，而冲泡方法则和每个位置信息一起放到了 <code>locations</code> 数组中。</p>
+<h3 id="toc_6">第七步：更新 cafe.js API</h3>
+<p>更新完 <code>addCafe</code> 分发动作后，还需要调整 <code>resources/assets/js/modules/cafes.js</code> Vuex 模块中相应的调用后端 API 方法：</p>
+<pre><code>addCafe({commit, state, dispatch}, data) {
+    commit('setCafeAddStatus', 1);
+
+    CafeAPI.postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster)
+        .then(function (response) {
+            commit('setCafeAddStatus', 2);
+            dispatch('loadCafes');
+        })
+        .catch(function () {
+             commit('setCafeAddStatus', 3);
+        });
+}</code></pre>
+<p>然后打开 <code>resources/assets/js/cafe.js</code>，更新 <code>postAddNewCafe</code> API 请求：</p>
+<pre><code>postAddNewCafe: function (name, locations, website, description, roaster) {
+    return axios.post(ROAST_CONFIG.API_URL + '/cafes',
+       {
+           name: name,
+           locations: locations,
+           website: website,
+           description: description,
+           roaster: roaster
+       }
+    );
+}</code></pre>
+<p>这样我们就可以从客户端传递新的数据格式到服务器端，接下来需要调整服务器端请求验证规则及表单数据获取逻辑。</p>
+<h3 id="toc_7">第八步：更新服务端验证规则</h3>
+<p>打开 <code>app/Http/Requests/StoreCafeRequest.php</code> 文件，更新请求参数验证规则如下，我们使用了 <code>*</code> 来验证数组数据：</p>
+<pre><code>public function rules()
+{
+    return [
+        'name'         =&gt; 'required',
+        'location.*.address'      =&gt; 'required',
+        'location.*.city'         =&gt; 'required',
+        'location.*.state'        =&gt; 'required',
+        'location.*.zip'          =&gt; 'required|regex:/\b\d{6}\b/',
+        'location.*.brew_methods' =&gt; 'sometimes|array',
+        'website'      =&gt; 'sometimes|url'
+    ];
+}</code></pre>
+<p>相应的，调整验证失败消息自定义规则如下：</p>
+<pre><code>public function messages()
+{
+    return [
+        'name.required'     =&gt; '咖啡店名字不能为空',
+        'name.min'    =&gt; '咖啡店名不能小于2个字符',
+        'location.*.address.required'  =&gt; '咖啡店地址不能为空',
+        'location.*.city.required'     =&gt; '咖啡店所在城市不能为空',
+        'location.*.state.required'    =&gt; '咖啡店所在省份不能为空',
+        'location.*.zip.required'      =&gt; '咖啡店邮编不能为空',
+        'location.*.zip.regex'         =&gt; '无效的邮政编码',
+        'location.*.brew_methods.array' =&gt; '无效的冲泡方法',
+        'website.url' =&gt; '无效的咖啡店网址'
+    ];
+}</code></pre>
+<h3 id="toc_8">第九步：保存新的表单请求数据</h3>
+<p>表单数据验证完成之后，需要将数据保存到数据库。下面我们来定义请求表单数据获取及处理逻辑，打开 <code>app/Http/Controllers/API/CafesController.php</code> 文件，修改 <code>postNewCafe</code> 方法如下：</p>
+<pre><code>public function postNewCafe(StoreCafeRequest $request)
+{
+    // 已添加的咖啡店
+    $addedCafes = [];
+    // 所有位置信息
+    $locations = $request-&gt;input('locations');
+
+    // 父节点（可理解为总店）
+    $parentCafe = new Cafe();
+
+    // 咖啡店名称
+    $parentCafe-&gt;name = $request-&gt;input('name');
+    // 分店位置名称
+    $parentCafe-&gt;location_name = $locations[0]['name'] ?: '';
+    // 分店地址
+    $parentCafe-&gt;address = $locations[0]['address'];
+    // 所在城市
+    $parentCafe-&gt;city = $locations[0]['city'];
+    // 所在省份
+    $parentCafe-&gt;state = $locations[0]['state'];
+    // 邮政编码
+    $parentCafe-&gt;zip = $locations[0]['zip'];
+    $coordinates = GaodeMaps::geocodeAddress($parentCafe-&gt;address, $parentCafe-&gt;city, $parentCafe-&gt;state);
+    // 纬度
+    $parentCafe-&gt;latitude = $coordinates['lat'];
+    // 经度
+    $parentCafe-&gt;longitude = $coordinates['lng'];
+    // 咖啡烘焙师
+    $parentCafe-&gt;roaster = $request-&gt;input('roaster') ? 1 : 0;
+    // 咖啡店网址
+    $parentCafe-&gt;website = $request-&gt;input('website');
+    // 描述信息
+    $parentCafe-&gt;description = $request-&gt;input('description') ?: '';
+    // 添加者
+    $parentCafe-&gt;added_by = $request-&gt;user()-&gt;id;
+    $parentCafe-&gt;save();
+
+    // 冲泡方法
+    $brewMethods = $locations[0]['methodsAvailable'];
+    // 保存与此咖啡店关联的所有冲泡方法（保存关联关系）
+    $parentCafe-&gt;brewMethods()-&gt;sync($brewMethods);
+
+    // 将当前咖啡店数据推送到已添加咖啡店数组
+    array_push($addedCafes, $parentCafe-&gt;toArray());
+
+    // 第一个索引的位置信息已经使用，从第 2 个位置开始
+    if (count($locations) &gt; 1) {
+        // 从索引值 1 开始，以为第一个位置已经使用了
+        for ($i = 1; $i &lt; count($locations); $i++) {
+            // 其它分店信息的获取和保存，与总店共用名称、网址、描述、烘焙师等信息，其他逻辑与总店一致
+            $cafe = new Cafe();
+
+            $cafe-&gt;parent = $parentCafe-&gt;id;
+            $cafe-&gt;name = $request-&gt;input('name');
+            $cafe-&gt;location_name = $locations[$i]['name'] ?: '';
+            $cafe-&gt;address = $locations[$i]['address'];
+            $cafe-&gt;city = $locations[$i]['city'];
+            $cafe-&gt;state = $locations[$i]['state'];
+            $cafe-&gt;zip = $locations[$i]['zip'];
+            $coordinates = GaodeMaps::geocodeAddress($cafe-&gt;address, $cafe-&gt;city, $cafe-&gt;state);
+            $cafe-&gt;latitude = $coordinates['lat'];
+            $cafe-&gt;longitude = $coordinates['lng'];
+            $cafe-&gt;roaster = $request-&gt;input('roaster') != '' ? 1 : 0;
+            $cafe-&gt;website = $request-&gt;input('website');
+            $cafe-&gt;description = $request-&gt;input('description') ?: '';
+            $cafe-&gt;added_by = $request-&gt;user()-&gt;id;
+            $cafe-&gt;save();
+
+            $cafe-&gt;brewMethods()-&gt;sync($locations[$i]['methodsAvailable']);
+
+            array_push($addedCafes, $cafe-&gt;toArray());
+        }
+    }
+
+    return response()-&gt;json($addedCafes, 201);
+}</code></pre>
+<p>在这段代码中我们将 <code>locations</code> 中的第一个位置信息作为总店位置，其他位置信息作为分店位置（如果 <code>locations</code> 数组长度为 1，则表示没有分店），分店与总店通过 <code>parent</code> 字段进行关联，并且与总店共享 <code>name</code>、<code>website</code>、<code>description</code>、<code>roaster</code>、<code>added_by</code> 信息，但是位置信息、地理编码、冲泡方法等字段各自独立，冲泡方法通过 <code>sync</code> 方法以关联关系方式存储，映射关系存放在 <code>cafes_brew_methods</code> 中间表。最后，我们会将所有添加的咖啡店记录推送到 <code>$addedCafes</code> 数组并返回。</p>
+<h3 id="toc_9">第十步：定义咖啡店模型的父子关联</h3>
+<p>由于我们在上一步中为咖啡店模型类新增了一些字段，并且将分店与总店映射成了父子关联关系，父子模型之间通过 <code>parent</code> 字段进行关联，因此需要对 <code>Cafe</code> 模型对应数据表 <code>cafes</code> 的结构进行修改。首先创建一个数据库迁移文件：</p>
+<pre><code>php artisan make:migration added_cafe_parent_child_relationship</code></pre>
+<p>然后编写新生成的迁移文件代码如下：</p>
+<pre><code>&lt;?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class AddedCafeParentChildRelationship extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('cafes', function( Blueprint $table ){
+            $table-&gt;integer('parent')-&gt;unsigned()-&gt;nullable()-&gt;after('id');
+            $table-&gt;string('location_name')-&gt;after('name');
+            $table-&gt;integer('roaster')-&gt;after('longitude');
+            $table-&gt;text('website')-&gt;after('roaster');
+            $table-&gt;text('description')-&gt;after('website');
+            $table-&gt;integer('added_by')-&gt;after('description')-&gt;unsigned()-&gt;nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('cafes', function( Blueprint $table ){
+            $table-&gt;dropColumn('parent');
+            $table-&gt;dropColumn('location_name');
+            $table-&gt;dropColumn('roaster');
+            $table-&gt;dropColumn('website');
+            $table-&gt;dropColumn('description');
+            $table-&gt;dropColumn('added_by');
+        });
+    }
+}</code></pre>
+<p>运行数据库迁移命令让修改生效：</p>
+<pre><code>php artisan migrate</code></pre>
+<p>然后在模型类 <code>Cafe</code> 中定义父子关联关系（自身模型的一对多关联）：</p>
+<pre><code>// 关联分店
+public function children()
+{
+    return $this-&gt;hasMany(Cafe::class, 'parent', 'id');
+}
+
+// 归属总店
+public function parent()
+{
+    return $this-&gt;hasOne(Cafe::class, 'id', 'parent');
+}</code></pre>
+<p>这样我们就可以通过上述方法查询某个咖啡店的所有分店/归属总店信息了。</p>
+<h3 id="toc_10">第十一步：添加 UX 特性到表单</h3>
+<p>UX 是 User Experience 的简写，表示用户体验，我们最后在动态添加位置信息表单组件添加一些增强用户体验的功能。比如，在表单提交成功后清除表单并显示通知。为此，首先需要在 <code>NewCafe.vue</code> 组件的计算属性中添加 <code>getCafeAddStatus</code> 方法，这样，就可以监听状态变化：</p>
+<pre><code>computed: {
+    brewMethods() {
+        return this.$store.getters.getBrewMethods;
+    },
+    addCafeStatus() {
+        return this.$store.getters.getCafeAddStatus;
+    }
+},</code></pre>
+<p>然后为 <code>addCafeStatus</code> 属性添加如下监听方法：</p>
+<pre><code>watch: {
+    'addCafeStatus': function () {
+        if (this.addCafeStatus === 2) {
+            // 添加成功
+            this.clearForm();
+            $("#cafe-added-successfully").show().delay(5000).fadeOut();
+        }
+
+        if (this.addCafeStatus === 3) {
+            // 添加失败
+            $("#cafe-added-unsuccessfully").show().delay(5000).fadeOut();
+        }
+    }
+},</code></pre>
+<p>最后，我们在 <code>methods</code> 对象中定义上述代码中的 <code>clearForm</code> 方法重置表单数据：</p>
+<pre><code>clearForm() {
+     this.name = '';
+     this.locations = [];
+     this.website = '';
+     this.description = '';
+     this.roaster = false;
+     this.validations = {
+         name: {
+             is_valid: true,
+             text: ''
+         },
+         locations: [],
+         oneLocation: {
+             is_valid: true,
+             text: ''
+         },
+         website: {
+             is_valid: true,
+             text: ''
+         }
+     };
+
+     this.addLocation();
+}</code></pre>
+<p>清理完表单数据信息后，会调用 <code>this.addLocation()</code> 添加一个新的位置信息到表单。</p>
+<h3 id="toc_11">第十二步：通过动态表单提交咖啡店</h3>
+<p>至此，我们已经完成基于动态表单添加多个咖啡店位置信息的代码编写，运行 <code>npm run dev</code> 重新构建前端资源，然后在浏览器中访问 <code>http://roast.test/#/cafes/new</code>，即可看到新的表单提交页面：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/c8232dd82a06b8fa6c9409aae977082d.jpg" alt="" /></p>
+<p>点击「新增位置」即可新增位置区块，点击「移除位置」即可移除与之关联的位置区块，在开始提交咖啡店数据之前，先清空数据表 <code>cafes</code> 中的现有数据，然后填写表单后点击「提交表单」提交数据，添加成功后即可在数据库中看到保存的咖啡店数据了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/2aba8db4a1d414ab97dfa39cb152b5b0.jpg" alt="" /></p>
+<p>访问 <code>http://roast.test/#/cafes</code>，也可以在浏览器开发者工具的 Vue Tab 中看到所有咖啡店数据：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/1eaca9e8ffdbdf6d8d58c725d0fa16a1.jpg" alt="" /></p>
+<p>并且在地图上也可以看到相应的点标记：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/59053f9c2d3cec4d6138992a7ee2d147.jpg" alt="" /></p>
+<blockquote>
+<p>注：本项目源码位于 <a href="https://github.com/nonfu/roastapp/">nonfu/roastapp</a>。</p>
+</blockquote>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/api-app" rel="category tag">
+                API 应用
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="../tags/Vuex" rel="tag">Vuex</a>
+                                    ,
+                                            <a href="../tags/Vue" rel="tag">Vue</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E7%BB%84%E4%BB%B6" rel="tag">组件</a>
+                                    ,
+                                            <a href="../tags/动态表单" rel="tag">动态表单</a>
+                                    ,
+                                            <a href="../tags/Roast" rel="tag">Roast</a>
+                                    ,
+                                            <a href="../tags/位置" rel="tag">位置</a>
+                                    ,
+                                            <a href="../tags/表单" rel="tag">表单</a>
+                                    ,
+                                            <a href="../tags/验证规则" rel="tag">验证规则</a>
+                                    ,
+                                            <a href="../tags/父子关联" rel="tag">父子关联</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;2 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9626" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9626" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;2 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9625.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十八） —— 实现 Laravel 模型类之间的多对多关联及冲泡方法前端查询 API
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9627.html" rel="next">
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十） —— 通过 Laravel + Vue 实现喜欢/取消喜欢咖啡店功能
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        2 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-11954" class="comment even thread-even depth-1">
+            <article id="div-comment-11954" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/方石" target="_blank">
+                                方石
+                            </a>
+                                                                <p>感谢反馈 已处理</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9626.html#respond' data-id="11954"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-10-27T00:24:23+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-10-27 00:24:23
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11954" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11953" class="comment even thread-even depth-1">
+            <article id="div-comment-11953" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='方石' src='https://www.gravatar.com/avatar/41a3e88a8e6a5d34426c125946219450?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/方石" target="_blank">方石</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>这篇文章中的两处 setCafeAddedStatus ，好像应该是 setCafeAddStatus吧？</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9626.html#respond' data-id="11953"  aria-label='回复方石...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-10-26T22:43:54+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-10-26 22:43:54
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11953" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9626.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9626' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9626.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9626.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第一步：构思新的 NewCafe.vue 组件功能
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第二步：开始编辑 NewCafe.vue 组件代码
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第三步：添加填充表单模板
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第四步：在表单中引入冲泡方法数据
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第五步：验证动态表单
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第六步：更新 addCafe 分发动作
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第七步：更新 cafe.js API
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第八步：更新服务端验证规则
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第九步：保存新的表单请求数据
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第十步：定义咖啡店模型的父子关联
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第十一步：添加 UX 特性到表单
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9626.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第十二步：通过动态表单提交咖啡店
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="9618.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十三） —— 通过 Vue 组件、Vue Router、Vuex 和 Laravel 实现表单提交
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9619.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十四） —— 通过 JavaScript 和 Laravel 验证表单请求
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9627.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十） —— 通过 Laravel + Vue 实现喜欢/取消喜欢咖啡店功能
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9641.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十九） —— 实现用户个人信息编辑功能
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9642.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（三十） —— 通过 Laravel + Vue 实现文件上传功能
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

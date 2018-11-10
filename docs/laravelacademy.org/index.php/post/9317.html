@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel + Vue + GraphQL 实现前后端分离的博客应用（三） —— 文章发布及浏览 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9317.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9317.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9317.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9317.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9317.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../basic">
+                Laravel教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel + Vue + GraphQL 实现前后端分离的博客应用（三） —— 文章发布及浏览</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel + Vue + GraphQL 实现前后端分离的博客应用（三） —— 文章发布及浏览</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9317.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-04-19T23:59:58+08:00">2018-04-19</time>
+                    <time class="updated" datetime="2018-04-20T00:47:53+08:00">2018-04-20 00:47:53</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                9326 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0">用户认证</h3>
+<p>我们设定只有认证通过的用户才能发布新文章，因此需要通过某种方式将用户认证头信息和其他请求信息一起发送到发布文章接口，以便顺利发布新文章。通过 <code>apollo-link-context</code> 我们可以轻松实现这个功能。在 <code>src/main.js</code> 中的合适位置插入如下代码：</p>
+<pre><code>import { setContext } from 'apollo-link-context'
+
+const authLink = setContext((_, { headers }) =&gt; {
+    // 从 LocalStorage 中获取认证 token（如果存在的话）
+    const token = localStorage.getItem('blog-app-token')
+
+    // return the headers to the context so httpLink can read them
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : null
+        }
+    }
+})
+
+// 更新 apollo client 如下
+const apolloClient = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+})
+</code></pre>
+<p>首先需要引入 <code>apollo-link-context</code>，然后通过它来创建一个从 LocalStorage 中获取用户令牌的 <code>authLink</code> 并返回包含认证头的请求头。最后我们在 Apollo 客户端中引入并使用 <code>authLink</code>。</p>
+<p>这样，每次请求 GraphQL 服务端时都会带上认证信息。服务端通过解析 token 信息判断用户是否已经登录。</p>
+<h3 id="toc_1">发布新文章</h3>
+<h4 id="toc_2">后端发布文章接口</h4>
+<p>首先创建文章发布变更类：</p>
+<pre><code>php artisan make:graphql:mutation AddPostMutation
+</code></pre>
+<p>然后编写 <code>AddPostMutation</code> 类代码，通过重写父类 <code>authenticated</code> 方法实现认证逻辑，表明这是个需要认证才能调用的接口；通过重写父类 <code>rules</code> 方法对提交表单字段进行简单验证：</p>
+<pre><code>namespace App\GraphQL\Mutation;
+
+use App\Article;
+use Folklore\GraphQL\Support\Mutation;
+use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
+use GraphQL;
+use JWTAuth;
+use Auth;
+
+class AddPostMutation extends Mutation
+{
+    protected $attributes = [
+        'name' =&gt; 'AddPostMutation',
+        'description' =&gt; 'A mutation'
+    ];
+
+    public function authenticated($root, $args, $context)
+    {
+        return JWTAuth::parseToken()-&gt;authenticate() ? true : false;
+    }
+
+    public function type()
+    {
+        return GraphQL::type('Article');
+    }
+
+    public function args()
+    {
+        return [
+            'title' =&gt; ['name' =&gt; 'title', Type::string()],
+            'content' =&gt; ['name' =&gt; 'content', Type::string()],
+        ];
+    }
+
+    public function rules()
+    {
+        return [
+            'title' =&gt; 'required',
+            'content' =&gt; 'required'
+        ];
+    }
+
+    public function resolve($root, $args, $context, ResolveInfo $info)
+    {
+        $article = new Article();
+        $article-&gt;title = $args['title'];
+        $article-&gt;body = $args['content'];
+        $article-&gt;user_id = Auth::user()-&gt;id;
+        $article-&gt;save();
+        return $article;
+    }
+}
+</code></pre>
+<p>不要忘了在 <code>config/graphql.php</code> 中注册这个 Mutation 类：</p>
+<pre><code>'schemas' =&gt; [
+    'default' =&gt; [
+        'query' =&gt; [
+            // queries
+        ],
+        'mutation' =&gt; [
+            ... // other mutations
+            'addPost' =&gt; \App\GraphQL\Mutation\AddPostMutation::class,
+        ]
+    ]
+],
+</code></pre>
+<p>此外我们还要在 <code>Article</code> 模型类中新增关联关系方法以便后续查询：</p>
+<pre><code>public function author()
+{
+    return $this-&gt;belongsTo(User::class, 'user_id', 'id');
+}
+</code></pre>
+<p>然后在 GraphQL 的 <code>ArticleType</code> 类的 <code>fields</code> 返回字段中新增 <code>user</code> 字段以及与之对应的字段解析方法：</p>
+<pre><code>public function fields()
+{
+    return [
+        ...
+        'user' =&gt; [
+            'type' =&gt; GraphQL::type('User'),
+            'description' =&gt; 'The author of the article'
+        ]
+    ];
+}
+
+protected function resolveUserField($root, $args)
+{
+    if (isset($args['id'])) {
+        return $root-&gt;author-&gt;where('id', $args['id']);
+    }
+    return $root-&gt;author;
+}
+</code></pre>
+<p>由于这个接口需要认证，所以我们把测试工作延迟到与前端组件一起联调时进行。</p>
+<h4 id="toc_3">前端发布文章组件</h4>
+<p><strong>定义前端 GraphQL Mutation</strong></p>
+<p>在 <code>src/graphql.js</code> 中加入下面的变更语句：</p>
+<pre><code>export const ADD_POST_MUTATION = gql`
+    mutation AddPostMutation($title: String!, $content: String!) {
+        addPost(
+            title: $title,
+            content: $content
+        ) {
+            id
+            title
+            content
+            user {
+                id
+                name
+                email
+            }
+        }
+    }
+`
+</code></pre>
+<p><strong>创建 AddPost 组件</strong></p>
+<p>然后在 <code>components/Admin</code> 目录下创建 <code>AddPost.vue</code>：</p>
+<pre><code> &lt;template&gt;
+    &lt;section class="section"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="columns"&gt;
+                &lt;div class="column is-3"&gt;
+                    &lt;Menu/&gt;
+                &lt;/div&gt;
+                &lt;div class="column is-9"&gt;
+                    &lt;h2 class="title"&gt;发布新文章&lt;/h2&gt;
+
+                    &lt;form method="post" @submit.prevent="addPost"&gt;
+                        &lt;div class="field"&gt;
+                            &lt;label class="label"&gt;标题&lt;/label&gt;
+
+                            &lt;p class="control"&gt;
+                                &lt;input
+                                        class="input"
+                                        v-model="title"
+                                        placeholder="Post title"&gt;
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div class="field"&gt;
+                            &lt;label class="label"&gt;内容&lt;/label&gt;
+
+                            &lt;p class="control"&gt;
+                                &lt;textarea
+                                        class="textarea"
+                                        rows="10"
+                                        v-model="content"
+                                        placeholder="Post content"
+                                &gt;&lt;/textarea&gt;
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;p class="control"&gt;
+                            &lt;button class="button is-primary"&gt;发布&lt;/button&gt;
+                        &lt;/p&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import Menu from '@/components/Admin/Menu'
+import { ADD_POST_MUTATION, ALL_POSTS_QUERY } from '@/graphql'
+
+export default {
+  name: 'AddPost',
+  components: {
+    Menu
+  },
+  data () {
+    return {
+      title: '',
+      content: ''
+    }
+  },
+  methods: {
+    addPost () {
+      this.$apollo
+        .mutate({
+          mutation: ADD_POST_MUTATION,
+          variables: {
+            title: this.title,
+            content: this.content
+          },
+          update: (store, { data: { addPost } }) =&gt; {
+            // 从缓存中读取所有文章数据
+            const data = store.readQuery({ query: ALL_POSTS_QUERY })
+
+            // 将新发布文章添加到已有文章列表
+            data.allPosts.push(addPost)
+
+            // 回写文章数据到缓存
+            store.writeQuery({ query: ALL_POSTS_QUERY, data })
+          }
+        })
+        .then(response =&gt; {
+          // 重定向到文章列表页
+          this.$router.replace('/admin/posts')
+        })
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<p>该组件用于渲染发布新文章表单，我们通过 <code>ADD_POST_MUTATION</code> 发送必要字段信息，由于 Apollo 客户端会缓存查询信息，所以需要一种执行变更请求后更新缓存的机制。注意到上述代码中有一个 <code>update</code> 方法将最新发布的文章更新到缓存，实现逻辑是先通过 <code>ALL_POSTS_QUERY</code> 从缓存中获取匹配数据，然后添加新发布文章数据到 <code>allPosts</code> 数组，最后将新数据回写到缓存。文章发布成功后，会重定向到文章列表。</p>
+<p><strong>注册发布文章路由</strong></p>
+<p>在 <code>src/router/index.js</code> 的合适位置插入以下代码：</p>
+<pre><code>import AddPost from '@/components/Admin/AddPost'
+
+// 将下面的代码插入 `routes` 数组
+{
+    path: '/admin/posts/new',
+    name: 'AddPost',
+    component: AddPost
+}
+</code></pre>
+<p>这样我们运行 <code>npm run build</code> 之后就可以通过 <code>http://apollo-blog.test/#//admin/posts/new</code> 在浏览器看到文章发布表单了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/04/15241547758981.jpg" alt="" />￼</p>
+<p>由于文章发布后会跳转到文章列表，所以我们将发布操作延迟到文章列表功能完成后进行。</p>
+<h3 id="toc_4">文章列表</h3>
+<h4 id="toc_5">后端文章列表接口</h4>
+<p>在 Laravel 应用中新增一个 GraphQL 查询类 <code>ArticleQuery</code>：</p>
+<pre><code>php artisan make:graphql:query ArticleQuery
+</code></pre>
+<p>然后编写 <code>ArticleQuery</code> 类代码如下：</p>
+<pre><code>namespace App\GraphQL\Query;
+
+use App\Article;
+use Folklore\GraphQL\Support\Query;
+use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
+use GraphQL;
+
+class ArticleQuery extends Query
+{
+    protected $attributes = [
+        'name' =&gt; 'articles',
+        'description' =&gt; 'articles query'
+    ];
+
+    public function type()
+    {
+        return Type::listOf(GraphQL::type('Article'));
+    }
+
+    public function args()
+    {
+        return [
+            'id' =&gt; ['name' =&gt; 'id', 'type' =&gt; Type::string()],
+            'title' =&gt; ['name' =&gt; 'title', 'type' =&gt; Type::string()],
+            'user_id' =&gt; ['name' =&gt; 'user_id', 'type' =&gt; Type::string()]
+        ];
+    }
+
+    public function resolve($root, $args, $context, ResolveInfo $info)
+    {
+        $fields = $info-&gt;getFieldSelection($depth = 3);
+
+        if (isset($args['id'])) {
+            $articles = Article::where('id', $args['id']);
+        } elseif (isset($args['title'])) {
+            $articles = Article::where('title', 'like', $args['title'] . '%');
+        } else {
+            $articles = Article::query();
+        }
+
+        foreach ($fields as $field =&gt; $keys) {
+            if ($field === 'author') {
+                $articles-&gt;with('author');
+            }
+        }
+
+        return $articles-&gt;get();
+    }
+}
+</code></pre>
+<p>最后不要忘了在 <code>config/graphql.php</code> 中注册新的查询类：</p>
+<pre><code>'schemas' =&gt; [
+    'default' =&gt; [
+        'query' =&gt; [
+            ... // other queries
+            'allPosts' =&gt; \App\GraphQL\Query\ArticleQuery::class,
+        ],
+        ... // mutations 
+    ]
+],
+</code></pre>
+<p>这样就可以在 GraphiQL 中进行文章列表接口测试了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/04/15241541590972.jpg" alt="" />￼</p>
+<h4 id="toc_6">前端文章列表组件</h4>
+<p><strong>定义 GraphQL Query</strong></p>
+<p>照例还是在 <code>src/graphql.js</code> 中加入以下语句：</p>
+<pre><code>export const ALL_POSTS_QUERY = gql`
+    query AllPostsQuery {
+        allPosts {
+            id
+            title
+            slug
+            user {
+                name
+            }
+        }
+    }
+`
+</code></pre>
+<p><strong>创建 Posts 组件</strong></p>
+<p>然后在 <code>components/Admin</code> 目录下创建 <code>Posts.vue</code> 作为文章列表组件：</p>
+<pre><code>&lt;template&gt;
+    &lt;section class="section"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="columns"&gt;
+                &lt;div class="column is-3"&gt;
+                    &lt;Menu/&gt;
+                &lt;/div&gt;
+                &lt;div class="column is-9"&gt;
+                    &lt;h2 class="title"&gt;文章列表&lt;/h2&gt;
+
+                    &lt;table class="table is-striped is-narrow is-hoverable is-fullwidth"&gt;
+                        &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;标题&lt;/th&gt;
+                            &lt;th&gt;作者&lt;/th&gt;
+                            &lt;th&gt;&lt;/th&gt;
+                        &lt;/tr&gt;
+                        &lt;/thead&gt;
+                        &lt;tbody&gt;
+                        &lt;tr
+                                v-for="post in allPosts"
+                                :key="post.id"&gt;
+                            &lt;td&gt;{{ post.title }}&lt;/td&gt;
+                            &lt;td&gt;{{ post.user.name }}&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;/tbody&gt;
+                    &lt;/table&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import Menu from '@/components/Admin/Menu'
+import { ALL_POSTS_QUERY } from '@/graphql'
+
+export default {
+  name: 'Posts',
+  components: {
+    Menu
+  },
+  data () {
+    return {
+      allPosts: []
+    }
+  },
+  apollo: {
+    // fetch all posts
+    allPosts: {
+      query: ALL_POSTS_QUERY
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<p><strong>注册文章列表路由</strong></p>
+<p>在 <code>src/router/index.js</code> 的合适位置插入下面的代码：</p>
+<pre><code>import Posts from '@/components/Admin/Posts'
+
+// 将下面这段代码插入 `routes` 数组内
+{
+    path: '/admin/posts',
+    name: 'Posts',
+    component: Posts
+}
+</code></pre>
+<p>运行 <code>npm run build</code> 之后就可以在浏览器中通过 <code>http://apollo-blog.test/#/admin/posts</code> 查看文章列表了：</p>
+<p><img class="alignnone size-full wp-image-9319" src="https://static.laravelacademy.org/wp-content/uploads/2018/04/15241552299468.jpg" alt="" width="1914" height="764" /></p>
+<p>此时，还可以测试文章发布功能，发布成功后页面会跳转到这个列表页，并且可以在列表中看到新发布的文章。</p>
+<h3 id="toc_7">文章详情页</h3>
+<h4 id="toc_8">后端接口提供</h4>
+<p>在 Laravel 应用根目录运行下面的 Artisan 命令创建新的查询类：</p>
+<pre><code>php artisan make:graphql:query ArticleQueryById
+</code></pre>
+<p>然后编写刚生成的 <code>ArticleQueryById</code> 类代码如下：</p>
+<pre><code>namespace App\GraphQL\Query;
+
+use App\Article;
+use Folklore\GraphQL\Support\Query;
+use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
+use GraphQL;
+
+class ArticleQueryById extends Query
+{
+    protected $attributes = [
+        'name' =&gt; 'ArticleQueryById',
+        'description' =&gt; 'A query'
+    ];
+
+    public function type()
+    {
+        return GraphQL::type('Article');
+    }
+
+    public function args()
+    {
+        return [
+            'id' =&gt; ['name' =&gt; 'id', 'type' =&gt; Type::string()],
+        ];
+    }
+
+    public function resolve($root, $args, $context, ResolveInfo $info)
+    {
+        if (empty($args['id'])) {
+            throw new \InvalidArgumentException('请传入文章ID!');
+        }
+        return Article::find($args['id']);
+    }
+}
+</code></pre>
+<p>最后在配置文件 <code>config/graphql.php</code> 中注册新的查询类：</p>
+<pre><code>'schemas' =&gt; [
+    'default' =&gt; [
+        'query' =&gt; [
+            ... // other queries
+            'post' =&gt; \App\GraphQL\Query\ArticleQueryById::class,
+        ],
+        'mutation' =&gt; [
+            // mutations
+        ]
+    ]
+],
+</code></pre>
+<p>这样就可以在 GraphiQL 中进行接口测试了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/04/15238955940982.jpg" alt="" />￼</p>
+<h4 id="toc_9">前端文章详情组件</h4>
+<p><strong>定义 GraphQL Query</strong></p>
+<p>首先在 <code>src/graphql.js</code> 中定义 GraphQL 查询语句：</p>
+<pre><code>export const POST_QUERY = gql`
+    query PostQuery($id: String!) {
+        post(id: $id) {
+            id
+            title
+            content
+            user {
+                id
+                name
+                email
+            }
+        }
+    }
+`
+</code></pre>
+<p><strong>创建 PostDetail 组件</strong></p>
+<p>然后在 <code>src/components</code> 目录下新建 <code>PostDetail.vue</code>：</p>
+<pre><code> &lt;template&gt;
+    &lt;section class="section"&gt;
+        &lt;div class="columns"&gt;
+            &lt;div class="column is-6 is-offset-3"&gt;
+                &lt;router-link class="button is-link is-small" to="/"&gt;回到首页&lt;/router-link&gt;
+
+                &lt;h1 class="title"&gt;
+                    {{ post.title }}
+                &lt;/h1&gt;
+
+                &lt;div class="content"&gt;
+                    {{ post.content }}
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import { POST_QUERY } from '@/graphql'
+
+export default {
+  name: 'PostDetail',
+  data () {
+    return {
+      post: '',
+      id: this.$route.params.id
+    }
+  },
+  apollo: {
+    // 通过 id 获取文章
+    post: {
+      query: POST_QUERY,
+      variables () {
+        return {
+          id: this.id
+        }
+      }
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<p><strong>注册文章详情路由</strong></p>
+<p>在 <code>src/router/index.js</code> 的合适位置插入下面的代码：</p>
+<pre><code>import SinglePost from '@/components/PostDetail'
+
+// 将下面的代码插入 `routes` 数组
+{
+    path: '/posts/:id',
+    name: 'PostDetail',
+    component: PostDetail,
+    props: true
+}
+</code></pre>
+<p>运行 <code>npm run build</code> 后通过形如 <code>http://localhost:8081/#/posts/1</code> 的链接访问文章详情页：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/04/15238959848202.jpg" alt="" />￼</p>
+<p>我们这里有一个回到首页的链接，所以我们接下来完成博客应用的最后一个页面 —— 博客首页。</p>
+<h3 id="toc_10">博客首页</h3>
+<p>我们设定在博客首页也展示文章列表，所以无需提供额外的后端接口，也不需要编写前端额外的 GraphQL 查询，直接创建组件即可。</p>
+<h4 id="toc_11">前端组件实现</h4>
+<p><strong>创建 Home 组件</strong></p>
+<p>在 <code>src/components</code> 目录下新建 <code>Home.vue</code>：</p>
+<pre><code>&lt;template&gt;
+    &lt;section class="section"&gt;
+        &lt;div class="columns"&gt;
+            &lt;div class="column is-6 is-offset-3"&gt;
+                &lt;h1 class="title"&gt;最新文章&lt;/h1&gt;
+
+                &lt;h3 v-for="post in allPosts"
+                        :key="post.id"
+                        class="title is-5"&gt;
+                    &lt;router-link :to="`/posts/${post.id}`"&gt;
+                        {{ post.title }}
+                    &lt;/router-link&gt;
+                &lt;/h3&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import { ALL_POSTS_QUERY } from '@/graphql'
+
+export default {
+  name: 'Home',
+  data () {
+    return {
+      allPosts: []
+    }
+  },
+  apollo: {
+    // fetch all posts
+    allPosts: {
+      query: ALL_POSTS_QUERY
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<p><strong>注册首页路由</strong></p>
+<p>然后在 <code>src/router/index.js</code> 的合适位置插入下面的代码：</p>
+<pre><code>import Home from '@/components/Home'
+
+// 将下面的代码插入 `routes` 数组
+{
+    path: '/',
+    name: 'Home',
+    component: Home
+}
+</code></pre>
+<p>在 Vue 应用根目录下运行 <code>npm run build</code> 后，就可以在浏览器中通过 <code>http://apollo-blog.test</code> 访问博客首页了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/04/15238965282085.jpg" alt="" />￼</p>
+<p>通过每篇文章的链接点击进去可以进入文章详情页。</p>
+<p>至此，一个简单的、带认证功能的、前后端分离的博客系统就已经全部开发完成，如果你有兴趣，可以继续为其添砖加瓦，让其更加有血有肉。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/basic" rel="category tag">
+                Laravel教程
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/认证" rel="tag">认证</a>
+                                    ,
+                                            <a href="../tags/博客" rel="tag">博客</a>
+                                    ,
+                                            <a href="../tags/文章" rel="tag">文章</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E7%BB%84%E4%BB%B6" rel="tag">组件</a>
+                                    ,
+                                            <a href="../tags/Vue" rel="tag">Vue</a>
+                                    ,
+                                            <a href="../tags/GraphQL" rel="tag">GraphQL</a>
+                                    ,
+                                            <a href="../tags/Apollo" rel="tag">Apollo</a>
+                                    ,
+                                            <a href="../tags/前后端分离" rel="tag">前后端分离</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9317" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9317" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;3 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9298.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel + Vue + GraphQL 实现前后端分离的博客应用（二） —— 用户列表及详情页
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9408.html" rel="next">
+                基于 Laravel + Pusher + Vue 通过事件广播构建实时聊天室应用
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        7 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-10244" class="comment even thread-even depth-1">
+            <article id="div-comment-10244" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='oyqq' src='https://www.gravatar.com/avatar/7502c22804c8ead493da4555af597d0b?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            oyqq
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        如果做了分页，添加或删除新数据的时候应该怎样处理？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9317.html#respond' data-id="10244"  aria-label='回复oyqq...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-28T17:08:53+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-28 17:08:53
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10244" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10211" class="comment even thread-even depth-1">
+            <article id="div-comment-10211" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mark' src='https://www.gravatar.com/avatar/78498a139d0ed4b0859b9e2c5de1fb1f?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Mark
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        分页怎么做
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9317.html#respond' data-id="10211"  aria-label='回复Mark...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-24T20:30:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-24 20:30:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10211" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10121" class="comment even thread-even depth-1">
+            <article id="div-comment-10121" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='myhyperion' src='https://www.gravatar.com/avatar/4eba25fc27873710536ebfbb370676d6?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            myhyperion
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        用户详情控制台显示：
+<code>
+[Vue warn]: Error in render: "TypeError: Cannot read property 'length' of undefined"
+</code>
+
+当然文章数是可以显示出来的
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9317.html#respond' data-id="10121"  aria-label='回复myhyperion...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-07T19:25:06+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-07 19:25:06
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10121" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9972" class="comment even thread-even depth-1">
+            <article id="div-comment-9972" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        看场景了 这里专门讲 GraphQL 所以肯定都是 GraphQL
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9317.html#respond' data-id="9972"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-05-23T21:33:10+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-05-23 21:33:10
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9972" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9970" class="comment even thread-even depth-1">
+            <article id="div-comment-9970" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='anjing' src='https://www.gravatar.com/avatar/f36288a43d17ceeecea629c63ee2f141?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            anjing
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君感觉graphql 好点呢   还是restful好点呢 我看了很长篇幅都是graphql
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9317.html#respond' data-id="9970"  aria-label='回复anjing...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-05-23T19:47:26+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-05-23 19:47:26
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9970" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9967" class="comment even thread-even depth-1">
+            <article id="div-comment-9967" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        木有 以后可以考虑将源码推送到 github
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9317.html#respond' data-id="9967"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-05-23T16:22:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-05-23 16:22:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9967" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9834" class="comment even thread-even depth-1">
+            <article id="div-comment-9834" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='dongxiaoyu' src='https://www.gravatar.com/avatar/1931b6602f9a25961f8b192668381a15?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            dongxiaoyu
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君这些有没有github地址，有些地方跟着教程走还是卡步骤了，想看看整体得代码学习一下
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9317.html#respond' data-id="9834"  aria-label='回复dongxiaoyu...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-05-04T14:35:00+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-05-04 14:35:00
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9834" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9317.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9317' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9317.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9317.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        用户认证
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        发布新文章
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        后端发布文章接口
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        前端发布文章组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        文章列表
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        后端文章列表接口
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        前端文章列表组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        文章详情页
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        后端接口提供
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        前端文章详情组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        博客首页
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9317.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        前端组件实现
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="9178.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel API 系列教程（二）: 结合 Laravel 5.5 和 Vue SPA 基于 jwt-auth 实现 API 认证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9234.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel API 系列教程（四）：基于 GraphQL 构建 Laravel API —— 基本使用篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9251.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel API 系列教程（五）：基于 GraphQL 构建 Laravel API —— 高级使用篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9283.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue + GraphQL 实现前后端分离的博客应用（一） —— 用户注册登录
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9298.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue + GraphQL 实现前后端分离的博客应用（二） —— 用户列表及详情页
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

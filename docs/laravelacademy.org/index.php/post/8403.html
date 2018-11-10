@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.5 文档 ] 进阶系列 —— 集合：给 PHP 数组插上翅膀 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="8403.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="8403.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="8403.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="8403.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="8403.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_5">
+                Laravel 5.5
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.5 文档 ] 进阶系列 —— 集合：给 PHP 数组插上翅膀</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.5 文档 ] 进阶系列 —— 集合：给 PHP 数组插上翅膀</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="8403.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-02-23T13:11:12+08:00">2018-02-23</time>
+                    <time class="updated" datetime="2018-02-23T15:09:24+08:00">2018-02-23 15:09:24</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                13816 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p><img class="size-full wp-image-8406 aligncenter" src="https://static.laravelacademy.org/wp-content/uploads/2018/02/laravel-collection.jpg" alt="" width="1880" height="920" /></p>
+<h3 id="toc_0">简介</h3>
+<p><code>Illuminate\Support\Collection</code> 类为处理数组数据提供了流式、方便的封装。例如，查看下面的代码，我们使用辅助函数 <code>collect</code> 创建一个新的集合实例，为每一个元素运行 <code>strtoupper</code> 函数，然后移除所有空元素：</p>
+<pre><code>$collection = collect(['taylor', 'abigail', null])-&gt;map(function ($name) {
+    return strtoupper($name);
+})-&gt;reject(function ($name) {
+    return empty($name);
+});
+</code></pre>
+<p>正如你所看到的，<code>Collection</code> 类允许你使用方法链对底层数组执行匹配和移除操作，通常，每个 <code>Collection</code> 方法都会返回一个新的 <code>Collection</code> 实例。</p>
+<h4 id="toc_1">创建集合</h4>
+<p>正如上面所提到的，辅助函数 <code>collect</code> 为给定数组返回一个新的 <code>Illuminate\Support\Collection</code> 实例，所以，创建集合很简单：</p>
+<pre><code>$collection = collect([1, 2, 3]);
+</code></pre>
+<blockquote><p>注：默认情况下，<a href="../../post/8194.html" target="_blank" rel="noopener">Eloquent</a> 查询的结果总是返回 <code>Collection</code> 实例。</p></blockquote>
+<h4 id="toc_2">扩展集合</h4>
+<p>集合是"macroable"的，这意味着我们可以在运行时动态添加方法到 <code>Collection</code> 类，例如，下面的代码添加了 <code>toUpper</code> 方法到 <code>Collection</code> 类：</p>
+<pre><code>use Illuminate\Support\Str;
+
+Collection::macro('toUpper', function () {
+    return $this-&gt;map(function ($value) {
+        return Str::upper($value);
+    });
+});
+
+$collection = collect(['first', 'second']);
+
+$upper = $collection-&gt;toUpper();
+
+// ['FIRST', 'SECOND']
+</code></pre>
+<p>通常，我们需要在<a href="https://laravel.com/docs/5.5/providers" target="_blank" rel="noopener">服务提供者</a>中声明集合宏。</p>
+<h3 id="toc_3">集合方法</h3>
+<p>本文档接下来的部分将会介绍 <code>Collection</code> 类上每一个有效的方法，所有这些方法都可以以方法链的方式流式操作底层数组。此外，几乎每个方法返回一个新的 <code>Collection</code> 实例，从而允许你在必要的时候保持原来的集合备份。</p>
+<h3 id="toc_4">方法列表</h3>
+<p><strong>all()</strong></p>
+<p><code>all</code> 方法简单返回集合表示的底层数组：</p>
+<pre><code>collect([1, 2, 3])-&gt;all();
+// [1, 2, 3]
+</code></pre>
+<p><strong>avg()</strong></p>
+<p><code>avg</code> 方法返回所有集合项的平均值：</p>
+<pre><code>$average = collect([['foo' =&gt; 10], ['foo' =&gt; 10], ['foo' =&gt; 20], ['foo' =&gt; 40]])-&gt;avg('foo');
+
+// 20
+
+$average = collect([1, 1, 2, 4])-&gt;avg();
+
+// 2
+</code></pre>
+<p><strong>average()</strong></p>
+<p><code>avg</code> 方法的别名。</p>
+<p><strong>chunk()</strong></p>
+<p><code>chunk</code> 方法将一个集合分割成多个小尺寸的小集合：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5, 6, 7]);
+$chunks = $collection-&gt;chunk(4);
+$chunks-&gt;toArray();
+// [[1, 2, 3, 4], [5, 6, 7]]
+</code></pre>
+<p>当处理栅栏系统如 <a href="https://getbootstrap.com/css/#grid" target="_blank" rel="noopener">Bootstrap</a> 时该方法在<a href="../../post/7903.html" target="_blank" rel="noopener">视图</a>中尤其有用，建设你有一个想要显示在栅栏中的 <a href="../../post/8194.html" target="_blank" rel="noopener">Eloquent</a> 模型集合：</p>
+<pre><code>@foreach ($products-&gt;chunk(3) as $chunk)
+    &lt;div class="row"&gt;
+        @foreach ($chunk as $product)
+            &lt;div class="col-xs-4"&gt;{{ $product-&gt;name }}&lt;/div&gt;
+        @endforeach
+    &lt;/div&gt;
+@endforeach
+</code></pre>
+<p><strong>collapse()</strong></p>
+<p><code>collapse</code> 方法将一个多维数组集合收缩成一个一维数组：</p>
+<pre><code>$collection = collect([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+$collapsed = $collection-&gt;collapse();
+$collapsed-&gt;all();
+// [1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+<p><strong>combine()</strong></p>
+<p><code>combine</code> 方法可以将一个集合的键和另一个数组或集合的值连接起来：</p>
+<pre><code>$collection = collect(['name', 'age']);
+
+$combined = $collection-&gt;combine(['George', 29]);
+
+$combined-&gt;all();
+// ['name' =&gt; 'George', 'age' =&gt; 29]
+</code></pre>
+<p><strong>concat()</strong></p>
+<p><code>concat</code> 方法可用于追加给定数组或集合数据到集合末尾：</p>
+<pre><code>$collection = collect(['John Doe']);
+
+$concatenated = $collection-&gt;concat(['Jane Doe'])-&gt;concat(['name' =&gt; 'Johnny Doe']);
+
+$concatenated-&gt;all();
+
+// ['John Doe', 'Jane Doe', 'Johnny Doe']
+</code></pre>
+<p><strong>contains()</strong></p>
+<p><code>contains</code> 方法判断集合是否包含一个给定项：</p>
+<pre><code>$collection = collect(['name' =&gt; 'Desk', 'price' =&gt; 100]);
+
+$collection-&gt;contains('Desk');
+// true
+$collection-&gt;contains('New York');
+// false
+</code></pre>
+<p>你还可以传递一个键值对到 <code>contains</code> 方法，这将会判断给定键值对是否存在于集合中：</p>
+<pre><code>$collection = collect([
+    ['product' =&gt; 'Desk', 'price' =&gt; 200],
+    ['product' =&gt; 'Chair', 'price' =&gt; 100],
+]);
+
+$collection-&gt;contains('product', 'Bookcase');
+// false
+</code></pre>
+<p>最后，你还可以传递一个回调到 <code>contains</code> 方法来执行自己的真实测试：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+$collection-&gt;contains(function ($key, $value) {
+    return $value &gt; 5;
+});
+// false
+</code></pre>
+<p><code>contains</code> 方法在检查值的时候使用「宽松」比较，这意味着一个包含整型值的字符串和同样的整型值是相等的（例如，<code>'1'</code> 和 <code>1</code> 相等）。要想进行严格比较，可以使用 <code>containsStrict</code> 方法。</p>
+<p><strong>containsStrict()</strong></p>
+<p>这个方法和 <code>contains</code> 方法签名一样，不同之处在于所有值都是「严格」比较。</p>
+<p><strong>count()</strong></p>
+<p><code>count</code> 方法返回集合中所有项的总数：</p>
+<pre><code>$collection = collect([1, 2, 3, 4]);
+$collection-&gt;count();
+// 4
+</code></pre>
+<p><strong>crossJoin()</strong></p>
+<p><code>crossJoin</code> 方法会在给定数组或集合之间交叉组合集合值，然后返回所有可能排列组合的笛卡尔积：</p>
+<pre><code>$collection = collect([1, 2]);
+
+$matrix = $collection-&gt;crossJoin(['a', 'b']);
+
+$matrix-&gt;all();
+
+/*
+    [
+        [1, 'a'],
+        [1, 'b'],
+        [2, 'a'],
+        [2, 'b'],
+    ]
+*/
+
+$collection = collect([1, 2]);
+
+$matrix = $collection-&gt;crossJoin(['a', 'b'], ['I', 'II']);
+
+$matrix-&gt;all();
+
+/*
+    [
+        [1, 'a', 'I'],
+        [1, 'a', 'II'],
+        [1, 'b', 'I'],
+        [1, 'b', 'II'],
+        [2, 'a', 'I'],
+        [2, 'a', 'II'],
+        [2, 'b', 'I'],
+        [2, 'b', 'II'],
+    ]
+*/
+</code></pre>
+<p><strong>dd()</strong></p>
+<p><code>dd</code> 方法会打印集合项并结束脚本执行：</p>
+<pre><code>$collection = collect(['John Doe', 'Jane Doe']);
+
+$collection-&gt;dd();
+
+/*
+    Collection {
+        #items: array:2 [
+            0 =&gt; "John Doe"
+            1 =&gt; "Jane Doe"
+        ]
+    }
+*/
+</code></pre>
+<p>如果你不想要终止脚本执行，可以使用 <code>dump</code> 方法来替代。</p>
+<p><strong>dump()</strong></p>
+<p><code>dump</code> 方法会打印集合项而不终止脚本执行：</p>
+<pre><code>$collection = collect(['John Doe', 'Jane Doe']);
+
+$collection-&gt;dump();
+
+/*
+    Collection {
+        #items: array:2 [
+            0 =&gt; "John Doe"
+            1 =&gt; "Jane Doe"
+        ]
+    }
+*/
+</code></pre>
+<p>如果你想要在打印集合之后终止脚本执行，可以使用 <code>dd</code> 方法来替代。</p>
+<p><strong>diff()</strong></p>
+<p><code>diff</code> 方法将集合和另一个集合或原生PHP数组以基于值的方式作比较，这个方法会返回存在于原来集合而不存在于给定集合的值：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+$diff = $collection-&gt;diff([2, 4, 6, 8]);
+$diff-&gt;all();
+// [1, 3, 5]
+</code></pre>
+<p><strong>diffAssoc()</strong></p>
+<p><code>diffAssoc</code> 方法会基于键值将一个集合和另一个集合或原生 PHP 数组进行比较。该方法返回只存在于第一个集合中的键值对：</p>
+<pre><code>$collection = collect([
+    'color' =&gt; 'orange',
+    'type' =&gt; 'fruit',
+    'remain' =&gt; 6
+]);
+
+$diff = $collection-&gt;diffAssoc([
+    'color' =&gt; 'yellow',
+    'type' =&gt; 'fruit',
+    'remain' =&gt; 3,
+    'used' =&gt; 6
+]);
+
+$diff-&gt;all();
+
+// ['color' =&gt; 'orange', 'remain' =&gt; 6]
+</code></pre>
+<p><strong>diffKeys()</strong></p>
+<p><code>diffKeys</code> 方法会基于犍将一个集合和另一个集合或原生 PHP 数组进行比较。该方法会返回只存在于第一个集合的键值对：</p>
+<pre><code>$collection = collect([
+    'one' =&gt; 10,
+    'two' =&gt; 20,
+    'three' =&gt; 30,
+    'four' =&gt; 40,
+    'five' =&gt; 50,
+]);
+
+$diff = $collection-&gt;diffKeys([
+    'two' =&gt; 2,
+    'four' =&gt; 4,
+    'six' =&gt; 6,
+    'eight' =&gt; 8,
+]);
+
+$diff-&gt;all();
+// ['one' =&gt; 10, 'three' =&gt; 30, 'five' =&gt; 50]
+</code></pre>
+<p><strong>each()</strong></p>
+<p><code>each</code> 方法迭代集合中的数据项并传递每个数据项到给定回调：</p>
+<pre><code>$collection = $collection-&gt;each(function ($item, $key) {
+    //
+});
+</code></pre>
+<p>如果你想要终止对数据项的迭代，可以从回调返回 <code>false</code>：</p>
+<pre><code>$collection = $collection-&gt;each(function ($item, $key) {
+    if (/* some condition */) {
+        return false;
+    }
+});
+</code></pre>
+<p><strong>eachSpread()</strong></p>
+<p><code>eachSpread</code> 方法会迭代集合项，传递每个嵌套数据项值到给定集合：</p>
+<pre><code>$collection = collect([['John Doe', 35], ['Jane Doe', 33]]);
+
+$collection-&gt;eachSpread(function ($name, $age) {
+    //
+});
+</code></pre>
+<p>你可以通过从回调中返回 <code>false</code> 来停止对集合项的迭代：</p>
+<pre><code>$collection-&gt;eachSpread(function ($name, $age) {
+    return false;
+});
+</code></pre>
+<p><strong>every()</strong></p>
+<p><code>every</code> 方法可以用于验证集合的所有元素能够通过给定的真理测试：</p>
+<pre><code>collect([1, 2, 3, 4])-&gt;every(function ($value, $key) {
+    return $value &gt; 2;
+});
+
+// false
+</code></pre>
+<p><strong>except()</strong></p>
+<p><code>except</code> 方法返回集合中除了指定键的所有集合项：</p>
+<pre><code>$collection = collect(['product_id' =&gt; 1, 'price' =&gt; 100, 'discount' =&gt; false]);
+
+$filtered = $collection-&gt;except(['price', 'discount']);
+
+$filtered-&gt;all();
+
+// ['product_id' =&gt; 1]
+</code></pre>
+<p>与 <code>except</code> 相对的是 <code>only</code> 方法。</p>
+<p><strong>filter()</strong></p>
+<p><code>filter</code> 方法通过给定回调过滤集合，只有通过给定真理测试的数据项才会保留下来：</p>
+<pre><code>$collection = collect([1, 2, 3, 4]);
+
+$filtered = $collection-&gt;filter(function ($value, $key) {
+    return $value &gt; 2;
+});
+
+$filtered-&gt;all();
+// [3, 4]
+</code></pre>
+<p>如果没有提供回调，那么集合中所有等价于 <code>false</code> 的项都会被移除：</p>
+<pre><code>$collection = collect([1, 2, 3, null, false, '', 0, []]);
+
+$collection-&gt;filter()-&gt;all();
+
+// [1, 2, 3]
+</code></pre>
+<p>和 <code>filter</code> 相对的方法是 <code>reject</code>。</p>
+<p><strong>first()</strong></p>
+<p><code>first</code> 方法返回通过真理测试集合的第一个元素：</p>
+<pre><code>collect([1, 2, 3, 4])-&gt;first(function ($value, $key) {
+    return $value &gt; 2;
+});
+// 3
+</code></pre>
+<p>你还可以调用不带参数的 <code>first</code> 方法来获取集合的第一个元素，如果集合是空的，返回 <code>null</code>：</p>
+<pre><code>collect([1, 2, 3, 4])-&gt;first();
+// 1
+</code></pre>
+<p><strong>firstWhere()</strong></p>
+<p><code>firstWhere</code> 方法会返回集合中的第一个元素，包含键值对：</p>
+<pre><code>$collection = collect([
+    ['name' =&gt; 'Regena', 'age' =&gt; 12],
+    ['name' =&gt; 'Linda', 'age' =&gt; 14],
+    ['name' =&gt; 'Diego', 'age' =&gt; 23],
+    ['name' =&gt; 'Linda', 'age' =&gt; 84],
+]);
+
+$collection-&gt;firstWhere('name', 'Linda');
+
+// ['name' =&gt; 'Linda', 'age' =&gt; 14]
+</code></pre>
+<p>还可以调用带操作符的 <code>firstWhere</code> 方法：</p>
+<pre><code>$collection-&gt;firstWhere('age', '&gt;=', 18);
+
+// ['name' =&gt; 'Diego', 'age' =&gt; 23]
+</code></pre>
+<p><strong>flatMap()</strong></p>
+<p><code>flatMap</code> 方法会迭代集合并传递每个值到给定回调，该回调可以自由编辑数据项并将其返回，最后形成一个经过编辑的新集合。然后，这个数组在层级维度被扁平化：</p>
+<pre><code>$collection = collect([
+    ['name' =&gt; 'Sally'],
+    ['school' =&gt; 'Arkansas'],
+    ['age' =&gt; 28]
+]);
+
+$flattened = $collection-&gt;flatMap(function ($values) {
+    return array_map('strtoupper', $values);
+});
+
+$flattened-&gt;all();
+
+// ['name' =&gt; 'SALLY', 'school' =&gt; 'ARKANSAS', 'age' =&gt; '28'];
+</code></pre>
+<p><strong>flatten()</strong></p>
+<p><code>flatten</code> 方法将多维度的集合变成一维的：</p>
+<pre><code>$collection = collect(['name' =&gt; 'taylor', 'languages' =&gt; ['php', 'javascript']]);
+
+$flattened = $collection-&gt;flatten();
+
+$flattened-&gt;all();
+
+// ['taylor', 'php', 'javascript'];
+</code></pre>
+<p>还可以选择性传入深度参数：</p>
+<pre><code>$collection = collect([
+    'Apple' =&gt; [
+        ['name' =&gt; 'iPhone 6S', 'brand' =&gt; 'Apple'],
+    ],
+    'Samsung' =&gt; [
+        ['name' =&gt; 'Galaxy S7', 'brand' =&gt; 'Samsung']
+    ],
+]);
+
+$products = $collection-&gt;flatten(1);
+
+$products-&gt;values()-&gt;all();
+
+/*
+[
+    ['name' =&gt; 'iPhone 6S', 'brand' =&gt; 'Apple'],
+    ['name' =&gt; 'Galaxy S7', 'brand' =&gt; 'Samsung'],
+]
+*/
+</code></pre>
+<p>在本例中，调用不提供深度的 <code>flatten</code> 方法也会对嵌套数组进行扁平化处理，返回结果是 <code>['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']</code>。提供深度允许你严格设置被扁平化的数组层级。</p>
+<p><strong>flip()</strong></p>
+<p><code>flip</code> 方法将集合的键值做交换：</p>
+<pre><code>$collection = collect(['name' =&gt; 'taylor', 'framework' =&gt; 'laravel']);
+
+$flipped = $collection-&gt;flip();
+
+$flipped-&gt;all();
+
+// ['taylor' =&gt; 'name', 'laravel' =&gt; 'framework']
+</code></pre>
+<p><strong>forget()</strong></p>
+<p><code>forget</code> 方法通过键从集合中移除数据项：</p>
+<pre><code>$collection = collect(['name' =&gt; 'taylor', 'framework' =&gt; 'laravel']);
+
+$collection-&gt;forget('name');
+
+$collection-&gt;all();
+
+// [framework' =&gt; 'laravel']
+</code></pre>
+<blockquote><p>注：不同于大多数其他的集合方法，<code>forget</code> 不返回新的修改过的集合；它只修改所调用的集合。</p></blockquote>
+<p><strong>forPage()</strong></p>
+<p><code>forPage</code> 方法返回新的包含给定页数数据项的集合。该方法接收页码数作为第一个参数，每页显示数据项数作为第二个参数：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+$chunk = $collection-&gt;forPage(2, 3);
+
+$chunk-&gt;all();
+
+// [4, 5, 6]
+</code></pre>
+<p><strong>get()</strong></p>
+<p><code>get</code> 方法返回给定键的数据项，如果对应键不存在，返回<code>null</code>：</p>
+<pre><code>$collection = collect(['name' =&gt; 'taylor', 'framework' =&gt; 'laravel']);
+
+$value = $collection-&gt;get('name');
+
+// taylor
+</code></pre>
+<p>你可以选择传递默认值作为第二个参数：</p>
+<pre><code>$collection = collect(['name' =&gt; 'taylor', 'framework' =&gt; 'laravel']);
+
+$value = $collection-&gt;get('foo', 'default-value');
+
+// default-value
+</code></pre>
+<p>你甚至可以传递回调作为默认值，如果给定键不存在的话回调的结果将会返回：</p>
+<pre><code>$collection-&gt;get('email', function () {
+    return 'default-value';
+});
+// default-value
+</code></pre>
+<p><strong>groupBy()</strong></p>
+<p><code>groupBy</code> 方法通过给定键分组集合数据项：</p>
+<pre><code>$collection = collect([
+    ['account_id' =&gt; 'account-x10', 'product' =&gt; 'Chair'],
+    ['account_id' =&gt; 'account-x10', 'product' =&gt; 'Bookcase'],
+    ['account_id' =&gt; 'account-x11', 'product' =&gt; 'Desk'],
+]);
+
+$grouped = $collection-&gt;groupBy('account_id');
+
+$grouped-&gt;toArray();
+
+/*
+[
+    'account-x10' =&gt; [
+        ['account_id' =&gt; 'account-x10', 'product' =&gt; 'Chair'],
+        ['account_id' =&gt; 'account-x10', 'product' =&gt; 'Bookcase'],
+    ],
+    'account-x11' =&gt; [
+        ['account_id' =&gt; 'account-x11', 'product' =&gt; 'Desk'],
+    ],
+]
+*/
+</code></pre>
+<p>除了传递字符串<code>key</code>，还可以传递一个回调，回调应该返回分组后的值：</p>
+<pre><code>$grouped = $collection-&gt;groupBy(function ($item, $key) {
+    return substr($item['account_id'], -3);
+});
+
+$grouped-&gt;toArray();
+
+/*
+[
+    'x10' =&gt; [
+        ['account_id' =&gt; 'account-x10', 'product' =&gt; 'Chair'],
+        ['account_id' =&gt; 'account-x10', 'product' =&gt; 'Bookcase'],
+    ],
+    'x11' =&gt; [
+        ['account_id' =&gt; 'account-x11', 'product' =&gt; 'Desk'],
+    ],
+]
+*/
+</code></pre>
+<p>多个分组条件可以以一个数组的方式传递，每个数组元素都会应用到多维数组中的对应层级：</p>
+<pre><code>$data = new Collection([
+    10 =&gt; ['user' =&gt; 1, 'skill' =&gt; 1, 'roles' =&gt; ['Role_1', 'Role_3']],
+    20 =&gt; ['user' =&gt; 2, 'skill' =&gt; 1, 'roles' =&gt; ['Role_1', 'Role_2']],
+    30 =&gt; ['user' =&gt; 3, 'skill' =&gt; 2, 'roles' =&gt; ['Role_1']],
+    40 =&gt; ['user' =&gt; 4, 'skill' =&gt; 2, 'roles' =&gt; ['Role_2']],
+]);
+
+$result = $data-&gt;groupBy([
+    'skill',
+    function ($item) {
+        return $item['roles'];
+    },
+], $preserveKeys = true);
+
+/*
+[
+    1 =&gt; [
+        'Role_1' =&gt; [
+            10 =&gt; ['user' =&gt; 1, 'skill' =&gt; 1, 'roles' =&gt; ['Role_1', 'Role_3']],
+            20 =&gt; ['user' =&gt; 2, 'skill' =&gt; 1, 'roles' =&gt; ['Role_1', 'Role_2']],
+        ],
+        'Role_2' =&gt; [
+            20 =&gt; ['user' =&gt; 2, 'skill' =&gt; 1, 'roles' =&gt; ['Role_1', 'Role_2']],
+        ],
+        'Role_3' =&gt; [
+            10 =&gt; ['user' =&gt; 1, 'skill' =&gt; 1, 'roles' =&gt; ['Role_1', 'Role_3']],
+        ],
+    ],
+    2 =&gt; [
+        'Role_1' =&gt; [
+            30 =&gt; ['user' =&gt; 3, 'skill' =&gt; 2, 'roles' =&gt; ['Role_1']],
+        ],
+        'Role_2' =&gt; [
+            40 =&gt; ['user' =&gt; 4, 'skill' =&gt; 2, 'roles' =&gt; ['Role_2']],
+        ],
+    ],
+];
+*/
+</code></pre>
+<p><strong>has()</strong></p>
+<p><code>has</code> 方法判断给定键是否在集合中存在：</p>
+<pre><code>$collection = collect(['account_id' =&gt; 1, 'product' =&gt; 'Desk']);
+
+$collection-&gt;has('email');
+
+// false
+</code></pre>
+<p><strong>implode()</strong></p>
+<p><code>implode</code> 方法连接集合中的数据项。其参数取决于集合中数据项的类型。如果集合包含数组或对象，应该传递你想要连接的属性键，以及你想要放在值之间的 “粘合”字符串：</p>
+<pre><code>$collection = collect([
+    ['account_id' =&gt; 1, 'product' =&gt; 'Desk'],
+    ['account_id' =&gt; 2, 'product' =&gt; 'Chair'],
+]);
+
+$collection-&gt;implode('product', ', ');
+
+// Desk, Chair
+</code></pre>
+<p>如果集合包含简单的字符串或数值，只需要传递“粘合”字符串作为唯一参数到该方法：</p>
+<pre><code>collect([1, 2, 3, 4, 5])-&gt;implode('-');
+
+// '1-2-3-4-5'
+</code></pre>
+<p><strong>intersect()</strong></p>
+<p><code>intersect</code> 方法返回两个集合的交集，结果集合将保留原来集合的键：</p>
+<pre><code>$collection = collect(['Desk', 'Sofa', 'Chair']);
+
+$intersect = $collection-&gt;intersect(['Desk', 'Chair', 'Bookcase']);
+
+$intersect-&gt;all();
+
+// [0 =&gt; 'Desk', 2 =&gt; 'Chair']
+</code></pre>
+<p><strong>intersectByKeys()</strong></p>
+<p><code>intersectByKeys</code> 方法会从原生集合中移除任意没有在给定数组或集合中出现的键：</p>
+<pre><code>$collection = collect([
+    'serial' =&gt; 'UX301', 'type' =&gt; 'screen', 'year' =&gt; 2009
+]);
+
+$intersect = $collection-&gt;intersectByKeys([
+    'reference' =&gt; 'UX404', 'type' =&gt; 'tab', 'year' =&gt; 2011
+]);
+
+$intersect-&gt;all();
+
+// ['type' =&gt; 'screen', 'year' =&gt; 2009]
+</code></pre>
+<p><strong>isEmpty()</strong></p>
+<p>如果集合为空的话 <code>isEmpty</code> 方法返回 <code>true</code>；否则返回 <code>false</code>：</p>
+<pre><code>collect([])-&gt;isEmpty();
+// true
+</code></pre>
+<p><strong>isNotEmpty()</strong></p>
+<p>如果集合不为空的话 <code>isNotEmpty</code> 方法返回 <code>true</code>；否则返回 <code>false</code>：</p>
+<pre><code>collect([])-&gt;isNotEmpty();
+// false
+</code></pre>
+<p><strong>keyBy()</strong></p>
+<p><code>keyBy</code> 方法将指定键的值作为集合的键，如果多个数据项拥有同一个键，只有最后一个会出现在新集合里面：</p>
+<pre><code>$collection = collect([
+    ['product_id' =&gt; 'prod-100', 'name' =&gt; 'desk'],
+    ['product_id' =&gt; 'prod-200', 'name' =&gt; 'chair'],
+]);
+
+$keyed = $collection-&gt;keyBy('product_id');
+
+$keyed-&gt;all();
+
+/*
+[
+    'prod-100' =&gt; ['product_id' =&gt; 'prod-100', 'name' =&gt; 'Desk'],
+    'prod-200' =&gt; ['product_id' =&gt; 'prod-200', 'name' =&gt; 'Chair'],
+]
+*/
+</code></pre>
+<p>你还可以传递自己的回调到该方法，该回调将会返回经过处理的键的值作为新的集合键：</p>
+<pre><code>$keyed = $collection-&gt;keyBy(function ($item) {
+    return strtoupper($item['product_id']);
+});
+
+$keyed-&gt;all();
+
+/*
+    [
+        'PROD-100' =&gt; ['product_id' =&gt; 'prod-100', 'name' =&gt; 'Desk'],
+        'PROD-200' =&gt; ['product_id' =&gt; 'prod-200', 'name' =&gt; 'Chair'],
+    ]
+*/
+</code></pre>
+<p><strong>keys()</strong></p>
+<p><code>keys</code> 方法返回所有集合的键：</p>
+<pre><code>$collection = collect([
+    'prod-100' =&gt; ['product_id' =&gt; 'prod-100', 'name' =&gt; 'Desk'],
+    'prod-200' =&gt; ['product_id' =&gt; 'prod-200', 'name' =&gt; 'Chair'],
+]);
+
+$keys = $collection-&gt;keys();
+
+$keys-&gt;all();
+
+// ['prod-100', 'prod-200']
+</code></pre>
+<p><strong>last()</strong></p>
+<p><code>last</code> 方法返回通过真理测试的集合的最后一个元素：</p>
+<pre><code>collect([1, 2, 3, 4])-&gt;last(function ($value, $key) {
+    return $value &lt; 3;
+});
+// 2
+</code></pre>
+<p>还可以调用无参的 <code>last</code> 方法来获取集合的最后一个元素。如果集合为空。返回 <code>null</code>：</p>
+<pre><code>collect([1, 2, 3, 4])-&gt;last();
+// 4
+</code></pre>
+<p><strong>macro()</strong></p>
+<p>静态 <code>macro()</code> 方法允许你在运行时添加方法到 <code>Collection</code> 类，更多细节可以查看<a href="../../post/8403.html#toc_2">扩展集合</a>部分文档。</p>
+<p><strong>make()</strong></p>
+<p>静态 make 方法会创建一个新的集合实例，细节可查看<a href="../../post/8403.html#toc_1">创建集合</a>部分文档。</p>
+<p><strong>map()</strong></p>
+<p><code>map</code> 方法遍历集合并传递每个值给给定回调。该回调可以修改数据项并返回，从而生成一个新的经过修改的集合：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$multiplied = $collection-&gt;map(function ($item, $key) {
+    return $item * 2;
+});
+
+$multiplied-&gt;all();
+
+// [2, 4, 6, 8, 10]
+</code></pre>
+<blockquote><p>注：和大多数集合方法一样，<code>map</code> 返回新的集合实例；它并不修改所调用的实例。如果你想要改变原来的集合，使用 <code>transform</code> 方法。</p></blockquote>
+<p><strong>mapInto()</strong></p>
+<p><code>mapInto()</code> 方法会迭代集合，通过传递值到构造器来为给定类创建新的实例：</p>
+<pre><code>class Currency
+{
+    /**
+     * Create a new currency instance.
+     *
+     * @param  string  $code
+     * @return void
+     */
+    function __construct(string $code)
+    {
+        $this-&gt;code = $code;
+    }
+}
+
+$collection = collect(['USD', 'EUR', 'GBP']);
+
+$currencies = $collection-&gt;mapInto(Currency::class);
+
+$currencies-&gt;all();
+
+// [Currency('USD'), Currency('EUR'), Currency('GBP')]
+</code></pre>
+<p><strong>mapSpread()</strong></p>
+<p><code>mapSpread</code> 方法会迭代集合项，传递每个嵌套集合项值到给定回调。在回调中我们可以修改集合项并将其返回，从而通过修改的值组合成一个新的集合：</p>
+<pre><code>$collection = collect([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+$chunks = $collection-&gt;chunk(2);
+
+$sequence = $chunks-&gt;mapSpread(function ($odd, $even) {
+    return $odd + $even;
+});
+
+$sequence-&gt;all();
+
+// [1, 5, 9, 13, 17]
+</code></pre>
+<p><strong>mapToGroups()</strong></p>
+<p><code>mapToGroups</code> 方法会通过给定回调对集合项进行分组，回调会返回包含单个键值对的关联数组，从而将分组后的值组合成一个新的集合：</p>
+<pre><code>$collection = collect([
+    [
+        'name' =&gt; 'John Doe',
+        'department' =&gt; 'Sales',
+    ],
+    [
+        'name' =&gt; 'Jane Doe',
+        'department' =&gt; 'Sales',
+    ],
+    [
+        'name' =&gt; 'Johnny Doe',
+        'department' =&gt; 'Marketing',
+    ]
+]);
+
+$grouped = $collection-&gt;mapToGroups(function ($item, $key) {
+    return [$item['department'] =&gt; $item['name']];
+});
+
+$grouped-&gt;toArray();
+
+/*
+    [
+        'Sales' =&gt; ['John Doe', 'Jane Doe'],
+        'Marketing' =&gt; ['Johhny Doe'],
+    ]
+*/
+
+$grouped-&gt;get('Sales')-&gt;all();
+
+// ['John Doe', 'Jane Doe']
+</code></pre>
+<p><strong>mapWithKeys()</strong></p>
+<p><code>mapWithKeys</code> 方法对集合进行迭代并传递每个值到给定回调，该回调会返回包含键值对的关联数组：</p>
+<pre><code>$collection = collect([
+    [
+        'name' =&gt; 'John',
+        'department' =&gt; 'Sales',
+        'email' =&gt; 'john@example.com'
+    ],
+    [
+        'name' =&gt; 'Jane',
+        'department' =&gt; 'Marketing',
+        'email' =&gt; 'jane@example.com'
+    ]
+]);
+
+$keyed = $collection-&gt;mapWithKeys(function ($item) {
+    return [$item['email'] =&gt; $item['name']];
+});
+
+$keyed-&gt;all();
+
+/*
+[
+    'john@example.com' =&gt; 'John',
+    'jane@example.com' =&gt; 'Jane',
+]
+*/
+</code></pre>
+<p><strong>max()</strong></p>
+<p><code>max</code> 方法返回集合中给定键的最大值：</p>
+<pre><code>$max = collect([['foo' =&gt; 10], ['foo' =&gt; 20]])-&gt;max('foo');
+
+// 20
+
+$max = collect([1, 2, 3, 4, 5])-&gt;max();
+
+// 5
+</code></pre>
+<p><strong>median()</strong></p>
+<p><code>median</code> 方法会返回给定键的<a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E4%BD%8D%E6%95%B8" target="_blank" rel="noopener">中位数</a>：</p>
+<pre><code>$median = collect([['foo' =&gt; 10], ['foo' =&gt; 10], ['foo' =&gt; 20], ['foo' =&gt; 40]])-&gt;median('foo');
+
+// 15
+
+$median = collect([1, 1, 2, 4])-&gt;median();
+
+// 1.5
+</code></pre>
+<p><strong>merge()</strong></p>
+<p><code>merge</code> 方法合并给定数组到集合。该数组中的任何字符串键匹配集合中的字符串键的将会重写集合中的值：</p>
+<pre><code>$collection = collect(['product_id' =&gt; 1, 'name' =&gt; 'Desk']);
+
+$merged = $collection-&gt;merge(['price' =&gt; 100, 'discount' =&gt; false]);
+
+$merged-&gt;all();
+
+// ['product_id' =&gt; 1, 'name' =&gt; 'Desk', 'price' =&gt; 100, 'discount' =&gt; false]
+</code></pre>
+<p>如果给定数组的键是数字，数组的值将会附加到集合后面：</p>
+<pre><code>$collection = collect(['Desk', 'Chair']);
+
+$merged = $collection-&gt;merge(['Bookcase', 'Door']);
+
+$merged-&gt;all();
+
+// ['Desk', 'Chair', 'Bookcase', 'Door']
+</code></pre>
+<p><strong>min()</strong></p>
+<p><code>min</code> 方法返回集合中给定键的最小值：</p>
+<pre><code>$min = collect([['foo' =&gt; 10], ['foo' =&gt; 20]])-&gt;min('foo');
+
+// 10
+
+$min = collect([1, 2, 3, 4, 5])-&gt;min();
+
+// 1
+</code></pre>
+<p><strong>mode()</strong></p>
+<p><code>mode</code> 方法会返回给定键的<a href="https://zh.wikipedia.org/wiki/%E4%BC%97%E6%95%B0_(%E6%95%B0%E5%AD%A6)" target="_blank" rel="noopener">众数</a>：</p>
+<pre><code>$mode = collect([['foo' =&gt; 10], ['foo' =&gt; 10], ['foo' =&gt; 20], ['foo' =&gt; 40]])-&gt;mode('foo');
+
+// [10]
+
+$mode = collect([1, 1, 2, 4])-&gt;mode();
+
+// [1]
+</code></pre>
+<p><strong>nth()</strong></p>
+<p><code>nth</code>方法组合集合中第 n-th 个元素创建一个新的集合：</p>
+<pre><code>$collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+$collection-&gt;nth(4);
+
+// ['a', 'e']
+</code></pre>
+<p>还可以传递一个 offset（偏移位置）作为第二个参数：</p>
+<pre><code>$collection-&gt;nth(4, 1);
+
+// ['b', 'f']
+</code></pre>
+<p><strong>only()</strong></p>
+<p><code>only</code> 方法返回集合中指定键的集合项：</p>
+<pre><code>$collection = collect(['product_id' =&gt; 1, 'name' =&gt; 'Desk', 'price' =&gt; 100, 'discount' =&gt; false]);
+
+$filtered = $collection-&gt;only(['product_id', 'name']);
+
+$filtered-&gt;all();
+
+// ['product_id' =&gt; 1, 'name' =&gt; 'Desk']
+</code></pre>
+<p>与 <code>only</code> 方法相对的是 <code>except</code> 方法。</p>
+<p><strong>pad()</strong></p>
+<p><code>pad</code> 方法将给定值填充数组直到达到指定的最大长度。该方法和 PHP 函数 <a href="https://secure.php.net/manual/zh/function.array-pad.php" target="_blank" rel="noopener">array_pad</a> 类似。</p>
+<p>如果你想要把数据填充到左侧，需要指定一个负值长度，如果指定长度绝对值小于等于数组长度那么将不会做任何填充：</p>
+<pre><code>$collection = collect(['A', 'B', 'C']);
+
+$filtered = $collection-&gt;pad(5, 0);
+
+$filtered-&gt;all();
+
+// ['A', 'B', 'C', 0, 0]
+
+$filtered = $collection-&gt;pad(-5, 0);
+
+$filtered-&gt;all();
+
+// [0, 0, 'A', 'B', 'C']
+</code></pre>
+<p><strong>partition()</strong></p>
+<p><code>partition</code> 方法可以和 PHP 函数 <code>list</code> 一起使用，从而将通过真理测试和没通过的分割开来：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5, 6]);
+
+list($underThree, $aboveThree) = $collection-&gt;partition(function ($i) {
+    return $i &lt; 3;
+});
+</code></pre>
+<p><strong>pipe()</strong></p>
+<p><code>pipe</code> 方法传递集合到给定回调并返回结果：</p>
+<pre><code>$collection = collect([1, 2, 3]);
+
+$piped = $collection-&gt;pipe(function ($collection) {
+    return $collection-&gt;sum();
+});
+
+// 6
+</code></pre>
+<p><strong>pluck()</strong></p>
+<p><code>pluck</code> 方法为给定键获取所有集合值：</p>
+<pre><code>$collection = collect([
+    ['product_id' =&gt; 'prod-100', 'name' =&gt; 'Desk'],
+    ['product_id' =&gt; 'prod-200', 'name' =&gt; 'Chair'],
+]);
+
+$plucked = $collection-&gt;pluck('name');
+
+$plucked-&gt;all();
+
+// ['Desk', 'Chair']
+</code></pre>
+<p>还可以指定你想要结果集合如何设置键：</p>
+<pre><code>$plucked = $collection-&gt;pluck('name', 'product_id');
+
+$plucked-&gt;all();
+
+// ['prod-100' =&gt; 'Desk', 'prod-200' =&gt; 'Chair']
+</code></pre>
+<p><strong>pop()</strong></p>
+<p><code>pop</code> 方法移除并返回集合中最后面的数据项：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$collection-&gt;pop();
+
+// 5
+
+$collection-&gt;all();
+
+// [1, 2, 3, 4]
+</code></pre>
+<p><strong>prepend()</strong></p>
+<p><code>prepend</code> 方法添加数据项到集合开头：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$collection-&gt;prepend(0);
+
+$collection-&gt;all();
+
+// [0, 1, 2, 3, 4, 5]
+</code></pre>
+<p>你还可以传递第二个参数到该方法用于设置前置项的键：</p>
+<pre><code>$collection = collect(['one' =&gt; 1, 'two', =&gt; 2]);
+
+$collection-&gt;prepend(0, 'zero');
+
+$collection-&gt;all();
+
+// ['zero' =&gt; 0, 'one' =&gt; 1, 'two', =&gt; 2]
+</code></pre>
+<p><strong>pull()</strong></p>
+<p><code>pull</code> 方法通过键从集合中移除并返回数据项：</p>
+<pre><code>$collection = collect(['product_id' =&gt; 'prod-100', 'name' =&gt; 'Desk']);
+
+$collection-&gt;pull('name');
+
+// 'Desk'
+
+$collection-&gt;all();
+
+// ['product_id' =&gt; 'prod-100']
+</code></pre>
+<p><strong>push()</strong></p>
+<p><code>push</code> 方法附加数据项到集合结尾：</p>
+<pre><code>$collection = collect([1, 2, 3, 4]);
+
+$collection-&gt;push(5);
+
+$collection-&gt;all();
+
+// [1, 2, 3, 4, 5]
+</code></pre>
+<p><strong>put()</strong></p>
+<p><code>put</code> 方法在集合中设置给定键和值：</p>
+<pre><code>$collection = collect(['product_id' =&gt; 1, 'name' =&gt; 'Desk']);
+
+$collection-&gt;put('price', 100);
+
+$collection-&gt;all();
+
+// ['product_id' =&gt; 1, 'name' =&gt; 'Desk', 'price' =&gt; 100]
+</code></pre>
+<p><strong>random()</strong></p>
+<p><code>random</code> 方法从集合中返回随机数据项：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$collection-&gt;random();
+
+// 4 - (retrieved randomly)
+</code></pre>
+<p>你可以传递一个整型数据到 <code>random</code> 函数来指定返回的数据数目，如果该整型数值大于1，将会返回一个集合：</p>
+<pre><code>$random = $collection-&gt;random(3);
+
+$random-&gt;all();
+
+// [2, 4, 5] - (retrieved randomly)
+</code></pre>
+<p><strong>reduce()</strong></p>
+<p><code>reduce</code> 方法用于减少集合到单个值，传递每个迭代结果到子迭代：</p>
+<pre><code>$collection = collect([1, 2, 3]);
+
+$total = $collection-&gt;reduce(function ($carry, $item) {
+    return $carry + $item;
+});
+
+// 6
+</code></pre>
+<p>在第一次迭代时 <code>$carry</code> 的值是<code>null</code>；不过，你可以通过传递第二个参数到 <code>reduce</code> 来指定其初始值：</p>
+<pre><code>$collection-&gt;reduce(function ($carry, $item) {
+    return $carry + $item;
+}, 4);
+
+// 10
+</code></pre>
+<p><strong>reject()</strong></p>
+<p><code>reject</code> 方法使用给定回调过滤集合，该回调应该为所有它想要从结果集合中移除的数据项返回 <code>true</code>：</p>
+<pre><code>$collection = collect([1, 2, 3, 4]);
+$filtered = $collection-&gt;reject(function ($value, $key) {
+    return $value &gt; 2;
+});
+
+$filtered-&gt;all();
+// [1, 2]
+</code></pre>
+<p>和 <code>reject</code> 方法相对的方法是 <code>filter</code> 方法。</p>
+<p><strong>reverse()</strong></p>
+<p><code>reverse</code> 方法将集合数据项的顺序颠倒：</p>
+<pre><code>$collection = collect(['a', 'b', 'c', 'd', 'e']);
+
+$reversed = $collection-&gt;reverse();
+
+$reversed-&gt;all();
+
+/*
+    [
+        4 =&gt; 'e',
+        3 =&gt; 'd',
+        2 =&gt; 'c',
+        1 =&gt; 'b',
+        0 =&gt; 'a',
+    ]
+*/
+</code></pre>
+<p><strong>search()</strong></p>
+<p><code>search</code> 方法为给定值查询集合，如果找到的话返回对应的键，如果没找到，则返回 <code>false</code>：</p>
+<pre><code>$collection = collect([2, 4, 6, 8]);
+
+$collection-&gt;search(4);
+
+// 1
+</code></pre>
+<p>上面的搜索使用的是「宽松」比较，要使用「严格」比较，传递 <code>true</code> 作为第二个参数到该方法：</p>
+<pre><code>$collection-&gt;search('4', true);
+// false
+</code></pre>
+<p>此外，你还可以传递自己的回调来搜索通过真理测试的第一个数据项：</p>
+<pre><code>$collection-&gt;search(function ($item, $key) {
+    return $item &gt; 5;
+});
+// 2
+</code></pre>
+<p><strong>shift()</strong></p>
+<p><code>shift</code> 方法从集合中移除并返回第一个数据项：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$collection-&gt;shift();
+
+// 1
+
+$collection-&gt;all();
+
+// [2, 3, 4, 5]
+</code></pre>
+<p><strong>shuffle()</strong></p>
+<p><code>shuffle</code> 方法随机打乱集合中的数据项：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$shuffled = $collection-&gt;shuffle();
+
+$shuffled-&gt;all();
+// [3, 2, 5, 1, 4] // (随机生成)
+</code></pre>
+<p><strong>slice()</strong></p>
+<p><code>slice</code> 方法从给定索引开始返回集合的一个切片：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+$slice = $collection-&gt;slice(4);
+
+$slice-&gt;all();
+
+// [5, 6, 7, 8, 9, 10]
+</code></pre>
+<p>如果你想要限制返回切片的尺寸，将尺寸值作为第二个参数传递到该方法：</p>
+<pre><code>$slice = $collection-&gt;slice(4, 2);
+
+$slice-&gt;all();
+
+// [5, 6]
+</code></pre>
+<p>返回的切片有新的、数字化索引的键，如果你想要保持原有的键，可以使用 <code>values</code> 方法对它们进行重新索引。</p>
+<p><strong>sort()</strong></p>
+<p><code>sort</code> 方法对集合进行排序， 排序后的集合保持原来的数组键，在本例中我们使用 <code>values</code> 方法重置键为连续编号索引：</p>
+<pre><code>$collection = collect([5, 3, 1, 2, 4]);
+
+$sorted = $collection-&gt;sort();
+
+$sorted-&gt;values()-&gt;all();
+
+// [1, 2, 3, 4, 5]
+</code></pre>
+<p>如果你需要更加高级的排序，你可以使用自己的算法传递一个回调给 <code>sort</code> 方法。参考 PHP 官方文档关于 <a href="https://secure.php.net/manual/zh/function.uasort.php" target="_blank" rel="noopener">uasort</a> 的说明，<code>sort</code> 方法底层正是调用了该方法。</p>
+<blockquote><p>注：要为嵌套集合和对象排序，查看 <code>sortBy</code> 和 <code>sortByDesc</code> 方法。</p></blockquote>
+<p><strong>sortBy()</strong></p>
+<p><code>sortBy</code> 方法通过给定键对集合进行排序， 排序后的集合保持原有数组索引，在本例中，使用 <code>values</code> 方法重置键为连续索引：</p>
+<pre><code>$collection = collect([
+    ['name' =&gt; 'Desk', 'price' =&gt; 200],
+    ['name' =&gt; 'Chair', 'price' =&gt; 100],
+    ['name' =&gt; 'Bookcase', 'price' =&gt; 150],
+]);
+
+$sorted = $collection-&gt;sortBy('price');
+
+$sorted-&gt;values()-&gt;all();
+
+/*
+[
+    ['name' =&gt; 'Chair', 'price' =&gt; 100],
+    ['name' =&gt; 'Bookcase', 'price' =&gt; 150],
+    ['name' =&gt; 'Desk', 'price' =&gt; 200],
+]
+*/
+</code></pre>
+<p>你还可以传递自己的回调来判断如何排序集合的值：</p>
+<pre><code>$collection = collect([
+    ['name' =&gt; 'Desk', 'colors' =&gt; ['Black', 'Mahogany']],
+    ['name' =&gt; 'Chair', 'colors' =&gt; ['Black']],
+    ['name' =&gt; 'Bookcase', 'colors' =&gt; ['Red', 'Beige', 'Brown']],
+]);
+
+$sorted = $collection-&gt;sortBy(function ($product, $key) {
+    return count($product['colors']);
+});
+
+$sorted-&gt;values()-&gt;all();
+
+/*
+    [
+        ['name' =&gt; 'Chair', 'colors' =&gt; ['Black']],
+        ['name' =&gt; 'Desk', 'colors' =&gt; ['Black', 'Mahogany']],
+        ['name' =&gt; 'Bookcase', 'colors' =&gt; ['Red', 'Beige', 'Brown']],
+    ]
+*/
+</code></pre>
+<p><strong>sortByDesc()</strong></p>
+<p>该方法和 <code>sortBy</code> 用法相同，不同之处在于按照相反顺序进行排序。</p>
+<p><strong>splice()</strong></p>
+<p><code>splice</code> 方法从给定位置开始移除并返回数据项切片：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$chunk = $collection-&gt;splice(2);
+
+$chunk-&gt;all();
+
+// [3, 4, 5]
+
+$collection-&gt;all();
+
+// [1, 2]
+</code></pre>
+<p>你可以传递参数来限制返回组块的大小：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$chunk = $collection-&gt;splice(2, 1);
+
+$chunk-&gt;all();
+
+// [3]
+
+$collection-&gt;all();
+
+// [1, 2, 4, 5]
+</code></pre>
+<p>此外，你可以传递第三个包含新的数据项的参数来替代从集合中移除的数据项：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$chunk = $collection-&gt;splice(2, 1, [10, 11]);
+
+$chunk-&gt;all();
+
+// [3]
+
+$collection-&gt;all();
+
+// [1, 2, 10, 11, 4, 5]
+</code></pre>
+<p><strong>split()</strong></p>
+<p><code>split</code> 方法通过给定数值对集合进行分组：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$groups = $collection-&gt;split(3);
+
+$groups-&gt;toArray();
+
+// [[1, 2], [3, 4], [5]]
+</code></pre>
+<p><strong>sum()</strong></p>
+<p><code>sum</code> 方法返回集合中所有数据项的和：</p>
+<pre><code>collect([1, 2, 3, 4, 5])-&gt;sum();
+// 15
+</code></pre>
+<p>如果集合包含嵌套数组或对象，应该传递一个键用于判断对哪些值进行求和运算：</p>
+<pre><code>$collection = collect([
+    ['name' =&gt; 'JavaScript: The Good Parts', 'pages' =&gt; 176],
+    ['name' =&gt; 'JavaScript: The Definitive Guide', 'pages' =&gt; 1096],
+]);
+
+$collection-&gt;sum('pages');
+
+// 1272
+</code></pre>
+<p>此外，你还可以传递自己的回调来判断对哪些值进行求和：</p>
+<pre><code>$collection = collect([
+    ['name' =&gt; 'Chair', 'colors' =&gt; ['Black']],
+    ['name' =&gt; 'Desk', 'colors' =&gt; ['Black', 'Mahogany']],
+    ['name' =&gt; 'Bookcase', 'colors' =&gt; ['Red', 'Beige', 'Brown']],
+]);
+
+$collection-&gt;sum(function ($product) {
+    return count($product['colors']);
+});
+// 6
+</code></pre>
+<p><strong>take()</strong></p>
+<p><code>take</code> 方法使用指定数目的数据项返回一个新的集合：</p>
+<pre><code>$collection = collect([0, 1, 2, 3, 4, 5]);
+
+$chunk = $collection-&gt;take(3);
+
+$chunk-&gt;all();
+
+// [0, 1, 2]
+</code></pre>
+<p>你还可以传递负数的方式从集合末尾开始获取指定数目的数据项：</p>
+<pre><code>$collection = collect([0, 1, 2, 3, 4, 5]);
+
+$chunk = $collection-&gt;take(-2);
+
+$chunk-&gt;all();
+
+// [4, 5]
+</code></pre>
+<p><strong>tap()</strong></p>
+<p><code>tap</code> 方法会传递集合到给定回调，从而允许你在指定入口进入集合并对集合项进行处理而不影响集合本身：</p>
+<pre><code>collect([2, 4, 3, 1, 5])
+    -&gt;sort()
+    -&gt;tap(function ($collection) {
+        Log::debug('Values after sorting', $collection-&gt;values()-&gt;toArray());
+    })
+    -&gt;shift();
+
+// 1
+</code></pre>
+<p><strong>times()</strong></p>
+<p>通过静态 <code>times()</code> 方法可以通过调用指定次数的回调创建一个新的集合：</p>
+<pre><code>$collection = Collection::times(10, function ($number) {
+    return $number * 9;
+});
+
+$collection-&gt;all();
+
+// [9, 18, 27, 36, 45, 54, 63, 72, 81, 90]
+</code></pre>
+<p>该方法在和工厂方法一起创建 <a href="../../post/8194.html" target="_blank" rel="noopener">Eloquent</a> 模型时很有用：</p>
+<pre><code>$categories = Collection::times(3, function ($number) {
+    return factory(Category::class)-&gt;create(['name' =&gt; 'Category #'.$number]);
+});
+
+$categories-&gt;all();
+
+/*
+    [
+        ['id' =&gt; 1, 'name' =&gt; 'Category #1'],
+        ['id' =&gt; 2, 'name' =&gt; 'Category #2'],
+        ['id' =&gt; 3, 'name' =&gt; 'Category #3'],
+    ]
+*/
+</code></pre>
+<p><strong>toArray()</strong></p>
+<p><code>toArray</code> 方法将集合转化为一个原生的 PHP 数组。如果集合的值是 Eloquent 模型，该模型也会被转化为数组：</p>
+<pre><code>$collection = collect(['name' =&gt; 'Desk', 'price' =&gt; 200]);
+
+$collection-&gt;toArray();
+
+/*
+    [
+        ['name' =&gt; 'Desk', 'price' =&gt; 200],
+    ]
+*/
+</code></pre>
+<blockquote><p>注：<code>toArray</code> 还将所有嵌套对象转化为数组。如果你想要获取底层数组，使用 <code>all</code> 方法。</p></blockquote>
+<p><strong>toJson()</strong></p>
+<p><code>toJson</code> 方法将集合转化为 JSON：</p>
+<pre><code>$collection = collect(['name' =&gt; 'Desk', 'price' =&gt; 200]);
+
+$collection-&gt;toJson();
+
+// '{"name":"Desk","price":200}'
+</code></pre>
+<p><strong>transform()</strong></p>
+<p><code>transform</code> 方法迭代集合并对集合中每个数据项调用给定回调。集合中的数据项将会被替代成从回调中返回的值：</p>
+<pre><code>$collection = collect([1, 2, 3, 4, 5]);
+
+$collection-&gt;transform(function ($item, $key) {
+    return $item * 2;
+});
+
+$collection-&gt;all();
+
+// [2, 4, 6, 8, 10]
+</code></pre>
+<blockquote><p>注意：不同于大多数其它集合方法，<code>transform</code> 修改集合本身，如果你想要创建一个新的集合，使用 <code>map</code> 方法。</p></blockquote>
+<p><strong>union()</strong></p>
+<p><code>union</code> 方法添加给定数组到集合，如果给定数组包含已经在原来集合中存在的犍，原生集合的值会被保留：</p>
+<pre><code>$collection = collect([1 =&gt; ['a'], 2 =&gt; ['b']]);
+
+$union = $collection-&gt;union([3 =&gt; ['c'], 1 =&gt; ['b']]);
+
+$union-&gt;all();
+
+// [1 =&gt; ['a'], 2 =&gt; ['b'], [3 =&gt; ['c']]
+</code></pre>
+<p><strong>unique()</strong></p>
+<p><code>unique</code> 方法返回集合中所有的唯一数据项， 返回的集合保持原来的数组键，在本例中我们使用 <code>values</code> 方法重置这些键为连续的数字索引 ：</p>
+<pre><code>$collection = collect([1, 1, 2, 2, 3, 4, 2]);
+
+$unique = $collection-&gt;unique();
+
+$unique-&gt;values()-&gt;all();
+
+// [1, 2, 3, 4]
+</code></pre>
+<p>处理嵌套数组或对象时，可以指定用于判断唯一的键：</p>
+<pre><code>$collection = collect([
+    ['name' =&gt; 'iPhone 6', 'brand' =&gt; 'Apple', 'type' =&gt; 'phone'],
+    ['name' =&gt; 'iPhone 5', 'brand' =&gt; 'Apple', 'type' =&gt; 'phone'],
+    ['name' =&gt; 'Apple Watch', 'brand' =&gt; 'Apple', 'type' =&gt; 'watch'],
+    ['name' =&gt; 'Galaxy S6', 'brand' =&gt; 'Samsung', 'type' =&gt; 'phone'],
+    ['name' =&gt; 'Galaxy Gear', 'brand' =&gt; 'Samsung', 'type' =&gt; 'watch'],
+]);
+
+$unique = $collection-&gt;unique('brand');
+
+$unique-&gt;values()-&gt;all();
+
+/*
+    [
+        ['name' =&gt; 'iPhone 6', 'brand' =&gt; 'Apple', 'type' =&gt; 'phone'],
+        ['name' =&gt; 'Galaxy S6', 'brand' =&gt; 'Samsung', 'type' =&gt; 'phone'],
+    ]
+*/
+</code></pre>
+<p>你还可以指定自己的回调用于判断数据项唯一性：</p>
+<pre><code>$unique = $collection-&gt;unique(function ($item) {
+    return $item['brand'].$item['type'];
+});
+
+$unique-&gt;values()-&gt;all();
+
+/*
+    [
+        ['name' =&gt; 'iPhone 6', 'brand' =&gt; 'Apple', 'type' =&gt; 'phone'],
+        ['name' =&gt; 'Apple Watch', 'brand' =&gt; 'Apple', 'type' =&gt; 'watch'],
+        ['name' =&gt; 'Galaxy S6', 'brand' =&gt; 'Samsung', 'type' =&gt; 'phone'],
+        ['name' =&gt; 'Galaxy Gear', 'brand' =&gt; 'Samsung', 'type' =&gt; 'watch'],
+    ]
+*/
+</code></pre>
+<p><code>unique</code> 方法在检查数据项值的时候使用「宽松」比较，也就是说一个整型字符串和整型数值被看作是相等的，如果要「严格」比较可以使用 <code>uniqueStrict</code> 方法。</p>
+<p><strong>uniqueStrict()</strong></p>
+<p>该方法和 <code>unique</code> 方法签名一样，不同之处在于所有值都是「严格」比较。</p>
+<p><strong>unless()</strong></p>
+<p><code>unless</code> 方法会执行给定回调，除非传递到该方法的第一个参数等于 <code>true</code>：</p>
+<pre><code>$collection = collect([1, 2, 3]);
+
+$collection-&gt;unless(true, function ($collection) {
+    return $collection-&gt;push(4);
+});
+
+$collection-&gt;unless(false, function ($collection) {
+    return $collection-&gt;push(5);
+});
+
+$collection-&gt;all();
+
+// [1, 2, 3, 5]
+</code></pre>
+<p>与 <code>unless</code> 相对的方法是 <code>when</code>。</p>
+<p><strong>unwrap()</strong></p>
+<p>静态 <code>unwrap</code> 方法会从给定值中返回集合项：</p>
+<pre><code>Collection::unwrap(collect('John Doe'));
+
+// ['John Doe']
+
+Collection::unwrap(['John Doe']);
+
+// ['John Doe']
+
+Collection::unwrap('John Doe');
+
+// 'John Doe'
+</code></pre>
+<p><strong>values()</strong></p>
+<p><code>values</code> 方法通过将集合键重置为连续整型数字的方式返回新的集合：</p>
+<pre><code>$collection = collect([
+    10 =&gt; ['product' =&gt; 'Desk', 'price' =&gt; 200],
+    11 =&gt; ['product' =&gt; 'Desk', 'price' =&gt; 200]
+]);
+
+$values = $collection-&gt;values();
+
+$values-&gt;all();
+
+/*
+    [
+        0 =&gt; ['product' =&gt; 'Desk', 'price' =&gt; 200],
+        1 =&gt; ['product' =&gt; 'Desk', 'price' =&gt; 200],
+    ]
+*/
+</code></pre>
+<p><strong>when()</strong></p>
+<p><code>when</code>方法在传入的第一个参数执行结果为 <code>true</code> 时执行给定回调：</p>
+<pre><code>$collection = collect([1, 2, 3]);
+
+$collection-&gt;when(true, function ($collection) {
+    return $collection-&gt;push(4);
+});
+
+$collection-&gt;when(false, function ($collection) {
+    return $collection-&gt;push(5);
+});
+
+$collection-&gt;all();
+
+// [1, 2, 3, 4]
+</code></pre>
+<p>与 <code>when</code> 方法相对的是 <code>unless</code>。</p>
+<p><strong>where()</strong></p>
+<p><code>where</code> 方法通过给定键值对过滤集合：</p>
+<pre><code>$collection = collect([
+    ['product' =&gt; 'Desk', 'price' =&gt; 200],
+    ['product' =&gt; 'Chair', 'price' =&gt; 100],
+    ['product' =&gt; 'Bookcase', 'price' =&gt; 150],
+    ['product' =&gt; 'Door', 'price' =&gt; 100],
+]);
+
+$filtered = $collection-&gt;where('price', 100);
+
+$filtered-&gt;all();
+
+/*
+[
+    ['product' =&gt; 'Chair', 'price' =&gt; 100],
+    ['product' =&gt; 'Door', 'price' =&gt; 100],
+]
+*/
+</code></pre>
+<p>检查数据项值时 <code>where</code> 方法使用「宽松」比较，也就是说整型字符串和整型数组是等价的。使用 <code>whereStrict</code> 方法使用「严格」比较进行过滤。</p>
+<p><strong>whereStrict()</strong></p>
+<p>该方法和 <code>where</code> 用法签名一样，不同之处在于，所有值都使用「严格」比较。</p>
+<p><strong>whereIn()</strong></p>
+<p><code>whereIn</code> 方法通过包含在给定数组中的键值对集合进行过滤：</p>
+<pre><code>$collection = collect([
+    ['product' =&gt; 'Desk', 'price' =&gt; 200],
+    ['product' =&gt; 'Chair', 'price' =&gt; 100],
+    ['product' =&gt; 'Bookcase', 'price' =&gt; 150],
+    ['product' =&gt; 'Door', 'price' =&gt; 100],
+]);
+
+$filtered = $collection-&gt;whereIn('price', [150, 200]);
+
+$filtered-&gt;all();
+
+/*
+[
+    ['product' =&gt; 'Bookcase', 'price' =&gt; 150],
+    ['product' =&gt; 'Desk', 'price' =&gt; 200],
+]
+*/
+</code></pre>
+<p><code>whereIn</code> 方法在检查数据项值的时候使用「宽松」比较，要使用「严格」比较可以使用 <code>whereInStrict</code> 方法。</p>
+<p><strong>whereInStrict()</strong></p>
+<p>该方法和 <code>whereIn</code> 方法签名相同，不同之处在于 <code>whereInStrict</code> 在比较值的时候使用「严格」比较。</p>
+<p><strong>whereNotIn()</strong></p>
+<p><code>whereNotIn</code> 方法通过给定键值过滤不在给定数组中的集合数据项：</p>
+<pre><code>$collection = collect([
+    ['product' =&gt; 'Desk', 'price' =&gt; 200],
+    ['product' =&gt; 'Chair', 'price' =&gt; 100],
+    ['product' =&gt; 'Bookcase', 'price' =&gt; 150],
+    ['product' =&gt; 'Door', 'price' =&gt; 100],
+]);
+
+$filtered = $collection-&gt;whereNotIn('price', [150, 200]);
+
+$filtered-&gt;all();
+
+/*
+    [
+        ['product' =&gt; 'Chair', 'price' =&gt; 100],
+        ['product' =&gt; 'Door', 'price' =&gt; 100],
+    ]
+*/
+</code></pre>
+<p><code>whereNotIn</code> 方法在检查集合项值的时候使用「宽松」比较，也就是说整型字符串和整型数值被看作是相等的。要想进行严格过滤可以使用 <code>whereNotInStrict</code> 方法。</p>
+<p><strong>whereNotInStrict()</strong></p>
+<p>该方法和 <code>whereNotIn</code> 方法签名一样，不同之处在于所有值都使用「严格」比较。</p>
+<p><strong>wrap()</strong></p>
+<p>静态 <code>wrap</code> 方法会将给定值封装到集合中：</p>
+<pre><code>$collection = Collection::wrap('John Doe');
+
+$collection-&gt;all();
+
+// ['John Doe']
+
+$collection = Collection::wrap(['John Doe']);
+
+$collection-&gt;all();
+
+// ['John Doe']
+
+$collection = Collection::wrap(collect('John Doe'));
+
+$collection-&gt;all();
+
+// ['John Doe']
+</code></pre>
+<p><strong>zip()</strong></p>
+<p><code>zip</code> 方法在与集合的值对应的索引处合并给定数组的值：</p>
+<pre><code>$collection = collect(['Chair', 'Desk']);
+
+$zipped = $collection-&gt;zip([100, 200]);
+
+$zipped-&gt;all();
+
+// [['Chair', 100], ['Desk', 200]]
+</code></pre>
+<h3 id="toc_5">高阶消息传递</h3>
+<p>集合还支持“高阶消息传递”，也就是在集合上执行通用的功能，支持高阶消息传递的方法包括：<code>average</code>、<code>avg</code>、<code>contains</code>、<code>each</code>、<code>every</code>、<code>filter</code>、<code>first</code>、<code>map</code>、<code>partition</code>、<code>reject</code>、<code>sortBy</code>、<code>sortByDesc</code>、<code>sum</code> 和 <code>unique</code>。</p>
+<p>每个高阶消息传递都可以在集合实例上以动态属性的方式访问，例如，我们使用 <code>each</code> 高阶消息传递来在集合的每个对象上调用一个方法：</p>
+<pre><code>$users = User::where('votes', '&gt;', 500)-&gt;get();
+
+$users-&gt;each-&gt;markAsVip();
+</code></pre>
+<p>类似的，我们可以使用 <code>sum</code> 高阶消息传递来聚合用户集合的投票总数：</p>
+<pre><code>$users = User::where('group', 'Development')-&gt;get();
+
+return $users-&gt;sum-&gt;votes;
+</code></pre>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_5" rel="category tag">
+                Laravel 5.5
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="../tags/Eloquent" rel="tag">Eloquent</a>
+                                    ,
+                                            <a href="../tags/集合" rel="tag">集合</a>
+                                    ,
+                                            <a href="../tags/数组" rel="tag">数组</a>
+                                    ,
+                                            <a href="../tags/Collection" rel="tag">Collection</a>
+                                    ,
+                                            <a href="../tags/高阶消息传递" rel="tag">高阶消息传递</a>
+                                    ,
+                                            <a href="../tags/5.5.1" rel="tag">5.5</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;6 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="8403" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="8403" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;6 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="8393.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.5 文档 ] 进阶系列 —— 键值对存储系统 Redis 在 Laravel 中的使用
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="8412.html" rel="next">
+                [ Laravel 5.5 文档 ] 进阶系列 —— 辅助函数：简化 Laravel 代码编写的利器
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        2 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-10350" class="comment even thread-even depth-1">
+            <article id="div-comment-10350" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='电风扇' src='https://www.gravatar.com/avatar/c4ce34884129ae9ca3772e060cd7e833?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            电风扇
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8403.html#respond' data-id="10350"  aria-label='回复电风扇...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-16T16:42:36+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-16 16:42:36
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10350" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9565" class="comment even thread-even depth-1">
+            <article id="div-comment-9565" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='范闲' src='https://www.gravatar.com/avatar/c925a1ef443fb9383045bd127242f81f?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            范闲
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        方法很多，不过大多数的情况下很少用
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8403.html#respond' data-id="9565"  aria-label='回复范闲...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-04-07T09:51:13+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-04-07 09:51:13
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9565" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="8403.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='8403' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="8403.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="8403.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8403.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建集合
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8403.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        扩展集合
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8403.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        集合方法
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8403.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        方法列表
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8403.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        高阶消息传递
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="178.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 服务 —— 集合
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3132.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 服务 —— 集合
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6863.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 综合话题 —— 集合
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8210.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] Eloquent ORM —— Eloquent 查询返回的数据格式：集合
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8955.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 进阶系列 —— 集合
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

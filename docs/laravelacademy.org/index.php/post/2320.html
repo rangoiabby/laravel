@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于Laravel开发博客应用系列 —— 在后台实现文章标签增删改查功能 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="2320.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="2320.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="2320.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="2320.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="2320.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../blog">
+                博客系列
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于Laravel开发博客应用系列 —— 在后台实现文章标签增删改查功能</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于Laravel开发博客应用系列 —— 在后台实现文章标签增删改查功能</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="2320.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2015-12-02T22:10:36+08:00">2015-12-02</time>
+                    <time class="updated" datetime="2015-12-20T23:08:40+08:00">2015-12-20 23:08:40</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                21060 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>我们在<a href="../../post/2265.html">十分钟开发博客项目</a>一节开发的博客应用只是一个基本的博客系统，还有许多地方需要进一步完善。对大多数博客平台而言，例如 Wordpress，都可以给博客文章添加分类或标签，本节我们就来为博客文章添加标签功能。</p>
+<h3 id="toc_0"><strong>1、创建标签模型和迁移</strong></h3>
+<p>首先需要创建 Tag 模型类：</p>
+<pre>php artisan make:model --migration Tag</pre>
+<p>该命令会在 <code>app</code> 目录下创建模型文件 <code>Tag.php</code>，由于我们在 <code>make:model</code> 命令中使用了 <code>--migration</code> 选项，所以同时会创建  <code>Tag</code> 模型对应的数据表迁移。</p>
+<p>在标签（Tag）和文章（Post）之间存在多对多的关联关系，因此还要按照下面的命令创建存放文章和标签对应关系的数据表迁移：</p>
+<pre>php artisan make:migration --create=post_tag_pivot create_post_tag_pivot</pre>
+<h4 id="toc_1"><strong>编辑标签迁移文件</strong></h4>
+<p>在 <code>database/migrations</code> 目录下编辑新创建的标签迁移文件内容如下：</p>
+<pre>&lt;?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateTagsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+    {
+        Schema::create('tags', function (Blueprint $table) {
+            $table-&gt;increments('id');
+            $table-&gt;string('tag')-&gt;unique();
+            $table-&gt;string('title');
+            $table-&gt;string('subtitle');
+            $table-&gt;string('page_image');
+            $table-&gt;string('meta_description');
+            $table-&gt;string('layout')-&gt;default('blog.layouts.index');
+            $table-&gt;boolean('reverse_direction');
+            $table-&gt;timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+        Schema::drop('tags');
+    }
+}
+</pre>
+<p>下面我们对上面迁移文件中新增的字段作简要说明：</p>
+<ul>
+<li><code>page_image</code>：标签图片</li>
+<li><code>meta_description</code>：标签介绍</li>
+<li><code>layout</code>：博客终归要使用布局</li>
+<li><code>reverse_directions</code>：在文章列表按时间升序排列博客文章（默认是降序）</li>
+</ul>
+<h4 id="toc_2"><strong>编辑文章与标签对应关系迁移</strong></h4>
+<p>编辑文章与标签对应关系表迁移文件内容如下：</p>
+<pre>&lt;?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreatePostTagPivot extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+    {
+        Schema::create('post_tag_pivot', function (Blueprint $table) {
+            $table-&gt;increments('id');
+            $table-&gt;integer('post_id')-&gt;unsigned()-&gt;index();
+            $table-&gt;integer('tag_id')-&gt;unsigned()-&gt;index();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+        Schema::drop('post_tag_pivot');
+    }
+}
+</pre>
+<h4 id="toc_3"><strong>运行迁移</strong></h4>
+<p>登录到 Homestead 虚拟机在项目根目录下通过运行如下 Artisan 命令以生成这两个数据表：</p>
+<pre>php artisan migrate</pre>
+<h3 id="toc_4"><strong>2、实现 admin.tag.index</strong></h3>
+<p>在<a href="../../post/2279.html">博客后台管理</a>一节中我们已经创建了 <code>TagController</code> 并定义了相应的路由。实现 <code>admin.tag.index</code> 就跟玩儿似地，只需要更新 <code>TagController</code> 的 <code>index</code> 方法，然后为其提供一个渲染视图即可。</p>
+<h4 id="toc_5"><strong>实现 TagController@index</strong></h4>
+<p>在 <code>app/Http/Controllers/Admin</code> 目录下修改 <code>TagController</code> 的 <code>index</code> 方法如下：</p>
+<pre>// 在 TagController 顶部添加如下语句
+use App\Tag;
+
+// 替换 index 方法如下
+public function index()
+{
+    $tags = Tag::all();
+    return view('admin.tag.index')-&gt;withTags($tags);
+}
+</pre>
+<p>很简单吧，只需要返回一个传递 <code>$tags</code> 变量的视图。</p>
+<h4 id="toc_6"><strong>创建 admin.tag.index 视图</strong></h4>
+<p>接下来我们来渲染这个视图，首先在 <code>resources/views/admin</code> 目录下创建一个 <code>tag</code> 子目录，然后在该目录下创建  <code>index.blade.php</code> 并编辑其内容如下：</p>
+<pre>@extends('admin.layout')
+
+@section('content')
+    &lt;div class="container-fluid"&gt;
+        &lt;div class="row page-title-row"&gt;
+            &lt;div class="col-md-6"&gt;
+                &lt;h3&gt;Tags &lt;small&gt;» Listing&lt;/small&gt;&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class="col-md-6 text-right"&gt;
+                &lt;a href="/admin/tag/create" class="btn btn-success btn-md"&gt;
+                    &lt;i class="fa fa-plus-circle"&gt;&lt;/i&gt; New Tag
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="row"&gt;
+            &lt;div class="col-sm-12"&gt;
+
+                @include('admin.partials.errors')
+                @include('admin.partials.success')
+
+                &lt;table id="tags-table" class="table table-striped table-bordered"&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Tag&lt;/th&gt;
+                            &lt;th&gt;Title&lt;/th&gt;
+                            &lt;th class="hidden-sm"&gt;Subtitle&lt;/th&gt;
+                            &lt;th class="hidden-md"&gt;Page Image&lt;/th&gt;
+                            &lt;th class="hidden-md"&gt;Meta Description&lt;/th&gt;
+                            &lt;th class="hidden-md"&gt;Layout&lt;/th&gt;
+                            &lt;th class="hidden-sm"&gt;Direction&lt;/th&gt;
+                            &lt;th data-sortable="false"&gt;Actions&lt;/th&gt;
+                        &lt;/tr&gt;
+                     &lt;/thead&gt;
+                    &lt;tbody&gt;
+                    @foreach ($tags as $tag)
+                        &lt;tr&gt;
+                            &lt;td&gt;{{ $tag-&gt;tag }}&lt;/td&gt;
+                            &lt;td&gt;{{ $tag-&gt;title }}&lt;/td&gt;
+                            &lt;td class="hidden-sm"&gt;{{ $tag-&gt;subtitle }}&lt;/td&gt;
+                            &lt;td class="hidden-md"&gt;{{ $tag-&gt;page_image }}&lt;/td&gt;
+                            &lt;td class="hidden-md"&gt;{{ $tag-&gt;meta_description }}&lt;/td&gt;
+                            &lt;td class="hidden-md"&gt;{{ $tag-&gt;layout }}&lt;/td&gt;
+                            &lt;td class="hidden-sm"&gt;
+                                @if ($tag-&gt;reverse_direction)
+                                    Reverse
+                                @else
+                                    Normal
+                                @endif
+                            &lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;a href="/admin/tag/{{ $tag-&gt;id }}/edit" class="btn btn-xs btn-info"&gt;
+                                    &lt;i class="fa fa-edit"&gt;&lt;/i&gt; Edit
+                                &lt;/a&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    @endforeach
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+@stop
+
+@section('scripts')
+    &lt;script&gt;
+        $(function() {
+            $("#tags-table").DataTable({
+            });
+        });
+    &lt;/script&gt;
+@stop
+</pre>
+<p>这个模板很简单，我们使用了后台布局，在文件顶部是页面标题和创建新标签的按钮，然后用表格来显示所有标签，最后，在页面顶部我们引入了一些 JavaScript 脚本将表格转化为 DataTables。</p>
+<p>还有两个被包含进来的局部视图：<code>admin.partials.errors</code> 和 <code>admin.partials.success</code>。<code>admin.partials.errors</code> 已经在<a href="../../post/2279.html">构建后台管理系统</a>一节中创建了，但 <code>admin.partials.success</code> 还没有创建。下面我们就来创建这个局部视图。</p>
+<h4 id="toc_7"><strong>创建返回成功信息局部视图</strong></h4>
+<p>在 <code>resources/views/admin/partials</code> 目录下创建 <code>success.blade.php</code> 文件，编辑其内容如下：</p>
+<pre>@if (Session::has('success'))
+    &lt;div class="alert alert-success"&gt;
+        &lt;button type="button" class="close" data-dismiss="alert"&gt;×&lt;/button&gt;
+        &lt;strong&gt;
+            &lt;i class="fa fa-check-circle fa-lg fa-fw"&gt;&lt;/i&gt; Success. 
+        &lt;/strong&gt;
+        {{ Session::get('success') }}
+    &lt;/div&gt;
+@endif</pre>
+<h4 id="toc_8"><strong>访问后台标签管理列表</strong></h4>
+<p>在浏览器中访问 <code>http://blog.app/admin/tag</code>：</p>
+<p><img class="alignnone size-full wp-image-2321" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-02-20-47-07.png" alt="Laravel 博客后台标签管理页面" width="946" height="326" /></p>
+<p>现在还没有任何数据，所以是个空的列表。</p>
+<h3 id="toc_9"><strong>3、实现 admin.tag.create</strong></h3>
+<p>接下来我们将会实现添加标签功能，这样当你点击“添加标签”按钮时就会跳转到填写标签表单页面。</p>
+<h4 id="toc_10"><strong>实现 TagController@create</strong></h4>
+<p>修改 <code>app/Http/Controllers/Admin</code> 目录下的 <code>TagController</code> 如下：</p>
+<pre>// 在 TagController 控制器顶部添加 $fields 属性
+class TagController extends Controller
+{
+    protected $fields = [
+        'tag' =&gt; '',
+        'title' =&gt; '',
+        'subtitle' =&gt; '',
+        'meta_description' =&gt; '',
+        'page_image' =&gt; '',
+        'layout' =&gt; 'blog.layouts.index',
+        'reverse_direction' =&gt; 0,
+    ];
+
+    // 替换 create() 方法如下
+    /**
+     * Show form for creating new tag
+     */
+    public function create()
+    {
+        $data = [];
+        foreach ($this-&gt;fields as $field =&gt; $default) {
+            $data[$field] = old($field, $default);
+        }
+
+        return view('admin.tag.create', $data);
+    }
+</pre>
+<p>该方法会在点击“添加新标签”或者表单被填充但是验证失败时执行，对于后者我们会将传过来的数据通过 <code>old</code> 方法回写到表单中。</p>
+<h4 id="toc_11"><strong>创建 admin.tag.create 视图</strong></h4>
+<p>在 <code>resources/views/admin/tag</code> 目录下新建 <code>create.blade.php</code> 文件，编辑其内容如下：</p>
+<pre>@extends('admin.layout')
+
+@section('content')
+&lt;div class="container-fluid"&gt;
+    &lt;div class="row page-title-row"&gt;
+        &lt;div class="col-md-12"&gt;
+            &lt;h3&gt;Tags &lt;small&gt;» Create New Tag&lt;/small&gt;&lt;/h3&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="row"&gt;
+        &lt;div class="col-md-8 col-md-offset-2"&gt;
+            &lt;div class="panel panel-default"&gt;
+                &lt;div class="panel-heading"&gt;
+                    &lt;h3 class="panel-title"&gt;New Tag Form&lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="panel-body"&gt;
+
+                    @include('admin.partials.errors')
+
+                    &lt;form class="form-horizontal" role="form" method="POST" action="/admin/tag"&gt;
+                        &lt;input type="hidden" name="_token" value="{{ csrf_token() }}"&gt;
+
+                            &lt;div class="form-group"&gt;
+                                &lt;label for="tag" class="col-md-3 control-label"&gt;Tag&lt;/label&gt;
+                                &lt;div class="col-md-3"&gt;
+                                    &lt;input type="text" class="form-control" name="tag" id="tag" value="{{ $tag }}" autofocus&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+
+                            @include('admin.tag._form')
+
+                            &lt;div class="form-group"&gt;
+                                &lt;div class="col-md-7 col-md-offset-3"&gt;
+                                    &lt;button type="submit" class="btn btn-primary btn-md"&gt;
+                                        &lt;i class="fa fa-plus-circle"&gt;&lt;/i&gt;
+                                        Add New Tag
+                                    &lt;/button&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+
+                        &lt;/form&gt;
+
+                 &lt;/div&gt;
+             &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+@stop
+</pre>
+<p>由于我们会在添加和编辑标签时共用同一个表单，所以我们将表单部分放到一个独立的局部视图 <code>admin.tag._form</code> 中，下面我们就来创建这个局部视图：</p>
+<h4 id="toc_12"><strong>创建 admin.tag._form 局部视图</strong></h4>
+<p>在 <code>resources/views/admin/tag</code> 目录下新建一个 <code>_form.blade.php</code> 文件，编辑其内容如下：</p>
+<pre>&lt;div class="form-group"&gt;
+    &lt;label for="title" class="col-md-3 control-label"&gt;
+        Title
+    &lt;/label&gt;
+    &lt;div class="col-md-8"&gt;
+        &lt;input type="text" class="form-control" name="title" id="title" value="{{ $title }}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+    &lt;label for="subtitle" class="col-md-3 control-label"&gt;
+        Subtitle
+    &lt;/label&gt;
+    &lt;div class="col-md-8"&gt;
+        &lt;input type="text" class="form-control" name="subtitle" id="subtitle" value="{{ $subtitle }}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+    &lt;label for="meta_description" class="col-md-3 control-label"&gt;
+        Meta Description
+    &lt;/label&gt;
+    &lt;div class="col-md-8"&gt;
+        &lt;textarea class="form-control" id="meta_description" name="meta_description" rows="3"&gt;
+            {{ $meta_description }}
+        &lt;/textarea&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+    &lt;label for="page_image" class="col-md-3 control-label"&gt;
+        Page Image
+    &lt;/label&gt;
+    &lt;div class="col-md-8"&gt;
+        &lt;input type="text" class="form-control" name="page_image" id="page_image" value="{{ $page_image }}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+    &lt;label for="layout" class="col-md-3 control-label"&gt;
+        Layout
+    &lt;/label&gt;
+    &lt;div class="col-md-4"&gt;
+        &lt;input type="text" class="form-control" name="layout" id="layout" value="{{ $layout }}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+    &lt;label for="reverse_direction" class="col-md-3 control-label"&gt;
+        Direction
+    &lt;/label&gt;
+    &lt;div class="col-md-7"&gt;
+        &lt;label class="radio-inline"&gt;
+            &lt;input type="radio" name="reverse_direction" id="reverse_direction"
+                    @if (! $reverse_direction)
+                        checked="checked"
+                    @endif
+                     value="0"&gt; 
+            Normal
+        &lt;/label&gt;
+        &lt;label class="radio-inline"&gt;
+            &lt;input type="radio" name="reverse_direction"
+                @if ($reverse_direction)
+                    checked="checked"
+                @endif
+                value="1"&gt; 
+            Reversed
+        &lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+<p>在后台标签列表中点击“新建标签”（New Tag）按钮访问刚刚创建的页面：</p>
+<p><img class="alignnone size-full wp-image-2323" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-02-21-08-58.png" alt="Laravel博客后台新建标签页面" width="550" height="729" /></p>
+<h3 id="toc_13"><strong>4、实现 admin.tag.store</strong></h3>
+<p>现在我们已经有了创建标签表单，还需要编写表单被提交后保存标签的业务逻辑代码。</p>
+<h4 id="toc_14"><strong>创建表单请求类 TagCreateRequest</strong></h4>
+<p>Laravel 5.1 的一个优秀特性就是表单请求类，这些类可以对指定表单字段进行验证。</p>
+<p>使用如下 Artisan 命令创建一个新的 <code>TagCreateRequest</code>：</p>
+<pre>php artisan make:request TagCreateRequest</pre>
+<p>创建的类存放在 <code>app/Http/Requests</code> 目录下，编辑刚刚创建的 <code>TagCreateRequest.php</code> 文件内容如下：</p>
+<pre>&lt;?php 
+
+namespace App\Http\Requests;
+
+use App\Http\Requests\Request;
+
+class TagCreateRequest extends Request
+{
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */ 
+    public function rules()
+    {
+        return [
+            'tag' =&gt; 'required|unique:tags,tag',
+            'title' =&gt; 'required',
+            'subtitle' =&gt; 'required',
+            'layout' =&gt; 'required',
+        ];
+    }
+}
+</pre>
+<p>该类继承自 <code>Illuminate\Foundation\Http\FormRequest</code>，当该类实例化的时候就会对请求进行验证，需要验证的项目有两个：</p>
+<ul>
+<li><code>authorize()</code> ：验证用户是否经过登录认证</li>
+<li><code>rules()</code>：返回验证规则数组</li>
+</ul>
+<p>表单请求的神奇之处在于会在表单请求类实例化的时候对请求进行验证，如果验证失败，会直接返回表单提交页面并显示错误信息。这意味着如果将表单请求作为控制器方法参数，那么验证工作将会在执行对应方法第一行代码之前进行。接下来我们就来定义保存的控制器方法。</p>
+<h4 id="toc_15"><strong>实现 TagController@store</strong></h4>
+<p>编辑控制器 <code>TagController.php</code> 代码如下：</p>
+<pre>&lt;?php
+
+// 在TagController顶部添加这个use语句
+use App\Http\Requests\TagCreateRequest;
+
+// 修改 store() 方法代码如下
+/**
+ * Store the newly created tag in the database.
+ *
+ * @param TagCreateRequest $request
+ * @return Response
+ */
+public function store(TagCreateRequest $request)
+{
+    $tag = new Tag();
+    foreach (array_keys($this-&gt;fields) as $field) {
+        $tag-&gt;$field = $request-&gt;get($field);
+    }
+    $tag-&gt;save();
+
+    return redirect('/admin/tag')
+                    -&gt;withSuccess("The tag '$tag-&gt;tag' was created.");
+}
+</pre>
+<p>现在，通过依赖注入，<code>TagCreateRequest</code> 被构造、表单被验证，只有验证通过后才会将请求参数传递到 <code>store</code> 方法。<code>store</code> 方法接下来才会创建并保存新的 <code>Tag</code> 实例。最后，页面重定向到后台标签列表，并带上保存成功消息：</p>
+<p><img class="alignnone size-full wp-image-2324" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-02-21-37-09.png" alt="Laravel博客后台新建标签" width="557" height="724" /></p>
+<p>点击“Add New Tag”按钮提交表单，保存成功：</p>
+<p><img class="alignnone size-full wp-image-2325" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-02-21-37-46.png" alt="Laravel博客后台新建标签成功页面" width="1001" height="365" /></p>
+<h3 id="toc_16"><strong>5、实现 admin.tag.edit</strong></h3>
+<p>接下来，我们来编辑路由方法 <code>admin.tag.edit</code> 来显示标签编辑表单。</p>
+<h4 id="toc_17"><strong>实现 TagController@edit</strong></h4>
+<p>更新 <code>TagController</code> 类，编辑 <code>edit</code> 方法如下：</p>
+<pre>/**
+ * Show the form for editing a tag
+ *
+ * @param int $id
+ * @return Response
+ */
+public function edit($id)
+{
+    $tag = Tag::findOrFail($id);
+    $data = ['id' =&gt; $id];
+    foreach (array_keys($this-&gt;fields) as $field) {
+        $data[$field] = old($field, $tag-&gt;$field);
+    }
+
+    return view('admin.tag.edit', $data);
+}
+</pre>
+<h4 id="toc_18"><strong>创建 admin.tag.edit 视图</strong></h4>
+<p>在 <code>resources/views/admin/tag</code> 目录中，创建 <code>edit.blade.php</code> 并编辑其内容如下：</p>
+<pre>@extends('admin.layout')
+
+@section('content')
+&lt;div class="container-fluid"&gt;
+    &lt;div class="row page-title-row"&gt;
+        &lt;div class="col-md-12"&gt;
+            &lt;h3&gt;Tags &lt;small&gt;» Edit Tag&lt;/small&gt;&lt;/h3&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="row"&gt;
+        &lt;div class="col-md-8 col-md-offset-2"&gt;
+            &lt;div class="panel panel-default"&gt;
+                &lt;div class="panel-heading"&gt;
+                    &lt;h3 class="panel-title"&gt;Tag Edit Form&lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="panel-body"&gt;
+
+                    @include('admin.partials.errors')
+                    @include('admin.partials.success')
+
+                    &lt;form class="form-horizontal" role="form" method="POST" action="/admin/tag/{{ $id }}"&gt;
+                        &lt;input type="hidden" name="_token" value="{{ csrf_token() }}"&gt;
+                        &lt;input type="hidden" name="_method" value="PUT"&gt;
+                        &lt;input type="hidden" name="id" value="{{ $id }}"&gt;
+
+                        &lt;div class="form-group"&gt;
+                            &lt;label for="tag" class="col-md-3 control-label"&gt;Tag&lt;/label&gt;
+                            &lt;div class="col-md-3"&gt;
+                                &lt;p class="form-control-static"&gt;{{ $tag }}&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                        @include('admin.tag._form')
+
+                        &lt;div class="form-group"&gt;
+                            &lt;div class="col-md-7 col-md-offset-3"&gt;
+                                &lt;button type="submit" class="btn btn-primary btn-md"&gt;
+                                    &lt;i class="fa fa-save"&gt;&lt;/i&gt;
+                                    Save Changes
+                                &lt;/button&gt;
+                                &lt;button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modal-delete"&gt;
+                                    &lt;i class="fa fa-times-circle"&gt;&lt;/i&gt;
+                                    Delete
+                                &lt;/button&gt;
+
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+
+                    &lt;/form&gt;
+
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+{{-- 确认删除 --}}
+&lt;div class="modal fade" id="modal-delete" tabIndex="-1"&gt;
+    &lt;div class="modal-dialog"&gt;
+        &lt;div class="modal-content"&gt;
+            &lt;div class="modal-header"&gt;
+                &lt;button type="button" class="close" data-dismiss="modal"&gt;
+                    ×
+                &lt;/button&gt;
+                &lt;h4 class="modal-title"&gt;Please Confirm&lt;/h4&gt;
+            &lt;/div&gt;
+            &lt;div class="modal-body"&gt;
+                &lt;p class="lead"&gt;
+                    &lt;i class="fa fa-question-circle fa-lg"&gt;&lt;/i&gt;
+                    Are you sure you want to delete this tag?
+                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="modal-footer"&gt;
+                &lt;form method="POST" action="/admin/tag/{{ $id }}"&gt;
+                    &lt;input type="hidden" name="_token" value="{{ csrf_token() }}"&gt;
+                    &lt;input type="hidden" name="_method" value="DELETE"&gt;
+                    &lt;button type="button" class="btn btn-default" data-dismiss="modal"&gt;Close&lt;/button&gt;
+                    &lt;button type="submit" class="btn btn-danger"&gt;
+                        &lt;i class="fa fa-times-circle"&gt;&lt;/i&gt; Yes
+                    &lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+@stop</pre>
+<h4 id="toc_19"><strong>在浏览器中访问编辑页面</strong></h4>
+<p>现在如果点击标签的编辑按钮，就会看到编辑表单，如果点击删除按钮则会弹出确认按钮：</p>
+<p><img class="alignnone size-full wp-image-2326" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-02-21-41-33.png" alt="Laravel博客后台标签编辑页面" width="758" height="641" /></p>
+<p>当然，标签现在还不能真的被删除或更新，接下来我们要在后台实现其业务逻辑。</p>
+<h3 id="toc_20"><strong>6、实现 admin.tag.update</strong></h3>
+<p>和 <code>admin.tag.store</code> 路由处理 <code>admin.tag.create</code> 表单一样，我们使用 <code>admin.tag.update</code> 路由处理 <code>admin.tag.edit</code> 表单。</p>
+<h4 id="toc_21"><strong>创建表单请求类 TagUpdateRequest</strong></h4>
+<p>我们使用如下 Artisan 命令生成处理更新表单请求类 <code>TagUpdateRequest</code>：</p>
+<pre>php artisan make:request TagUpdateRequest</pre>
+<p>然后编辑刚刚生成的 <code>TagUpdateRequest.php</code> 文件（该文件位于 <code>app/Http/Requests</code> 目录下）：</p>
+<pre>&lt;?php
+
+namespace App\Http\Requests;
+
+use App\Http\Requests\Request;
+
+class TagUpdateRequest extends Request
+{
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'title' =&gt; 'required',
+            'subtitle' =&gt; 'required',
+            'layout' =&gt; 'required',
+        ];
+    }
+}
+</pre>
+<p>该请求处理类和 <code>TagCreateRequest</code> 基本一样。</p>
+<h4 id="toc_22"><strong>实现 TagController@update</strong></h4>
+<p>接下来我们更新 <code>TagController.php</code> 文件内容如下：</p>
+<pre>// 在TagController顶部添加新的use语句
+use App\Http\Requests\TagUpdateRequest;
+
+// 替换 update() 方法如下
+/**
+ * Update the tag in storage
+ *
+ * @param TagUpdateRequest $request
+ * @param int $id
+ * @return Response
+ */
+public function update(TagUpdateRequest $request, $id)
+{
+    $tag = Tag::findOrFail($id);
+
+    foreach (array_keys(array_except($this-&gt;fields, ['tag'])) as $field) {
+        $tag-&gt;$field = $request-&gt;get($field);
+    }
+    $tag-&gt;save();
+
+    return redirect("/admin/tag/$id/edit")
+                    -&gt;withSuccess("Changes saved.");
+}
+</pre>
+<p>现在我们就可以编辑标签并点击“保存更改”（Save Changes）按钮实现标签修改操作。</p>
+<h3 id="toc_23"><strong>7、实现标签删除功能</strong></h3>
+<p>到目前为止，我们已经基本完成后台标签功能了（我们后续将会在博客文章创建及编辑中实现标签与文章的绑定），剩下来要做的就是实现标签删除功能了。</p>
+<h4 id="toc_24"><strong>实现 TagController@destroy</strong></h4>
+<p>要在编辑标签页面实现删除标签功能，首先要修改 <code>TagController.php</code> 的 <code>destroy</code> 方法如下：</p>
+<pre>/**
+ * Delete the tag
+ *
+ * @param int $id
+ * @return Response
+ */
+public function destroy($id)
+{
+    $tag = Tag::findOrFail($id);
+    $tag-&gt;delete();
+
+    return redirect('/admin/tag')
+                    -&gt;withSuccess("The '$tag-&gt;tag' tag has been deleted.");
+}
+</pre>
+<p>没有任何神奇的地方：获取标签、删除标签，删除成功后重定向到标签列表页：</p>
+<p><img class="alignnone size-full wp-image-2327" src="https://static.laravelacademy.org/wp-content/uploads/2015/12/2015-12-02-21-57-12.png" alt="Laravel博客后台标签删除成功页面" width="972" height="399" /></p>
+<h4 id="toc_25"><strong>移除 admin.tag.show</strong></h4>
+<p>你可能已经注意到还有一个路由到目前为止还没有被使用，<code>admin.tag.show</code> 用来显示标签详情，该路由通常用于给那些没有编辑权限的用户查看详情。</p>
+<p>在本系统中我们不需要查看标签详情（实际上这个功能也没有什么意义），所以将其删除。</p>
+<p>首先在 <code>app/Http/routes.php</code> 中修改路由如下：</p>
+<pre>// 将如下这行代码
+ resource('admin/tag', 'TagController');
+// 修改成
+ resource('admin/tag', 'TagController', ['except' =&gt; 'show']);</pre>
+<p>然后在控制器 <code>TagController.php</code> 中移除<code> show()</code> 方法。</p>
+<p>下一节我们将会为博客系统实现文件上传功能。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/blog" rel="category tag">
+                博客系列
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/标签" rel="tag">标签</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5" rel="tag">增删改查</a>
+                                    ,
+                                            <a href="../tags/博客" rel="tag">博客</a>
+                                    ,
+                                            <a href="../tags/后台" rel="tag">后台</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;22 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="2320" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="2320" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;22 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="2299.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于Laravel开发博客应用系列 —— 使用Bower+Gulp集成前端资源
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="2333.html" rel="next">
+                基于Laravel开发博客应用系列 —— 实现文件上传管理功能
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        47 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-10294" class="comment even thread-even depth-1">
+            <article id="div-comment-10294" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='贤' src='https://www.gravatar.com/avatar/140fc0d25d73c6a69d7aad7cc77f31fa?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            贤
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        admin.tag.create视图和实际文件名对不上号，要改其中一个
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="10294"  aria-label='回复贤...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-08T22:35:56+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-08 22:35:56
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10294" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10160" class="comment even thread-even depth-1">
+            <article id="div-comment-10160" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='asd' src='https://www.gravatar.com/avatar/706c1e55d06bbd7f5ac12dd33ae6c5b7?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            asd
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        123
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="10160"  aria-label='回复asd...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-14T11:30:49+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-14 11:30:49
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10160" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8965" class="comment even thread-even depth-1">
+            <article id="div-comment-8965" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='天驱' src='https://www.gravatar.com/avatar/d5c441a68251e032ec8175b28c487f07?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            天驱
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        还有就是调样式的问题一定要Ctrl+F5，直接鼠标点重新加载会加载缓存样式。chrome的话可以F12，在network的Size那里看你页面里的每一个请求是否使用了缓存。
+难受啊马飞
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8965"  aria-label='回复天驱...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-12-28T01:26:36+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-12-28 01:26:36
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8965" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8964" class="comment even thread-even depth-1">
+            <article id="div-comment-8964" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='天驱' src='https://www.gravatar.com/avatar/d5c441a68251e032ec8175b28c487f07?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            天驱
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        如果有前面的内容都顺利做完，做到这里发现tag页面这个表格却莫名其妙的样式不对的同学。检查一下vendor/bower_dl/datatables-plugins/这个目录名，如果是vendor/bower_dl/datatables.net-plugins这样的话，需要在gulpfile.js里修改（var dtDir = （加一个.net）），再重新移动、合并文件。可能是最新的datatables-plugins默认目录名改变了吧，之前按照教程里的gulpfile.js合并文件时，它找不到文件也不报错，就那么通过了卧槽。不太熟悉前端，找了几个小时才找出来为什么，神特么烦。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8964"  aria-label='回复天驱...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-12-28T01:19:31+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-12-28 01:19:31
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8964" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8734" class="comment even thread-even depth-1">
+            <article id="div-comment-8734" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='jooker' src='https://www.gravatar.com/avatar/f30a795e08191a6bca668fa626cf40f0?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            jooker
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        感谢博主！在这学到了很多！
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8734"  aria-label='回复jooker...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-11-17T20:30:21+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-11-17 20:30:21
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8734" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8733" class="comment even thread-even depth-1">
+            <article id="div-comment-8733" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='jooker1' src='https://www.gravatar.com/avatar/f30a795e08191a6bca668fa626cf40f0?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            jooker1
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        博客系列不错！
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8733"  aria-label='回复jooker1...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-11-17T20:29:40+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-11-17 20:29:40
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8733" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8732" class="comment even thread-even depth-1">
+            <article id="div-comment-8732" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='098a5fd0685b2c5155d3d229865be6cf' src='https://www.gravatar.com/avatar/f30a795e08191a6bca668fa626cf40f0?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            098a5fd0685b2c5155d3d229865be6cf
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        php不是这么开发的，简单的东西复杂化
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8732"  aria-label='回复098a5fd0685b2c5155d3d229865be6cf...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-11-17T20:24:57+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-11-17 20:24:57
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8732" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8449" class="comment even thread-even depth-1">
+            <article id="div-comment-8449" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='王磊' src='https://www.gravatar.com/avatar/8e81f9636bce37c43191e231964f2ffa?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            王磊
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君好，我想点击“编辑”按钮的时候弹出模态框，然后“提交”直接路由到update方法，就是没有edit方法，那么tag的id怎么传到模态框呢
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8449"  aria-label='回复王磊...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-10-09T17:23:44+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-10-09 17:23:44
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8449" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8207" class="comment even thread-even depth-1">
+            <article id="div-comment-8207" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='pardon110' src='https://www.gravatar.com/avatar/4c4c9a9bbac441c79811eeebb3d068fa?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            pardon110
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        关联关系定义，自动关联生成的sql
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8207"  aria-label='回复pardon110...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-09-09T12:01:09+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-09-09 12:01:09
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8207" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8030" class="comment even thread-even depth-1">
+            <article id="div-comment-8030" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='31415927' src='https://www.gravatar.com/avatar/3e5388508a3868130b2d761538b5428c?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            31415927
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        请问学员君，在tag_post_pivot表单里的post_id和tag_id是在哪里被赋值的，就是说在哪里有这样一段赋值用的代码：tag_post_piovt.post_id=posts.id
+tag_post_piovt.tag_id=tags.id
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2320.html#respond' data-id="8030"  aria-label='回复31415927...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-08-15T15:10:30+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-08-15 15:10:30
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8030" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2320.html/page/2#comments">2</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2320.html/page/3#comments">3</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2320.html/page/4#comments">4</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2320.html/page/5#comments">5</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/index.php/post/2320.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="2320.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='2320' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="2320.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="2320.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        1、创建标签模型和迁移
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        编辑标签迁移文件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        编辑文章与标签对应关系迁移
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        运行迁移
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        2、实现 admin.tag.index
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        实现 TagController@index
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建 admin.tag.index 视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建返回成功信息局部视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        访问后台标签管理列表
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3、实现 admin.tag.create
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        实现 TagController@create
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建 admin.tag.create 视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建 admin.tag._form 局部视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4、实现 admin.tag.store
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建表单请求类 TagCreateRequest
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        实现 TagController@store
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5、实现 admin.tag.edit
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        实现 TagController@edit
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建 admin.tag.edit 视图
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        在浏览器中访问编辑页面
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6、实现 admin.tag.update
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建表单请求类 TagUpdateRequest
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_22">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        实现 TagController@update
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_23">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        7、实现标签删除功能
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_24">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        实现 TagController@destroy
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2320.html#toc_25">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        移除 admin.tag.show
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="2265.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于Laravel开发博客应用系列 —— 十分钟搭建博客系统
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2279.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于Laravel开发博客应用系列 —— 构建博客后台管理系统
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2333.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于Laravel开发博客应用系列 —— 实现文件上传管理功能
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2358.html.1" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于Laravel开发博客应用系列 —— 后台文章增删改查功能实现（支持Markdown）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2371.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于Laravel开发博客应用系列 —— 前台功能优化：给博客换上漂亮的主题 &amp; 完善博客功能
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.5 文档 ] 进阶系列 —— Laravel 队列系统实现及使用教程 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="8369.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="8369.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="8369.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="8369.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="8369.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_5">
+                Laravel 5.5
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.5 文档 ] 进阶系列 —— Laravel 队列系统实现及使用教程</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.5 文档 ] 进阶系列 —— Laravel 队列系统实现及使用教程</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="8369.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-02-22T00:18:48+08:00">2018-02-22</time>
+                    <time class="updated" datetime="2018-02-23T13:04:23+08:00">2018-02-23 13:04:23</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                14083 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p><img class="alignleft" src="https://static.laravelacademy.org/wp-content/uploads/2018/02/15189600425182.jpg" alt="" />￼</p>
+<h3 id="toc_0">简介</h3>
+<p>注：Laravel 现在提供了基于 Redis 的，拥有美观的后台和配置系统的 Horizon 队列扩展包，完整信息参考 <a href="https://laravel.com/docs/5.5/horizon" target="_blank" rel="noopener">Horizon文档</a>。</p>
+<p>Laravel 队列为不同的后台队列服务提供了统一的 API，例如 Beanstalk，Amazon SQS，Redis，甚至其他基于关系型数据库的队列。队列的目的是将耗时的任务延时处理，比如发送邮件，从而大幅度缩短 Web 请求和响应的时间。</p>
+<p>队列配置文件存放在 <code>config/queue.php</code>。每一种队列驱动的配置都可以在该文件中找到，包括数据库、<a href="https://kr.github.io/beanstalkd/" target="_blank" rel="noopener">Beanstalkd</a>、<a href="https://aws.amazon.com/sqs/" target="_blank" rel="noopener">Amazon SQS</a>、<a href="http://redis.io/" target="_blank" rel="noopener">Redis</a>以及同步（本地使用）驱动。其中还包含了一个 <code>null</code> 队列驱动用于那些放弃队列的任务。</p>
+<h4 id="toc_1">连接 Vs. 队列</h4>
+<p>在开始使用 Laravel 队列以前，了解“连接”和“队列”的关系非常重要。在配置文件 <code>config/queue.php</code> 有一个 <code>connections</code> 配置项。该配置项定义了后台队列服务的特定连接，如 Amazon SQS, Beanstalk, 或 Redis。每种队列连接都可以有很多队列，可以想象在银行办理现金业务的各个窗口队列。</p>
+<p>请注意 <code>queue</code> 配置文件中的每个连接配置示例都有一个 <code>queue</code> 属性。当新的队列任务被添加到指定的连接时，该配置项的值就是默认监听的队列（名称）。换种说法，如果你没有指派特别的队列名称，那么 <code>queue</code> 的值，也是该任务默认添加到的队列（名称）：</p>
+<pre><code>// 以下的任务将被委派到默认队列...
+dispatch(new Job);
+
+// 以下任务将被委派到 "emails" 队列...
+dispatch((new Job)-&gt;onQueue('emails'));
+</code></pre>
+<p>有些应用并不需要将任务分配到多个队列，单个队列已经非常适用。但是，应用的任务有优先级差异或者类别差异的时候，推送任务到多个队列将是更好地选择，因为 Laravel 的队列进程支持通过优先级指定处理的队列。举个例子，你可以将高优先级的任务委派到 <code>high</code> (高优先级)队列，从而让它优先执行。</p>
+<pre><code>php artisan queue:work --queue=high,default
+</code></pre>
+<h4 id="toc_2">驱动预备知识</h4>
+<p><strong>数据库</strong></p>
+<p>要使用 <code>database</code> 队列驱动，你需要数据表保存任务信息。要生成创建这些表的迁移，可以运行 Artisan 命令 <code>queue:table</code>，迁移被创建之后，可以使用 <code>migrate</code> 命令生成这些表：</p>
+<pre><code>php artisan queue:table
+php artisan migrate
+</code></pre>
+<p><strong>Redis</strong></p>
+<p>要使用 <code>redis</code> 队列驱动，需要在配置文件 <code>config/database.php</code> 中配置 Redis 数据库连接。</p>
+<p>如果 Redis 队列连接使用 Redis Cluster（集群），队列名称必须包含 <a href="https://redis.io/topics/cluster-spec#keys-hash-tags" target="_blank" rel="noopener">key hash tag</a>，以确保给定队列对应的所有 Redis keys 都存放到同一个 hash slot：</p>
+<pre><code>'redis' =&gt; [
+    'driver' =&gt; 'redis',
+    'connection' =&gt; 'default',
+    'queue' =&gt; '{default}',
+    'retry_after' =&gt; 90,
+],
+</code></pre>
+<blockquote><p>注：对一般中小型应用推荐使用 Redis 作为队列驱动。</p></blockquote>
+<p><strong>其他驱动预备知识</strong></p>
+<p>如果使用以下几种队列驱动，需要安装相应的依赖：</p>
+<ul>
+<li>Amazon SQS: <code>aws/aws-sdk-php ~3.0</code></li>
+<li>Beanstalkd: <code>pda/pheanstalk ~3.0</code></li>
+<li>Redis: <code>predis/predis ~1.0</code></li>
+</ul>
+<h3 id="toc_3">创建任务</h3>
+<h4 id="toc_4">生成任务类</h4>
+<p>通常，所有的任务类都保存在 <code>app/Jobs</code> 目录。如果 <code>app/Jobs</code> 不存在，在运行 Artisan 命令 <code>make:job</code> 的时候，它将会自动创建。你可以通过 Artisan CLI 来生成队列任务类：</p>
+<pre><code>php artisan make:job ProcessPodcast
+</code></pre>
+<p>生成的类都实现了 <code>Illuminate\Contracts\Queue\ShouldQueue</code> 接口, 告诉 Laravel 将该任务推送到队列，而不是立即运行：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/02/15189607380749.jpg" alt="" />￼</p>
+<h4 id="toc_5">任务类结构</h4>
+<p>任务类非常简单，通常只包含处理该任务的 <code>handle</code> 方法，让我们看一个任务类的例子。在这个例子中，我们模拟管理播客发布服务，并在发布以前上传相应的播客文件：</p>
+<pre><code>&lt;?php
+
+namespace App\Jobs;
+
+use App\Podcast;
+use App\AudioProcessor;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class ProcessPodcast implements ShouldQueue
+{
+    use InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $podcast;
+
+    /**
+     * 创建任务实例
+     *
+     * @param  Podcast  $podcast
+     * @return void
+     */
+    public function __construct(Podcast $podcast)
+    {
+        $this-&gt;podcast = $podcast;
+    }
+
+    /**
+     * 执行任务
+     *
+     * @param  AudioProcessor  $processor
+     * @return void
+     */
+    public function handle(AudioProcessor $processor)
+    {
+        // 处理上传的播客…
+    }
+}
+</code></pre>
+<p>在本示例中，我们将 <a href="../../post/8194.html" target="_blank" rel="noopener">Eloquent 模型</a>作为参数直接传递到构造函数。因为该任务使用了 <code>SerializesModels</code> trait，Eloquent 模型将会在任务被执行时优雅地序列化和反序列化。如果你的队列任务在构造函数中接收 Eloquent 模型，只有模型的主键会被序列化到队列，当任务真正被执行的时候，队列系统会自动从数据库中获取整个模型实例。这对应用而言是完全透明的，从而避免序列化整个 Eloquent 模型实例引起的问题。</p>
+<p><code>handle</code> 方法在任务被处理的时候调用，注意我们可以在任务的 <code>handle</code> 方法中进行依赖注入。Laravel <a href="../../post/6699.html" target="_blank" rel="noopener">服务容器</a>会自动注入这些依赖。</p>
+<blockquote><p>注：二进制数据，如原生图片内容，在传递给队列任务之前先经过 <code>base64_encode</code> 方法处理，此外，该任务被推送到队列时将不会被序列化为 JSON 格式。</p></blockquote>
+<h3 id="toc_6">分发任务</h3>
+<p>创建好任务类后，就可以通过任务自身的 <code>dispatch</code> 方法将其分发到队列。<code>dispatch</code> 方法需要的唯一参数就是该任务的实例:</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Jobs\ProcessPodcast;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class PodcastController extends Controller
+{
+    /**
+     * Store a new podcast.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        // Create podcast...
+
+        ProcessPodcast::dispatch($podcast);
+    }
+}
+</code></pre>
+<h4 id="toc_7">延时分发</h4>
+<p>有时候你可能想要延迟队列任务的执行，这可以通过在分发任务时使用 <code>delay</code> 方法实现。例如你希望将某个任务在创建 10 分钟以后才执行：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Jobs\ProcessPodcast;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class PodcastController extends Controller
+{
+    /**
+     * Store a new podcast.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        // Create podcast...
+
+        ProcessPodcast::dispatch($podcast)
+                -&gt;delay(now()-&gt;addMinutes(10));
+    }
+}
+</code></pre>
+<blockquote><p>注：Amazon SQS 的队列服务最长延时 15 分钟。</p></blockquote>
+<h4 id="toc_8">任务链</h4>
+<p>任务链允许你指定一个需要在一个序列中执行的队列任务列表，如果序列中的某个任务失败，其它任务将不再运行。要执行一个队列任务链，可以使用任意可分发任务上的 <code>withChain</code> 方法：</p>
+<pre><code>ProcessPodcast::withChain([
+    new OptimizePodcast,
+    new ReleasePodcast
+])-&gt;dispatch();
+</code></pre>
+<h4 id="toc_9">自定义队列&amp;连接</h4>
+<p><strong>分发到指定的队列</strong></p>
+<p>通过推送任务到不同队列，你可以将队列任务进行“分类”，甚至根据优先级来分配每个队列的进程数。请注意，这并不意味着使用了配置项中那些不同的连接来管理队列，实际上只有单一连接会被用到。要指定队列，请在任务实例使用 <code>onQueue</code> 方法:</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Jobs\ProcessPodcast;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class PodcastController extends Controller
+{
+    /**
+     * Store a new podcast.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        // Create podcast...
+
+        ProcessPodcast::dispatch($podcast)-&gt;onQueue('processing');
+    }
+}
+</code></pre>
+<p><strong>分发到指定的连接</strong></p>
+<p>如果你使用了多个连接来管理队列，那么可以分发任务到指定的连接。请在任务实例中使用 <code>onConnection</code> 方法来指定连接:</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Jobs\ProcessPodcast;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class PodcastController extends Controller
+{
+    /**
+     * Store a new podcast.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        // Create podcast...
+
+        ProcessPodcast::dispatch($podcast)-&gt;onConnection('sqs');
+    }
+}
+</code></pre>
+<p>当然，你可以同时使用 <code>onConnection</code> 和<code>onQueue</code> 方法来指定任务的连接和队列：</p>
+<pre><code>$job = (new ProcessPodcast($podcast))
+                -&gt;onConnection('sqs')
+                -&gt;onQueue('processing');
+</code></pre>
+<h4 id="toc_10">指定最大失败次数/超时时间</h4>
+<p><strong>最大失败次数</strong></p>
+<p>指定队列任务最大失败次数的一种实现方式是通过 Artisan 命令 <code>--tries</code> 切换：</p>
+<pre><code>php artisan queue:work --tries=3
+</code></pre>
+<p>不过，你还可以在任务类自身定义最大失败次数来实现更加细粒度的控制，如果最大失败次数在任务中指定，则其优先级高于命令行指定的数值：</p>
+<pre><code>&lt;?php
+
+namespace App\Jobs;
+
+class ProcessPodcast implements ShouldQueue
+{
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 5;
+}
+</code></pre>
+<p><strong>基于时间的尝试次数</strong></p>
+<p>除了定义在任务失败前的最大尝试次数外，还可以定义在指定时间内允许任务的最大尝试次数，这可以通过在任务类中添加 <code>retryUntil</code> 方法来实现：</p>
+<pre><code>/**
+ * Determine the time at which the job should timeout.
+ *
+ * @return \DateTime
+ */
+public function retryUntil()
+{
+    return now()-&gt;addSeconds(5);
+}
+</code></pre>
+<blockquote><p>注：还可以在队列时间监听器中定义 <code>retryUntil</code> 方法。</p></blockquote>
+<p><strong>超时</strong></p>
+<blockquote><p>注：<code>timeout</code> 方法为 PHP 7.1+ 和 <code>pcntl</code> 扩展做了优化。</p></blockquote>
+<p>类似的，队列任务最大运行时长（秒）可以通过 Artisan 命令上的 <code>--timeout</code> 开关来指定：</p>
+<pre><code>php artisan queue:work --timeout=30
+</code></pre>
+<p>同样，你也可以在任务类中定义该任务允许运行的最大时长（单位：秒），任务中指定的超时时间优先级也高于命令行定义的数值：</p>
+<pre><code>&lt;?php
+
+namespace App\Jobs;
+
+class ProcessPodcast implements ShouldQueue
+{
+    /**
+     * The number of seconds the job can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 120;
+}
+</code></pre>
+<h4 id="toc_11">频率限制</h4>
+<blockquote><p>注：该功能要求应用可以与 <a href="../../post/8393.html" target="_blank" rel="noopener">Redis 服务器</a>进行交互。</p></blockquote>
+<p>如果应用使用了 Redis，那么可以使用时间或并发来控制队列任务。该功能特性在队列任务与有频率限制的 API 交互时很有帮助，例如，通过 <code>throttle</code> 方法，你可以限定给定类型任务每 60 秒只运行 10 次。如果不能获取锁，需要将任务释放回队列以便可以再次执行：</p>
+<pre><code>Redis::throttle('key')-&gt;allow(10)-&gt;every(60)-&gt;then(function () {
+    // Job logic...
+}, function () {
+    // Could not obtain lock...
+
+    return $this-&gt;release(10);
+});
+</code></pre>
+<blockquote><p>注：在上面的例子中，<code>key</code> 可以是任意可以唯一标识你想要限定访问频率的任务类型的字符串。举个例子，这个键可以基于任务类名和操作 Eloquent 模型的 ID 进行构建。</p></blockquote>
+<p>除此之外，还可以指定可以同时处理给定任务的最大进程数量。这个功能在队列任务正在编辑一次只能由一个任务进行处理的资源时很有用。例如，使用 <code>funnel</code> 方法你可以给定类型任务一次只能由一个工作进程进行处理：</p>
+<pre><code>Redis::funnel('key')-&gt;limit(1)-&gt;then(function () {
+    // Job logic...
+}, function () {
+    // Could not obtain lock...
+
+    return $this-&gt;release(10);
+});
+</code></pre>
+<blockquote><p>注：使用频率限制时，任务在运行成功之前需要的最大尝试次数很难权衡，因此，将频率限制和基于时间的尝试次数结合起来使用是个不错的选择。</p></blockquote>
+<h4 id="toc_12">处理错误</h4>
+<p>如果任务在处理的时候有异常抛出，则该任务将会被自动释放回队列以便再次尝试执行。任务会持续被释放直到尝试次数达到应用允许的最大次数。最大尝试次数通过 Artisan 命令 <code>queue:work</code> 上的 <code>--tries</code> 开关来定义。此外，该次数也可以在任务类自身上定义。关于运行队列监听器的更多信息可以在<a href="../../post/8369.html#toc_13">下面</a>看到。</p>
+<h3 id="toc_13">运行队列进程</h3>
+<p>Laravel 自带了一个队列进程用来处理被推送到队列的新任务。你可以使用 <code>queue:work</code> 命令运行这个队列进程。请注意，队列进程开始运行后，会持续监听队列，直至你手动停止或关闭终端：</p>
+<pre><code>php artisan queue:work
+</code></pre>
+<blockquote><p>注：为了保持队列进程 <code>queue:work</code> 持续在后台运行，需要使用进程守护程序，比如 <a href="../../post/8369.html#toc_17">Supervisor</a> 来确保队列进程持续运行。</p></blockquote>
+<p>请记住，队列进程是长生命周期的进程，会在启动后驻留内存。若应用有任何改动将不会影响到已经启动的进程。所以请在发布程序后，<a href="../../post/8369.html#toc_15">重启队列进程</a>。</p>
+<p><strong>处理单个任务</strong></p>
+<p><code>--once</code> 选项可用于告知进程只处理队列中的单个任务：</p>
+<pre><code>php artisan queue:work --once
+</code></pre>
+<p><strong>指定连接和队列</strong></p>
+<p>队列进程同样可以自定义连接和队列。传递给 <code>work</code> 命令的连接名需要与配置文件 <code>config/queue.php</code> 中定义的某个连接配置相匹配：</p>
+<pre><code>php artisan queue:work redis
+</code></pre>
+<p>你可以自定义将某个队列进程指定某个连接来管理。举例来说，如果所有的邮件任务都是通过 <code>redis</code> 连接上的 <code>emails</code> 队列处理，那么可以用以下命令来启动单一进程只处理单一队列：</p>
+<pre><code>php artisan queue:work redis --queue=emails
+</code></pre>
+<p><strong>资源注意事项</strong></p>
+<p>后台队列进程不会再处理每个任务前重启框架，因此你需要在每次任务完成后释放所有重量级的资源。例如，如果你在使用 GD 库处理图片，需要在完成的时候使用 <code>imagedestroy</code> 来释放内存。</p>
+<h4 id="toc_14">队列优先级</h4>
+<p>有时候你需要区分任务的优先级。比如，在配置文件 <code>config/queue.php</code> 中，你可以定义 <code>redis</code> 连接的默认 <code>queue</code> 为 <code>low</code>。不过，如果需要将任务分发到高优先级 <code>high</code>，可以这么做：</p>
+<pre><code>dispatch((new Job)-&gt;onQueue('high'));
+</code></pre>
+<p>如果期望所有 <code>high</code> 高优先级的队列都将先于 <code>low</code> 低优先级的任务执行，可以像这样启动队列进程：</p>
+<pre><code>php artisan queue:work --queue=high,low
+</code></pre>
+<h4 id="toc_15">队列进程 &amp; 部署</h4>
+<p>前文已经提到队列进程是长生命周期的进程，在重启以前，所有源码的修改并不会对其产生影响。所以，最简单的方法是在每次发布新版本后重新启动队列进程。你可以通过 Aritisan 命令 <code>queue:restart</code> 来优雅地重启队列进程:</p>
+<pre><code>php artisan queue:restart
+</code></pre>
+<p>该命令将在队列进程完成正在进行的任务后，结束该进程，避免队列任务的丢失或错误。由于队列进程会在执行 <code>queue:restart</code> 命令后死掉，你仍然需要通过进程守护程序如 <a href="../../post/8369.html#toc_17">Supervisor</a> 来自动重启队列进程。</p>
+<blockquote><p>注：队列使用缓存来存储重启信号，所以在使用此功能前你需要验证缓存驱动配置正确。</p></blockquote>
+<h4 id="toc_16">任务过期和超时</h4>
+<p><strong>任务过期</strong></p>
+<p>在配置文件 <code>config/queue.php</code> 中，每个连接都定义了 <code>retry_after</code> 项。该配置项的目的是定义任务在执行以后多少秒后释放回队列。如果<code>retry_after</code> 设定的值为 <code>90</code>, 任务在运行 <code>90</code> 秒后还未完成，那么将被释放回队列而不是删除掉。毫无疑问，你需要把 <code>retry_after</code> 的值设定为任务执行时间的最大可能值。</p>
+<blockquote><p>注：只有 Amazon SQS 配置信息不包含 <code>retry_after</code> 项。Amazon SQS 的任务执行时间基于 <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html" target="_blank" rel="noopener">Default Visibility Timeout</a> ，该项在 Amazon AWS 控制台配置。</p></blockquote>
+<p><strong>队列进程超时</strong></p>
+<p>队列进程 <code>queue:work</code> 可以设定超时 <code>--timeout</code> 项。该 <code>--timeout</code> 控制队列进程执行每个任务的最长时间，如果超时，该进程将被关闭。各种错误都可能导致某个任务处于“冻结”状态，比如 HTTP 无响应等。队列进程超时就是为了将这些“冻结”的进程关闭：</p>
+<pre><code>php artisan queue:work --timeout=60
+</code></pre>
+<p>配置项 <code>retry_after</code> 和 Aritisan 参数项 <code>--timeout</code> 不同，但目的都是为了确保任务的安全，并且只被成功的执行一次。</p>
+<blockquote><p>注：参数项 <code>--timeout</code> 的值应该始终小于配置项 <code>retry_after</code> 的值，这是为了确保队列进程总在任务重试以前关闭。如果 <code>--timeout</code> 比<code>retry_after</code> 大，那么你的任务可能被执行两次。</p></blockquote>
+<p><strong>进程休眠时间</strong></p>
+<p>当任务在队列中有效时，进程会持续处理任务，没有延迟。不过，我们可以使用 <code>sleep</code> 配置项来指定没有新的有效任务产生时的休眠时间：</p>
+<pre><code>php artisan queue:work --sleep=3
+</code></pre>
+<h3 id="toc_17">配置 Supervisor</h3>
+<p><strong>安装 Supervisor</strong></p>
+<p>Supervisor 是 Linux 系统中常用的进程守护程序。如果队列进程 <code>queue:work</code> 意外关闭，它会自动重启启动队列进程。在 Ubuntu 安装Supervisor 非常简单：</p>
+<pre><code>sudo apt-get install supervisor
+</code></pre>
+<blockquote><p>注：如果自己配置 Supervisor 有困难，可以考虑使用 Laravel Forge，它会为 Laravel 项目自动安装并配置 Supervisor。</p></blockquote>
+<p><strong>配置 Supervisor</strong></p>
+<p>Supervisor 配置文件通常存放在 <code>/etc/supervisor/conf.d</code> 目录，在该目录下，可以创建多个配置文件指示 <code>Supervisor</code> 如何监视进程，例如，让我们创建一个开启并监视 <code>queue:work</code> 进程的 <code>laravel-worker.conf</code> 文件：</p>
+<pre><code>[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3
+autostart=true
+autorestart=true
+user=forge
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/home/forge/app.com/worker.log
+</code></pre>
+<p>在本例中，<code>numprocs</code> 指令让 Supervisor 运行 8 个 <code>queue:work</code> 进程并监视它们，如果失败的话自动重启。当然，你需要修改 <code>queue:work sqs</code> 的 <code>command</code> 指令来映射你的队列连接。</p>
+<p><strong>启动 Supervisor</strong></p>
+<p>当成功创建配置文件后，需要刷新 Supervisor 的配置信息并使用如下命令启动进程:</p>
+<pre><code>sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start laravel-worker:*
+</code></pre>
+<p>你可以通过 <a href="http://supervisord.org/index.html" target="_blank" rel="noopener">Supervisor 官方文档</a>获取更多信息。</p>
+<h3 id="toc_18">处理失败的任务</h3>
+<p>不可避免会出现运行失败的任务。你不必为此担心，Laravel 可以轻松设置任务允许的最大尝试次数，若是执行次数达到该限定，该任务会被插入到 <code>failed_jobs</code> 表，要创建一个 <code>failed_jobs</code> 表的迁移，可以使用 <code>queue:failed-table</code> 命令</p>
+<pre><code>php artisan queue:failed-table
+php artisan migrate
+</code></pre>
+<p>然后，运行队列进程时，通过 <code>--tries</code> 参数项来设置队列任务允许的最大尝试次数，如果没有指定 <code>--tries</code> 选项的值，任务会被无限期重试：</p>
+<pre><code>php artisan queue:work redis --tries=3
+</code></pre>
+<h4 id="toc_19">清理失败的任务</h4>
+<p>你可以在任务类中定义 <code>failed</code> 方法, 从而允许你在失败发生时执行指定的动作，比如发送任务失败的通知，记录日志等。导致任务失败的 <code>Exception</code> 会被传递到 <code>failed</code> 方法:</p>
+<pre><code>&lt;?php
+
+namespace App\Jobs;
+
+use Exception;
+use App\Podcast;
+use App\AudioProcessor;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class ProcessPodcast implements ShouldQueue
+{
+    use InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $podcast;
+
+    /**
+     * Create a new job instance.
+     *
+     * @param  Podcast  $podcast
+     * @return void
+     */
+    public function __construct(Podcast $podcast)
+    {
+        $this-&gt;podcast = $podcast;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @param  AudioProcessor  $processor
+     * @return void
+     */
+    public function handle(AudioProcessor $processor)
+    {
+        // Process uploaded podcast...
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     * @return void
+     */
+    public function failed(Exception $exception)
+    {
+        // 发送失败通知, etc...
+    }
+}
+</code></pre>
+<h4 id="toc_20">任务失败事件</h4>
+<p>如果你期望在任务失败的时候触发某个事件，可以使用 <code>Queue::failing</code> 方法。该事件通过邮件或<a href="https://www.hipchat.com/" target="_blank" rel="noopener">HipChat</a>通知团队。举个例子，我么可以在 Laravel 自带的 <code>AppServiceProvider</code> 中添加一个回调到该事件：</p>
+<pre><code>&lt;?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * 启动应用服务.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Queue::failing(function (JobFailed $event) {
+            // $event-&gt;connectionName
+            // $event-&gt;job
+            // $event-&gt;exception
+        });
+    }
+
+    /**
+     * 注册服务提供者.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+}
+</code></pre>
+<h4 id="toc_21">重试失败的任务</h4>
+<p>要查看已插入到 <code>failed_jobs</code> 数据表中的所有失败任务，可以使用 Artisan 命 <code>queue:failed</code>：</p>
+<pre><code>php artisan queue:failed
+</code></pre>
+<p>该命令将会列出任务 ID、连接、队列和失败时间，任务 ID 可用于重试失败任务，例如，要重试一个 ID 为 <code>5</code> 的失败任务，可以运行下面的命令：</p>
+<pre><code>php artisan queue:retry 5
+</code></pre>
+<p>要重试所有失败任务，运行如下命令即可:</p>
+<pre><code>php artisan queue:retry all
+</code></pre>
+<p>如果你要删除一个失败任务，可以使用 <code>queue:forget</code> 命令：</p>
+<pre><code>php artisan queue:forget 5
+</code></pre>
+<p>要删除所有失败任务，可以使用 <code>queue:flush</code> 命令：</p>
+<pre><code>php artisan queue:flush
+</code></pre>
+<h3 id="toc_22">任务事件</h3>
+<p>通过 <code>Queue</code> <a href="../../post/6718.html" target="_blank" rel="noopener">门面</a>提供的 <code>before</code> 和 <code>after</code> 方法可以在任务被处理之前或之后指定要执行的回调。这些回调可用来记录日志或者记录统计数据。通常，你可以在<a href="../../post/6703.html" target="_blank" rel="noopener">服务提供者</a>中使用这些方法。比如，我们可能在<code>AppServiceProvider</code> 这样用:</p>
+<pre><code>&lt;?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Queue::before(function (JobProcessing $event) {
+            // $event-&gt;connectionName
+            // $event-&gt;job
+            // $event-&gt;job-&gt;payload()
+        });
+
+        Queue::after(function (JobProcessed $event) {
+            // $event-&gt;connectionName
+            // $event-&gt;job
+            // $event-&gt;job-&gt;payload()
+        });
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+}
+</code></pre>
+<p>使用 <code>Queue</code> 门面上的 <code>looping</code> 方法，你可以在进程尝试从队列中获取任务之前指定要执行的回调。例如，你可以注册一个闭包来回滚之前失败任务遗留下来的事务：</p>
+<pre><code>Queue::looping(function () {
+    while (DB::transactionLevel() &gt; 0) {
+        DB::rollBack();
+    }
+});
+</code></pre>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_5" rel="category tag">
+                Laravel 5.5
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="../tags/事件" rel="tag">事件</a>
+                                    ,
+                                            <a href="../tags/Redis" rel="tag">Redis</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E9%98%9F%E5%88%97" rel="tag">队列</a>
+                                    ,
+                                            <a href="../tags/失败" rel="tag">失败</a>
+                                    ,
+                                            <a href="../tags/任务" rel="tag">任务</a>
+                                    ,
+                                            <a href="../tags/Supervisor" rel="tag">Supervisor</a>
+                                    ,
+                                            <a href="../tags/优先级" rel="tag">优先级</a>
+                                    ,
+                                            <a href="../tags/重试" rel="tag">重试</a>
+                                    ,
+                                            <a href="../tags/超时" rel="tag">超时</a>
+                                    ,
+                                            <a href="../tags/Queue" rel="tag">Queue</a>
+                                    ,
+                                            <a href="../tags/分发" rel="tag">分发</a>
+                                    ,
+                                            <a href="../tags/连接" rel="tag">连接</a>
+                                    ,
+                                            <a href="../tags/5.5.1" rel="tag">5.5</a>
+                                    ,
+                                            <a href="../tags/进程" rel="tag">进程</a>
+                                    ,
+                                            <a href="../tags/频率" rel="tag">频率</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;4 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="8369" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="8369" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;4 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="8355.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.5 文档 ] 进阶系列 —— 通过事件和事件监听器实现服务解耦
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="8379.html" rel="next">
+                [ Laravel 5.5 文档 ] 进阶系列 —— Laravel 中服务端与客户端事件广播实现
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        5 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-12099" class="comment even thread-even depth-1">
+            <article id="div-comment-12099" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='wilbur' src='https://avatars3.githubusercontent.com/u/7148309?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/wilbur-oo" target="_blank">wilbur</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>如何删除队列中某个任务呢</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8369.html#respond' data-id="12099"  aria-label='回复wilbur...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-08T16:47:04+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-08 16:47:04
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12099" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11621" class="comment even thread-even depth-1">
+            <article id="div-comment-11621" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='daisy' src='https://avatars3.githubusercontent.com/u/24859249?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/daishiqi" target="_blank">daisy</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    基
+                                                                <p>异步把env 里面的queue 改成redis</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8369.html#respond' data-id="11621"  aria-label='回复daisy...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-06T14:12:39+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-06 14:12:39
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11621" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11182" class="comment even thread-even depth-1">
+            <article id="div-comment-11182" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='李富贵' src='https://static.laravelacademy.org/wp-content/uploads/2018/07/930fe6982badb1ed969c55d52af667a9-32x32.png' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Juner" target="_blank">李富贵</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>队列挺实用的，用这个队列包也很方便。
+<a href="https://github.com/vyuldashev/laravel-queue-rabbitmq">https://github.com/vyuldashev/laravel-queue-rabbitmq</a></p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8369.html#respond' data-id="11182"  aria-label='回复李富贵...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-07-26T14:21:53+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-07-26 14:21:53
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11182" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">2</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9487" class="comment even thread-even depth-1">
+            <article id="div-comment-9487" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='基' src='https://www.gravatar.com/avatar/92c27ed85e092ae057536665e2c217b4?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            基
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        异步怎么用?
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8369.html#respond' data-id="9487"  aria-label='回复基...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-28T15:58:25+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-28 15:58:25
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9487" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9486" class="comment even thread-even depth-1">
+            <article id="div-comment-9486" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='基' src='https://www.gravatar.com/avatar/92c27ed85e092ae057536665e2c217b4?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            基
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        异步怎么用
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8369.html#respond' data-id="9486"  aria-label='回复基...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-28T15:58:08+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-28 15:58:08
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9486" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="8369.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='8369' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="8369.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="8369.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        连接 Vs. 队列
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        驱动预备知识
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        生成任务类
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        任务类结构
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        分发任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        延时分发
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        任务链
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        自定义队列&amp;连接
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        指定最大失败次数/超时时间
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        频率限制
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        处理错误
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        运行队列进程
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        队列优先级
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        队列进程 &amp; 部署
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        任务过期和超时
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        配置 Supervisor
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        处理失败的任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        清理失败的任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        任务失败事件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        重试失败的任务
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8369.html#toc_22">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        任务事件
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="222.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 服务 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3252.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 服务 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6125.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] 综合话题 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6922.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 综合话题 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8993.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 进阶系列 —— 队列
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

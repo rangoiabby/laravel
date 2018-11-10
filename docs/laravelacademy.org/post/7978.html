@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.5 文档 ] 处理用户请求 —— 请求表单验证及错误处理大全 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="7978.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="7978.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="7978.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="7978.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="7978.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_5">
+                Laravel 5.5
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.5 文档 ] 处理用户请求 —— 请求表单验证及错误处理大全</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.5 文档 ] 处理用户请求 —— 请求表单验证及错误处理大全</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="7978.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-11-07T09:56:30+08:00">2017-11-07</time>
+                    <time class="updated" datetime="2017-11-07T11:39:10+08:00">2017-11-07 11:39:10</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                34235 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p><img class="aligncenter" src="https://static.laravelacademy.org/wp-content/uploads/2017/11/laravel-request-validation.jpg" alt="laravel-request-validation" />￼</p>
+<h3 id="toc_0">简介</h3>
+<p>Laravel 提供了多种方法来验证请求输入数据。默认情况下，Laravel 的控制器基类使用 <code>ValidatesRequests</code> trait，该 trait 提供了便捷方法通过各种功能强大的验证规则来验证输入的 HTTP 请求。</p>
+<h3 id="toc_1">快速入门</h3>
+<p>要掌握 Laravel 强大的验证特性，让我们先看一个完整的验证表单并返回错误信息给用户的示例。</p>
+<h4 id="toc_2">定义路由</h4>
+<p>首先，我们假定在 <code>routes/web.php</code> 文件中包含如下路由：</p>
+<pre><code>// 显示创建博客文章表单...
+Route::get('post/create', 'PostController@create');
+// 存储新的博客文章...
+Route::post('post', 'PostController@store');
+</code></pre>
+<p>显然，<code>GET</code> 路由为用户显示了一个创建新的博客文章的表单，POST 路由将新的博客文章存储到数据库。</p>
+<h4 id="toc_3">创建控制器</h4>
+<p>接下来，让我们看一个处理这些路由的简单控制器示例。我们先将 <code>store</code> 方法留空：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class PostController extends Controller
+{
+    /**
+     * 显示创建新的博客文章的表单
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        return view('post.create');
+    }
+
+    /**
+     * 存储新的博客文章
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        // 验证并存储博客文章...
+    }
+}
+</code></pre>
+<h4 id="toc_4">编写验证逻辑</h4>
+<p>现在我们准备用验证新博客文章输入的逻辑填充 <code>store</code> 方法。我们使用 <code>Illuminate\Http\Request</code> 对象提供的 <code>validate</code> 方法来实现这一功能，如果验证规则通过，代码将会继续往下执行；反之，如果验证失败，将会抛出一个异常，相应的错误响应也会自动发送给用户。在这个传统的 HTTP 请求案例中，将会生成一个重定向响应，如果是 AJAX 请求则会返回一个 JSON 响应。</p>
+<p>要更好地理解 <code>validate</code> 方法，让我们回顾下 <code>store</code> 方法：</p>
+<pre><code>/**
+ * 存储博客文章
+ *
+ * @param  Request  $request
+ * @return Response
+ */
+public function store(Request $request){
+    $validatedData = $request-&gt;validate([
+        'title' =&gt; 'required|unique:posts|max:255',
+        'body' =&gt; 'required',
+    ]);
+
+    // 验证通过，存储到数据库...
+}
+</code></pre>
+<p>正如你所看到的，我们只是传入期望的验证规则到 <code>validate</code> 方法。再强调一次，如果验证失败，相应的响应会自动生成。如果验证通过，控制器将会继续往下执行。</p>
+<blockquote><p>注：实际执行代码之前，需要在数据库中创建 <code>posts</code> 数据表，因为这里用到了 <code>unique:posts</code> 这个验证规则，该规则会去数据库中查询传入标题是否已存在以保证唯一性。</p></blockquote>
+<p><strong>首次验证失败后中止后续规则验证</strong></p>
+<p>有时候你可能想要在首次验证失败后停止检查该属性的其它验证规则，要实现这个功能，可以在规则属性中分配 <code>bail</code> 作为首规则：</p>
+<pre><code>$request-&gt;validate([
+    'title' =&gt; 'bail|required|unique:posts|max:255',
+    'body' =&gt; 'required',
+]);
+</code></pre>
+<p>在这个例子中，如果 <code>title</code> 属性上的 <code>required</code> 规则验证失败，则不会检查 <code>unique</code> 规则，规则会按照分配顺序依次进行验证。</p>
+<p><strong>嵌套属性注意事项</strong></p>
+<p>如果 HTTP 请求中包含“嵌套”参数，可以使用“.”在验证规则中指定它们：</p>
+<pre><code>$request-&gt;validate([
+    'title' =&gt; 'required|unique:posts|max:255',
+    'author.name' =&gt; 'required',
+    'author.desc' =&gt; 'required',
+]);
+</code></pre>
+<p>这样的验证规则适用于验证如下标签请求：</p>
+<pre><code>&lt;form method="POST" action="{{route('posts.store')}}"&gt;
+    {{csrf_field()}}
+    &lt;input type="text" name="title"/&gt;
+    &lt;input type="text" name="author[name]"/&gt;
+    &lt;input type="text" name="author[desc]"/&gt;
+    &lt;textarea cols="20" rows="5" name="body"&gt;&lt;/textarea&gt;
+    &lt;button type="submit"&gt;submit&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<h4 id="toc_5">显示验证错误信息</h4>
+<p>那么，如果请求输入参数没有通过给定验证规则怎么办？正如前面所提到的，Laravel 将会自动将用户重定向回上一个位置。此外，所有验证错误信息会自动存放到<a href="7954.html#toc_6" target="_blank" rel="noopener">一次性 Session</a>，我们可以看下这个 Session 数据的数据结构：</p>
+<p><img class="alignnone size-full wp-image-7981" src="https://static.laravelacademy.org/wp-content/uploads/2017/11/15099837100301.jpg" alt="" width="938" height="1324" /></p>
+<p>注意我们并没有在 <code>GET</code> 路由中显式绑定错误信息到视图。这是因为 Laravel 总是从 Session 数据中检查错误信息，而且如果有的话会自动将其绑定到视图。所以，值得注意的是每次请求的所有视图中总是存在一个<code>$errors</code> 变量，从而允许你在视图中方便而又安全地使用。<code>$errors</code> 变量是一个<code>Illuminate\Support\MessageBag</code> 实例。想要了解更多关于该对象的信息，查看其<a href="7978.html#toc_15">对应文档</a>。</p>
+<blockquote><p>注：<code>$errors</code> 变量会通过 <code>web</code> 中间件组中的 <code>Illuminate\View\Middleware\ShareErrorsFromSession</code> 中间件绑定到视图，如果使用了该中间件，那么 <code>$errors</code> 变量在视图中总是有效，从而方便你随时使用。</p></blockquote>
+<p>所以，在我们的例子中，验证失败的话用户将会被重定向到控制器的 <code>create</code> 方法，从而允许我们在视图中显示错误信息：</p>
+<pre><code>&lt;!-- /resources/views/post/create.blade.php --&gt;
+
+&lt;h1&gt;Create Post&lt;/h1&gt;
+
+@if ($errors-&gt;any())
+    &lt;div class="alert alert-danger"&gt;
+        &lt;ul&gt;
+            @foreach ($errors-&gt;all() as $error)
+                &lt;li&gt;{{ $error }}&lt;/li&gt;
+            @endforeach
+        &lt;/ul&gt;
+    &lt;/div&gt;
+@endif
+
+&lt;!-- Create Post Form --&gt;
+</code></pre>
+<p>如果验证失败的话，跳转回表单页面的同时会显示错误信息：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/11/15099838224704.jpg" alt="" />￼</p>
+<h4 id="toc_6">可选字段注意事项</h4>
+<p>默认情况下，Laravel自带了 <code>TrimStrings</code> 和 <code>ConvertEmptyStringsToNull</code> 中间件，这两个中间件位于 <code>App\Http\Kernel</code> 类的全局中间件堆栈中，因为这个原因，你需要经常将“可选”的请求字段标记为 <code>nullable</code> —— 如果你不想让验证器将 <code>null</code> 判定为无效的话。例如：</p>
+<pre><code>$this-&gt;validate($request, [
+    'title' =&gt; 'required|unique:posts|max:255',
+    'body' =&gt; 'required',
+    'publish_at' =&gt; 'nullable|date',
+]);
+</code></pre>
+<p>在这个例子中，我们指定 <code>publish_at</code> 字段可以为 <code>null</code> 或者有效的日期格式。如果 <code>nullable</code> 没有被添加到验证规则，验证器会将 <code>null</code> 判定为无效日期。</p>
+<p><strong>AJAX 请求&amp;验证</strong></p>
+<p>在上面的例子中，我们使用了传统的表单来发送数据到应用。不过，现实场景中，很多应用使用 AJAX 请求。在 AJAX 请求中使用 <code>validate</code> 方法时，Laravel 不会生成重定向响应。取而代之的，Laravel 生成一个包含验证错误信息的 JSON 响应。该 JSON 响应会带上一个 HTTP 状态码 <code>422</code>。</p>
+<h3 id="toc_7">复杂表单请求验证</h3>
+<h4 id="toc_8">创建表单请求</h4>
+<p>对于更复杂的验证场景，你可能想要创建一个“表单请求”。表单请求是包含验证逻辑的自定义请求类，要创建表单验证类，可以使用 Artisan 命令 <code>make:request</code>：</p>
+<pre><code>php artisan make:request StoreBlogPost
+</code></pre>
+<p>生成的类位于 <code>app/Http/Requests</code> 目录下，如果该目录不存在，运行 <code>make:request</code> 命令时会替我们生成。接下来我们添加少许验证规则到该类的 <code>rules</code> 方法：</p>
+<pre><code>/**
+ * 获取应用到请求的验证规则
+ *
+ * @return array
+ */
+public function rules(){
+    return [
+        'title' =&gt; 'required|unique:posts|max:255',
+        'body' =&gt; 'required',
+    ];
+}
+</code></pre>
+<p>那么，验证规则如何生效呢？你所要做的就是在控制器方法中类型提示该请求类。这样表单输入请求会在控制器方法被调用之前被验证，这就是说你不需要将控制器方法和验证逻辑杂糅在一起：</p>
+<pre><code>/**
+ * 存储输入的博客文章
+ *
+ * @param  StoreBlogPostRequest  $request
+ * @return Response
+ */
+public function store(StoreBlogPost $request){
+    // The incoming request is valid...
+}
+</code></pre>
+<p>如果验证失败，重定向响应会被生成并将用户退回上一个位置，错误信息也会被存储到一次性 Session 以便在视图中显示。如果是 AJAX 请求，带 <code>422</code> 状态码的 HTTP 响应将会返回给用户，该响应数据中还包含了 JSON 格式的验证错误信息。</p>
+<p><strong>添加验证后钩子到表单请求</strong></p>
+<p>如果你想要添加“验证后”钩子到表单请求，可以使用 <code>withValidator</code> 方法。该方法接收完整的构造验证器，从而允许你在验证规则执行前调用任何验证器方法：</p>
+<pre><code>/**
+ * 配置验证器实例.
+ *
+ * @param  \Illuminate\Validation\Validator  $validator
+ * @return void
+ */
+public function withValidator($validator)
+{
+    $validator-&gt;after(function ($validator) {
+        if ($this-&gt;somethingElseIsInvalid()) {
+            $validator-&gt;errors()-&gt;add('field', 'Something is wrong with this field!');
+        }
+    });
+}
+</code></pre>
+<h4 id="toc_9">授权表单请求</h4>
+<p>表单请求类还包含了一个 <code>authorize</code> 方法，你可以通过该方法检查认证用户是否有权限更新指定资源。例如，如果用户尝试更新一条博客评论，那么他必须是该评论的所有者。举个例子：</p>
+<pre><code>/**
+ * 判定用户是否有权限发起请求.
+ *
+ * @return bool
+ * @translator laravelacademy.org
+ */
+public function authorize()
+{
+    $comment = Comment::find($this-&gt;route('comment'));
+    return $comment &amp;&amp; $this-&gt;user()-&gt;can('update', $comment);
+}
+</code></pre>
+<p>由于所有请求都继承自 Laravel 请求基类，我们可以使用 <code>user</code> 方法获取当前认证用户，还要注意上面这个例子中对 <code>route</code> 方法的调用。该方法赋予用户访问被调用路由 URI 参数的权限，比如下面这个例子中的 <code>{comment}</code> 参数：</p>
+<pre><code>Route::post('comment/{comment}');
+</code></pre>
+<p>如果 <code>authorize</code> 方法返回 <code>false</code>，一个包含 <code>403</code> 状态码的 HTTP 响应会自动返回而且控制器方法将不会被执行。</p>
+<p>如果你计划在应用的其他部分调用授权逻辑，只需在 <code>authorize</code> 方法中简单返回 <code>true</code> 即可：</p>
+<pre><code>/**
+ * 判断请求用户是否经过授权
+ *
+ * @return bool
+ */
+public function authorize(){
+    return true;
+}
+</code></pre>
+<h4 id="toc_10">自定义错误消息</h4>
+<p>你可以通过重写 <code>messages</code> 方法自定义表单请求使用的错误消息，该方法应该返回属性/规则对数组及其对应错误消息：</p>
+<pre><code>/**
+ * 获取被定义验证规则的错误消息
+ *
+ * @return array
+ * @translator laravelacademy.org
+ */
+public function messages(){
+    return [
+        'title.required' =&gt; 'A title is required',
+        'body.required'  =&gt; 'A message is required',
+    ];
+}
+</code></pre>
+<h3 id="toc_11">手动创建验证器</h3>
+<p>如果你不想使用请求实例上的 <code>validate</code> 方法，可以使用 <code>Validator</code> 门面手动创建一个验证器实例，该门面提供的 <code>make</code> 方法可用于生成一个新的验证器实例：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Validator;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class PostController extends Controller{
+    /**
+     * 存储新的博客文章
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request-&gt;all(), [
+            'title' =&gt; 'required|unique:posts|max:255',
+            'body' =&gt; 'required',
+        ]);
+
+        if ($validator-&gt;fails()) {
+            return redirect('post/create')
+                        -&gt;withErrors($validator)
+                        -&gt;withInput();
+        }
+
+        // 存储博客文章...
+    }
+}
+</code></pre>
+<p>传递给 <code>make</code> 方法的第一个参数是需要验证的数据，第二个参数是要应用到数据上的验证规则。</p>
+<p>检查请求没有通过验证后，可以使用 <code>withErrors</code> 方法将错误数据存放到一次性 Session，使用该方法时，<code>$errors</code> 变量重定向后自动在视图间共享，从而允许你轻松将其显示给用户，<code>withErrors</code> 方法接收一个验证器、或者一个 <code>MessageBag</code> ，又或者一个 PHP 数组。</p>
+<h4 id="toc_12">自动重定向</h4>
+<p>如果你想要手动创建一个验证器实例，但仍然使用请求实例的 <code>validate</code> 方法提供的自动重定向，可以调用已存在验证器实例上的 <code>validate</code> 方法，如果验证失败，用户将会被自动重定向，或者，如果是 AJAX 请求的话，返回 JSON 响应：</p>
+<pre><code>Validator::make($request-&gt;all(), [
+    'title' =&gt; 'required|unique:posts|max:255',
+    'body' =&gt; 'required',
+])-&gt;validate();
+</code></pre>
+<h4 id="toc_13">命名错误包</h4>
+<p>如果你在单个页面上有多个表单，可能需要命名错误的 <code>MessageBag</code>，从而允许你为指定表单获取错误信息。只需要传递名称作为第二个参数给 <code>withErrors</code> 即可：</p>
+<pre><code>return redirect('register')
+    -&gt;withErrors($validator, 'login');
+</code></pre>
+<p>然后你就可以从 <code>$errors</code> 变量中访问命名的 <code>MessageBag</code> 实例：</p>
+<pre><code>{{ $errors-&gt;login-&gt;first('email') }}
+</code></pre>
+<h4 id="toc_14">验证钩子之后</h4>
+<p>验证器允许你在验证完成后添加回调，这种机制允许你轻松执行更多验证，甚至添加更多错误信息到消息集合。使用验证器实例上的 <code>after</code> 方法即可：</p>
+<pre><code>$validator = Validator::make(...);
+
+$validator-&gt;after(function($validator) {
+    if ($this-&gt;somethingElseIsInvalid()) {
+        $validator-&gt;errors()-&gt;add('field', 'Something is wrong with this field!');
+    }
+});
+
+if ($validator-&gt;fails()) {
+    //
+}
+</code></pre>
+<h3 id="toc_15">处理错误信息</h3>
+<p>调用 <code>Validator</code> 实例上的 <code>errors</code> 方法之后，将会获取一个 <code>Illuminate\Support\MessageBag</code> 实例，该实例中包含了多种处理错误信息的便利方法。在所有视图中默认有效的 <code>$errors</code> 变量也是一个 <code>MessageBag</code> 实例。</p>
+<p><strong>获取某字段的第一条错误信息</strong></p>
+<p>要获取指定字段的第一条错误信息，可以使用 <code>first</code> 方法：</p>
+<pre><code>$errors = $validator-&gt;errors();
+echo $errors-&gt;first('email');
+</code></pre>
+<p><strong>获取指定字段的所有错误信息</strong></p>
+<p>如果你想要简单获取指定字段的所有错误信息数组，使用 <code>get</code> 方法：</p>
+<pre><code>foreach ($errors-&gt;get('email') as $message) {
+    //
+}
+</code></pre>
+<p>如果是一个数组表单字段，可以使用 <code>*</code> 获取所有数组元素错误信息：</p>
+<pre><code>foreach ($errors-&gt;get('attachments.*') as $message) {
+    //
+}
+</code></pre>
+<p><strong>获取所有字段的所有错误信息</strong></p>
+<p>要获取所有字段的所有错误信息，可以使用 <code>all</code> 方法：</p>
+<pre><code>foreach ($errors-&gt;all() as $message) {
+    //
+}
+</code></pre>
+<p><strong>判断消息中是否存在某字段的错误信息</strong></p>
+<p><code>has</code> 方法可用于判断错误信息中是否包含给定字段：</p>
+<pre><code>if ($errors-&gt;has(’email’)) {
+    //
+}
+</code></pre>
+<h4 id="toc_16">自定义错误信息</h4>
+<p>如果需要的话，你可以使用自定义错误信息替代默认的，有多种方法来指定自定义信息。首先，你可以传递自定义信息作为第三个参数给 <code>Validator::make</code> 方法：</p>
+<pre><code>$messages = [
+    'required' =&gt; 'The :attribute field is required.',
+];
+
+$validator = Validator::make($input, $rules, $messages);
+</code></pre>
+<p>在本例中，<code>:attribute</code> 占位符将会被验证时实际的字段名替换，你还可以在验证消息中使用其他占位符，例如：</p>
+<pre><code>$messages = [
+    'same'    =&gt; 'The :attribute and :other must match.',
+    'size'    =&gt; 'The :attribute must be exactly :size.',
+    'between' =&gt; 'The :attribute must be between :min - :max.',
+    'in'      =&gt; 'The :attribute must be one of the following types: :values',
+];
+</code></pre>
+<p><strong>为给定属性指定自定义信息</strong></p>
+<p>有时候你可能只想为特定字段指定自定义错误信息，可以通过“.”来实现，首先指定属性名，然后是规则：</p>
+<pre><code>$messages = [
+    'email.required' =&gt; '邮箱地址不能为空!',
+];
+</code></pre>
+<p><strong>在语言文件中指定自定义消息</strong></p>
+<p>在很多案例中，你可能想要在语言文件中指定自定义消息而不是将它们直接传递给 <code>Validator</code>。要实现这个，添加消息到 <code>resources/lang/xx/validation.php</code> 语言文件的 <code>custom</code> 数组：</p>
+<pre><code>'custom' =&gt; [
+    'email' =&gt; [
+        'required' =&gt; '邮箱地址不能为空!',
+    ],
+],
+</code></pre>
+<p><strong>在语言文件中指定自定义属性</strong></p>
+<p>如果你想要将验证消息的 <code>:attribute</code> 部分替换成自定义属性名称，可以在语言文件 <code>resources/lang/xx/validation.php</code> 的 <code>attributes</code> 数组中指定自定义名称：</p>
+<pre><code>'attributes' =&gt; [
+    'email' =&gt; '邮箱地址',
+],
+</code></pre>
+<h3 id="toc_17">验证规则大全</h3>
+<p>下面是有效规则及其函数列表：</p>
+<ul>
+<li>Accepted</li>
+<li>Active URL</li>
+<li>After (Date)</li>
+<li>After Or Equal（Date）</li>
+<li>Alpha</li>
+<li>Alpha Dash</li>
+<li>Alpha Numeric</li>
+<li>Array</li>
+<li>Before (Date)</li>
+<li>Before Or Equal（Date）</li>
+<li>Between</li>
+<li>Boolean</li>
+<li>Confirmed</li>
+<li>Date</li>
+<li>Date Equals</li>
+<li>Date Format</li>
+<li>Different</li>
+<li>Digits</li>
+<li>Digits Between</li>
+<li>Dimensions（图片文件）</li>
+<li>Distinct</li>
+<li>E-Mail</li>
+<li>Exists (Database)</li>
+<li>File</li>
+<li>Filled</li>
+<li>Image (File)</li>
+<li>In</li>
+<li>In Array</li>
+<li>Integer</li>
+<li>IP Address</li>
+<li>JSON</li>
+<li>Max</li>
+<li>MIME Types (File)</li>
+<li>MIME Type By File Extension</li>
+<li>Min</li>
+<li>Nullable</li>
+<li>Not In</li>
+<li>Numeric</li>
+<li>Present</li>
+<li>Regular Expression</li>
+<li>Required</li>
+<li>Required If</li>
+<li>Required Unless</li>
+<li>Required With</li>
+<li>Required With All</li>
+<li>Required Without</li>
+<li>Required Without All</li>
+<li>Same</li>
+<li>Size</li>
+<li>String</li>
+<li>Timezone</li>
+<li>Unique (Database)</li>
+<li>URL</li>
+</ul>
+<p><strong>accepted</strong></p>
+<p>验证字段的值必须是 <code>yes</code>、<code>on</code>、<code>1</code> 或 <code>true</code>，这在“同意服务协议”时很有用。</p>
+<p><strong>active_url</strong></p>
+<p>验证字段必须是基于 PHP 函数 <code>dns_get_record</code> 的，有 A 或 AAAA 记录的值。</p>
+<p><strong>after:date</strong></p>
+<p>验证字段必须是给定日期之后的一个值，日期将会通过 PHP 函数 <code>strtotime</code> 传递：</p>
+<pre><code>'start_date' =&gt; 'required|date|after:tomorrow'
+</code></pre>
+<p>你可以指定另外一个与日期进行比较的字段，而不是传递一个日期字符串给 <code>strtotime</code> 执行：</p>
+<pre><code>'finish_date' =&gt; 'required|date|after:start_date'
+</code></pre>
+<p><strong>after_or_equal:date</strong></p>
+<p>验证字段必须是大于等于给定日期的值，更多信息，请参考 <code>after:date</code> 规则。</p>
+<p><strong>alpha</strong></p>
+<p>验证字段必须是字母。</p>
+<p><strong>alpha_dash</strong></p>
+<p>验证字段可以包含字母和数字，以及破折号和下划线。</p>
+<p><strong>alpha_num</strong></p>
+<p>验证字段必须是字母或数字。</p>
+<p><strong>array</strong></p>
+<p>验证字段必须是 PHP 数组。</p>
+<p><strong>before:date</strong></p>
+<p>和 <code>after:date</code> 相对，验证字段必须是指定日期之前的一个数值，日期将会传递给 PHP <code>strtotime</code> 函数。</p>
+<p><strong>before_or_equal:date</strong></p>
+<p>验证字段必须小于等于给定日期。日期将会传递给 PHP 的 <code>strtotime</code> 函数。</p>
+<p><strong>between:min,max</strong></p>
+<p>验证字段大小在给定的最小值和最大值之间，字符串、数字、数组和文件都可以像使用 <code>size</code> 规则一样使用该规则：</p>
+<pre><code>'name' =&gt; 'required|between:1,20'
+</code></pre>
+<p><strong>boolean</strong></p>
+<p>验证字段必须可以被转化为布尔值，接收 <code>true</code>, <code>false</code>, <code>1</code>, <code>0</code>, <code>"1"</code> 和 <code>"0"</code> 等输入。</p>
+<p><strong>confirmed</strong></p>
+<p>验证字段必须有一个匹配字段 <code>foo_confirmation</code>，例如，如果验证字段是 <code>password</code>，必须输入一个与之匹配的 <code>password_confirmation</code> 字段。</p>
+<p><strong>date</strong></p>
+<p>验证字段必须是一个基于 PHP <code>strtotime</code> 函数的有效日期</p>
+<p><strong>date_equals:date</strong></p>
+<p>验证字段必须等于给定日期，日期会被传递到 PHP <code>strtotime</code> 函数。</p>
+<p><strong>date_format:format</strong></p>
+<p>验证字段必须匹配指定格式，可以使用 PHP 函数date 或 date_format 验证该字段。</p>
+<p><strong>different:field</strong></p>
+<p>验证字段必须是一个和指定字段不同的值。</p>
+<p><strong>digits:value</strong></p>
+<p>验证字段必须是数字且长度为 value 指定的值。</p>
+<p><strong>digits_between:min,max</strong></p>
+<p>验证字段数值长度必须介于最小值和最大值之间。</p>
+<p><strong>dimensions</strong></p>
+<p>验证的图片尺寸必须满足该规定参数指定的约束条件：</p>
+<pre><code>'avatar' =&gt; 'dimensions:min_width=100,min_height=200'
+</code></pre>
+<p>有效的约束条件包括：<code>min_width</code>, <code>max_width</code>, <code>min_height</code>, <code>max_height</code>, <code>width</code>, <code>height</code>, <code>ratio</code>。</p>
+<p>ratio 约束宽度/高度的比率，这可以通过表达式 <code>3/2</code> 或浮点数 <code>1.5</code> 来表示：</p>
+<pre><code>'avatar' =&gt; 'dimensions:ratio=3/2'
+</code></pre>
+<p>由于该规则要求多个参数，可以使用 <code>Rule::dimensions</code> 方法来构造该规则：</p>
+<pre><code>use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'avatar' =&gt; [
+        'required',
+        Rule::dimensions()-&gt;maxWidth(1000)-&gt;maxHeight(500)-&gt;ratio(3 / 2),
+    ],
+]);
+</code></pre>
+<p><strong>distinct</strong></p>
+<p>处理数组时，验证字段不能包含重复值：</p>
+<pre><code>'foo.*.id' =&gt; 'distinct'
+</code></pre>
+<p><strong>email</strong></p>
+<p>验证字段必须是格式正确的电子邮件地址</p>
+<p><strong>exists:table,column</strong></p>
+<p>验证字段必须存在于指定数据表</p>
+<p>基本使用：</p>
+<pre><code>'state' =&gt; 'exists:states'
+</code></pre>
+<p>指定自定义列名：</p>
+<pre><code>'state' =&gt; 'exists:states,abbreviation'
+</code></pre>
+<p>有时，你可能需要为 <code>exists</code> 查询指定要使用的数据库连接，这可以在表名前通过.前置数据库连接来实现：</p>
+<pre><code>'email' =&gt; 'exists:connection.staff,email'
+</code></pre>
+<p>如果你想要自定义验证规则执行的查询，可以使用 <code>Rule</code> 类来定义规则。在这个例子中，我们还以数组形式指定了验证规则，而不是使用 <code>|</code> 字符来限定它们：</p>
+<pre><code>use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'email' =&gt; [
+        'required',
+        Rule::exists('staff')-&gt;where(function ($query) {
+            $query-&gt;where('account_id', 1);
+        }),
+    ],
+]);
+</code></pre>
+<p><strong>file</strong></p>
+<p>验证字段必须是上传成功的文件。</p>
+<p><strong>filled</strong></p>
+<p>验证字段如果存在则不能为空。</p>
+<p><strong>image</strong></p>
+<p>验证文件必须是图片（jpeg、png、bmp、gif 或者 svg）</p>
+<p><strong>in:foo,bar…</strong></p>
+<p>验证字段值必须在给定的列表中，由于该规则经常需要我们对数组进行 <code>implode</code>，我们可以使用 <code>Rule::in</code> 来构造这个规则：</p>
+<pre><code>use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'zones' =&gt; [
+        'required',
+        Rule::in(['first-zone', 'second-zone']),
+    ],
+]);
+</code></pre>
+<p><strong>in_array:另一个字段</strong></p>
+<p>验证字段必须在<em>另一个字段</em>值中存在。</p>
+<p><strong>integer</strong></p>
+<p>验证字段必须是整型。</p>
+<p><strong>ip</strong></p>
+<p>验证字段必须是IP地址。</p>
+<p><strong>ipv4</strong></p>
+<p>验证字段必须是IPv4地址。</p>
+<p><strong>ipv6</strong></p>
+<p>验证字段必须是IPv6地址。</p>
+<p><strong>json</strong></p>
+<p>验证字段必须是有效的JSON字符串</p>
+<p><strong>max:value</strong></p>
+<p>验证字段必须小于等于最大值，和字符串、数值、数组、文件字段的 <code>size</code> 规则使用方式一样。</p>
+<p><strong>mimetypes：text/plain…</strong></p>
+<p>验证文件必须匹配给定的 MIME 文件类型之一：</p>
+<pre><code>'video' =&gt; 'mimetypes:video/avi,video/mpeg,video/quicktime'
+</code></pre>
+<p>为了判断上传文件的 MIME 类型，框架将会读取文件内容来猜测 MIME 类型，这可能会和客户端 MIME 类型不同。</p>
+<p><strong>mimes:foo,bar,…</strong></p>
+<p>验证文件的 MIME 类型必须是该规则列出的扩展类型中的一个</p>
+<p>MIME 规则的基本使用：</p>
+<pre><code>'photo' =&gt; 'mimes:jpeg,bmp,png'
+</code></pre>
+<p>尽管你只是指定了扩展名，该规则实际上验证的是通过读取文件内容获取到的文件 MIME 类型。</p>
+<p>完整的 MIME 类型列表及其相应的扩展可以在这里找到：<a href="http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types" target="_blank" rel="noopener">http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types</a></p>
+<p><strong>min:value</strong></p>
+<p>与 <code>max:value</code> 相对，验证字段必须大于等于最小值，对字符串、数值、数组、文件字段而言，和 <code>size</code> 规则使用方式一致。</p>
+<p><strong>nullable</strong></p>
+<p>验证字段可以是 <code>null</code>，这在验证一些可以为 <code>null</code> 的原始数据如整型或字符串时很有用。</p>
+<p><strong>not_in:foo,bar,…</strong></p>
+<p>验证字段值不能在给定列表中，和 <code>in</code> 规则类似，我们可以使用 <code>Rule::notIn</code> 方法来构建规则：</p>
+<pre><code>use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'toppings' =&gt; [
+        'required',
+        Rule::notIn(['sprinkles', 'cherries']),
+    ],
+]);
+</code></pre>
+<p><strong>numeric</strong></p>
+<p>验证字段必须是数值</p>
+<p><strong>present</strong></p>
+<p>验证字段必须出现在输入数据中但可以为空。</p>
+<p><strong>regex:pattern</strong></p>
+<p>验证字段必须匹配给定正则表达式。</p>
+<blockquote><p>注：使用 <code>regex</code> 模式时，规则必须放在数组中，而不能使用管道分隔符，尤其是正则表达式中已经使用了管道符号时。</p></blockquote>
+<p><strong>required</strong></p>
+<p>验证字段值不能为空，以下情况字段值都为空：</p>
+<ul>
+<li>值为<code>null</code></li>
+<li>值是空字符串</li>
+<li>值是空数组或者空的 <code>Coutable</code> 对象</li>
+<li>值是上传文件但路径为空</li>
+</ul>
+<p><strong>required_if:anotherfield,value,…</strong></p>
+<p>验证字段在 <code>anotherfield</code> 等于指定值 <code>value</code> 时必须存在且不能为空</p>
+<p><strong>required_unless:anotherfield,value,…</strong></p>
+<p>除非 <code>anotherfield</code> 字段等于 <code>value</code>，否则验证字段不能空</p>
+<p><strong>required_with:foo,bar,…</strong></p>
+<p>验证字段只有在任一其它指定字段存在的情况才是必须的</p>
+<p><strong>required_with_all:foo,bar,…</strong></p>
+<p>验证字段只有在所有指定字段存在的情况下才是必须的</p>
+<p><strong>required_without:foo,bar,…</strong></p>
+<p>验证字段只有当任一指定字段不存在的情况下才是必须的</p>
+<p><strong>required_without_all:foo,bar,…</strong></p>
+<p>验证字段只有当所有指定字段不存在的情况下才是必须的</p>
+<p><strong>same:field</strong></p>
+<p>给定字段和验证字段必须匹配</p>
+<p><strong>size:value</strong></p>
+<p>验证字段必须有和给定值 <code>value</code> 相匹配的尺寸/大小，对字符串而言，<code>value</code> 是相应的字符数目；对数值而言，<code>value</code> 是给定整型值；对数组而言，<code>value</code> 是数组长度；对文件而言，<code>value</code> 是相应的文件千字节数（KB）</p>
+<p><strong>string</strong></p>
+<p>验证字段必须是字符串，如果允许字段为空，需要分配 <code>nullable</code> 规则到该字段。</p>
+<p><strong>timezone</strong></p>
+<p>验证字符必须是基于 PHP 函数 <code>timezone_identifiers_list</code> 的有效时区标识</p>
+<p><strong>unique:table,column,except,idColumn</strong></p>
+<p>验证字段在给定数据表上必须是唯一的，如果不指定 <code>column</code> 选项，字段名将作为默认 <code>column</code>。</p>
+<p>指定自定义列名：</p>
+<pre><code>'email' =&gt; 'unique:users,email_address'
+</code></pre>
+<p>自定义数据库连接</p>
+<p>有时候，你可能需要自定义验证器生成的数据库连接，正如上面所看到的，设置 <code>unique:users</code> 作为验证规则将会使用默认数据库连接来查询数据库。要覆盖默认连接，在数据表名后使用“.”指定连接：</p>
+<pre><code>'email' =&gt; 'unique:connection.users,email_address'
+</code></pre>
+<p>强制一个忽略给定 ID 的唯一规则：</p>
+<p>有时候，你可能希望在唯一检查时忽略给定 ID，例如，考虑一个包含用户名、邮箱地址和位置的”更新属性“界面，你将要验证邮箱地址是唯一的，然而，如果用户只改变用户名字段而并没有改变邮箱字段，你不想要因为用户已经拥有该邮箱地址而抛出验证错误，你只想要在用户提供的邮箱已经被别人使用的情况下才抛出验证错误。</p>
+<p>要告诉验证器忽略用户 ID，可以使用 <code>Rule</code> 类来定义这个规则，我们还要以数组方式指定验证规则，而不是使用 <code>|</code> 来界定规则：</p>
+<pre><code>use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'email' =&gt; [
+        'required',
+        Rule::unique('users')-&gt;ignore($user-&gt;id),
+    ],
+]);
+</code></pre>
+<p>如果你的数据表使用主键字段不是 <code>id</code>，可以在调用 <code>ignore</code> 方法的时候指定字段名称：</p>
+<pre><code>'email' =&gt; Rule::unique('users')-&gt;ignore($user-&gt;id, 'user_id')
+</code></pre>
+<p>添加额外的 where 子句：</p>
+<p>使用 <code>where</code> 方法自定义查询的时候还可以指定额外查询约束，例如，下面我们来添加一个验证 <code>account_id</code> 为 <code>1</code> 的约束：</p>
+<pre><code>'email' =&gt; Rule::unique('users')-&gt;where(function ($query) {
+    $query-&gt;where('account_id', 1);
+})
+</code></pre>
+<p><strong>url</strong></p>
+<p>验证字段必须是有效的 URL。</p>
+<h3 id="toc_18">添加条件规则</h3>
+<p><strong>存在时验证</strong></p>
+<p>在某些场景下，你可能想要只有某个字段存在的情况下进行验证检查，要快速实现这个，添加 <code>sometimes</code> 规则到规则列表：</p>
+<pre><code>$v = Validator::make($data, [
+    'email' =&gt; 'sometimes|required|email',
+]);
+</code></pre>
+<p>在上例中，<code>email</code> 字段只有存在于 <code>$data</code> 数组时才会被验证。</p>
+<blockquote><p>注：如果你尝试验证一个总是存在但可能为空的字段时，参考<a href="7978.html#toc_6">可选字段注意事项</a>。</p></blockquote>
+<p><strong>复杂条件验证</strong></p>
+<p>有时候你可能想要基于更复杂的条件逻辑添加验证规则。例如，你可能想要只有在另一个字段值大于 100 时才要求一个给定字段是必须的，或者，你可能需要只有当另一个字段存在时两个字段才都有给定值。添加这个验证规则并不是一件头疼的事。首先，创建一个永远不会改变的静态规则到 <code>Validator</code> 实例：</p>
+<pre><code>$v = Validator::make($data, [
+    'email' =&gt; 'required|email',
+    'games' =&gt; 'required|numeric',
+]);
+</code></pre>
+<p>让我们假定我们的 Web 应用服务于游戏收藏者。如果一个游戏收藏者注册了我们的应用并拥有超过 100 个游戏，我们想要他们解释为什么他们会有这么多游戏，例如，也许他们在运营一个游戏二手店，又或者他们只是喜欢收藏。要添加这种条件，我们可以使用 <code>Validator</code> 实例上的 <code>sometimes</code> 方法：</p>
+<pre><code>$v-&gt;sometimes('reason', 'required|max:500', function($input) {
+    return $input-&gt;games &gt;= 100;
+});
+</code></pre>
+<p>传递给 <code>sometimes</code> 方法的第一个参数是我们需要有条件验证的名称字段，第二个参数是我们想要添加的规则，如果作为第三个参数的闭包返回 <code>true</code>，规则被添加。该方法让构建复杂条件验证变得简单，你甚至可以一次为多个字段添加条件验证：</p>
+<pre><code>$v-&gt;sometimes(['reason', 'cost'], 'required', function($input) {
+    return $input-&gt;games &gt;= 100;
+});
+</code></pre>
+<blockquote><p>注：传递给闭包的 <code>$input</code> 参数是 <code>Illuminate\Support\Fluent</code> 的一个实例，可用于访问输入和文件。</p></blockquote>
+<h3 id="toc_19">验证数组输入</h3>
+<p>验证表单数组输入字段不再是件痛苦的事情，例如，如果进入的 HTTP 请求包含 <code>photos[profile]</code> 字段，可以这么验证：</p>
+<pre><code>$validator = Validator::make($request-&gt;all(), [
+    'photos.profile' =&gt; 'required|image',
+]);
+</code></pre>
+<p>我们还可以验证数组的每个元素，例如，要验证给定数组输入中每个 <code>email</code> 是否是唯一的，可以这么做（这种针对提交的数组字段是二维数组，如 <code>person[][email]</code> 或 <code>person[test][email]</code>）：</p>
+<pre><code>$validator = Validator::make($request-&gt;all(), [
+    'person.*.email' =&gt; 'email|unique:users',
+    'person.*.first_name' =&gt; 'required_with:person.*.last_name',
+]);
+</code></pre>
+<p>类似地，在语言文件中你也可以使用 <code>*</code> 字符指定验证消息，从而可以使用单个验证消息定义基于数组字段的验证规则：</p>
+<pre><code>'custom' =&gt; [
+    'person.*.email' =&gt; [
+        'unique' =&gt; '每个人的邮箱地址必须是唯一的',
+    ]
+],
+</code></pre>
+<h3 id="toc_20">自定义验证规则</h3>
+<h4 id="toc_21">使用 Rule 对象</h4>
+<p>如上所述，Laravel 提供了多种有用的验证规则；不过，你可能还是需要指定一些自己的验证规则。注册自定义验证规则的一种方法是使用规则对象，要生成一个新的规则对象，可以使用 Artisan 命令 <code>make:rule</code>。下面我们使用这个命令来生成一个用于验证字符串是否是大写的规则，生成的新规则对象类位于 <code>app/Rules</code> 目录：</p>
+<pre><code>php artisan make:rule Uppercase
+</code></pre>
+<p>规则创建之后，就可以定义行为方法，一个规则对象包含两个方法：<code>passes</code> 和 <code>message</code>，<code>passes</code> 方法接收属性值和名称，并且基于属性值是否有效返回 <code>true</code> 或 <code>false</code>。<code>message</code> 方法用于在验证失败时返回验证错误消息：</p>
+<pre><code>&lt;?php
+
+namespace App\Rules;
+
+use Illuminate\Contracts\Validation\Rule;
+
+class Uppercase implements Rule
+{
+    /**
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function passes($attribute, $value)
+    {
+        return strtoupper($value) === $value;
+    }
+
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        return 'The :attribute must be uppercase.';
+    }
+}
+</code></pre>
+<p>当然，你可以在 <code>message</code> 方法中调用辅助函数 <code>trans</code> 来返回一个在语言文件中定义的错误消息：</p>
+<pre><code>/**
+ * Get the validation error message.
+ *
+ * @return string
+ */
+public function message()
+{
+    return trans('validation.uppercase');
+}
+</code></pre>
+<p>规则定义好之后，就可以将其以规则对象实例的方式和其他验证规则一起提供给验证器：</p>
+<pre><code>use App\Rules\Uppercase;
+
+$request-&gt;validate([
+    'name' =&gt; ['required', new Uppercase],
+]);
+</code></pre>
+<h4 id="toc_22">使用扩展</h4>
+<p>另一个注册自定义验证规则的方式是使用 <code>Validator</code> 门面上的 <code>extend</code> 方法。我们在某个服务提供者（<code>AppServiceProvider</code>）中使用该方法注册一个自定义验证规则：</p>
+<pre><code>&lt;?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * 启动应用服务
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Validator::extend('foo', function($attribute, $value, $parameters, $validator) {
+            return $value == 'foo';
+        });
+    }
+
+    /**
+     * 注册服务提供者
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+}
+</code></pre>
+<p>自定义验证器闭包接收四个参数：要验证的属性名称、属性值、传递给规则的参数数组以及 <code>Validator</code> 实例。</p>
+<p>你还可以传递类和方法到 <code>extend</code> 方法而不是闭包：</p>
+<pre><code>Validator::extend('foo', 'FooValidator@validate');
+</code></pre>
+<p><strong>定义错误信息</strong></p>
+<p>你还需要为自定义规则定义错误信息。你可以使用内联自定义消息数组或者在验证语言文件中添加条目来实现这一功能。消息应该被放到数组的第一维，而不是在只用于存放属性指定错误信息的 <code>custom</code> 数组内：</p>
+<pre><code>"foo" =&gt; "Your input was invalid!",
+"accepted" =&gt; "The :attribute must be accepted.",
+// 验证错误信息其它部分...
+</code></pre>
+<p>当创建一个自定义验证规则时，你可能有时候需要为错误信息定义自定义占位符，可以通过创建自定义验证器然后调用 <code>Validator</code> 门面上的 <code>replacer</code> 方法来实现。在服务提供者的 <code>boot</code> 方法中编写如下代码：</p>
+<pre><code>/**
+ * 启动应用服务
+ *
+ * @return void
+ * @translator laravelacademy.org
+ */
+public function boot(){
+    Validator::extend(...);
+    Validator::replacer('foo', function($message, $attribute, $rule, $parameters) {
+        return str_replace(...);
+    });
+}
+</code></pre>
+<p><strong>隐式扩展</strong></p>
+<p>默认情况下，被验证的属性如果没有提供或者验证规则为 <code>required</code> 而值为空，那么正常的验证规则，包括自定义扩展将不会执行。例如，<code>unique</code> 规则将不会检验 <code>null</code> 值：</p>
+<pre><code>$rules = ['name' =&gt; 'unique'];
+$input = ['name' =&gt; null];
+Validator::make($input, $rules)-&gt;passes(); // true
+</code></pre>
+<p>如果要求即使为空时也要验证属性，则必须要暗示属性是必须的，要创建一个隐式扩展，可以使用 <code>Validator::extendImplicit()</code> 方法：</p>
+<pre><code>Validator::extendImplicit('foo', function($attribute, $value, $parameters, $validator) {
+    return $value == 'foo';
+});
+</code></pre>
+<blockquote><p>注：一个隐式扩展仅仅暗示属性是必须的，至于它到底是缺失的还是空值这取决于你。</p></blockquote>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_5" rel="category tag">
+                Laravel 5.5
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%AF%B7%E6%B1%82" rel="tag">请求</a>
+                                    ,
+                                            <a href="../tags/Session" rel="tag">Session</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%87%AA%E5%AE%9A%E4%B9%89" rel="tag">自定义</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E9%94%99%E8%AF%AF" rel="tag">错误</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%A1%A8%E5%8D%95" rel="tag">表单</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E9%AA%8C%E8%AF%81" rel="tag">验证</a>
+                                    ,
+                                            <a href="../tags/Validator" rel="tag">Validator</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%95%99%E7%A8%8B" rel="tag">教程</a>
+                                    ,
+                                            <a href="../tags/5.5" rel="tag">5.5</a>
+                                    ,
+                                            <a href="../tags/验证规则" rel="tag">验证规则</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;13 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="7978" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="7978" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;13 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="7954.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.5 文档 ] 处理用户请求 —— Session 实现、配置与使用详解
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="8007.html" rel="next">
+                [ Laravel 5.5 文档 ] 处理用户请求 —— 异常处理 &amp; 错误日志
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        13 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-11529" class="comment even thread-even depth-1">
+            <article id="div-comment-11529" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Lockin' src='https://www.gravatar.com/avatar/dc3f8a55991e88bfc18d3bd59724a82a?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/Lockin" target="_blank">Lockin</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    Mr.tian
+                                                                <p>请问你找到解决办法吗?</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="11529"  aria-label='回复Lockin...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-30T21:31:39+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-30 21:31:39
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11529" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11507" class="comment even thread-even depth-1">
+            <article id="div-comment-11507" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='dancheng99' src='https://www.gravatar.com/avatar/88a57c592d540c47feac7734a66066ff?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/dancheng99" target="_blank">dancheng99</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                <p>谢谢大神</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="11507"  aria-label='回复dancheng99...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-28T20:10:30+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-28 20:10:30
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11507" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11491" class="comment even thread-even depth-1">
+            <article id="div-comment-11491" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/dancheng99" target="_blank">
+                                dancheng99
+                            </a>
+                                                                <p>不需要了</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="11491"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-27T01:13:43+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-27 01:13:43
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11491" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11487" class="comment even thread-even depth-1">
+            <article id="div-comment-11487" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='dancheng99' src='https://www.gravatar.com/avatar/88a57c592d540c47feac7734a66066ff?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/dancheng99" target="_blank">dancheng99</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>请问使用复杂表单请求验证后
+$validator = Validator::make($input, $rules, $message);
+if ($validator-&gt;passes()) {
+//
+}
+这个还需要写吗
+写在哪好是在控制器里还是复杂表单请求类里？</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="11487"  aria-label='回复dancheng99...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-25T22:19:50+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-25 22:19:50
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11487" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10194" class="comment even thread-even depth-1">
+            <article id="div-comment-10194" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='小谢' src='https://www.gravatar.com/avatar/ede65ae47a95813562f002968d301367?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            小谢
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        使用$request-&gt;validate()就可以验证对与错。
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="10194"  aria-label='回复小谢...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-22T12:00:39+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-22 12:00:39
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10194" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10193" class="comment even thread-even depth-1">
+            <article id="div-comment-10193" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='小谢' src='https://www.gravatar.com/avatar/ede65ae47a95813562f002968d301367?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            小谢
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        为什么我使用Validator::make()方法验证，所有的结果都是true?
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="10193"  aria-label='回复小谢...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-22T11:59:03+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-22 11:59:03
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10193" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10185" class="comment even thread-even depth-1">
+            <article id="div-comment-10185" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='姜红杰' src='https://www.gravatar.com/avatar/2a1c9fbd3c3d496dcdf1bc02bf755112?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            姜红杰
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        啊琛??
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="10185"  aria-label='回复姜红杰...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-20T18:33:02+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-20 18:33:02
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10185" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9825" class="comment even thread-even depth-1">
+            <article id="div-comment-9825" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='老奶奶真怪' src='https://www.gravatar.com/avatar/2e6def53ae6096e2d2ec97c9c651fa15?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            老奶奶真怪
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        $request 用的不对感觉
+应该传进去一个数组 $request-&gt;all()
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="9825"  aria-label='回复老奶奶真怪...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-05-03T11:08:18+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-05-03 11:08:18
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9825" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9522" class="comment even thread-even depth-1">
+            <article id="div-comment-9522" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr.tian' src='https://www.gravatar.com/avatar/8f090126728f4c8f6bf923d9ec436728?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Mr.tian
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        表单 input name="title[zh]" 
+        input name="title[en]" 
+        input name="title[mn]" 
+我验证title 规则为required必填 不管用
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="9522"  aria-label='回复Mr.tian...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-04-02T16:41:28+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-04-02 16:41:28
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9522" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">2</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9521" class="comment even thread-even depth-1">
+            <article id="div-comment-9521" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Mr.tian' src='https://www.gravatar.com/avatar/8f090126728f4c8f6bf923d9ec436728?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Mr.tian
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        
+
+
+我验证title 规则为required必填 不管用
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7978.html#respond' data-id="9521"  aria-label='回复Mr.tian...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-04-02T16:39:15+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-04-02 16:39:15
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9521" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">2</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/7978.html/page/2#comments">2</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/post/7978.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="7978.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='7978' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="7978.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="7978.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        快速入门
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        定义路由
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建控制器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        编写验证逻辑
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        显示验证错误信息
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        可选字段注意事项
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        复杂表单请求验证
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建表单请求
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        授权表单请求
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        自定义错误消息
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        手动创建验证器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        自动重定向
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        命名错误包
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        验证钩子之后
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        处理错误信息
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        自定义错误信息
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        验证规则大全
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        添加条件规则
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        验证数组输入
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        自定义验证规则
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用 Rule 对象
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7978.html#toc_22">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用扩展
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="240.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 服务 —— 验证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="479.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Lumen 5.1 文档 ] 更多特性 —— 验证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="3279.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 服务 —— 验证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="5902.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] HTTP层 —— 验证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8798.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 基础组件 —— 表单验证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

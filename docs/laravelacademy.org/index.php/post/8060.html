@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.5 文档 ] 数据库操作 —— 使用进阶：通过查询构建器实现高级功能 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="8060.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="8060.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="8060.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="8060.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="8060.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_5">
+                Laravel 5.5
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.5 文档 ] 数据库操作 —— 使用进阶：通过查询构建器实现高级功能</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.5 文档 ] 数据库操作 —— 使用进阶：通过查询构建器实现高级功能</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="8060.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-11-20T16:55:16+08:00">2017-11-20</time>
+                    <time class="updated" datetime="2017-11-20T17:23:24+08:00">2017-11-20 17:23:24</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                56832 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/11/15111690554957.png" alt="" />￼</p>
+<h3 id="toc_0">简介</h3>
+<p>数据库查询构建器提供了一个方便的流接口用于创建和执行数据库查询。查询构建器可以用于执行应用中绝大部分数据库操作，并且能够在 Laravel 支持的所有数据库系统上工作。</p>
+<blockquote><p>注：流接口是一种设计模式，更多关于流接口模式的设计和使用方式，可查看这篇教程：<a href="../../post/2828.html" target="_blank" rel="noopener">PHP 设计模式系列 —— 流接口模式</a>。</p></blockquote>
+<p>Laravel 查询构建器使用 PDO 参数绑定来避免 SQL 注入攻击，不再需要过滤以绑定方式传递的字符串。</p>
+<h3 id="toc_1">获取结果集</h3>
+<p><strong>从一张表中取出所有行</strong></p>
+<p>我们可以从 <code>DB</code> 门面的 <code>table</code> 方法开始，<code>table</code> 方法为给定表返回一个流式查询构建器实例，该实例允许你在查询上链接多个约束条件并返回最终查询结果。在本例中，我们使用 <code>get</code> 方法获取表中所有记录：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
+class UserController extends Controller
+{
+    /**
+     * 显示用户列表
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $users = DB::table('users')-&gt;get();
+        return view('user.index', ['users' =&gt; $users]);
+    }
+}
+</code></pre>
+<p><code>get</code> 方法返回包含结果集的 <code>Illuminate\Support\Collection</code>，其中每一个结果都是 PHP 的 <code>StdClass</code> 对象实例：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/11/15110864969488.jpg" alt="" />￼</p>
+<p>你可以像访问对象的属性一样访问字段的值：</p>
+<pre><code>foreach ($users as $user) {
+    echo $user-&gt;name;
+}
+</code></pre>
+<p><strong>从一张表中获取一行/一列</strong></p>
+<p>如果你只是想要从数据表中获取一行数据，可以使用 <code>first</code> 方法，该方法将会返回单个 <code>StdClass</code> 对象：</p>
+<pre><code>$user = DB::table('users')-&gt;where('name', 'John')-&gt;first();
+echo $user-&gt;name;
+</code></pre>
+<p>如果你不需要完整的一行，可以使用 <code>value</code> 方法从结果中获取单个值，该方法会直接返回指定列的值：</p>
+<pre><code>$email = DB::table('users')-&gt;where('name', 'John')-&gt;value('email');
+</code></pre>
+<p><strong>获取数据列值列表</strong></p>
+<p>如果想要获取包含单个列值的数组，可以使用 <code>pluck</code> 方法，在本例中，我们获取角色标题数组：</p>
+<pre><code>$titles = DB::table('roles')-&gt;pluck('title');
+
+foreach ($titles as $title) {
+    echo $title;
+}
+</code></pre>
+<p>还可以在返回数组中为列值指定自定义键（该自定义键必须是该表的其它字段列名，否则会报错）：</p>
+<pre><code>$roles = DB::table('roles')-&gt;pluck('title', 'name');
+
+foreach ($roles as $name =&gt; $title) {
+    echo $title;
+}
+</code></pre>
+<h4 id="toc_2">组块结果集</h4>
+<p>如果你需要处理成千上百条数据库记录，可以考虑使用 <code>chunk</code> 方法，该方法一次获取结果集的一小块，然后传递每一小块数据到闭包函数进行处理，该方法在编写处理大量数据库记录的 Artisan 命令的时候非常有用。例如，我们可以将处理全部 <code>users</code> 表数据分割成一次处理 <code>100</code> 条记录的小组块：</p>
+<pre><code>DB::table('users')-&gt;orderBy('id')-&gt;chunk(100, function($users) {
+    foreach ($users as $user) {
+        //
+    }
+});
+</code></pre>
+<p>你可以通过从闭包函数中返回 <code>false</code> 来终止组块的运行：</p>
+<pre><code>DB::table('users')-&gt;orderBy('id')-&gt;chunk(100, function($users) {
+    // 处理结果集...
+    return false;
+});
+</code></pre>
+<h4 id="toc_3">聚合函数</h4>
+<p>查询构建器还提供了多个聚合方法，如<code>count</code>, <code>max</code>, <code>min</code>, <code>avg</code> 和 <code>sum</code>，你可以在构造查询之后调用这些方法：</p>
+<pre><code>$users = DB::table('users')-&gt;count();
+
+$price = DB::table('orders')-&gt;max('price');
+</code></pre>
+<p>当然，你可以联合其它查询子句和聚合函数来构建查询：</p>
+<pre><code>$price = DB::table('orders')
+                -&gt;where('finalized', 1)
+                -&gt;avg('price');
+</code></pre>
+<h3 id="toc_4">查询（Select）</h3>
+<p><strong>指定查询子句</strong></p>
+<p>当然，我们并不总是想要获取数据表的所有列，使用 <code>select</code> 方法，你可以为查询指定自定义的 <code>select</code> 子句：</p>
+<pre><code>$users = DB::table('users')-&gt;select('name', 'email as user_email')-&gt;get();
+</code></pre>
+<p><code>distinct</code> 方法允许你强制查询返回不重复的结果集：</p>
+<pre><code>$users = DB::table('users')-&gt;distinct()-&gt;get();
+</code></pre>
+<p>如果你已经有了一个查询构建器实例并且希望添加一个查询列到已存在的 select 子句，可以使用 <code>addSelect</code> 方法：</p>
+<pre><code>$query = DB::table('users')-&gt;select('name');
+$users = $query-&gt;addSelect('age')-&gt;get();
+</code></pre>
+<h3 id="toc_5">原生表达式</h3>
+<p>有时候你希望在查询中使用原生表达式，这些表达式将会以字符串的形式注入到查询中，所以要格外小心避免 SQL 注入。想要创建一个原生表达式，可以使用 <code>DB::raw</code> 方法：</p>
+<pre><code>$users = DB::table('users')
+                     -&gt;select(DB::raw('count(*) as user_count, status'))
+                     -&gt;where('status', '&lt;&gt;', 1)
+                     -&gt;groupBy('status')
+                     -&gt;get();
+</code></pre>
+<h4 id="toc_6">原生方法</h4>
+<p>除了使用 <code>DB::raw</code> 外，你还可以使用以下方法来插入原生表达式到查询的不同部分。</p>
+<p><strong>selectRaw</strong></p>
+<p><code>selectRaw</code> 方法可用于替代 <code>select(DB::raw(...))</code>，该方法接收一个可选的绑定数组作为第二个参数：</p>
+<pre><code>$orders = DB::table('orders')
+                -&gt;selectRaw('price * ? as price_with_tax', [1.0825])
+                -&gt;get();
+</code></pre>
+<p><strong>whereRaw / orWhereRaw</strong></p>
+<p><code>whereRaw</code> 和 <code>orWhereRaw</code> 方法可用于注入原生 <code>where</code> 子句到查询，这两个方法接收一个可选的绑定数组作为第二个参数：</p>
+<pre><code>$orders = DB::table('orders')
+            -&gt;whereRaw('price &gt; IF(state = "TX", ?, 100)', [200])
+            -&gt;get();
+</code></pre>
+<p><strong id="having-raw-target">havingRaw / orHavingRaw</strong></p>
+<p><code>havingRaw</code> 和 <code>orHavingRaw</code> 方法可用于设置原生字符串作为 <code>having</code> 子句的值：</p>
+<pre><code>$orders = DB::table('orders')
+                -&gt;select('department', DB::raw('SUM(price) as total_sales'))
+                -&gt;groupBy('department')
+                -&gt;havingRaw('SUM(price) &gt; 2500')
+                -&gt;get();
+</code></pre>
+<p><strong>orderByRaw</strong></p>
+<p><code>orderByRaw</code> 方法可用于设置原生字符串作为 <code>order by</code> 子句的值：</p>
+<pre><code>$orders = DB::table('orders')
+                -&gt;orderByRaw('updated_at - created_at DESC')
+                -&gt;get();
+</code></pre>
+<h3 id="toc_7">连接（Join）</h3>
+<p>查询构建器还可以用于编写连接语句，关于 SQL 的几种连接类型，通过下图可以一目了然：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/11/15111629083884.jpg" alt="" />￼</p>
+<p><strong>内连接（等值连接）</strong></p>
+<p>要实现一个简单的"内连接"，你可以使用查询构建器实例上的 <code>join</code> 方法，传递给 <code>join</code> 方法的第一个参数是你需要连接到的表名，剩余的其它参数则是为连接指定的列约束，当然，正如你所看到的，你可以在单个查询中连接多张表：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;join('contacts', 'users.id', '=', 'contacts.user_id')
+            -&gt;join('orders', 'users.id', '=', 'orders.user_id')
+            -&gt;select('users.*', 'contacts.phone', 'orders.price')
+            -&gt;get();
+</code></pre>
+<p><strong>左连接</strong></p>
+<p>如果你是想要执行“左连接”而不是“内连接”，可以使用 <code>leftJoin</code> 方法。该方法和 <code>join</code> 方法的用法一样：</p>
+<pre><code>$users = DB::table('users')
+        -&gt;leftJoin('posts', 'users.id', '=', 'posts.user_id')
+        -&gt;get();
+</code></pre>
+<p><strong>交叉连接</strong></p>
+<p>要执行“交叉连接”可以使用 <code>crossJoin</code> 方法，传递你想要交叉连接的表名到该方法即可。交叉连接在第一张表和被连接表之间生成一个笛卡尔积：</p>
+<pre><code>$users = DB::table('sizes')
+        -&gt;crossJoin('colours')
+        -&gt;get();
+</code></pre>
+<p><strong>高级连接语句</strong></p>
+<p>你还可以指定更多的高级连接子句，传递一个闭包到 <code>join</code> 方法作为第二个参数，该闭包将会接收一个 <code>JoinClause</code> 对象用于指定 <code>join</code> 子句约束：</p>
+<pre><code>DB::table('users')
+    -&gt;join('contacts', function ($join) {
+        $join-&gt;on('users.id', '=', 'contacts.user_id')-&gt;orOn(...);
+    })
+    -&gt;get();
+</code></pre>
+<p>如果你想要在连接中使用“where”风格的子句，可以在查询中使用 <code>where</code> 和<code>orWhere</code> 方法。这些方法会将列和值进行比较而不是列和列进行比较：</p>
+<pre><code>DB::table('users')
+    -&gt;join('contacts', function ($join) {
+        $join-&gt;on('users.id', '=', 'contacts.user_id')
+             -&gt;where('contacts.user_id', '&gt;', 5);
+    })
+    -&gt;get();
+</code></pre>
+<h3 id="toc_8">联合（Union）</h3>
+<p>查询构建器还提供了“联合”两个查询的快捷方式，比如，你可以先创建一个查询，然后使用 <code>union</code> 方法将其和第二个查询进行联合：</p>
+<pre><code>$first = DB::table('users')
+            -&gt;whereNull('first_name');
+
+$users = DB::table('users')
+            -&gt;whereNull('last_name')
+            -&gt;union($first)
+            -&gt;get();
+</code></pre>
+<blockquote><p>注：<code>unionAll</code> 方法也是有效的，并且和 <code>union</code> 使用方式相同。</p></blockquote>
+<h3 id="toc_9">Where子句</h3>
+<h4 id="toc_10">简单 Where 子句</h4>
+<p>使用查询构建器上的 <code>where</code> 方法可以添加 <code>where</code> 子句到查询中，调用<code>where</code> 最基本的方式需要传递三个参数，第一个参数是列名，第二个参数是任意一个数据库系统支持的操作符，第三个参数是该列要比较的值。</p>
+<p>例如，下面是一个验证“votes”列的值是否等于 100 的查询：</p>
+<pre><code>$users = DB::table('users')-&gt;where('votes', '=', 100)-&gt;get();
+</code></pre>
+<p>为了方便，如果你只是简单比较列值和给定数值是否相等，可以将数值直接作为<code>where</code> 方法的第二个参数：</p>
+<pre><code>$users = DB::table('users')-&gt;where('votes', 100)-&gt;get();
+</code></pre>
+<p>当然，你还可以使用其它操作符来编写 <code>where</code> 子句：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;where('votes', '&gt;=', 100)
+            -&gt;get();
+
+$users = DB::table('users')
+            -&gt;where('votes', '&lt;&gt;', 100)
+            -&gt;get();
+
+$users = DB::table('users')
+            -&gt;where('name', 'like', 'T%')
+            -&gt;get();
+</code></pre>
+<p>还可以传递条件数组到 <code>where</code> 函数：</p>
+<pre><code>$users = DB::table('users')-&gt;where([
+    ['status', '=', '1'],
+    ['subscribed', '&lt;&gt;', '1'],
+])-&gt;get();
+</code></pre>
+<h4 id="toc_11">or 语句</h4>
+<p>你可以通过方法链将多个 <code>where</code> 约束链接到一起，也可以添加 <code>or</code> 子句到查询，<code>orWhere</code> 方法和 <code>where</code> 方法接收参数一样：</p>
+<pre><code>$users = DB::table('users')
+                -&gt;where('votes', '&gt;', 100)
+                -&gt;orWhere('name', 'John')
+                -&gt;get();
+</code></pre>
+<h4 id="toc_12">更多 Where 子句</h4>
+<p><strong>whereBetween</strong></p>
+<p><code>whereBetween</code> 方法验证列值是否在给定值之间：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;whereBetween('votes', [1, 100])-&gt;get();
+</code></pre>
+<p><strong>whereNotBetween</strong></p>
+<p><code>whereNotBetween</code> 方法验证列值不在给定值之间：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;whereNotBetween('votes', [1, 100])
+            -&gt;get();
+</code></pre>
+<p><strong>whereIn/whereNotIn</strong></p>
+<p><code>whereIn</code> 方法验证给定列的值是否在给定数组中：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;whereIn('id', [1, 2, 3])
+            -&gt;get();
+</code></pre>
+<p><code>whereNotIn</code> 方法验证给定列的值不在给定数组中：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;whereNotIn('id', [1, 2, 3])
+            -&gt;get();
+</code></pre>
+<p><strong>whereNull/whereNotNull</strong></p>
+<p><code>whereNull</code> 方法验证给定列的值为 <code>NULL</code>：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;whereNull('updated_at')
+            -&gt;get();
+</code></pre>
+<p><code>whereNotNull</code> 方法验证给定列的值不是 <code>NULL</code>：</p>
+<pre><code>$users = DB::table('users')
+            -&gt;whereNotNull('updated_at')
+            -&gt;get();
+</code></pre>
+<p><strong>whereDate / whereMonth / whereDay / whereYear</strong></p>
+<p><code>whereDate</code> 方法用于比较字段值和日期：</p>
+<pre><code>$users = DB::table('users')
+    -&gt;whereDate('created_at', '2016-10-10')
+    -&gt;get();
+</code></pre>
+<p><code>whereMonth</code> 方法用于比较字段值和一年中的指定月份：</p>
+<pre><code>$users = DB::table('users')
+    -&gt;whereMonth('created_at', '10')
+    -&gt;get();
+</code></pre>
+<p><code>whereDay</code> 方法用于比较字段值和一月中的指定日期：</p>
+<pre><code>$users = DB::table('users')
+    -&gt;whereDay('created_at', '10')
+    -&gt;get();
+</code></pre>
+<p><code>whereYear</code> 方法用于比较字段值和指定年：</p>
+<pre><code>$users = DB::table('users')
+    -&gt;whereYear('created_at', '2017')
+    -&gt;get();
+</code></pre>
+<p><strong>whereColumn</strong></p>
+<p><code>whereColumn</code> 方法用于验证两个字段是否相等：</p>
+<pre><code>$users = DB::table('users')
+        -&gt;whereColumn('first_name', 'last_name')
+        -&gt;get();
+</code></pre>
+<p>还可以传递一个比较运算符到该方法：</p>
+<pre><code>$users = DB::table('users')
+    -&gt;whereColumn('updated_at', '&gt;', 'created_at')
+    -&gt;get();
+</code></pre>
+<p>还可以传递多条件数组到 <code>whereColumn</code> 方法，这些条件通过 <code>and</code> 操作符进行连接：</p>
+<pre><code>$users = DB::table('users')
+        -&gt;whereColumn([
+            ['first_name', '=', 'last_name'],
+            ['updated_at', '&gt;', 'created_at']
+        ])-&gt;get();
+</code></pre>
+<h4 id="toc_13">参数分组</h4>
+<p>有时候你需要创建更加高级的 where 子句，比如“where exists”或者嵌套的参数分组。Laravel 查询构建器也可以处理这些。作为开始，让我们看一个在括号中进行分组约束的例子：</p>
+<pre><code>DB::table('users')
+    -&gt;where('name', '=', 'John')
+    -&gt;orWhere(function ($query) {
+        $query-&gt;where('votes', '&gt;', 100)
+              -&gt;where('title', '&lt;&gt;', 'Admin');
+    })
+    -&gt;get();
+</code></pre>
+<p>正如你所看到的，传递闭包到 <code>orWhere</code> 方法构造查询构建器来开始一个约束分组，该闭包将会获取一个用于设置括号中包含的约束的查询构建器实例。上述语句等价于下面的 SQL：</p>
+<pre><code>select * from users where name = 'John' or (votes &gt; 100 and title &lt;&gt; 'Admin')
+</code></pre>
+<h4 id="toc_14">where exists子句</h4>
+<p><code>whereExists</code> 方法允许你编写 <code>where exists</code> SQL 子句，<code>whereExists</code> 方法接收一个闭包参数，该闭包获取一个查询构建器实例从而允许你定义放置在“exists”子句中的查询：</p>
+<pre><code>DB::table('users')
+        -&gt;whereExists(function ($query) {
+            $query-&gt;select(DB::raw(1))
+                  -&gt;from('orders')
+                  -&gt;whereRaw('orders.user_id = users.id');
+        })
+        -&gt;get();
+</code></pre>
+<p>上述查询等价于下面的 SQL 语句：</p>
+<pre><code>select * from users
+where exists (
+    select 1 from orders where orders.user_id = users.id
+)
+</code></pre>
+<h4 id="toc_15">JSON Where子句</h4>
+<p>Laravel 还支持在提供 JSON 字段类型的数据库（目前是 MySQL 5.7 和 PostgresSQL）上使用操作符 <code>-&gt;</code> 获取指定 JSON 字段值：</p>
+<pre><code>$users = DB::table('users')
+                -&gt;where('options-&gt;language', 'en')
+                -&gt;get();
+
+$users = DB::table('users')
+                -&gt;where('preferences-&gt;dining-&gt;meal', 'salad')
+                -&gt;get();
+</code></pre>
+<h3 id="toc_16">排序、分组、限定</h3>
+<p><strong>orderBy</strong></p>
+<p><code>orderBy</code> 方法允许你通过给定字段对结果集进行排序，<code>orderBy</code> 的第一个参数应该是你希望排序的字段，第二个参数控制着排序的方向 —— <code>asc</code> 或 <code>desc</code>：</p>
+<pre><code>$users = DB::table('users')
+        -&gt;orderBy('name', 'desc')
+        -&gt;get();
+</code></pre>
+<p><strong>latest / oldest</strong></p>
+<p><code>latest</code> 和 <code>oldest</code> 方法允许你通过日期对结果进行排序，默认情况下，结果集根据 <code>created_at</code> 字段进行排序，或者，你可以按照你想要排序的字段作为字段名传入：</p>
+<pre><code>$user = DB::table('users')
+        -&gt;latest()
+        -&gt;first();
+</code></pre>
+<p><strong>inRandomOrder</strong></p>
+<p><code>inRandomOrder</code> 方法可用于对查询结果集进行随机排序，比如，你可以用该方法获取一个随机用户：</p>
+<pre><code>$randomUser = DB::table('users')
+        -&gt;inRandomOrder()
+        -&gt;first();
+</code></pre>
+<p><strong>groupBy / having</strong></p>
+<p><code>groupBy</code> 和 <code>having</code> 方法用于对结果集进行分组，<code>having</code> 方法和 <code>where</code> 方法的用法类似：</p>
+<pre><code>$users = DB::table('users')
+        -&gt;groupBy('account_id')
+        -&gt;having('account_id', '&gt;', 100)
+        -&gt;get();
+</code></pre>
+<p>关于 <code>having</code> 的更多高级用法，可查看 <a href="8060.html#having-raw-target"><code>havingRaw</code></a> 方法。</p>
+<p><strong>skip / take</strong></p>
+<p>想要限定查询返回的结果集的数目，或者在查询中跳过给定数目的结果，可以使用<code>skip</code> 和 <code>take</code> 方法：</p>
+<pre><code>$users = DB::table('users')-&gt;skip(10)-&gt;take(5)-&gt;get();
+</code></pre>
+<p>作为替代方法，还可以使用 <code>limit</code> 和 <code>offset</code> 方法：</p>
+<pre><code>$users = DB::table('users')
+        -&gt;offset(10)
+        -&gt;limit(5)
+        -&gt;get();
+</code></pre>
+<h3 id="toc_17">条件子句</h3>
+<p>有时候你可能想要某些条件为 <code>true</code> 的时候才将条件子句应用到查询。例如，你可能只想给定值在请求中存在的情况下才应用 <code>where</code> 语句，这可以通过 <code>when</code> 方法实现：</p>
+<pre><code>$role = $request-&gt;input('role');
+
+$users = DB::table('users')
+                -&gt;when($role, function ($query) use ($role) {
+                    return $query-&gt;where('role_id', $role);
+                })
+                -&gt;get();
+</code></pre>
+<p><code>when</code> 方法只有在第一个参数为 <code>true</code> 的时候才执行给定闭包，如果第一个参数为 <code>false</code>，则闭包不执行。</p>
+<p>你可以传递另一个闭包作为 <code>when</code> 方法的第三个参数，该闭包会在第一个参数为 <code>false</code> 的情况下执行。为了演示这个特性如何使用，我们来配置一个查询的默认排序：</p>
+<pre><code>$sortBy = null;
+
+$users = DB::table('users')
+                -&gt;when($sortBy, function ($query) use ($sortBy) {
+                        return $query-&gt;orderBy($sortBy);
+                    }, function ($query) {
+                        return $query-&gt;orderBy('name');
+                    })
+                -&gt;get();
+</code></pre>
+<h3 id="toc_18">插入（Insert）</h3>
+<p>查询构建器还提供了 <code>insert</code> 方法用于插入记录到数据表。<code>insert</code> 方法接收数组形式的字段名和字段值进行插入操作：</p>
+<pre><code>DB::table('users')-&gt;insert(
+    ['email' =&gt; 'john@example.com', 'votes' =&gt; 0]
+);
+</code></pre>
+<p>你甚至可以一次性通过传入多个数组来插入多条记录，每个数组代表要插入数据表的记录：</p>
+<pre><code>DB::table('users')-&gt;insert([
+    ['email' =&gt; 'taylor@example.com', 'votes' =&gt; 0],
+    ['email' =&gt; 'dayle@example.com', 'votes' =&gt; 0]
+]);
+</code></pre>
+<p><strong>自增ID</strong></p>
+<p>如果数据表有自增ID，使用 <code>insertGetId</code> 方法来插入记录并返回ID值：</p>
+<pre><code>$id = DB::table('users')-&gt;insertGetId(
+    ['email' =&gt; 'john@example.com', 'votes' =&gt; 0]
+);
+</code></pre>
+<blockquote><p>注：当使用 PostgresSQL 时 <code>insertGetId</code> 方法默认自增列被命名为 id，如果你想要从其他“序列”获取ID，可以将序列名作为第二个参数传递到<code>insertGetId</code> 方法。</p></blockquote>
+<h3 id="toc_19">更新（Update）</h3>
+<p>当然，除了插入记录到数据库，查询构建器还可以通过使用 <code>update</code> 方法更新已有记录。<code>update</code> 方法和 <code>insert</code> 方法一样，接收字段名和字段值的键值对数组，对应字段名就是要更新的列，你可以通过 <code>where</code> 子句来对 <code>update</code> 查询进行约束：</p>
+<pre><code> DB::table('users')
+    -&gt;where('id', 1)
+    -&gt;update(['votes' =&gt; 1]);
+</code></pre>
+<h4 id="toc_20">更新 JSON 字段</h4>
+<p>更新 JSON 字段的时候，需要使用 <code>-&gt;</code> 语法访问 JSON 对象上相应的值，该操作只能用于支持 JSON 字段类型的数据库：</p>
+<pre><code>DB::table('users')
+    -&gt;where('id', 1)
+    -&gt;update(['options-&gt;enabled' =&gt; true]);
+</code></pre>
+<h4 id="toc_21">增加/减少</h4>
+<p>查询构建器还为增减给定字段名对应数值提供方便。相较于编写 <code>update</code> 语句，这是一条捷径，提供了更好的体验和测试接口。</p>
+<p>这两个方法都至少接收一个参数：需要修改的列。第二个参数是可选的，用于控制列值增加/减少的数目。</p>
+<pre><code>DB::table('users')-&gt;increment('votes');
+
+DB::table('users')-&gt;increment('votes', 5);
+
+DB::table('users')-&gt;decrement('votes');
+
+DB::table('users')-&gt;decrement('votes', 5);
+</code></pre>
+<p>在操作过程中你还可以指定额外的列进行更新：</p>
+<pre><code>DB::table('users')-&gt;increment('votes', 1, ['name' =&gt; 'John']);
+</code></pre>
+<h3 id="toc_22">删除（Delete）</h3>
+<p>当然，查询构建器还可以通过 <code>delete</code> 方法从表中删除记录，你可以在调用 <code>delete</code> 方法前通过添加 <code>where</code> 子句来添加约束条件：</p>
+<pre><code>DB::table('users')-&gt;delete();
+
+DB::table('users')-&gt;where('votes', '&gt;', 100)-&gt;delete();
+</code></pre>
+<p>如果你希望清除整张表，也就是删除所有列并将自增 ID 置为 0，可以使用 <code>truncate</code> 方法：</p>
+<pre><code>DB::table('users')-&gt;truncate();
+</code></pre>
+<h3 id="toc_23">悲观锁 &amp; 乐观锁</h3>
+<p>悲观锁（Pessimistic Lock），顾名思义，就是很悲观，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁、表锁、读锁、写锁等，都是在做操作之前先上锁。</p>
+<p>乐观锁（Optimistic Lock），顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制实现。乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库如果提供类似于 <code>write_condition</code> 机制的其实都是提供的乐观锁。</p>
+<p>下面我们看下悲观锁和乐观锁在 Laravel 中的使用：</p>
+<h4 id="toc_24">悲观锁使用</h4>
+<p>Laravel 查询构建器提供了一些方法帮助你在 <code>select</code> 语句中实现“悲观锁”。可以在查询中使用 <code>sharedLock</code> 方法从而在运行语句时带一把”共享锁“。共享锁可以避免被选择的行被修改直到事务提交：</p>
+<pre><code>DB::table('users')-&gt;where('votes', '&gt;', 100)-&gt;sharedLock()-&gt;get();
+</code></pre>
+<p>上面这个查询等价于下面这条 SQL 语句：</p>
+<pre><code>select * from `users` where `votes` &gt; '100' lock in share mode
+</code></pre>
+<p>此外你还可以使用 <code>lockForUpdate</code> 方法。“for update”锁避免选择行被其它共享锁修改或删除：</p>
+<pre><code>DB::table('users')-&gt;where('votes', '&gt;', 100)-&gt;lockForUpdate()-&gt;get();
+</code></pre>
+<p>上面这个查询等价于下面这条 SQL 语句：</p>
+<pre><code>select * from `users` where `votes` &gt; '100' for update
+</code></pre>
+<p><code>for update</code> 与 <code>lock in share mode</code> 都是用于确保被选中的记录值不能被其它事务更新（上锁），两者的区别在于 <code>lock in share mode</code> 不会阻塞其它事务读取被锁定行记录的值，而 <code>for update</code> 会阻塞其他锁定性读对锁定行的读取（非锁定性读仍然可以读取这些记录，<code>lock in share mode</code> 和 <code>for update</code> 都是锁定性读）。</p>
+<p>这么说比较抽象，我们举个计数器的例子：在一条语句中读取一个值，然后在另一条语句中更新这个值。使用 <code>lock in share mode</code> 的话可以允许两个事务读取相同的初始化值，所以执行两个事务之后最终计数器的值+1；而如果使用 <code>for update</code> 的话，会锁定第二个事务对记录值的读取直到第一个事务执行完成，这样计数器的最终结果就是+2了。</p>
+<h4 id="toc_25">乐观锁使用</h4>
+<p>乐观锁，大多是基于数据版本 （ Version ）记录机制实现。何谓数据版本？即为数据增加一个版本标识，在基于数据库表的版本解决方案中，一般是通过为数据库表增加一个 “version” 字段来实现。</p>
+<p>读取出数据时，将此版本号一同读出，之后更新时，对此版本号加一。此时，将提交数据的版本数据与数据库表对应记录的当前版本信息进行比对，如果提交的数据版本号大于数据库表当前版本号，则予以更新，否则认为是过期数据。</p>
+<h4 id="toc_26">总结</h4>
+<p>两种锁各有优缺点，不可认为一种好于另一种，像乐观锁适用于写比较少的情况下，即冲突真的很少发生的时候，这样可以省去了锁的开销，加大了系统的整个吞吐量。但如果经常产生冲突，上层应用会不断的进行重试，这样反倒是降低了性能，所以这种情况下用悲观锁就比较合适。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_5" rel="category tag">
+                Laravel 5.5
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%95%B0%E6%8D%AE%E5%BA%93" rel="tag">数据库</a>
+                                    ,
+                                            <a href="../tags/查询" rel="tag">查询</a>
+                                    ,
+                                            <a href="../tags/查询构建器" rel="tag">查询构建器</a>
+                                    ,
+                                            <a href="../tags/where" rel="tag">where</a>
+                                    ,
+                                            <a href="../tags/join" rel="tag">join</a>
+                                    ,
+                                            <a href="../tags/union" rel="tag">union</a>
+                                    ,
+                                            <a href="../tags/排序" rel="tag">排序</a>
+                                    ,
+                                            <a href="../tags/分组" rel="tag">分组</a>
+                                    ,
+                                            <a href="../tags/悲观锁" rel="tag">悲观锁</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%95%99%E7%A8%8B" rel="tag">教程</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5" rel="tag">增删改查</a>
+                                    ,
+                                            <a href="../tags/聚合函数" rel="tag">聚合函数</a>
+                                    ,
+                                            <a href="../tags/连接" rel="tag">连接</a>
+                                    ,
+                                            <a href="../tags/5.5.1" rel="tag">5.5</a>
+                                    ,
+                                            <a href="../tags/乐观锁" rel="tag">乐观锁</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;40 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="8060" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="8060" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;40 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="8029.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.5 文档 ] 数据库操作 —— 快速入门：基本配置和使用、读写分离 &amp; 数据库事务
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="8156.html" rel="next">
+                [ Laravel 5.5 文档 ] 数据库操作 —— 在 Laravel 中轻松实现分页功能
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        17 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-11522" class="comment even thread-even depth-1">
+            <article id="div-comment-11522" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='dancheng99' src='https://www.gravatar.com/avatar/88a57c592d540c47feac7734a66066ff?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/dancheng99" target="_blank">dancheng99</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>sql a and (b or c )这种怎么写法 还有主键多个列那种比较的 能给个例子么</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="11522"  aria-label='回复dancheng99...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-29T21:45:42+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-29 21:45:42
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11522" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10128" class="comment even thread-even depth-1">
+            <article id="div-comment-10128" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='毛子' src='https://www.gravatar.com/avatar/fb77324f9ac7c109d35ce050409d7793?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            毛子
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        感谢学院君
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="10128"  aria-label='回复毛子...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-08T17:47:34+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-08 17:47:34
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10128" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10127" class="comment even thread-even depth-1">
+            <article id="div-comment-10127" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='毛子' src='https://www.gravatar.com/avatar/fb77324f9ac7c109d35ce050409d7793?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            毛子
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        good boy
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="10127"  aria-label='回复毛子...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-08T17:39:47+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-08 17:39:47
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10127" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9746" class="comment even thread-even depth-1">
+            <article id="div-comment-9746" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='dd' src='https://www.gravatar.com/avatar/708e57822f799720d70f617fcf5f7af3?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            dd
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        ff
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="9746"  aria-label='回复dd...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-04-23T15:45:48+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-04-23 15:45:48
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9746" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9673" class="comment even thread-even depth-1">
+            <article id="div-comment-9673" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='牛牛小宝' src='https://www.gravatar.com/avatar/33eb83dea1c1a9ce2e329f1ae3d80749?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            牛牛小宝
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        distinct方法只有在查询一个字段集的时候才会生效。例如：DB::table('users')-&gt;select('name')-&gt;distinct()-&gt;get()或者DB::table('users')-&gt;distinct()-&gt;pluck('name')。记录一下，嘻嘻
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="9673"  aria-label='回复牛牛小宝...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-04-16T16:54:51+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-04-16 16:54:51
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9673" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9185" class="comment even thread-even depth-1">
+            <article id="div-comment-9185" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        已经在更新了
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="9185"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-02-05T23:25:13+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-02-05 23:25:13
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9185" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9111" class="comment even thread-even depth-1">
+            <article id="div-comment-9111" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Master' src='https://www.gravatar.com/avatar/81cd058e4c1742f0fb773071cc068ea3?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Master
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        Laravel 5.5 文档 后面的内容还会更新吗？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="9111"  aria-label='回复Master...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-01-25T17:53:21+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-01-25 17:53:21
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9111" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9102" class="comment even thread-even depth-1">
+            <article id="div-comment-9102" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='306556c965ca5bf06cbc6758065e2339' src='https://www.gravatar.com/avatar/bdb27e290f763d11bdfef3bc6ae3dd11?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            306556c965ca5bf06cbc6758065e2339
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        306556c965ca5bf06cbc6758065e2339学院君，更的有点慢0.0
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="9102"  aria-label='回复306556c965ca5bf06cbc6758065e2339...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-01-24T00:29:29+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-01-24 00:29:29
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9102" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9094" class="comment even thread-even depth-1">
+            <article id="div-comment-9094" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Master' src='https://www.gravatar.com/avatar/81cd058e4c1742f0fb773071cc068ea3?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Master
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君，后面的内容还会更新吗？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="9094"  aria-label='回复Master...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-01-23T15:04:56+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-01-23 15:04:56
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9094" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9047" class="comment even thread-even depth-1">
+            <article id="div-comment-9047" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='王磊' src='https://www.gravatar.com/avatar/747ea1ff528448986fa7e97319c53b0d?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            王磊
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        ff8b25b0357072149822d7bded8819ef这个能怎么编辑了用什么编辑
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='8060.html#respond' data-id="9047"  aria-label='回复王磊...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-01-12T21:48:44+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-01-12 21:48:44
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9047" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/8060.html/page/2#comments">2</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/index.php/post/8060.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="8060.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='8060' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="8060.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="8060.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        获取结果集
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        组块结果集
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        聚合函数
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        查询（Select）
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        原生表达式
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        原生方法
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        连接（Join）
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        联合（Union）
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Where子句
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简单 Where 子句
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        or 语句
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        更多 Where 子句
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        参数分组
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        where exists子句
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        JSON Where子句
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        排序、分组、限定
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        条件子句
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        插入（Insert）
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        更新（Update）
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        更新 JSON 字段
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        增加/减少
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_22">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        删除（Delete）
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_23">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        悲观锁 &amp; 乐观锁
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_24">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        悲观锁使用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_25">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        乐观锁使用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="8060.html#toc_26">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        总结
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="126.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 数据库 —— 查询构建器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2956.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 数据库 —— 查询构建器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6140.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] 数据库 —— 查询构建器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6955.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 数据库 —— 查询构建器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8834.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 数据库操作 —— 查询构建器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

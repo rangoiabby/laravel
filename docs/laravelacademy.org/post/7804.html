@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            可能是你用过的最优雅的支付宝和微信支付 SDK 了 —— Laravel Pay - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="7804.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="7804.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="7804.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="7804.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="7804.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../project.1">
+                项目
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../packages">
+                扩展包
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">可能是你用过的最优雅的支付宝和微信支付 SDK 了 —— Laravel Pay</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">可能是你用过的最优雅的支付宝和微信支付 SDK 了 —— Laravel Pay</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="7804.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-09-18T18:34:25+08:00">2017-09-18</time>
+                    <time class="updated" datetime="2017-09-18T19:49:40+08:00">2017-09-18 19:49:40</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                31218 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p><img class="aligncenter" src="https://static.laravelacademy.org/wp-content/uploads/2017/09/15057330187694.jpg" alt="" />￼</p>
+<h3 id="toc_0">概述</h3>
+<p>开发了多次支付宝与微信支付后，很自然产生一种反感，惰性又来了，想在网上找相关的轮子，可是一直没有找到一款自己觉得逞心如意的，要么使用起来太难理解，要么文件结构太杂乱，只有自己撸起袖子干了。</p>
+<ul>
+<li>Github： <a href="https://github.com/yansongda/pay" target="_blank" rel="noopener">https://github.com/yansongda/pay</a></li>
+<li>gitee： <a href="https://gitee.com/yansongda/pay" target="_blank" rel="noopener">https://gitee.com/yansongda/pay</a></li>
+<li>Laravel 扩展包：<a href="https://github.com/yansongda/laravel-pay" target="_blank" rel="noopener">https://github.com/yansongda/laravel-pay</a></li>
+</ul>
+<p>欢迎 Star，欢迎 PR！</p>
+<p>潜水了这么久，自己学习了很多，是时候回馈社区了！</p>
+<h3 id="toc_1">特点</h3>
+<ul>
+<li>命名不那么乱七八糟</li>
+<li>隐藏开发者不需要关注的细节</li>
+<li>根据支付宝、微信最新 API 开发而成</li>
+<li>高度抽象的类，免去各种拼 JSON 与 XML 的痛苦</li>
+<li>符合 PSR 标准，你可以各种方便的与你的框架集成</li>
+<li>文件结构清晰易理解，可以随心所欲添加本项目中没有的支付网关</li>
+<li>方法使用更优雅，不必再去研究那些奇怪的的方法名或者类名是做啥用的</li>
+</ul>
+<p>以上部分引用了 <code>@overtrue</code> 的部分说明，在此感谢！:satisfied:</p>
+<h3 id="toc_2">运行环境</h3>
+<ul>
+<li>PHP 5.6+</li>
+<li>Composer</li>
+</ul>
+<h3 id="toc_3">支持的支付网关</h3>
+<p>由于各支付网关参差不齐，所以我们抽象了两个方法 <code>driver()</code> 和 <code>gateway()</code>。两个方法的作用如下：</p>
+<ul>
+<li><code>driver</code>：确定支付平台，如支付宝、微信;</li>
+<li><code>gateway()</code>：确定支付网关。通过此方法，确定支付平台下的支付网关。例如，支付宝下有 「电脑网站支付」，「手机网站支付」，「APP 支付」三种支付网关，分别通过传入 <code>web</code>、<code>wap</code>、<code>app</code> 确定。</li>
+</ul>
+<p>详细思路可以查看源代码。</p>
+<h4 id="toc_4">支付宝</h4>
+<ul>
+<li>电脑支付</li>
+<li>手机网站支付</li>
+<li>APP 支付</li>
+</ul>
+<p>SDK 中对应的 <code>driver</code> 和 <code>gateway</code> 如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">driver</th>
+<th style="text-align: center;">gateway</th>
+<th style="text-align: center;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">alipay</td>
+<td style="text-align: center;">web</td>
+<td style="text-align: center;">电脑支付</td>
+</tr>
+<tr>
+<td style="text-align: center;">alipay</td>
+<td style="text-align: center;">wap</td>
+<td style="text-align: center;">手机网站支付</td>
+</tr>
+<tr>
+<td style="text-align: center;">alipay</td>
+<td style="text-align: center;">app</td>
+<td style="text-align: center;">APP 支付</td>
+</tr>
+</tbody>
+</table>
+<h4 id="toc_5">微信</h4>
+<ul>
+<li>公众号支付</li>
+<li>小程序支付</li>
+<li>H5 支付</li>
+<li>扫码支付</li>
+<li>刷卡支付</li>
+</ul>
+<p>SDK 中对应的 <code>driver</code> 和 <code>gateway</code> 如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">driver</th>
+<th style="text-align: center;">gateway</th>
+<th style="text-align: center;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">wechat</td>
+<td style="text-align: center;">mp</td>
+<td style="text-align: center;">公众号支付</td>
+</tr>
+<tr>
+<td style="text-align: center;">wechat</td>
+<td style="text-align: center;">miniapp</td>
+<td style="text-align: center;">小程序支付</td>
+</tr>
+<tr>
+<td style="text-align: center;">wechat</td>
+<td style="text-align: center;">wap</td>
+<td style="text-align: center;">H5 支付</td>
+</tr>
+<tr>
+<td style="text-align: center;">wechat</td>
+<td style="text-align: center;">scan</td>
+<td style="text-align: center;">扫码支付</td>
+</tr>
+<tr>
+<td style="text-align: center;">wechat</td>
+<td style="text-align: center;">pos</td>
+<td style="text-align: center;">刷卡支付</td>
+</tr>
+</tbody>
+</table>
+<h4 id="toc_6">支持的方法</h4>
+<p>所有网关均支持以下方法</p>
+<ul>
+<li><code>pay(array $config_biz)</code></li>
+</ul>
+<p>说明：支付接口</p>
+<p>参数：数组类型，订单业务配置项，包含 订单号，订单金额等</p>
+<p>返回：<code>mixed</code> 详情请看「支付网关配置说明与返回值」一节。</p>
+<ul>
+<li><code>refund(array|string $config_biz, $refund_amount = null)</code></li>
+</ul>
+<p>说明：退款接口</p>
+<p>参数：<code>$config_biz</code> 为字符串类型仅对支付宝支付有效，此时代表订单号，第二个参数为退款金额。</p>
+<p>返回：<code>mixed</code> 退款成功，返回 服务器返回的数组；否则返回 <code>false</code>；</p>
+<ul>
+<li><code>close(array|string $config_biz)</code></li>
+</ul>
+<p>说明：关闭订单接口</p>
+<p>参数：<code>$config_biz</code> 为字符串类型时代表订单号，如果为数组，则为关闭订单业务配置项，配置项内容请参考各个支付网关官方文档。</p>
+<p>返回：<code>mixed</code> 关闭订单成功，返回 服务器返回的数组；否则返回 false；</p>
+<ul>
+<li><code>find(string $out_trade_no)</code></li>
+</ul>
+<p>说明：查找订单接口</p>
+<p>参数：<code>$out_trade_no</code> 为订单号。</p>
+<p>返回：<code>mixed</code> 查找订单成功，返回 服务器返回的数组；否则返回 <code>false</code>；</p>
+<ul>
+<li><code>verify($data, $sign = null)</code></li>
+</ul>
+<p>说明：验证服务器返回消息是否合法</p>
+<p>参数：<code>$data</code> 为服务器接收到的原始内容，<code>$sign</code> 为签名信息，当其为空时，系统将自动转化 <code>$data</code> 为数组，然后取 <code>$data['sign']</code>。</p>
+<p>返回：<code>mixed</code> 验证成功，返回 服务器返回的数组；否则返回 <code>false</code>；</p>
+<h3 id="toc_7">快速上手</h3>
+<p>通过 Composer 安装：</p>
+<pre><code>composer require yansongda/pay
+</code></pre>
+<p>使用说明：</p>
+<h4 id="toc_8">一个完整的例子</h4>
+<p><strong>代码片段</strong></p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Yansongda\Pay\Pay;
+use Illuminate\Http\Request;
+
+class PayController extends Controller
+{
+    protected $config = [
+        'alipay' =&gt; [
+            'app_id' =&gt; '2016082000295641',
+            'notify_url' =&gt; 'http://yansongda.cn/alipay_notify.php',
+            'return_url' =&gt; 'http://yansongda.cn/return.php',
+            'ali_public_key' =&gt; 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuWJKrQ6SWvS6niI+4vEVZiYfjkCfLQfoFI2nCp9ZLDS42QtiL4Ccyx8scgc3nhVwmVRte8f57TFvGhvJD0upT4O5O/lRxmTjechXAorirVdAODpOu0mFfQV9y/T9o9hHnU+VmO5spoVb3umqpq6D/Pt8p25Yk852/w01VTIczrXC4QlrbOEe3sr1E9auoC7rgYjjCO6lZUIDjX/oBmNXZxhRDrYx4Yf5X7y8FRBFvygIE2FgxV4Yw+SL3QAa2m5MLcbusJpxOml9YVQfP8iSurx41PvvXUMo49JG3BDVernaCYXQCoUJv9fJwbnfZd7J5YByC+5KM4sblJTq7bXZWQIDAQAB',
+            'private_key' =&gt; 'MIIEpAIBAAKCAQEAs6+F2leOgOrvj9jTeDhb5q46GewOjqLBlGSs/bVL4Z3fMr3p+Q1Tux/6uogeVi/eHd84xvQdfpZ87A1SfoWnEGH5z15yorccxSOwWUI+q8gz51IWqjgZxhWKe31BxNZ+prnQpyeMBtE25fXp5nQZ/pftgePyUUvUZRcAUisswntobDQKbwx28VCXw5XB2A+lvYEvxmMv/QexYjwKK4M54j435TuC3UctZbnuynSPpOmCu45ZhEYXd4YMsGMdZE5/077ZU1aU7wx/gk07PiHImEOCDkzqsFo0Buc/knGcdOiUDvm2hn2y1XvwjyFOThsqCsQYi4JmwZdRa8kvOf57nwIDAQABAoIBAQCw5QCqln4VTrTvcW+msB1ReX57nJgsNfDLbV2dG8mLYQemBa9833DqDK6iynTLNq69y88ylose33o2TVtEccGp8Dqluv6yUAED14G6LexS43KtrXPgugAtsXE253ZDGUNwUggnN1i0MW2RcMqHdQ9ORDWvJUCeZj/AEafgPN8AyiLrZeL07jJz/uaRfAuNqkImCVIarKUX3HBCjl9TpuoMjcMhz/MsOmQ0agtCatO1eoH1sqv5Odvxb1i59c8Hvq/mGEXyRuoiDo05SE6IyXYXr84/Nf2xvVNHNQA6kTckj8shSi+HGM4mO1Y4Pbb7XcnxNkT0Inn6oJMSiy56P+CpAoGBAO1O+5FE1ZuVGuLb48cY+0lHCD+nhSBd66B5FrxgPYCkFOQWR7pWyfNDBlmO3SSooQ8TQXA25blrkDxzOAEGX57EPiipXr/hy5e+WNoukpy09rsO1TMsvC+v0FXLvZ+TIAkqfnYBgaT56ku7yZ8aFGMwdCPL7WJYAwUIcZX8wZ3dAoGBAMHWplAqhe4bfkGOEEpfs6VvEQxCqYMYVyR65K0rI1LiDZn6Ij8fdVtwMjGKFSZZTspmsqnbbuCE/VTyDzF4NpAxdm3cBtZACv1Lpu2Om+aTzhK2PI6WTDVTKAJBYegXaahBCqVbSxieR62IWtmOMjggTtAKWZ1P5LQcRwdkaB2rAoGAWnAPT318Kp7YcDx8whOzMGnxqtCc24jvk2iSUZgb2Dqv+3zCOTF6JUsV0Guxu5bISoZ8GdfSFKf5gBAo97sGFeuUBMsHYPkcLehM1FmLZk1Q+ljcx3P1A/ds3kWXLolTXCrlpvNMBSN5NwOKAyhdPK/qkvnUrfX8sJ5XK2H4J8ECgYAGIZ0HIiE0Y+g9eJnpUFelXvsCEUW9YNK4065SD/BBGedmPHRC3OLgbo8X5A9BNEf6vP7fwpIiRfKhcjqqzOuk6fueA/yvYD04v+Da2MzzoS8+hkcqF3T3pta4I4tORRdRfCUzD80zTSZlRc/h286Y2eTETd+By1onnFFe2X01mwKBgQDaxo4PBcLL2OyVT5DoXiIdTCJ8KNZL9+kV1aiBuOWxnRgkDjPngslzNa1bK+klGgJNYDbQqohKNn1HeFX3mYNfCUpuSnD2Yag53Dd/1DLO+NxzwvTu4D6DCUnMMMBVaF42ig31Bs0jI3JQZVqeeFzSET8fkoFopJf3G6UXlrIEAQ==',
+        ],
+    ];
+
+    public function index()
+    {
+        $config_biz = [
+            'out_trade_no' =&gt; time(),
+            'total_amount' =&gt; '1',
+            'subject'      =&gt; 'test subject',
+        ];
+
+        $pay = new Pay($this-&gt;config);
+
+        return $pay-&gt;driver('alipay')-&gt;gateway()-&gt;pay($config_biz);
+    }
+
+    public function return(Request $request)
+    {
+        $pay = new Pay($this-&gt;config);
+
+        return $pay-&gt;driver('alipay')-&gt;gateway()-&gt;verify($request-&gt;all());
+    }
+
+    public function notify(Request $request)
+    {
+        $pay = new Pay($this-&gt;config);
+
+        if ($pay-&gt;driver('alipay')-&gt;gateway()-&gt;verify($request-&gt;all())) {
+            file_put_contents(storage_path('notify.txt'), "收到来自支付宝的异步通知\r\n", FILE_APPEND);
+            file_put_contents(storage_path('notify.txt'), '订单号：' . $request-&gt;out_trade_no . "\r\n", FILE_APPEND);
+            file_put_contents(storage_path('notify.txt'), '订单金额：' . $request-&gt;total_amount . "\r\n\r\n", FILE_APPEND);
+        } else {
+            file_put_contents(storage_path('notify.txt'), "收到异步通知\r\n", FILE_APPEND);
+        }
+
+        echo "success";
+    }
+}
+
+&lt;?php
+
+namespace App\Http\Controllers;
+
+use Yansongda\Pay\Pay;
+use Illuminate\Http\Request;
+
+class PayController extends Controller
+{
+    protected $config = [
+        'wechat' =&gt; [
+            'app_id' =&gt; 'wxb3f6d0xxxxxxxd',
+            'mch_id' =&gt; '1457768302',
+            'notify_url' =&gt; 'http://yansongda.cn/wechat_notify.php',
+            'key' =&gt; 'mF2suE9sU6Mkxxxxxxx5645645',
+            'cert_client' =&gt; './apiclient_cert.pem',
+            'cert_key' =&gt; './apiclient_key.pem',
+        ],
+    ];
+
+    public function index()
+    {
+        $config_biz = [
+            'out_trade_no' =&gt; 'e2',
+            'total_fee' =&gt; '0.01',
+            'body' =&gt; 'test body',
+            'spbill_create_ip' =&gt; '14.213.156.207',
+            'openid' =&gt; 'onkVf1FjWS5SBIihS-123456_abc',
+        ];
+
+        $pay = new Pay($this-&gt;config);
+
+        return $pay-&gt;driver('wechat')-&gt;gateway('mp')-&gt;pay($config_biz);
+    }
+
+    public function notify(Request $request)
+    {
+        $pay = new Pay($this-&gt;config);
+        $verify = $p-&gt;driver('wechat')-&gt;gateway('mp')-&gt;verify($request-&gt;getContent());
+
+        if ($verify) {
+            file_put_contents('notify.txt', "收到来自微信的异步通知\r\n", FILE_APPEND);
+            file_put_contents('notify.txt', '订单号：' . $verify['out_trade_no'] . "\r\n", FILE_APPEND);
+            file_put_contents('notify.txt', '订单金额：' . $verify['total_fee'] . "\r\n\r\n", FILE_APPEND);
+        } else {
+            file_put_contents(storage_path('notify.txt'), "收到异步通知\r\n", FILE_APPEND);
+        }
+
+        echo "success";
+    }
+}
+</code></pre>
+<p><strong>准备配置参数</strong></p>
+<pre><code>$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_trade_no' =&gt; '12',         // 订单号
+    'total_amount' =&gt; '13',         // 订单金额，单位：元
+    'subject' =&gt; 'test subject',   // 订单商品标题
+];
+</code></pre>
+<p><strong>在代码中使用</strong></p>
+<pre><code>$pay = new Pay($config);
+return $pay-&gt;dirver('alipay')-&gt;gateway('web')-&gt;pay($config_biz);
+</code></pre>
+<h3 id="toc_9">错误</h3>
+<p>使用非跳转接口（如 <code>refund</code> 接口、<code>close</code> 接口）时，如果在调用相关支付网关 API 时有错误产生，会抛出 <code>GatewayException</code> 错误，可以通过 <code>$e-&gt;getMessage()</code> 查看，同时，也可通过 <code>$e-&gt;raw</code> 查看调用 API 后返回的原始数据，该值为数组格式。</p>
+<h3 id="toc_10">支付网关配置说明与返回值</h3>
+<p>由于支付网关不同，每家参数参差不齐，为了方便，我们抽象定义了两个参数：<code>$config</code>、<code>$config_biz</code>，分别为全局参数，业务参数。但是，所有配置参数均为官方标准参数，无任何差别。</p>
+<p>「业务参数」为订单相关的参数，「全局参数」为除订单相关参数以外的全局性参数。</p>
+<p>具体参数列表请查看每个支付网关的使用说明。</p>
+<h4 id="toc_11">支付宝电脑网站支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_trade_no' =&gt; '12',                 // 订单号
+    'total_amount' =&gt; '13',                 // 订单金额，单位：元
+    'subject' =&gt; 'test subject',   // 订单商品标题
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>所有参数均为官方标准参数，无任何差别（点击这里查看<a href="https://docs.open.alipay.com/common/105901">官方文档</a>）：</p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+        'return_url' =&gt; '',         // 同步通知 url，*强烈建议加上本参数*
+        'notify_url' =&gt; '',         // 异步通知 url，*强烈建议加上本参数*
+    ],
+];
+$config_biz = [
+    'out_trade_no' =&gt; '',
+    'total_amount' =&gt; '',                 
+    'subject' =&gt; '',
+
+    // 订单描述
+    'body' =&gt; '',
+
+    // 订单包含的商品列表信息，Json格式： {"show_url":"https://或http://打头的商品的展示地址"} ，在支付时，可点击商品名称跳转到该地址      
+    'goods_detail' =&gt; '',
+
+    // 该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。该参数在请求到支付宝时开始计时。
+    'timeout_express' =&gt; '',                
+
+    // 禁用渠道，用户不可用指定渠道支付当有多个渠道时用“,”分隔注：与enable_pay_channels互斥
+    'disable_pay_channels' =&gt; '',
+
+    // 可用渠道，用户只能在指定渠道范围内支付当有多个渠道时用“,”分隔注：与disable_pay_channels互斥
+    'enable_pay_channels' =&gt; '',
+
+    // 公用回传参数，如果请求时传递了该参数，则返回给商户时会回传该参数。支付宝只会在异步通知时将该参数原样返回。本参数必须进行UrlEncode之后才可以发送给支付宝
+    'passback_params' =&gt; '',
+
+    // 业务扩展参数，详见 [业务扩展参数说明](https://docs.open.alipay.com/#kzcs)
+    'extend_params' =&gt; '',
+
+    // 商品主类型：0—虚拟类商品，1—实物类商品（默认）注：虚拟类商品不支持使用花呗渠道
+    'goods_type' =&gt; '',
+
+    // 获取用户授权信息，可实现如免登功能。获取方法请查阅：用户信息授权
+    'auth_token' =&gt; '',
+
+    /**
+     *  PC扫码支付的方式，支持前置模式和跳转模式。
+     *
+     *  前置模式是将二维码前置到商户的订单确认页的模式。需要商户在自己的页面中以iframe方式请求支付宝页面。具体分为以下几种：
+     *  0：订单码-简约前置模式，对应iframe宽度不能小于600px，高度不能小于300px；
+     *  1：订单码-前置模式，对应iframe宽度不能小于300px，高度不能小于600px；
+     *  3：订单码-迷你前置模式，对应iframe宽度不能小于75px，高度不能小于75px；
+     *  4：订单码-可定义宽度的嵌入式二维码，商户可根据需要设定二维码的大小。
+     *
+     *  跳转模式下，用户的扫码界面是由支付宝生成的，不在商户的域名下。
+     *  2：订单码-跳转模式
+     */
+    'qr_pay_mode' =&gt; '',
+
+    // 商户自定义二维码宽度 注：qr_pay_mode=4时该参数生效
+    'qrcode_width' =&gt; ''
+];
+</code></pre>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：string<br />
+说明：该接口返回跳转到支付宝支付的 HTML 代码。</p>
+<h4 id="toc_12">支付宝手机网站支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_trade_no' =&gt; '12',                 // 订单号
+    'total_amount' =&gt; '13',                 // 订单金额，单位：元
+    'subject' =&gt; 'test subject',   // 订单商品标题
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>该网关大部分参数和 「电脑支付」 相同，具体请参考<a href="https://docs.open.alipay.com/203/107090/">官方文档</a></p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：string<br />
+说明：该接口返回跳转到支付宝支付的 HTML 代码。</p>
+<h4 id="toc_13">支付宝 APP 支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'notify_url' =&gt; '',         // 支付宝异步通知地址
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_trade_no' =&gt; '12',                 // 订单号
+    'total_amount' =&gt; '13',                 // 订单金额，单位：元
+    'subject' =&gt; 'test subject',   // 订单商品标题
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>该网关大部分参数和 「电脑支付」 相同，具体请参考<a href="https://docs.open.alipay.com/204/105465/">官方文档</a></p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：string<br />
+说明：该接口返回用于客户端调用的 orderString 字符串，可直接供 APP 客户端调用，客户端调用方法不在此文档讨论范围内，Android 用户请看<a href="https://docs.open.alipay.com/204/105300/">这里</a>，iOS 用户请看<a href="https://docs.open.alipay.com/204/105299/">这里</a>。</p>
+<h4 id="toc_14">支付宝刷卡支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_trade_no' =&gt; '12',         // 订单号
+    'total_amount' =&gt; '13',         // 订单金额，单位：元
+    'subject' =&gt; 'test subject',    // 订单商品标题
+    'auth_code'  =&gt; '123456',       // 授权码
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>该网关大部分参数和 「电脑支付」 相同，具体请参考<a href="https://docs.open.alipay.com/api_1/alipay.trade.pay">官方文档</a></p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：array|bool<br />
+说明：该接口成功时返回服务器响应的数组；验签失败返回 false。</p>
+<h4 id="toc_15">支付宝扫码支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'notify_url' =&gt; '',         // 支付宝异步通知地址
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_trade_no' =&gt; '12',                 // 订单号
+    'total_amount' =&gt; '13',                 // 订单金额，单位：元
+    'subject' =&gt; 'test subject',   // 订单商品标题
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>该网关大部分参数和 「电脑支付」 相同，具体请参考<a href="https://docs.open.alipay.com/api_1/alipay.trade.precreate">官方文档</a></p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：string<br />
+说明：该接口返回二维码链接，可以通过其他库转换为二维码供用户扫描。</p>
+<h4 id="toc_16">支付宝帐户转账</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_biz_no' =&gt; '',                      // 订单号
+    'payee_type' =&gt; 'ALIPAY_LOGONID',        // 收款方账户类型(ALIPAY_LOGONID | ALIPAY_USERID)
+    'payee_account' =&gt; 'demo@sandbox.com',   // 收款方账户
+    'amount' =&gt; '10',                        // 转账金额
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'alipay' =&gt; [
+        'app_id' =&gt; '',             // 支付宝提供的 APP_ID
+        'ali_public_key' =&gt; '',     // 支付宝公钥，1行填写
+        'private_key' =&gt; '',        // 自己的私钥，1行填写
+    ],
+];
+$config_biz = [
+    'out_biz_no' =&gt; '',                      // 订单号
+    'payee_type' =&gt; 'ALIPAY_LOGONID',        // 收款方账户类型(ALIPAY_LOGONID | ALIPAY_USERID)
+    'payee_account' =&gt; 'demo@sandbox.com',   // 收款方账户
+    'amount' =&gt; '10',                        // 转账金额
+    'payer_show_name' =&gt; '未寒',             // 付款方姓名
+    'payee_real_name' =&gt; '张三',             // 收款方真实姓名
+    'remark' =&gt; '张三',                      // 转账备注
+];
+</code></pre>
+<p>官方文档：<a href="https://doc.open.alipay.com/docs/api.htm?apiId=1321&amp;docType=4">https://doc.open.alipay.com/docs/api.htm?apiId=1321&amp;docType=4</a></p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：array|bool<br />
+说明：该接口成功时返回服务器响应的数组；验签失败返回 false。</p>
+<h4 id="toc_17">微信公众号支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'wechat' =&gt; [
+        'app_id' =&gt; '',             // 公众号APPID
+        'mch_id' =&gt; '',             // 微信商户号
+        'notify_url' =&gt; '',
+        'key' =&gt; '',                // 微信支付签名秘钥
+        'cert_client' =&gt; './apiclient_cert.pem',        // 客户端证书路径，退款时需要用到
+        'cert_key' =&gt; './apiclient_key.pem',            // 客户端秘钥路径，退款时需要用到
+    ],
+];
+
+$config_biz = [
+    'out_trade_no' =&gt; '',           // 订单号
+    'total_fee' =&gt; '',              // 订单金额，**单位：分**
+    'body' =&gt; '',                   // 订单描述
+    'spbill_create_ip' =&gt; '',       // 支付人的 IP
+    'openid' =&gt; '',                 // 支付人的 openID
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>所有参数均为官方标准参数，无任何差别（点击查看<a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1">官方文档</a>）：</p>
+<pre><code>&lt;?php
+
+$config = [
+    'wechat' =&gt; [
+        'app_id' =&gt; '',             // 公众号APPID
+        'mch_id' =&gt; '',             // 微信商户号
+        'notify_url' =&gt; '',
+        'key' =&gt; '',                // 微信支付签名秘钥
+        'cert_client' =&gt; './apiclient_cert.pem',        // 客户端证书路径，退款时需要用到
+        'cert_key' =&gt; './apiclient_key.pem',            // 客户端秘钥路径，退款时需要用到
+    ],
+];
+
+$config_biz = [
+    'out_trade_no' =&gt; '',           // 订单号
+    'total_fee' =&gt; '',              // 订单金额，**单位：分**
+    'body' =&gt; '',                   // 订单描述
+    'spbill_create_ip' =&gt; '',       // 支付人的 IP
+    'openid' =&gt; '',                 // 支付人的 openID
+
+    // 自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
+    'device_info' =&gt; '',
+
+    // 商品详细描述，对于使用单品优惠的商户，改字段必须按照规范上传，详见“单品优惠参数说明”
+    'detail' =&gt; '',
+
+    // 附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
+    'attach' =&gt; '',
+
+    // 符合ISO 4217标准的三位字母代码，默认人民币：CNY，详细列表请参见货币类型
+    'fee_type' =&gt; '',
+
+    // 订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
+    'time_start' =&gt; '',
+
+    // 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则注意：最短失效时间间隔必须大于5分钟
+    'time_expire' =&gt; '',
+
+    // 订单优惠标记，使用代金券或立减优惠功能时需要的参数，说明详见代金券或立减优惠
+    'goods_tag' =&gt; '',
+
+    // trade_type=NATIVE时（即扫码支付），此参数必传。此参数为二维码中包含的商品ID，商户自行定义。
+    'product_id' =&gt; '',
+
+    // 上传此参数no_credit--可限制用户不能使用信用卡支付
+    'limit_pay' =&gt; '',
+
+    // 该字段用于上报场景信息，目前支持上报实际门店信息。该字段为JSON对象数据，对象格式为{"store_info":{"id": "门店ID","name": "名称","area_code": "编码","address": "地址" }} ，字段详细说明请点击行前的+展开
+    'scene_info' =&gt; '',
+];
+</code></pre>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：array<br />
+说明：返回用于 微信内H5调起支付 的所需参数数组。后续调用不在本文档讨论范围内，具体请<a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&amp;index=6">参考这里</a>。</p>
+<p>后续调用举例：</p>
+<pre><code>&lt;script type="text/javascript"&gt;
+        function onBridgeReady(){
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                    "appId":"&lt;?php echo $pay['appId']; ?&gt;",     //公众号名称，由商户传入     
+                    "timeStamp":"&lt;?php echo $pay['timeStamp']; ?&gt;",         //时间戳，自1970年以来的秒数     
+                    "nonceStr":"&lt;?php echo $pay['nonceStr']; ?&gt;", //随机串     
+                    "package":"&lt;?php echo $pay['package']; ?&gt;",     
+                    "signType":"&lt;?php echo $pay['signType']; ?&gt;",         //微信签名方式：     
+                    "paySign":"&lt;?php echo $pay['paySign']; ?&gt;" //微信签名 
+                },
+                function(res){     
+                    if(res.err_msg == "get_brand_wcpay_request:ok" ) {}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+                }
+            ); 
+        }
+
+        $(function(){
+            $('#pay').click(function(){
+                if (typeof WeixinJSBridge == "undefined"){
+                   if( document.addEventListener ){
+                       document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                   }else if (document.attachEvent){
+                       document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                       document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                   }
+                }else{
+                   onBridgeReady();
+                }
+            })
+        });
+&lt;/script&gt;
+</code></pre>
+<h4 id="toc_18">微信小程序支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'wechat' =&gt; [
+        'miniapp_id' =&gt; '',             // 小程序APPID
+        'mch_id' =&gt; '',             // 微信商户号
+        'notify_url' =&gt; '',
+        'key' =&gt; '',                // 微信支付签名秘钥
+        'cert_client' =&gt; './apiclient_cert.pem',        // 客户端证书路径，退款时需要用到
+        'cert_key' =&gt; './apiclient_key.pem',            // 客户端秘钥路径，退款时需要用到
+    ],
+];
+
+$config_biz = [
+    'out_trade_no' =&gt; '',           // 订单号
+    'total_fee' =&gt; '',              // 订单金额，**单位：分**
+    'body' =&gt; '',                   // 订单描述
+    'spbill_create_ip' =&gt; '',       // 支付人的 IP
+    'openid' =&gt; '',                 // 支付人的 openID
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>由于「小程序支付」和「公众号支付」都使用的是 JSAPI，所以，除了 APPID 一个使用的是公众号的 APPID 一个使用的是 小程序的 APPID 以外，该网关所有参数和 「公众号支付」 相同，具体请<a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1">参考这里</a>。</p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：array<br />
+说明：返回用于 小程序调起支付API 的所需参数数组。后续调用不在本文档讨论范围内，具体请<a href="https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&amp;index=3">参考这里</a>。</p>
+<h4 id="toc_19">微信 H5 支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'wechat' =&gt; [
+        'app_id' =&gt; '',             // 微信公众号 APPID
+        'mch_id' =&gt; '',             // 微信商户号
+        'return_url' =&gt; '',         // *此配置选项可选*，注意，该跳转 URL 只有跳转之意，没有同步通知功能
+        'notify_url' =&gt; '',
+        'key' =&gt; '',                // 微信支付签名秘钥
+        'cert_client' =&gt; './apiclient_cert.pem',        // 客户端证书路径，退款时需要用到
+        'cert_key' =&gt; './apiclient_key.pem',            // 客户端秘钥路径，退款时需要用到
+    ],
+];
+
+$config_biz = [
+    'out_trade_no' =&gt; '',           // 订单号
+    'total_fee' =&gt; '',              // 订单金额，**单位：分**
+    'body' =&gt; '',                   // 订单描述
+    'spbill_create_ip' =&gt; '',       // 支付人的 IP
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>所有配置项和前面支付网关相差不大，请<a href="https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=9_20&amp;index=1">点击这里</a>查看。</p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：string<br />
+说明：返回微信支付中间页网址，可直接 302 跳转。</p>
+<h4 id="toc_20">微信扫码支付</h4>
+<p>这里使用「模式二」进行扫码支付，具体请参考这里：<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5">https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_5</a></p>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'wechat' =&gt; [
+        'app_id' =&gt; '',             // 微信公众号 APPID
+        'mch_id' =&gt; '',             // 微信商户号
+        'notify_url' =&gt; '',
+        'key' =&gt; '',                // 微信支付签名秘钥
+        'cert_client' =&gt; './apiclient_cert.pem',        // 客户端证书路径，退款时需要用到
+        'cert_key' =&gt; './apiclient_key.pem',            // 客户端秘钥路径，退款时需要用到
+    ],
+];
+
+$config_biz = [
+    'out_trade_no' =&gt; '',           // 订单号
+    'total_fee' =&gt; '',              // 订单金额，**单位：分**
+    'body' =&gt; '',                   // 订单描述
+    'spbill_create_ip' =&gt; '',       // 调用 API 服务器的 IP
+    'product_id' =&gt; '',             // 订单商品 ID
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>所有配置项和前面支付网关相差不大，请点击这里查看：<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1">https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1</a></p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：string<br />
+说明：返回微信支付二维码 URL 地址，可直接将此 url 生成二维码，展示给用户进行扫码支付。</p>
+<h4 id="toc_21">微信刷卡支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'wechat' =&gt; [
+        'app_id' =&gt; '',             // 公众号 APPID
+        'mch_id' =&gt; '',             // 微信商户号
+        'key' =&gt; '',                // 微信支付签名秘钥
+        'cert_client' =&gt; './apiclient_cert.pem',        // 客户端证书路径，退款时需要用到
+        'cert_key' =&gt; './apiclient_key.pem',            // 客户端秘钥路径，退款时需要用到
+    ],
+];
+
+$config_biz = [
+    'out_trade_no' =&gt; '',           // 订单号
+    'total_fee' =&gt; '',              // 订单金额，**单位：分**
+    'body' =&gt; '',                   // 订单描述
+    'spbill_create_ip' =&gt; '',       // 支付人的 IP
+    'auth_code' =&gt; '',              // 授权码
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>该网关所有参数和其它支付网关基本相同，具体请参考这里：<a href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10&amp;index=1">https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10&amp;index=1</a></p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：array<br />
+说明：返回用于服务器返回的数组。返回参数请<a href="https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=9_10&amp;index=1">参考这里</a>。</p>
+<h4 id="toc_22">微信 APP 支付</h4>
+<p><strong>最小配置参数</strong></p>
+<pre><code>&lt;?php
+
+$config = [
+    'wechat' =&gt; [
+        'appid' =&gt; '',              // APPID
+        'mch_id' =&gt; '',             // 微信商户号
+        'notify_url' =&gt; '',
+        'key' =&gt; '',                // 微信支付签名秘钥
+        'cert_client' =&gt; './apiclient_cert.pem',        // 客户端证书路径，退款时需要用到
+        'cert_key' =&gt; './apiclient_key.pem',            // 客户端秘钥路径，退款时需要用到
+    ],
+];
+
+$config_biz = [
+    'out_trade_no' =&gt; '',           // 订单号
+    'total_fee' =&gt; '',              // 订单金额，**单位：分**
+    'body' =&gt; '',                   // 订单描述
+    'spbill_create_ip' =&gt; '',       // 支付人的 IP
+];
+</code></pre>
+<p><strong>所有配置参数</strong></p>
+<p>该网关所有参数和其它支付网关相同相同，具体请<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_1">参考这里</a>。</p>
+<p><strong>返回值</strong></p>
+<ul>
+<li>pay()</li>
+</ul>
+<p>类型：array<br />
+说明：返回用于 小程序调起支付API 的所需参数数组。后续调用不在本文档讨论范围内，具体请<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5">参考这里</a>。</p>
+<h3 id="toc_24">在 Laravel 中使用</h3>
+<h4 id="toc_25">安装配置</h4>
+<p>还是通过 Composer 安装：</p>
+<pre><code class="hljs javascript">composer <span class="hljs-built_in">require</span> yansongda/laravel-pay
+</code></pre>
+<p>注册 service provider：</p>
+<pre><code class="hljs kotlin">Yansongda\LaravelPay\PayServiceProvider::<span class="hljs-class"><span class="hljs-keyword">class</span>,
+</span></code></pre>
+<p>添加 alias：</p>
+<pre><code class="hljs groovy"><span class="hljs-string">'Pay'</span> =&gt; Yansongda\LaravelPay\Facades\<span class="hljs-string">Pay:</span>:<span class="hljs-class"><span class="hljs-keyword">class</span>,
+</span></code></pre>
+<p>将配置文件发布到 <code>config</code> 目录：</p>
+<pre><code class="hljs groovy">php artisan <span class="hljs-string">vendor:</span>publish --provider=<span class="hljs-string">"Yansongda\\LaravelPay\\PayServiceProvider"</span> --tag=config
+</code></pre>
+<p>随后，请在 <code>config</code> 目录下完善配置信息。</p>
+<h4 id="toc_25">使用方法</h4>
+<pre><code class="hljs php"><span class="hljs-keyword">use</span> <span class="hljs-title">Pay</span>;
+
+<span class="hljs-variable">$order</span> = [
+    <span class="hljs-string">'out_trade_no'</span> =&gt; <span class="hljs-string">'1'</span>,
+    <span class="hljs-string">'total_amount'</span> =&gt; <span class="hljs-string">'1'</span>,
+    <span class="hljs-string">'subject'</span> =&gt; <span class="hljs-string">'test subject'</span>,
+];
+
+<span class="hljs-keyword">return</span> Pay::driver(<span class="hljs-string">'alipay'</span>)-&gt;gateway(<span class="hljs-string">'web'</span>)-&gt;pay(</code></pre>
+<h3 id="toc_23">代码贡献</h3>
+<p>由于测试及使用环境的限制，本项目中只开发了「支付宝」和「微信支付」的相关支付网关。</p>
+<p>如果您有其它支付网关的需求，或者发现本项目中需要改进的代码，欢迎 Fork 并提交 PR！</p>
+<p>感谢大家支持！</p>
+<h3 id="toc_24">LICENSE</h3>
+<p>MIT</p>
+<blockquote><p>声明：本教程整理自 <a href="http://forum.laravelacademy.org/d/403-alipay-wechat-sdk" target="_blank" rel="noopener">Laravel 学堂</a>，原文作者 <code>yansongda</code>。</p></blockquote>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../project/packages" rel="category tag">
+                扩展包
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E9%85%8D%E7%BD%AE" rel="tag">配置</a>
+                                    ,
+                                            <a href="../tags/支付" rel="tag">支付</a>
+                                    ,
+                                            <a href="../tags/微信" rel="tag">微信</a>
+                                    ,
+                                            <a href="../tags/支付宝" rel="tag">支付宝</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%89%A9%E5%B1%95%E5%8C%85" rel="tag">扩展包</a>
+                                    ,
+                                            <a href="../tags/SDK" rel="tag">SDK</a>
+                                    ,
+                                            <a href="../tags/支付网关" rel="tag">支付网关</a>
+                                    ,
+                                            <a href="../tags/扫码支付" rel="tag">扫码支付</a>
+                                    ,
+                                            <a href="../tags/小程序" rel="tag">小程序</a>
+                                    ,
+                                            <a href="../tags/H5" rel="tag">H5</a>
+                                    ,
+                                            <a href="../tags/电脑支付" rel="tag">电脑支付</a>
+                                    ,
+                                            <a href="../tags/手机支付" rel="tag">手机支付</a>
+                                    ,
+                                            <a href="../tags/App支付" rel="tag">App支付</a>
+                                    ,
+                                            <a href="../tags/刷卡支付" rel="tag">刷卡支付</a>
+                                    ,
+                                            <a href="../tags/公众号" rel="tag">公众号</a>
+                                    ,
+                                            <a href="../tags/转账" rel="tag">转账</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;17 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="7804" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="7804" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;17 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="7326.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                通过 PHP OPcache 让你的 Laravel 应用运行速度飞起来
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="7924.html" rel="next">
+                使用 Laravel-Modules 扩展包通过模块化开发大型 Laravel 应用
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        59 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-12098" class="comment even thread-even depth-1">
+            <article id="div-comment-12098" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='1141905831' src='https://avatars0.githubusercontent.com/u/40010922?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/1141905831" target="_blank">1141905831</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>return $pay-&gt;driver('wechat')-&gt;gateway('scan')-&gt;pay($config_biz);      报错信息     Call to undefined method Yansongda\Pay\Pay::driver()    没有这个方法</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="12098"  aria-label='回复1141905831...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-08T11:47:42+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-08 11:47:42
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12098" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11997" class="comment even thread-even depth-1">
+            <article id="div-comment-11997" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='ricky he' src='https://avatars3.githubusercontent.com/u/3397070?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/285984303" target="_blank">ricky he</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>回调验签报这个 怎么解决?</p>
+<p>InvalidSignException in Alipay.php line 166:
+Alipay Sign Verify FAILED.</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="11997"  aria-label='回复ricky he...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-10-31T14:39:48+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-10-31 14:39:48
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11997" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11899" class="comment even thread-even depth-1">
+            <article id="div-comment-11899" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='MrTang' src='https://www.gravatar.com/avatar/377aefac5e2adf9e256c86f663616861?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/MrTang" target="_blank">MrTang</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>支付宝支付成功回调一直提示 Alipay Sign Verify FAILED，签名验证失败。 求哪个高手指点一下。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="11899"  aria-label='回复MrTang...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-10-22T12:16:50+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-10-22 12:16:50
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11899" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11330" class="comment even thread-even depth-1">
+            <article id="div-comment-11330" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='lbc2247117' src='https://www.gravatar.com/avatar/6405c20951c5e25183e42d14f116c70c?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/lbc2247117" target="_blank">lbc2247117</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>作者挺坑的，代码更新了，文档不更新。</p>
+<p><code>use Yansongda\LaravelPay\Facades\Pay;</code></p>
+<p><code>$order = [</code></p>
+<p><code>'out_trade_no' =&gt; '1',</code></p>
+<p><code>'total_amount' =&gt; '1',</code></p>
+<p><code>'subject' =&gt; 'test subject',</code></p>
+<p><code>];</code></p>
+<p><code>return Pay::alipay()-&gt;Wap($order);</code></p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="11330"  aria-label='回复lbc2247117...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-08T21:22:50+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-08 21:22:50
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11330" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">16</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10224" class="comment even thread-even depth-1">
+            <article id="div-comment-10224" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='xiyue' src='https://www.gravatar.com/avatar/2803c62872695970c41e21027488d1cd?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            xiyue
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我使用的1.2 版本的 沙箱账号可以用  但是 正式账号总是报错 说公钥或则私钥不正确 但是 公钥或则私钥使用 官方的就可以用啊
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="10224"  aria-label='回复xiyue...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-26T19:21:52+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-26 19:21:52
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10224" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10208" class="comment even thread-even depth-1">
+            <article id="div-comment-10208" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='zhang' src='https://www.gravatar.com/avatar/416a1ecc6fda97b686f64c47d2dd076c?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            zhang
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        网页支付都正常，就是调用$wxpay-&gt;app($order);报错
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="10208"  aria-label='回复zhang...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-23T17:39:20+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-23 17:39:20
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10208" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10207" class="comment even thread-even depth-1">
+            <article id="div-comment-10207" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='zhang' src='https://www.gravatar.com/avatar/416a1ecc6fda97b686f64c47d2dd076c?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            zhang
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        麻烦帮我看下原因， laravel中微信app支付报错：
+Get Wechat API Error:appid参数长度有误 {"exception":"[object] (Yansongda\\Pay\\Exceptions\\GatewayException(code: 20000): Get Wechat API Error:appid参数长度有误 at /var/www/html/super/vendor/yansongda/pay/src/Gateways/Wechat/Support.php:71)
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="10207"  aria-label='回复zhang...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-23T17:24:54+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-23 17:24:54
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10207" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">2</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10190" class="comment even thread-even depth-1">
+            <article id="div-comment-10190" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='川水' src='https://www.gravatar.com/avatar/1b264ab4c51f9fa144fc8980403a73c4?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            川水
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我也是遇到这个问题
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="10190"  aria-label='回复川水...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-21T11:54:21+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-21 11:54:21
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10190" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10102" class="comment even thread-even depth-1">
+            <article id="div-comment-10102" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='gaby' src='https://www.gravatar.com/avatar/03af703bf35c3e879ac106115425f2b3?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            gaby
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        支付成功之后怎么回调一直报错
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="10102"  aria-label='回复gaby...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-06T22:27:33+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-06 22:27:33
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10102" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-10090" class="comment even thread-even depth-1">
+            <article id="div-comment-10090" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='xiyue' src='https://www.gravatar.com/avatar/2803c62872695970c41e21027488d1cd?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            xiyue
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        Driver [wechat]'s Config is not defined.  这个是什么情况？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7804.html#respond' data-id="10090"  aria-label='回复xiyue...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-06-06T11:33:07+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-06-06 11:33:07
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="10090" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/7804.html/page/2#comments">2</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/7804.html/page/3#comments">3</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/7804.html/page/4#comments">4</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/7804.html/page/5#comments">5</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/7804.html/page/6#comments">6</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/post/7804.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="7804.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='7804' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="7804.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="7804.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        概述
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        特点
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        运行环境
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支持的支付网关
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付宝
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        微信
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支持的方法
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        快速上手
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        一个完整的例子
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        错误
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付网关配置说明与返回值
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付宝电脑网站支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付宝手机网站支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付宝 APP 支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付宝刷卡支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付宝扫码支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        支付宝帐户转账
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        微信公众号支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        微信小程序支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        微信 H5 支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        微信扫码支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_21">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        微信刷卡支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_22">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        微信 APP 支付
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_24">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        在 Laravel 中使用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_25">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        安装配置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="7804.html#toc_23">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        代码贡献
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="1475.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel 支付解决方案之如何使用支付宝进行支付
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="1501.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel 支付解决方案之如何使用微信支付进行支付
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="4868.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        极限验证，一句话调用geetest，减少开发时间
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7067.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 官方包 —— Laravel Cashier
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9367.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Botman 轻松实现微信公众号聊天机器人
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

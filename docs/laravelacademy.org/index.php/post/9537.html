@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.7 文档 ] 底层原理 —— 契约（Contracts） - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9537.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9537.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9537.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9537.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9537.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_7">
+                Laravel 5.7
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.7 文档 ] 底层原理 —— 契约（Contracts）</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.7 文档 ] 底层原理 —— 契约（Contracts）</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9537.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-08-29T21:48:58+08:00">2018-08-29</time>
+                    <time class="updated" datetime="2018-08-29T21:48:58+08:00">2018-08-29 21:48:58</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                1313 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0">简介</h3>
+<p>Laravel 中的契约是指框架提供的一系列定义核心服务的接口。 例如，<code>Illuminate\Contracts\Queue\Queue</code> 契约定义了队列任务需要实现的方法，<code>Illuminate\Contracts\Mail\Mailer</code> 契约定义了发送邮件所需要实现的方法。</p>
+<p>每一个契约都有框架提供的相应实现。例如，Laravel 为队列提供了多个驱动的实现，邮件则由 <a href="http://swiftmailer.org/">SwiftMailer</a> 驱动实现 。</p>
+<p>所有 Laravel 契约都有其<a href="https://github.com/illuminate/contracts">对应的GitHub库</a>，这为所有有效的契约提供了快速入门指南，同时也可以作为独立、解耦的包被包开发者使用。</p>
+<h4 id="toc_1">契约 Vs. 门面</h4>
+<p>Laravel <a href="../../post/9536.html">门面</a>为 Laravel 服务的使用提供了便捷方式 —— 不再需要从服务容器中类型提示和契约解析即可直接通过静态门面调用。</p>
+<p>不同于门面不需要再构造器中进行类型提示，契约允许你在类中定义显式的依赖。有些开发者喜欢门面带来的便捷，也有些开发者倾向于使用契约，他们喜欢定义明确的依赖。</p>
+<blockquote>
+<p>注：大多数应用中，不管你使用门面还是契约，合适就好。不过，如果你是在构建一个扩展包，那么就应该使用契约，因为更容易测试。</p>
+</blockquote>
+<h3 id="toc_2">何时使用契约</h3>
+<p>正如上面所讨论的，大多数情况下使用契约还是门面取决于个人或团队的喜好，契约和门面都可以用于创建强大的、测试友好的 Laravel 应用。只要你保持类的职责单一，你会发现使用契约和门面并没有什么实质性的差别。</p>
+<p>但是，对契约你可能还是有些疑问。例如，为什么要全部使用接口？使用接口是不是更复杂？下面让我们从两个方面来扒一扒为什么使用接口：松耦合和简单。</p>
+<h4 id="toc_3">松耦合</h4>
+<p>首先，让我们看看一些缓存实现的紧耦合代码：</p>
+<pre><code>&lt;?php
+
+namespace App\Orders;
+
+class Repository
+{
+    /**
+     * 缓存
+     */
+    protected $cache;
+
+    /**
+     * 创建一个新的Repository实例
+     *
+     * @param  \SomePackage\Cache\Memcached  $cache
+     * @return void
+     */
+    public function __construct(\SomePackage\Cache\Memcached $cache)
+    {
+        $this-&gt;cache = $cache;
+    }
+
+    /**
+     * 通过ID获取订单
+     *
+     * @param  int  $id
+     * @return Order
+     */
+    public function find($id)
+    {
+        if ($this-&gt;cache-&gt;has($id))    {
+            //
+        }
+    }
+}</code></pre>
+<p>在这个类中，代码和给定缓存实现紧密耦合，由于我们基于一个来自包的具体的缓存类，如果包的API变了，那么相应的，我们的代码必须做修改。</p>
+<p>类似的，如果我们想要替换底层的缓存技术（Memcached）为别的技术实现（Redis），我们将再一次不得不修改我们的代码库。我们的代码库应该并不知道谁提供的数据或者数据是怎么提供的。</p>
+<p>我们可以基于一种简单的、与提供者无关的接口来优化我们的代码，从而替代上述那种实现：</p>
+<pre><code>&lt;?php
+
+namespace App\Orders;
+
+use Illuminate\Contracts\Cache\Repository as Cache;
+
+class Repository
+{
+    /**
+     * 创建一个新的Repository实例
+     *
+     * @param  Cache  $cache
+     * @return void
+     */
+    public function __construct(Cache $cache)
+    {
+        $this-&gt;cache = $cache;
+    }
+}</code></pre>
+<p>现在代码就不与任何特定提供者耦合，甚至与 Laravel 都是无关的。由于契约包不包含任何实现和依赖，你可以轻松的为给定契约编写可选实现代码，你可以随意替换缓存实现而不用去修改任何缓存消费代码。</p>
+<h4 id="toc_4">简单</h4>
+<p>当所有 Laravel 服务都统一在简单接口中定义，很容易判断给定服务提供的功能。契约可以充当框架特性的简明文档。</p>
+<p>此外，基于简单接口，代码也更容易理解和维护。在一个庞大而复杂的类中，与其追踪哪些方法是有效的，不如转向简单、干净的接口。</p>
+<h3 id="toc_5">如何使用契约</h3>
+<p>那么，如何实现契约呢？这很简单。</p>
+<p>Laravel中很多类都是通过<a href="../../post/9534.html">服务容器</a>进行解析，包括控制器，以及监听器、中间件、队列任务，甚至路由闭包。所以，要实现一个契约，需要在解析类的构造函数中类型提示这个契约接口。</p>
+<p>例如，看看下面这个事件监听器：</p>
+<pre><code>&lt;?php
+
+namespace App\Listeners;
+
+use App\User;
+use App\Events\OrderWasPlaced;
+use Illuminate\Contracts\Redis\Database;
+
+class CacheOrderInformation
+{
+    /**
+     * The Redis database implementation.
+     */
+    protected $redis;
+
+    /**
+     * Create a new event handler instance.
+     *
+     * @param  Database  $redis
+     * @return void
+     */
+    public function __construct(Database $redis)
+    {
+        $this-&gt;redis = $redis;
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  OrderWasPlaced  $event
+     * @return void
+     */
+    public function handle(OrderWasPlaced $event)
+    {
+        //
+    }
+}</code></pre>
+<p>事件监听器被解析的时候，服务容器会读取构造函数中的类型提示，并注入适当的值。要学习更多关于服务容器的注册细节，参考<a href="../../post/9534.html">其文档</a>。</p>
+<h3 id="toc_6">契约列表</h3>
+<p>下面是 Laravel 契约列表，以及其对应的“门面”：</p>
+<table>
+<thead>
+<tr>
+<th>契约</th>
+<th>对应门面</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/Access/Authorizable.php">Illuminate\Contracts\Auth\Access\Authorizable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/Access/Gate.php">Illuminate\Contracts\Auth\Access\Gate</a></td>
+<td><code>Gate</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/Authenticatable.php">Illuminate\Contracts\Auth\Authenticatable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/CanResetPassword.php">Illuminate\Contracts\Auth\CanResetPassword</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/Factory.php">Illuminate\Contracts\Auth\Factory</a></td>
+<td><code>Auth</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/Guard.php">Illuminate\Contracts\Auth\Guard</a></td>
+<td><code>Auth::guard()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/PasswordBroker.php">Illuminate\Contracts\Auth\PasswordBroker</a></td>
+<td><code>Password::broker()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/PasswordBrokerFactory.php">Illuminate\Contracts\Auth\PasswordBrokerFactory</a></td>
+<td><code>Password</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/StatefulGuard.php">Illuminate\Contracts\Auth\StatefulGuard</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/SupportsBasicAuth.php">Illuminate\Contracts\Auth\SupportsBasicAuth</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Auth/UserProvider.php">Illuminate\Contracts\Auth\UserProvider</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Bus/Dispatcher.php">Illuminate\Contracts\Bus\Dispatcher</a></td>
+<td><code>Bus</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Bus/QueueingDispatcher.php">Illuminate\Contracts\Bus\QueueingDispatcher</a></td>
+<td><code>Bus::dispatchToQueue()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Broadcasting/Factory.php">Illuminate\Contracts\Broadcasting\Factory</a></td>
+<td><code>Broadcast</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Broadcasting/Broadcaster.php">Illuminate\Contracts\Broadcasting\Broadcaster</a></td>
+<td><code>Broadcast::connection()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Broadcasting/ShouldBroadcast.php">Illuminate\Contracts\Broadcasting\ShouldBroadcast</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Broadcasting/ShouldBroadcastNow.php">Illuminate\Contracts\Broadcasting\ShouldBroadcastNow</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Cache/Factory.php">Illuminate\Contracts\Cache\Factory</a></td>
+<td><code>Cache</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Cache/Lock.php">Illuminate\Contracts\Cache\Lock</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Cache/LockProvider.php">Illuminate\Contracts\Cache\LockProvider</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Cache/Repository.php">Illuminate\Contracts\Cache\Repository</a></td>
+<td><code>Cache::driver()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Cache/Store.php">Illuminate\Contracts\Cache\Store</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Config/Repository.php">Illuminate\Contracts\Config\Repository</a></td>
+<td><code>Config</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Console/Application.php">Illuminate\Contracts\Console\Application</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Console/Kernel.php">Illuminate\Contracts\Console\Kernel</a></td>
+<td><code>Artisan</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Container/Container.php">Illuminate\Contracts\Container\Container</a></td>
+<td><code>App</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Cookie/Factory.php">Illuminate\Contracts\Cookie\Factory</a></td>
+<td><code>Cookie</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Cookie/QueueingFactory.php">Illuminate\Contracts\Cookie\QueueingFactory</a></td>
+<td><code>Cookie::queue()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Database/ModelIdentifier.php">Illuminate\Contracts\Database\ModelIdentifier</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Debug/ExceptionHandler.php">Illuminate\Contracts\Debug\ExceptionHandler</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Encryption/Encrypter.php">Illuminate\Contracts\Encryption\Encrypter</a></td>
+<td><code>Crypt</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Events/Dispatcher.php">Illuminate\Contracts\Events\Dispatcher</a></td>
+<td><code>Event</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Filesystem/Cloud.php">Illuminate\Contracts\Filesystem\Cloud</a></td>
+<td><code>Storage::cloud()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Filesystem/Factory.php">Illuminate\Contracts\Filesystem\Factory</a></td>
+<td><code>Storage</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Filesystem/Filesystem.php">Illuminate\Contracts\Filesystem\Filesystem</a></td>
+<td><code>Storage::disk()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Foundation/Application.php">Illuminate\Contracts\Foundation\Application</a></td>
+<td><code>App</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Hashing/Hasher.php">Illuminate\Contracts\Hashing\Hasher</a></td>
+<td><code>Hash</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Http/Kernel.php">Illuminate\Contracts\Http\Kernel</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Mail/MailQueue.php">Illuminate\Contracts\Mail\MailQueue</a></td>
+<td><code>Mail::queue()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Mail/Mailable.php">Illuminate\Contracts\Mail\Mailable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Mail/Mailer.php">Illuminate\Contracts\Mail\Mailer</a></td>
+<td><code>Mail</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Notifications/Dispatcher.php">Illuminate\Contracts\Notifications\Dispatcher</a></td>
+<td><code>Notification</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Notifications/Factory.php">Illuminate\Contracts\Notifications\Factory</a></td>
+<td><code>Notification</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Pagination/LengthAwarePaginator.php">Illuminate\Contracts\Pagination\LengthAwarePaginator</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Pagination/Paginator.php">Illuminate\Contracts\Pagination\Paginator</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Pipeline/Hub.php">Illuminate\Contracts\Pipeline\Hub</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Pipeline/Pipeline.php">Illuminate\Contracts\Pipeline\Pipeline</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/EntityResolver.php">Illuminate\Contracts\Queue\EntityResolver</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/Factory.php">Illuminate\Contracts\Queue\Factory</a></td>
+<td><code>Queue</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/Job.php">Illuminate\Contracts\Queue\Job</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/Monitor.php">Illuminate\Contracts\Queue\Monitor</a></td>
+<td><code>Queue</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/Queue.php">Illuminate\Contracts\Queue\Queue</a></td>
+<td><code>Queue::connection()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/QueueableCollection.php">Illuminate\Contracts\Queue\QueueableCollection</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/QueueableEntity.php">Illuminate\Contracts\Queue\QueueableEntity</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Queue/ShouldQueue.php">Illuminate\Contracts\Queue\ShouldQueue</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Redis/Factory.php">Illuminate\Contracts\Redis\Factory</a></td>
+<td><code>Redis</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Routing/BindingRegistrar.php">Illuminate\Contracts\Routing\BindingRegistrar</a></td>
+<td><code>Route</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Routing/Registrar.php">Illuminate\Contracts\Routing\Registrar</a></td>
+<td><code>Route</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Routing/ResponseFactory.php">Illuminate\Contracts\Routing\ResponseFactory</a></td>
+<td><code>Response</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Routing/UrlGenerator.php">Illuminate\Contracts\Routing\UrlGenerator</a></td>
+<td><code>URL</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Routing/UrlRoutable.php">Illuminate\Contracts\Routing\UrlRoutable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Session/Session.php">Illuminate\Contracts\Session\Session</a></td>
+<td><code>Session::driver()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Support/Arrayable.php">Illuminate\Contracts\Support\Arrayable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Support/Htmlable.php">Illuminate\Contracts\Support\Htmlable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Support/Jsonable.php">Illuminate\Contracts\Support\Jsonable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Support/MessageBag.php">Illuminate\Contracts\Support\MessageBag</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Support/MessageProvider.php">Illuminate\Contracts\Support\MessageProvider</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Support/Renderable.php">Illuminate\Contracts\Support\Renderable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Support/Responsable.php">Illuminate\Contracts\Support\Responsable</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Translation/Loader.php">Illuminate\Contracts\Translation\Loader</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Translation/Translator.php">Illuminate\Contracts\Translation\Translator</a></td>
+<td><code>Lang</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Validation/Factory.php">Illuminate\Contracts\Validation\Factory</a></td>
+<td><code>Validator</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Validation/ImplicitRule.php">Illuminate\Contracts\Validation\ImplicitRule</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Validation/Rule.php">Illuminate\Contracts\Validation\Rule</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Validation/ValidatesWhenResolved.php">Illuminate\Contracts\Validation\ValidatesWhenResolved</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/Validation/Validator.php">Illuminate\Contracts\Validation\Validator</a></td>
+<td><code>Validator::make()</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/View/Engine.php">Illuminate\Contracts\View\Engine</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/View/Factory.php">Illuminate\Contracts\View\Factory</a></td>
+<td><code>View</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/illuminate/contracts/blob/5.7/View/View.php">Illuminate\Contracts\View\View</a></td>
+<td><code>View::make()</code></td>
+</tr>
+</tbody>
+</table>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_7" rel="category tag">
+                Laravel 5.7
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/5.7" rel="tag">5.7</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="../tags/契约" rel="tag">契约</a>
+                                    ,
+                                            <a href="../tags/接口" rel="tag">接口</a>
+                                    ,
+                                            <a href="../tags/松耦合" rel="tag">松耦合</a>
+                                    ,
+                                            <a href="../tags/门面" rel="tag">门面</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%9C%8D%E5%8A%A1%E5%AE%B9%E5%99%A8" rel="tag">服务容器</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9537" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9537" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9536.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.7 文档 ] 底层原理 —— 门面（Facades）
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9538.html" rel="next">
+                [ Laravel 5.7 文档 ] 基础组件 —— 路由
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9537.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9537' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9537.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9537.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简介
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9537.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        契约 Vs. 门面
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9537.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        何时使用契约
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9537.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        松耦合
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9537.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        简单
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9537.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        如何使用契约
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9537.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        契约列表
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="5826.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] 核心概念 —— 契约（Contracts）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="6728.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.4 文档 ] 核心概念 —— 契约（Contracts）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8621.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 底层原理 —— 契约（Contracts）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8710.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 底层原理 —— 契约（Contracts）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9536.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.7 文档 ] 底层原理 —— 门面（Facades）
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

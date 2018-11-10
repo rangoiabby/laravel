@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            Laravel API 系列教程（一）: 基于 Laravel 5.5 构建 &amp; 测试 RESTful API - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9153.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9153.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9153.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9153.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9153.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../basic">
+                Laravel教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">Laravel API 系列教程（一）: 基于 Laravel 5.5 构建 &amp; 测试 RESTful API</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">Laravel API 系列教程（一）: 基于 Laravel 5.5 构建 &amp; 测试 RESTful API</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9153.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-03-28T11:58:48+08:00">2018-03-28</time>
+                    <time class="updated" datetime="2018-04-04T18:36:10+08:00">2018-04-04 18:36:10</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                66206 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>随着移动开发和 JavaScript 框架的日益流行，使用 RESTful API 在数据层和客户端之间构建交互接口逐渐成为最佳选择。在本系列教程中，学院君将会带领大家基于 Laravel 5.5 来构建并测试带认证功能的 RESTful API。</p>
+<p><img class="aligncenter" src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15221661011370.jpg" alt="" /></p>
+<h3 id="toc_0">RESTful API</h3>
+<p>开始之前，我们先要了解什么是 RESTful API。REST 是 <em>REpresentational State Transfer</em> 的缩写，表示一种应用之间网络通信的架构风格，依赖于无状态的协议（通常是HTTP）进行交互。</p>
+<h4 id="toc_1">通过 HTTP 动词表示操作</h4>
+<p>在 RESTful API 中，我们使用 HTTP 动词表示操作，而端点是操作的资源，HTTP 动词的语义如下：</p>
+<ul>
+<li><code>GET</code>：获取资源</li>
+<li><code>POST</code>：创建资源</li>
+<li><code>PUT</code>：更新资源</li>
+<li><code>DELETE</code>：删除资源</li>
+</ul>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15221669201582.jpg" alt="" />￼</p>
+<h4 id="toc_2">更新操作：PUT vs. POST</h4>
+<p>关于 RESTful API 有很多争议，比如更新资源使用 <code>POST</code>、<code>PATCH</code> 还是 <code>PUT</code> 哪一个更好，或者创建资源是否最好用 <code>PUT</code> 等。在本教程中，我们使用 <code>PUT</code> 进行更新操作，因为基于 HTTP RFC 标准，<code>PUT</code> 的含义是在指定位置上创建/更新资源；使用 <code>PUT</code> 的另一个原因是幂等，这意味着不管你发送一次、两次还是上千次请求，操作结果一致。</p>
+<h4 id="toc_3">资源</h4>
+<p>资源指的是操作的对象，在我们的例子中就是文章（Articles）和用户（Users），它们各自的端点是：</p>
+<ul>
+<li><code>/articles</code></li>
+<li><code>/users</code></li>
+</ul>
+<p>在我们的教程中，资源和数据模型一一对应，但这并不是强制性的要求，一个资源可以表示多个数据模型（或者不代表数据库中的任何模型），你可以根据自己应用的需求来决定如何构建资源和模型的映射关系。</p>
+<h4 id="toc_4">关于一致性的注意项</h4>
+<p>使用 REST 的最大好处是可以更容易消费和开发 API，一些端点非常直截了当，这样相较于类似 <code>GET /get_article?id_article=12</code> 这样的端点 RESTful API 更容易使用和维护。</p>
+<p>不过，在某些案例中映射到 <code>Create/Retrieve/Update/Delete</code> 可能会很困难，需要牢记的是 URL 中不要包含任何动词而且资源并不一定非得是数据表的某一行数据。另一个需要记住的是不必为每个资源实现所有操作。</p>
+<h3 id="toc_5">设置一个新的 Laravel 项目</h3>
+<h4 id="toc_6">创建新应用</h4>
+<p>我们通过 Composer 来安装这个新项目：</p>
+<pre><code>composer create-project --prefer-dist laravel/laravel apidemo 5.5.*
+</code></pre>
+<p>安装完成后，如果使用 <a href="7678.html" target="_blank" rel="noopener">Valet</a> 作为开发环境的话就可以直接在浏览器中通过 <code>http://apidemo.test</code> 访问了，如果使用 <a href="7691.html" target="_blank" rel="noopener">Laradock</a> 或 <a href="7658.html" target="_blank" rel="noopener">Homestead</a> 作为开发环境的话，还需要配置域名绑定：</p>
+<pre><code>127.0.0.1 apidemo.test
+</code></pre>
+<p>然后还要配置 Nginx 的配置文件，以 Laradock 为例，就是在 <code>laradock/nginx/sites</code> 目录下新建一个 <code>apidemo.conf</code> 配置文件，编辑其内容如下：</p>
+<pre><code>server {
+
+    listen 80;
+    listen [::]:80;
+
+    server_name apidemo.test;
+    root /var/www/apidemo/public;
+    index index.php index.html index.htm;
+
+    location / {
+         try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        try_files $uri /index.php =404;
+        fastcgi_pass php-upstream;
+        fastcgi_index index.php;
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        #fixes timeouts
+        fastcgi_read_timeout 600;
+        include fastcgi_params;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/letsencrypt/;
+        log_not_found off;
+    }
+
+    error_log /var/log/nginx/apidemo_error.log;
+    access_log /var/log/nginx/apidemo_access.log;
+}
+</code></pre>
+<p>之后重新启动 Nginx：</p>
+<pre><code>docker-compose up --build -d nginx
+</code></pre>
+<p>就可以在浏览器中通过 <code>http://apidemo.test</code> 访问应用了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15221688727703.jpg" alt="" />￼</p>
+<h4 id="toc_7">迁移和模型</h4>
+<p>在编写第一个<a href="8179.html" target="_blank" rel="noopener">迁移</a>之前，需要将 <code>.env</code> 文件中的环境变量调整为开发环境数据库配置值（以 Laradock 为例）：</p>
+<pre><code>DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=apidemo
+DB_USERNAME=root
+DB_PASSWORD=root
+</code></pre>
+<p>接下来就可以开始创建我们的第一个 <code>Article</code> 模型及其对应迁移文件了，我们在项目根目录运行如下 Artisan 命令一步到位：</p>
+<pre><code>php artisan make:model Article -m
+</code></pre>
+<p><code>-m</code> 是 <code>--migration</code> 的缩写，告知 Artisan 在创建模型同时创建与之对应的迁移文件（我使用的是 Laradock 作为开发环境）：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15221694514235.jpg" alt="" />￼</p>
+<p>当然，还需要编辑默认生成的迁移文件：</p>
+<pre><code>use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateArticlesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('articles', function (Blueprint $table) {
+            $table-&gt;increments('id');
+            $table-&gt;string('title');
+            $table-&gt;text('body');
+            $table-&gt;timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('articles');
+    }
+}
+</code></pre>
+<p>然后我们运行如下命令创建对应数据表：</p>
+<pre><code>php artisan migrate
+</code></pre>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15221697171109.jpg" alt="" />￼</p>
+<p>现在我们回到 <code>Article</code> 模型类添加如下属性到 <code>$fillable</code> 字段以便可以在 <code>Article::create</code> 和 <code>Article::update</code> 方法中可以使用它们：</p>
+<pre><code>class Article extends Model
+{
+    protected $fillable = ['title', 'body'];
+}
+</code></pre>
+<h4 id="toc_8">数据库填充</h4>
+<p>Laravel 通过 <a href="https://github.com/fzaninotto/Faker" target="_blank" rel="noopener">Faker</a> 库可以快速为我们生成格式正确的测试数据:</p>
+<pre><code>php artisan make:seeder ArticlesTableSeeder
+</code></pre>
+<p>生成的<a href="8187.html" target="_blank" rel="noopener">填充器</a>类位于 <code>/database/seeds</code> 目录下，我们编辑填充器类如下：</p>
+<pre><code>use Illuminate\Database\Seeder;
+use App\Article;
+
+class ArticlesTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // Let's truncate our existing records to start from scratch.
+        Article::truncate();
+
+        $faker = \Faker\Factory::create();
+
+        // And now, let's create a few articles in our database:
+        for ($i = 0; $i &lt; 50; $i++) {
+            Article::create([
+                'title' =&gt; $faker-&gt;sentence,
+                'body' =&gt; $faker-&gt;paragraph,
+            ]);
+        }
+    }
+}
+</code></pre>
+<p>然后运行填充命令：</p>
+<pre><code>php artisan db:seed --class=ArticlesTableSeeder
+</code></pre>
+<p>重复上述过程创建一个用户填充器：</p>
+<pre><code>use Illuminate\Database\Seeder;
+use App\User;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // Let's clear the users table first
+        User::truncate();
+
+        $faker = \Faker\Factory::create();
+
+        // Let's make sure everyone has the same password and
+        // let's hash it before the loop, or else our seeder
+        // will be too slow.
+        $password = Hash::make('toptal');
+
+        User::create([
+            'name' =&gt; 'Administrator',
+            'email' =&gt; 'admin@test.com',
+            'password' =&gt; $password,
+        ]);
+
+        // And now let's generate a few dozen users for our app:
+        for ($i = 0; $i &lt; 10; $i++) {
+            User::create([
+                'name' =&gt; $faker-&gt;name,
+                'email' =&gt; $faker-&gt;email,
+                'password' =&gt; $password,
+            ]);
+        }
+    }
+}
+</code></pre>
+<p>编辑 <code>DatabaseSeeder</code> 类：</p>
+<pre><code>use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this-&gt;call(UsersTableSeeder::class);
+        $this-&gt;call(ArticlesTableSeeder::class);
+    }
+}
+</code></pre>
+<p>然后运行 <code>php artisan db:seed</code> 就可以执行所有填充器填充数据。</p>
+<h3 id="toc_9">路由和控制器</h3>
+<h4 id="toc_10">注册路由</h4>
+<p>有了数据之后，接下来我们来为应用创建基本接口：创建、获取列表、获取单条记录、更新以及删除。在 <code>routes/api.php</code> 中，注册<a href="7707.html" target="_blank" rel="noopener">路由</a>如下：</p>
+<pre><code>use Illuminate\Http\Request;
+use App\Article;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+Route::middleware('auth:api')-&gt;get('/user', function (Request $request) {
+    return $request-&gt;user();
+});
+
+Route::get('articles', function() {
+    // If the Content-Type and Accept headers are set to 'application/json',
+    // this will return a JSON structure. This will be cleaned up later.
+    return Article::all();
+});
+
+Route::get('articles/{id}', function($id) {
+    return Article::find($id);
+});
+
+Route::post('articles', function(Request $request) {
+    return Article::create($request-&gt;all);
+});
+
+Route::put('articles/{id}', function(Request $request, $id) {
+    $article = Article::findOrFail($id);
+    $article-&gt;update($request-&gt;all());
+
+    return $article;
+});
+
+Route::delete('articles/{id}', function($id) {
+    Article::find($id)-&gt;delete();
+
+    return 204;
+});
+</code></pre>
+<p>在 <code>api.php</code> 中定义的路由在访问时需要加上 <code>/api/</code> 前缀，并且 API 限流中间件会自动应用到所有路由上：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15221709585360.jpg" alt="" />￼</p>
+<h4 id="toc_11">创建控制器</h4>
+<p>定义好路由之后，接下来我们来创建<a href="7836.html" target="_blank" rel="noopener">控制器</a>并将业务逻辑迁移过去：</p>
+<pre><code>php artisan make:controller ArticleController
+</code></pre>
+<p>然后编辑控制器如下：</p>
+<pre><code>namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Article;
+
+class ArticleController extends Controller
+{
+    public function index()
+    {
+        return Article::all();
+    }
+
+    public function show($id)
+    {
+        return Article::find($id);
+    }
+
+    public function store(Request $request)
+    {
+        return Article::create($request-&gt;all());
+    }
+
+    public function update(Request $request, $id)
+    {
+        $article = Article::findOrFail($id);
+        $article-&gt;update($request-&gt;all());
+
+        return $article;
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $article = Article::findOrFail($id);
+        $article-&gt;delete();
+
+        return 204;
+    }
+}
+</code></pre>
+<p>调整 <code>routes/api.php</code> 文件中的 <code>articles</code> 相关路由：</p>
+<pre><code>Route::get('articles', 'ArticleController@index');
+Route::get('articles/{id}', 'ArticleController@show');
+Route::post('articles', 'ArticleController@store');
+Route::put('articles/{id}', 'ArticleController@update');
+Route::delete('articles/{id}', 'ArticleController@delete');
+</code></pre>
+<p>还可以通过隐式路由模型绑定来改写路由定义：</p>
+<pre><code>Route::get('articles', 'ArticleController@index');
+Route::get('articles/{article}', 'ArticleController@show');
+Route::post('articles', 'ArticleController@store');
+Route::put('articles/{article}', 'ArticleController@update');
+Route::delete('articles/{article}', 'ArticleController@delete');
+</code></pre>
+<p>相应的，需要调整控制器代码：</p>
+<pre><code>class ArticleController extends Controller
+{
+    public function index()
+    {
+        return Article::all();
+    }
+
+    public function show(Article $article)
+    {
+        return $article;
+    }
+
+    public function store(Request $request)
+    {
+        $article = Article::create($request-&gt;all());
+
+        return response()-&gt;json($article, 201);
+    }
+
+    public function update(Request $request, Article $article)
+    {
+        $article-&gt;update($request-&gt;all());
+
+        return response()-&gt;json($article, 200);
+    }
+
+    public function delete(Article $article)
+    {
+        $article-&gt;delete();
+
+        return response()-&gt;json(null, 204);
+    }
+}
+</code></pre>
+<p>访问指定路由与之前返回结果一样：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15221713907403.jpg" alt="" />￼</p>
+<h4 id="toc_10">关于 HTTP 状态码的注意项</h4>
+<p>我们还添加了 <code>response()-&gt;json()</code> 调用到端点，这可以让我们在显示返回 JSON 数据的同时发送可以被客户端解析的 HTTP 状态码，最常用的状态码如下：</p>
+<ul>
+<li><code>200</code>：OK，标准的响应成功状态码</li>
+<li><code>201</code>：Object created，用于 <code>store</code> 操作</li>
+<li><code>204</code>：No content，操作执行成功，但是没有返回任何内容</li>
+<li><code>206</code>：Partial content，返回部分资源时使用</li>
+<li><code>400</code>：Bad request，请求验证失败</li>
+<li><code>401</code>：Unauthorized，用户需要认证</li>
+<li><code>403</code>：Forbidden，用户认证通过但是没有权限执行该操作</li>
+<li><code>404</code>：Not found，请求资源不存在</li>
+<li><code>500</code>：Internal server error，通常我们并不会显示返回这个状态码，除非程序异常中断</li>
+<li><code>503</code>：Service unavailable，一般也不会显示返回，通常用于排查问题用</li>
+</ul>
+<h4 id="toc_11">发送 404 响应</h4>
+<p>如果你试图获取不存在的资源，会返回 <code>404</code> 页面：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15222026573794.jpg" alt="" />￼</p>
+<p>如果想要将其改造成返回 JSON 响应，可以编辑<a href="8007.html#toc_6" target="_blank" rel="noopener">异常处理器</a> <code>app/Exceptions/Handler.php</code> 的 <code>render</code> 方法：</p>
+<pre><code>public function render($request, Exception $exception)
+{
+   if ($exception instanceof ModelNotFoundException) {
+       return response()-&gt;json([
+           'error' =&gt; 'Resource not found.'
+       ],404);
+   }
+   return parent::render($request, $exception);
+}
+</code></pre>
+<p>再次访问不存在的资源，返回结果如下：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15222029513836.jpg" alt="" />￼</p>
+<h3 id="toc_12">认证</h3>
+<h4 id="toc_13">新增 api_token 字段</h4>
+<p>在 Laravel 中实现 API 认证有多种方式（例如 <a href="8298.html" target="_blank" rel="noopener">Passport</a>），但是本教程会使用一个非常简化的方式。</p>
+<p>开始之前，首先添加 <code>api_token</code> 到 <code>users</code> 表：</p>
+<pre><code> php artisan make:migration --table=users adds_api_token_to_users_table
+</code></pre>
+<p>然后编写这个迁移文件：</p>
+<pre><code>class AddsApiTokenToUsersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table-&gt;string('api_token', 60)-&gt;unique()-&gt;nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table-&gt;dropColumn(['api_token']);
+        });
+    }
+}
+</code></pre>
+<p>最后执行迁移命令作用于数据表：</p>
+<pre><code>php artisan migrate
+</code></pre>
+<h4 id="toc_14">创建注册接口</h4>
+<p>我们使用 <code>RegisterController</code> 来根据注册请求返回正确的响应。尽管 Laravel 开箱提供了认证功能，但是我们还是需要对其进行调整以便返回我们想要的响应数据。该控制器使用 <code>RegistersUsers</code> 来实现注册，实现逻辑如下：</p>
+<pre><code>public function register(Request $request)
+{
+    // Here the request is validated. The validator method is located
+    // inside the RegisterController, and makes sure the name, email
+    // password and password_confirmation fields are required.
+    $this-&gt;validator($request-&gt;all())-&gt;validate();
+
+    // A Registered event is created and will trigger any relevant
+    // observers, such as sending a confirmation email or any 
+    // code that needs to be run as soon as the user is created.
+    event(new Registered($user = $this-&gt;create($request-&gt;all())));
+
+    // After the user is created, he's logged in.
+    $this-&gt;guard()-&gt;login($user);
+
+    // And finally this is the hook that we want. If there is no
+    // registered() method or it returns null, redirect him to
+    // some other URL. In our case, we just need to implement
+    // that method to return the correct response.
+    return $this-&gt;registered($request, $user)
+                    ?: redirect($this-&gt;redirectPath());
+}
+</code></pre>
+<p>我们只需要在 <code>RegisterController</code> 中实现 <code>registered</code> 方法即可。该方法接收 <code>$request</code> 和 <code>$user</code> 参数：</p>
+<pre><code>protected function registered(Request $request, $user)
+{
+    $user-&gt;generateToken();
+
+    return response()-&gt;json(['data' =&gt; $user-&gt;toArray()], 201);
+}
+</code></pre>
+<p>在 <code>routes/api.php</code> 中注册路由如下：</p>
+<pre><code>Route::post('register', 'Auth\RegisterController@register');
+</code></pre>
+<p>在上面的示例代码中，我们调用了 <code>User</code> 模型上的生成令牌方法，该方法现在不存在，需要手动添加：</p>
+<pre><code>public function generateToken()
+{
+   $this-&gt;api_token = str_random(60);
+   $this-&gt;save();
+
+   return $this-&gt;api_token;
+}
+</code></pre>
+<p>至此，注册接口编写完成，用户现在可以通过注册接口进行注册了，感谢 Laravel 开箱提供的认证字段验证功能，如果你需要调整验证规则的话可以到 <code>RegisterController</code> 中查看 <code>validator</code> 方法。</p>
+<p>下面我们来简单测试下注册接口：</p>
+<pre><code>curl -X POST http://apidemo.test/api/register \
+    -H "Accept: application/json" \
+    -H "Content-Type: application/json" \
+    -d '{"name": "学院君", "email": "admin@laravelacademy.org", "password": "test123", "password_confirmation": "test123"}'
+</code></pre>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15222041478320.jpg" alt="" />￼</p>
+<h4 id="toc_15">创建登录接口</h4>
+<p>和注册接口一样，可以编辑 <code>LoginController</code> 控制器来支持 API 认证。为此，我们需要在 <code>LoginController</code> 覆盖 <code>AuthenticatesUsers</code> trait 提供的 <code>login</code> 方法：</p>
+<pre><code>public function login(Request $request)
+{
+    $this-&gt;validateLogin($request);
+
+    if ($this-&gt;attemptLogin($request)) {
+        $user = $this-&gt;guard()-&gt;user();
+        $user-&gt;generateToken();
+
+        return response()-&gt;json([
+            'data' =&gt; $user-&gt;toArray(),
+        ]);
+    }
+
+    return $this-&gt;sendFailedLoginResponse($request);
+}
+</code></pre>
+<p>然后在 <code>routes/api.php</code> 中注册登录路由：</p>
+<pre><code>Route::post('login', 'Auth\LoginController@login');
+</code></pre>
+<p>现在，基于我们上面注册的新用户，我们来测试下登录接口：</p>
+<pre><code>curl -X POST http://apidemo.test/api/login \
+    -H "Accept: application/json" \
+    -H "Content-type: application/json" \
+    -d "{\"email\": \"admin@laravelacademy.org\", \"password\": \"test123\" }"
+</code></pre>
+<p>登录成功返回结果：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15222046374975.jpg" alt="" />￼</p>
+<p>后面就可以拿着这个 <code>api_token</code> 作为令牌来请求需要认证的资源了。使用我们现有的策略，请求认证资源时，如果没有 token 或 token 错误，用户将会接收到未认证响应（401）。</p>
+<h4 id="toc_16">创建退出接口</h4>
+<p>为了形成完整闭环，下面我们来编写退出登录接口，实现思路是用户发起退出登录请求时，我们将其对应的 token 字段值从数据库移除。</p>
+<p>首先，在 <code>routes/api.php</code> 中注册路由：</p>
+<pre><code>Route::post('logout', 'Auth\LoginController@logout');
+</code></pre>
+<p>然后在 <code>Auth\LoginController.php</code> 中编写 <code>logout</code> 方法：</p>
+<pre><code>public function logout(Request $request)
+{
+    $user = Auth::guard('api')-&gt;user();
+
+    if ($user) {
+        $user-&gt;api_token = null;
+        $user-&gt;save();
+    }
+
+    return response()-&gt;json(['data' =&gt; 'User logged out.'], 200);
+}
+</code></pre>
+<p>使用该策略，一旦退出，用户的所有令牌都会失效，访问需要认证的接口都会拒绝访问（通过中间件实现），这需要和前端配合来避免用户在没有访问任何内容的权限下保持登录状态。</p>
+<h4 id="toc_17">使用中间件限制访问</h4>
+<p><code>api_token</code> 创建之后，我们就可以在路由文件中应用认证<a href="7812.html" target="_blank" rel="noopener">中间件</a>了：</p>
+<pre><code>Route::middleware('auth:api')
+    -&gt;get('/user', function (Request $request) {
+        return $request-&gt;user();
+    });
+</code></pre>
+<p>我们可以使用 <code>$request-&gt;user()</code> 或 <code>Auth</code> 门面访问当前用户：</p>
+<pre><code>Auth::guard('api')-&gt;user(); // 登录用户实例
+Auth::guard('api')-&gt;check(); // 用户是否登录
+Auth::guard('api')-&gt;id(); // 登录用户ID    
+</code></pre>
+<p>接下来，我们将之前定义的文章相关路由进行分组：</p>
+<pre><code>Route::group(['middleware' =&gt; 'auth:api'], function() {
+    Route::get('articles', 'ArticleController@index');
+    Route::get('articles/{article}', 'ArticleController@show');
+    Route::post('articles', 'ArticleController@store');
+    Route::put('articles/{article}', 'ArticleController@update');
+    Route::delete('articles/{article}', 'ArticleController@delete');
+});
+</code></pre>
+<p>这样就不需要为每个路由设置中间件，现在看来虽然节省不了多少时间，但随着应用体量的增长，这样做的好处是保持路由的DRY（Don't Repeat Yourself）。</p>
+<p>再访问文章接口就需要认证了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15222058160996.jpg" alt="" />￼</p>
+<h3 id="toc_18">测试接口</h3>
+<h4 id="toc_19">初始化设置</h4>
+<p>Laravel 开箱集成了 PHPUnit 进行<a href="8548.html" target="_blank" rel="noopener">测试</a>，并且在项目根目录下为我们配置好了 <code>phpunit.xml</code>。本教程中，我们使用内置的测试方法来测试上面编写的 API。</p>
+<p>开始之前，我们需要做一些小调整以便使用内存级的 SQLite 数据库进行数据存储。这样做的好处是可以让测试更快运行，但缺点是某些迁移命令可能不能正常运行，我的建议是当你遇到运行迁移命令出错或者更倾向于更加健壮的测试而不是高性能时不要使用 SQLite。</p>
+<p>我们还会在每个测试之前运行迁移，这样就可以为每次测试构建数据库然后销毁掉，从而避免不同组测试间的相互干扰。</p>
+<p>在 <code>config/database.php</code> 文件中，设置 <code>sqlite</code> 配置项中的 <code>database</code> 字段值为 <code>:memory:</code>：</p>
+<pre><code>...
+'connections' =&gt; [
+
+    'sqlite' =&gt; [
+        'driver' =&gt; 'sqlite',
+        'database' =&gt; ':memory:',
+        'prefix' =&gt; '',
+    ],
+
+    ...
+]
+</code></pre>
+<p>然后在 <code>phpunit.xml</code> 中通过新增 <code>DB_CONNECTION</code> 环境变量来启用 SQLite：</p>
+<pre><code>&lt;php&gt;
+    &lt;env name="APP_ENV" value="testing"/&gt;
+    &lt;env name="CACHE_DRIVER" value="array"/&gt;
+    &lt;env name="SESSION_DRIVER" value="array"/&gt;
+    &lt;env name="QUEUE_DRIVER" value="sync"/&gt;
+    &lt;env name="DB_CONNECTION" value="sqlite"/&gt;
+&lt;/php&gt;
+</code></pre>
+<p>基本配置已经完成，生下来要做的就是配置 <code>TestCase</code> 在每次测试前运行迁移并填充数据库。为此，我们需要添加 <code>DatabaseMigrations</code> trait 然后在 <code>setUp()</code> 方法中添加 <code>Artisan</code> 调用：</p>
+<pre><code>namespace Tests;
+
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Artisan;
+
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication, DatabaseMigrations;
+
+    public function setUp()
+    {
+        parent::setUp();
+        Artisan::call('db:seed');
+    }
+}
+</code></pre>
+<p>最后一件事就是添加测试命令到 <code>composer.json</code>：</p>
+<pre><code>"scripts": {
+    "test" : [
+        "vendor/bin/phpunit"
+    ],
+... 
+},  
+</code></pre>
+<p>我们通过这个命令来运行测试：</p>
+<pre><code>composer test 
+</code></pre>
+<p>如果运行过程中抛出异常：</p>
+<pre><code>Error: Class 'Doctrine\DBAL\Driver\PDOSqlite\Driver' not found   
+</code></pre>
+<p>这是因为没有安装 <code>doctrine/dbal</code> 扩展包，使用 Composer 安装即可：</p>
+<pre><code>composer require doctrine/dbal
+</code></pre>
+<p>下面是运行结果：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15222085850459.jpg" alt="" />￼</p>
+<h4 id="toc_19">为测试设置模型工厂</h4>
+<p><a href="8581.html" target="_blank" rel="noopener">模型工厂</a>可以让我们快速生成测试数据，Laravel 开箱自带了 <code>User</code> 模型工厂，下面我们为 <code>Article</code> 类添加工厂：</p>
+<pre><code>php artisan make:factory ArticleFactory
+</code></pre>
+<p>然后编辑 <code>ArticleFactory</code> 类：</p>
+<pre><code>use Faker\Generator as Faker;
+use App\Article;
+
+$factory-&gt;define(Article::class, function (Faker $faker) {
+    return [
+        'title' =&gt; $faker-&gt;sentence,
+        'body' =&gt; $faker-&gt;paragraph,
+    ];
+});
+</code></pre>
+<h4 id="toc_20">编写测试用例</h4>
+<p>我们可以使用 Laravel 的断言方法对请求和响应进行测试。下面我们来创建第一个测试用例 —— 登录测试：</p>
+<pre><code>php artisan make:test LoginTest
+</code></pre>
+<p>编写 <code>LoginTest</code> 代码如下：</p>
+<pre><code>class LoginTest extends TestCase
+{
+    public function testRequiresEmailAndLogin()
+    {
+        $this-&gt;json('POST', 'api/login')
+            -&gt;assertStatus(422)
+            -&gt;assertJson([
+                'email' =&gt; ['The email field is required.'],
+                'password' =&gt; ['The password field is required.'],
+            ]);
+    }
+
+    public function testUserLoginsSuccessfully()
+    {
+        $user = factory(User::class)-&gt;create([
+            'email' =&gt; 'test@laravelacademy.org',
+            'password' =&gt; bcrypt('test123'),
+        ]);
+
+        $payload = ['email' =&gt; 'test@laravelacademy.org', 'password' =&gt; 'test123'];
+
+        $this-&gt;json('POST', 'api/login', $payload)
+            -&gt;assertStatus(200)
+            -&gt;assertJsonStructure([
+                'data' =&gt; [
+                    'id',
+                    'name',
+                    'email',
+                    'created_at',
+                    'updated_at',
+                    'api_token',
+                ],
+            ]);
+
+    }
+}
+</code></pre>
+<p>然后编写注册测试用例：</p>
+<pre><code>php artisan make:test RegisterTest
+</code></pre>
+<p>编写 <code>RegisterTest</code> 代码如下：</p>
+<pre><code>class RegisterTest extends TestCase
+{
+    public function testsRegistersSuccessfully()
+    {
+        $payload = [
+            'name' =&gt; 'John',
+            'email' =&gt; 'john@toptal.com',
+            'password' =&gt; 'toptal123',
+            'password_confirmation' =&gt; 'toptal123',
+        ];
+
+        $this-&gt;json('post', '/api/register', $payload)
+            -&gt;assertStatus(201)
+            -&gt;assertJsonStructure([
+                'data' =&gt; [
+                    'id',
+                    'name',
+                    'email',
+                    'created_at',
+                    'updated_at',
+                    'api_token',
+                ],
+            ]);;
+    }
+
+    public function testsRequiresPasswordEmailAndName()
+    {
+        $this-&gt;json('post', '/api/register')
+            -&gt;assertStatus(422)
+            -&gt;assertJson([
+                'name' =&gt; ['The name field is required.'],
+                'email' =&gt; ['The email field is required.'],
+                'password' =&gt; ['The password field is required.'],
+            ]);
+    }
+
+    public function testsRequirePasswordConfirmation()
+    {
+        $payload = [
+            'name' =&gt; 'John',
+            'email' =&gt; 'john@toptal.com',
+            'password' =&gt; 'toptal123',
+        ];
+
+        $this-&gt;json('post', '/api/register', $payload)
+            -&gt;assertStatus(422)
+            -&gt;assertJson([
+                'password' =&gt; ['The password confirmation does not match.'],
+            ]);
+    }
+}
+</code></pre>
+<p>最后，编写退出测试用例：</p>
+<pre><code>php artisan make:test LogoutTest
+</code></pre>
+<p>编辑 <code>LogoutTest</code> 代码如下：</p>
+<pre><code>class LogoutTest extends TestCase
+{
+    public function testUserIsLoggedOutProperly()
+    {
+        $user = factory(User::class)-&gt;create(['email' =&gt; 'user@test.com']);
+        $token = $user-&gt;generateToken();
+        $headers = ['Authorization' =&gt; "Bearer $token"];
+
+        $this-&gt;json('get', '/api/articles', [], $headers)-&gt;assertStatus(200);
+        $this-&gt;json('post', '/api/logout', [], $headers)-&gt;assertStatus(200);
+
+        $user = User::find($user-&gt;id);
+
+        $this-&gt;assertEquals(null, $user-&gt;api_token);
+    }
+
+    public function testUserWithNullToken()
+    {
+        // Simulating login
+        $user = factory(User::class)-&gt;create(['email' =&gt; 'user@test.com']);
+        $token = $user-&gt;generateToken();
+        $headers = ['Authorization' =&gt; "Bearer $token"];
+
+        // Simulating logout
+        $user-&gt;api_token = null;
+        $user-&gt;save();
+
+        $this-&gt;json('get', '/api/articles', [], $headers)-&gt;assertStatus(401);
+    }
+}
+</code></pre>
+<blockquote><p>注：在测试期间，Laravel 应用并不会在发起新请求时再次初始化，所以会在请求之间保存当前用户到 <code>TokenGuard</code> 实例，也因此我们不得不将退出测试一分为二，以避免受之前缓存用户的影响。</p></blockquote>
+<p>测试文章 API 接口的代码也很简单：</p>
+<pre><code>php artisan make:test ArticleTest
+</code></pre>
+<p>编写 <code>ArticleTest</code> 代码如下：</p>
+<pre><code>class ArticleTest extends TestCase
+{
+    public function testsArticlesAreCreatedCorrectly()
+    {
+        $user = factory(User::class)-&gt;create();
+        $token = $user-&gt;generateToken();
+        $headers = ['Authorization' =&gt; "Bearer $token"];
+        $payload = [
+            'title' =&gt; 'Lorem',
+            'body' =&gt; 'Ipsum',
+        ];
+
+        $this-&gt;json('POST', '/api/articles', $payload, $headers)
+            -&gt;assertStatus(200)
+            -&gt;assertJson(['id' =&gt; 1, 'title' =&gt; 'Lorem', 'body' =&gt; 'Ipsum']);
+    }
+
+    public function testsArticlesAreUpdatedCorrectly()
+    {
+        $user = factory(User::class)-&gt;create();
+        $token = $user-&gt;generateToken();
+        $headers = ['Authorization' =&gt; "Bearer $token"];
+        $article = factory(Article::class)-&gt;create([
+            'title' =&gt; 'First Article',
+            'body' =&gt; 'First Body',
+        ]);
+
+        $payload = [
+            'title' =&gt; 'Lorem',
+            'body' =&gt; 'Ipsum',
+        ];
+
+        $response = $this-&gt;json('PUT', '/api/articles/' . $article-&gt;id, $payload, $headers)
+            -&gt;assertStatus(200)
+            -&gt;assertJson([
+                'id' =&gt; 1,
+                'title' =&gt; 'Lorem',
+                'body' =&gt; 'Ipsum'
+            ]);
+    }
+
+    public function testsArtilcesAreDeletedCorrectly()
+    {
+        $user = factory(User::class)-&gt;create();
+        $token = $user-&gt;generateToken();
+        $headers = ['Authorization' =&gt; "Bearer $token"];
+        $article = factory(Article::class)-&gt;create([
+            'title' =&gt; 'First Article',
+            'body' =&gt; 'First Body',
+        ]);
+
+        $this-&gt;json('DELETE', '/api/articles/' . $article-&gt;id, [], $headers)
+            -&gt;assertStatus(204);
+    }
+
+    public function testArticlesAreListedCorrectly()
+    {
+        factory(Article::class)-&gt;create([
+            'title' =&gt; 'First Article',
+            'body' =&gt; 'First Body'
+        ]);
+
+        factory(Article::class)-&gt;create([
+            'title' =&gt; 'Second Article',
+            'body' =&gt; 'Second Body'
+        ]);
+
+        $user = factory(User::class)-&gt;create();
+        $token = $user-&gt;generateToken();
+        $headers = ['Authorization' =&gt; "Bearer $token"];
+
+        $response = $this-&gt;json('GET', '/api/articles', [], $headers)
+            -&gt;assertStatus(200)
+            -&gt;assertJson([
+                [ 'title' =&gt; 'First Article', 'body' =&gt; 'First Body' ],
+                [ 'title' =&gt; 'Second Article', 'body' =&gt; 'Second Body' ]
+            ])
+            -&gt;assertJsonStructure([
+                '*' =&gt; ['id', 'body', 'title', 'created_at', 'updated_at'],
+            ]);
+    }
+}
+</code></pre>
+<p>要运行测试的话的随时运行 <code>composer test</code> 即可。</p>
+<p>至此，我们已经完成了 API 接口的编写和测试，下一篇我们会基于 JWT 对 API 进行认证同时整合进 Vue SPA 做一个更偏向实战的教程，敬请期待。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/basic" rel="category tag">
+                Laravel教程
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%B7%AF%E7%94%B1" rel="tag">路由</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6" rel="tag">中间件</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%8E%A7%E5%88%B6%E5%99%A8" rel="tag">控制器</a>
+                                    ,
+                                            <a href="../tags/RESTful" rel="tag">RESTful</a>
+                                    ,
+                                            <a href="../tags/JSON" rel="tag">JSON</a>
+                                    ,
+                                            <a href="../tags/404" rel="tag">404</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%BF%81%E7%A7%BB" rel="tag">迁移</a>
+                                    ,
+                                            <a href="../tags/模型工厂" rel="tag">模型工厂</a>
+                                    ,
+                                            <a href="../tags/资源" rel="tag">资源</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E7%99%BB%E5%BD%95" rel="tag">登录</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%B3%A8%E5%86%8C" rel="tag">注册</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E8%AE%A4%E8%AF%81" rel="tag">认证</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E6%B5%8B%E8%AF%95" rel="tag">测试</a>
+                                    ,
+                                            <a href="../tags/数据填充" rel="tag">数据填充</a>
+                                    ,
+                                            <a href="../tags/退出" rel="tag">退出</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="../tags/异常处理" rel="tag">异常处理</a>
+                                    ,
+                                            <a href="../tags/5.5" rel="tag">5.5</a>
+                                    ,
+                                            <a href="../tags/SQLite" rel="tag">SQLite</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;24 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9153" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9153" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;24 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="8559.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                由浅入深：基于 Laravel Broadcast 实现 WebSocket C/S 实时通信
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9178.html" rel="next">
+                Laravel API 系列教程（二）: 结合 Laravel 5.5 和 Vue SPA 基于 jwt-auth 实现 API 认证
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        56 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-12093" class="comment even thread-even depth-1">
+            <article id="div-comment-12093" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/becage" target="_blank">
+                                于老师三大爱好
+                            </a>
+                                                                <p>由于构建的是 API 接口，请勿在浏览器中直接访问上述需认证接口，如果要访问的话请在请求头中设置 Authorization 字段并填充登陆后获取到的 token 值，调用接口注册成功后也会返回 token 信息，API 认证是通过 Token 实现的</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="12093"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-07T16:45:41+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-07 16:45:41
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12093" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-12091" class="comment even thread-even depth-1">
+            <article id="div-comment-12091" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='于老师三大爱好' src='https://avatars1.githubusercontent.com/u/41765271?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/becage" target="_blank">于老师三大爱好</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/nonfu" target="_blank">
+                                学院君
+                            </a>
+                                                                <p>我的api.php文件</p>
+<pre><code>Route::middleware('auth:api')
+    -&gt;get('/user', function (Request $request) {
+        return $request-&gt;user();
+    });
+
+Route::group(['middleware' =&gt; 'auth:api'], function () {
+    Route::get('articles', 'ArticleController@index');
+    Route::get('articles/{article}', 'ArticleController@show');
+    Route::post('articles', 'ArticleController@store');
+    Route::put('articles/{article}', 'ArticleController@update');
+    Route::delete('articles/{article}', 'ArticleController@delete');
+});
+
+Route::post('register', 'Auth\RegisterController@register');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout');</code></pre>
+<p>改成<code>Route::post('login', 'Auth\LoginController@login')-&gt;name('login);</code>报错<code>Symfony \ Component \ HttpKernel \ Exception \ MethodNotAllowedHttpException No message</code></p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="12091"  aria-label='回复于老师三大爱好...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-07T15:43:35+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-07 15:43:35
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12091" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-12090" class="comment even thread-even depth-1">
+            <article id="div-comment-12090" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/nonfu" target="_blank">学院君</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/becage" target="_blank">
+                                于老师三大爱好
+                            </a>
+                                                                <p>没有注册登录路由</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="12090"  aria-label='回复学院君...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-07T15:32:23+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-07 15:32:23
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12090" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-12089" class="comment even thread-even depth-1">
+            <article id="div-comment-12089" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='于老师三大爱好' src='https://avatars1.githubusercontent.com/u/41765271?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/becage" target="_blank">于老师三大爱好</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>你好，在“使用中间件限制访问” 这一小节中，给文章添加group后，访问http://apidemo.test/api/articles/1报错</p>
+<pre><code>InvalidArgumentException
+Route [login] not defined.</code></pre>
+<p>这个Api教程，可以给个完整的GitHub项目参考学习吗？谢谢。</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="12089"  aria-label='回复于老师三大爱好...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-11-07T15:22:26+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-11-07 15:22:26
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="12089" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11708" class="comment even thread-even depth-1">
+            <article id="div-comment-11708" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='keepondream' src='https://avatars3.githubusercontent.com/u/24251510?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/keepondream" target="_blank">keepondream</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>院长无敌,感谢有你.</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="11708"  aria-label='回复keepondream...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-19T17:57:39+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-19 17:57:39
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11708" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11687" class="comment even thread-even depth-1">
+            <article id="div-comment-11687" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='闪电侠213' src='https://www.gravatar.com/avatar/b819383ac336d762f96b56c772074e94?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/闪电侠213" target="_blank">闪电侠213</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>有两个问题
+问题一：$user获取不到值
+public function logout(Request $request)
+{</p>
+<pre><code>    $user =$this-&gt;guard()-&gt;user();
+
+    if ($user) {
+        $user-&gt;api_token = null;
+        $user-&gt;save();
+    }
+
+    return response()-&gt;json(['data'=&gt;'User logged out.'], 200);
+}</code></pre>
+<p>问题二：
+Route::get('articles','ArticleController@index');
+访问去了登录页面</p>
+<p>求站长解答</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="11687"  aria-label='回复闪电侠213...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-17T17:06:58+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-17 17:06:58
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11687" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11626" class="comment even thread-even depth-1">
+            <article id="div-comment-11626" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='keyesone66' src='https://avatars0.githubusercontent.com/u/38130961?v=4' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/keyesone66" target="_blank">keyesone66</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>404无法使用</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="11626"  aria-label='回复keyesone66...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-06T19:10:27+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-06 19:10:27
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11626" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">1</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11586" class="comment even thread-even depth-1">
+            <article id="div-comment-11586" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='945120753@qq.com' src='https://www.gravatar.com/avatar/051b9c3766dd9fd0b46469dafc7bd233?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/945120753@qq.com" target="_blank">945120753@qq.com</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>如何设置api_token的有效期？</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="11586"  aria-label='回复945120753@qq.com...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-09-04T14:13:32+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-09-04 14:13:32
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11586" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11305" class="comment even thread-even depth-1">
+            <article id="div-comment-11305" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='JHWu' src='https://www.gravatar.com/avatar/01ee52c28529be6d2c055af8696ea53f?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/JHWu" target="_blank">JHWu</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        <p>我的会返回laravel首页</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="11305"  aria-label='回复JHWu...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-07T18:40:57+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-07 18:40:57
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11305" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-11280" class="comment even thread-even depth-1">
+            <article id="div-comment-11280" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='大饼' src='https://www.gravatar.com/avatar/bfc3e38525f16000284f841a09ecc8b2?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            <a href="../author/yysu" target="_blank">大饼</a>
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    <a href="../author/yysu" target="_blank">
+                                大饼
+                            </a>
+                                                                <p>不好意思，是我搞错了</p>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='9153.html#respond' data-id="11280"  aria-label='回复大饼...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-08-03T12:22:24+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-08-03 12:22:24
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="11280" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/9153.html/page/2#comments">2</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/9153.html/page/3#comments">3</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/9153.html/page/4#comments">4</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/9153.html/page/5#comments">5</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/post/9153.html/page/6#comments">6</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/post/9153.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9153.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9153' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9153.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9153.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        RESTful API
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        通过 HTTP 动词表示操作
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        更新操作：PUT vs. POST
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        资源
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        关于一致性的注意项
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        设置一个新的 Laravel 项目
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建新应用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        迁移和模型
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        数据库填充
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        路由和控制器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        注册路由
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建控制器
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        认证
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        新增 api_token 字段
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建注册接口
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建登录接口
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        创建退出接口
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用中间件限制访问
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        测试接口
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        初始化设置
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9153.html#toc_20">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        编写测试用例
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="5974.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.3 文档 ] 安全 —— 用户认证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7836.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 处理用户请求 —— HTTP 请求的处理层：控制器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8753.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 基础组件 —— 控制器
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8900.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 安全系列 —— 登录认证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9178.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        Laravel API 系列教程（二）: 结合 Laravel 5.5 和 Vue SPA 基于 jwt-auth 实现 API 认证
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

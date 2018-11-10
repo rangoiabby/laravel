@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ PHP 内核与扩展开发系列] PHP 生命周期 —— 从 SAPI 开始 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="7141.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="7141.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="7141.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="7141.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="7141.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../modern-php.1">
+                现代PHP
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../php-extension">
+                扩展开发
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ PHP 内核与扩展开发系列] PHP 生命周期 —— 从 SAPI 开始</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ PHP 内核与扩展开发系列] PHP 生命周期 —— 从 SAPI 开始</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="7141.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2017-05-15T00:08:15+08:00">2017-05-15</time>
+                    <time class="updated" datetime="2017-05-15T11:50:59+08:00">2017-05-15 11:50:59</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                2078 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <blockquote><p>声明：本系列文章整理自GitHub项目<a href="https://github.com/walu/phpbook" target="_blank" rel="noopener noreferrer">PHP扩展开发及内核应用</a>，并根据PHP最新代码对其进行适当调整和校对。适用于有 C 语言基础的高级 PHPer。</p></blockquote>
+<p>在基于 Apache 的 Web 环境中，我们并不需要单独启动 PHP 服务，它会作为一个模块自动加载到 Web 服务器里面去，只要我们启动了 Apache，被一起加载的 PHP 模块便会和服务器一起解析被请求的 PHP 脚本。</p>
+<p>不过，当我们以 FastCGI 模式安装 PHP 的时候（如 PHP-FPM ），就需要手动在终端运行相应命令来启动来启动 PHP 后端服务。</p>
+<p>我们平时接触的最多的是 Web 模式下的 PHP，当然你也肯定知道 PHP 还有个 CLI 模式（命令行）。无论哪种模式，PHP 的工作原理都是一样的， 都是作为一种 SAPI（Server Application Programming Interface： PHP 用于和其他 Web 服务器进行交互的 API）在运行。当我们在终端敲入 <code>php</code> 这个命令时候，它使用的是命令行模式的SAPI。它就像一个迷你的 Web 服务器一样来支持 PHP 完成这个请求，请求完成后再重新把控制权交给终端。</p>
+<p>简单来说, SAPI 就是 PHP 和外部环境的代理器，使得 PHP 可以和其他应用进行交互数据。它把外部环境抽象后, 为内部的 PHP 提供一套固定的、统一的接口, 使得 PHP 自身实现能够不受错综复杂的外部环境影响，保持一定的独立性。</p>
+<p>本文不会详细介绍每个 PHP 的 SAPI，只是针对最简单的 CGI SAPI，来说明 SAPI 的机制。（以下内容整理自<a href="http://www.laruence.com/2008/08/12/180.html" target="_blank" rel="noopener noreferrer">深入理解Zend SAPIs</a>）</p>
+<p>首先，我们来看看PHP的架构图：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/05/php-arch-293x300.jpg" alt="php-arch-293x300" />￼</p>
+<p>SAPI 提供了一个和外部通信的接口， 对于 PHP 7，默认提供了很多种 SAPI， 常见的给 Apache 的<code>mod_php7</code>，CGI，给 Nginx 的 <code>php-fpm</code>，还有 Shell 的 CLI，本文就从 CGI SAPI 入手 ，介绍SAPI 的机制。 虽然 CGI 简单，但是不用担心，它包含了绝大部分内容，足以让你深刻理解 SAPI 的工作原理。</p>
+<p>要定义个 SAPI，首先要定义个 <code>sapi_module_struct</code>, 查看 <a href="https://github.com/php/php-src/blob/master/sapi/cgi/cgi_main.c" target="_blank" rel="noopener noreferrer">PHP-SRC/sapi/cgi/cgi_main.c</a>:</p>
+<pre><code>/* {{{ sapi_module_struct cgi_sapi_module
+ */
+static sapi_module_struct cgi_sapi_module = {
+    "cgi-fcgi",                     /* name */
+    "CGI/FastCGI",                  /* pretty name */
+
+    php_cgi_startup,                /* startup */
+    php_module_shutdown_wrapper,    /* shutdown */
+
+    sapi_cgi_activate,              /* activate */
+    sapi_cgi_deactivate,            /* deactivate */
+
+    sapi_cgi_ub_write,              /* unbuffered write */
+    sapi_cgi_flush,                 /* flush */
+    NULL,                           /* get uid */
+    sapi_cgi_getenv,                /* getenv */
+
+    php_error,                      /* error handler */
+
+    NULL,                           /* header handler */
+    sapi_cgi_send_headers,          /* send headers handler */
+    NULL,                           /* send header handler */
+
+    sapi_cgi_read_post,             /* read POST data */
+    sapi_cgi_read_cookies,          /* read Cookies */
+
+    sapi_cgi_register_variables,    /* register server variables */
+    sapi_cgi_log_message,           /* Log message */
+    NULL,                           /* Get request time */
+    NULL,                           /* Child terminate */
+
+    STANDARD_SAPI_MODULE_PROPERTIES
+};
+/* }}} */
+</code></pre>
+<p>这个结构，包含了一些常量，比如 <code>name</code>, 这个会在我们调用 <code>php_info()</code> 的时候被使用。一些初始化，收尾函数，以及一些函数指针，用来告诉 Zend，如何获取和输出数据。</p>
+<p><strong>php_cgi_startup</strong></p>
+<p>当一个应用要调用 PHP 的时候，这个函数会被调用，对于 CGI 来说，它只是简单的调用了 PHP 的初始化函数：</p>
+<pre><code>static int php_cgi_startup(sapi_module_struct *sapi_module)
+{
+    if (php_module_startup(sapi_module, &amp;cgi_module_entry, 1) == FAILURE) {
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+</code></pre>
+<p><strong>php_module_shutdown_wrapper</strong></p>
+<p>一个对 PHP 关闭函数的简单包装，只是简单的调用<code>php_module_shutdown</code>。</p>
+<p><strong>sapi_cgi_activate</strong></p>
+<p>PHP 会在每个 request 的时候，处理一些初始化，资源分配的事务，这部分就是 <code>activate</code> 字段要定义的。对于 <code>mod_php7</code> 来说，它要在 Apache 的 pool 中注册资源析构函数，申请空间，初始化环境变量，等等等等。</p>
+<p><strong>sapi_cgi_deactivate</strong></p>
+<p>这个是相对于 <code>activate</code> 的函数，顾名思义，它会提供一个 handler, 用来处理收尾工作，对于 CGI 来说，他只是简单的刷新缓冲区，用以保证用户在 Zend 关闭前得到所有的输出数据：</p>
+<pre><code>static int sapi_cgi_deactivate(void)
+{
+    /* flush only when SAPI was started. The reasons are:
+        1. SAPI Deactivate is called from two places: module init and request shutdown
+        2. When the first call occurs and the request is not set up, flush fails on FastCGI.
+    */
+    if (SG(sapi_started)) {
+        if (fcgi_is_fastcgi()) {
+            if (
+                !parent &amp;&amp;
+                !fcgi_finish_request((fcgi_request*)SG(server_context), 0)) {
+                php_handle_aborted_connection();
+            }
+        } else {
+            sapi_cgi_flush(SG(server_context));
+        }
+    }
+    return SUCCESS;
+}
+</code></pre>
+<p><strong>sapi_cgi_ub_write</strong></p>
+<p>这个 hanlder 告诉了 Zend，如何输出数据，对于 <code>mod_php7</code> 来说，这个函数提供了一个向 response数据写的接口，而对于 CGI 来说，只是简单的写到 <code>stdout</code>：</p>
+<pre><code>static inline size_t sapi_cgi_single_write(const char *str, size_t str_length)
+{
+#ifdef PHP_WRITE_STDOUT
+    int ret;
+
+    ret = write(STDOUT_FILENO, str, str_length);
+    if (ret &lt;= 0) return 0;
+    return ret;
+#else
+    size_t ret;
+
+    ret = fwrite(str, 1, MIN(str_length, 16384), stdout);
+    return ret;
+#endif
+}
+
+static size_t sapi_cgi_ub_write(const char *str, size_t str_length)
+{
+    const char *ptr = str;
+    size_t remaining = str_length;
+    size_t ret;
+
+    while (remaining &gt; 0) {
+        ret = sapi_cgi_single_write(ptr, remaining);
+        if (!ret) {
+            php_handle_aborted_connection();
+            return str_length - remaining;
+        }
+        ptr += ret;
+        remaining -= ret;
+    }
+
+    return str_length;
+}
+</code></pre>
+<p>把真正写的逻辑剥离出来，就是为了简单实现兼容 FastCGI 的写方式。</p>
+<p><strong>sapi_cgi_flush</strong></p>
+<p>这个是提供给 zend 的刷新缓存的函数句柄，对于 CGI 来说，只是简单的调用系统提供的 <code>fflush</code>。</p>
+<p><strong>NULL</strong></p>
+<p>这部分用来让 Zend 可以验证一个要执行脚本文件的 state，从而判断文件是否据有执行权限等等，CGI没有提供。</p>
+<p><strong>sapi_cgi_getenv</strong></p>
+<p>为 Zend 提供了一个根据 <code>name</code> 来查找环境变量的接口，对于 <code>mod_php7</code> 来说，当我们在脚本中调用<code>getenv</code> 的时候，就会间接的调用这个句柄。而对于 CGI 来说，因为他的运行机制和 CLI 很类似，直接调用父级是 Shell，所以，只是简单的调用了系统提供的 <code>genenv</code>:</p>
+<pre><code>static char *sapi_cgi_getenv(char *name, size_t name_len)
+{
+    return getenv(name);
+}
+</code></pre>
+<p><strong>php_error</strong></p>
+<p>错误处理函数, CGI只是简单的调用了 PHP 提供的错误处理函数。</p>
+<p><strong>NULL</strong></p>
+<p>这个函数会在我们调用 PHP 的 <code>header()</code> 函数的时候被调用，对于CGI来说，不提供。</p>
+<p><strong>sapi_cgi_send_headers</strong></p>
+<p>这个函数会在要真正发送 header 的时候被调用，一般来说，就是当有任何的输出要发送之前：</p>
+<pre><code>static int sapi_cgi_send_headers(sapi_headers_struct *sapi_headers)
+{
+    char buf[SAPI_CGI_MAX_HEADER_LENGTH];
+    sapi_header_struct *h;
+    zend_llist_position pos;
+    zend_bool ignore_status = 0;
+    int response_status = SG(sapi_headers).http_response_code;
+
+    if (SG(request_info).no_headers == 1) {
+        return  SAPI_HEADER_SENT_SUCCESSFULLY;
+    }
+
+    if (CGIG(nph) || SG(sapi_headers).http_response_code != 200)
+    {
+        int len;
+        zend_bool has_status = 0;
+
+        if (CGIG(rfc2616_headers) &amp;&amp; SG(sapi_headers).http_status_line) {
+            char *s;
+            len = slprintf(buf, SAPI_CGI_MAX_HEADER_LENGTH, "%s\r\n", SG(sapi_headers).http_status_line);
+            if ((s = strchr(SG(sapi_headers).http_status_line, ' '))) {
+                response_status = atoi((s + 1));
+            }
+
+            if (len &gt; SAPI_CGI_MAX_HEADER_LENGTH) {
+                len = SAPI_CGI_MAX_HEADER_LENGTH;
+            }
+
+        } else {
+            char *s;
+
+            if (SG(sapi_headers).http_status_line &amp;&amp;
+                (s = strchr(SG(sapi_headers).http_status_line, ' ')) != 0 &amp;&amp;
+                (s - SG(sapi_headers).http_status_line) &gt;= 5 &amp;&amp;
+                strncasecmp(SG(sapi_headers).http_status_line, "HTTP/", 5) == 0
+            ) {
+                len = slprintf(buf, sizeof(buf), "Status:%s\r\n", s);
+                response_status = atoi((s + 1));
+            } else {
+                h = (sapi_header_struct*)zend_llist_get_first_ex(&amp;sapi_headers-&gt;headers, &amp;pos);
+                while (h) {
+                    if (h-&gt;header_len &gt; sizeof("Status:")-1 &amp;&amp;
+                        strncasecmp(h-&gt;header, "Status:", sizeof("Status:")-1) == 0
+                    ) {
+                        has_status = 1;
+                        break;
+                    }
+                    h = (sapi_header_struct*)zend_llist_get_next_ex(&amp;sapi_headers-&gt;headers, &amp;pos);
+                }
+                if (!has_status) {
+                    http_response_status_code_pair *err = (http_response_status_code_pair*)http_status_map;
+
+                    while (err-&gt;code != 0) {
+                        if (err-&gt;code == SG(sapi_headers).http_response_code) {
+                            break;
+                        }
+                        err++;
+                    }
+                    if (err-&gt;str) {
+                        len = slprintf(buf, sizeof(buf), "Status: %d %s\r\n", SG(sapi_headers).http_response_code, err-&gt;str);
+                    } else {
+                        len = slprintf(buf, sizeof(buf), "Status: %d\r\n", SG(sapi_headers).http_response_code);
+                    }
+                }
+            }
+        }
+
+        if (!has_status) {
+            PHPWRITE_H(buf, len);
+            ignore_status = 1;
+        }
+    }
+
+    h = (sapi_header_struct*)zend_llist_get_first_ex(&amp;sapi_headers-&gt;headers, &amp;pos);
+    while (h) {
+        /* prevent CRLFCRLF */
+        if (h-&gt;header_len) {
+            if (h-&gt;header_len &gt; sizeof("Status:")-1 &amp;&amp;
+                strncasecmp(h-&gt;header, "Status:", sizeof("Status:")-1) == 0
+            ) {
+                if (!ignore_status) {
+                    ignore_status = 1;
+                    PHPWRITE_H(h-&gt;header, h-&gt;header_len);
+                    PHPWRITE_H("\r\n", 2);
+                }
+            } else if (response_status == 304 &amp;&amp; h-&gt;header_len &gt; sizeof("Content-Type:")-1 &amp;&amp;
+                strncasecmp(h-&gt;header, "Content-Type:", sizeof("Content-Type:")-1) == 0
+            ) {
+                h = (sapi_header_struct*)zend_llist_get_next_ex(&amp;sapi_headers-&gt;headers, &amp;pos);
+                continue;
+            } else {
+                PHPWRITE_H(h-&gt;header, h-&gt;header_len);
+                PHPWRITE_H("\r\n", 2);
+            }
+        }
+        h = (sapi_header_struct*)zend_llist_get_next_ex(&amp;sapi_headers-&gt;headers, &amp;pos);
+    }
+    PHPWRITE_H("\r\n", 2);
+
+    return SAPI_HEADER_SENT_SUCCESSFULLY;
+}
+</code></pre>
+<p><strong>NULL</strong></p>
+<p>这个用来单独发送每一个 header, CGI 没有提供</p>
+<p><strong>sapi_cgi_read_post</strong></p>
+<p>这个句柄指明了如何获取 POST 的数据，如果做过 CGI 编程的话，我们就知道 CGI 是从 <code>stdin</code> 中读取POST 数据的：</p>
+<pre><code>static size_t sapi_cgi_read_post(char *buffer, size_t count_bytes)
+{
+    size_t read_bytes = 0;
+    int tmp_read_bytes;
+    size_t remaining_bytes;
+
+    assert(SG(request_info).content_length &gt;= SG(read_post_bytes));
+
+    remaining_bytes = (size_t)(SG(request_info).content_length - SG(read_post_bytes));
+
+    count_bytes = MIN(count_bytes, remaining_bytes);
+    while (read_bytes &lt; count_bytes) {
+#ifdef PHP_WIN32
+        size_t diff = count_bytes - read_bytes;
+        unsigned int to_read = (diff &gt; UINT_MAX) ? UINT_MAX : (unsigned int)diff;
+
+        tmp_read_bytes = read(STDIN_FILENO, buffer + read_bytes, to_read);
+#else
+        tmp_read_bytes = read(STDIN_FILENO, buffer + read_bytes, count_bytes - read_bytes);
+#endif
+        if (tmp_read_bytes &lt;= 0) {
+            break;
+        }
+        read_bytes += tmp_read_bytes;
+    }
+    return read_bytes;
+}
+</code></pre>
+<p><strong>sapi_cgi_read_cookies</strong></p>
+<p>这个和上面的函数一样，只不过是去获取 cookie 值：</p>
+<pre><code>static char *sapi_cgi_read_cookies(void)
+{
+    return getenv("HTTP_COOKIE");
+}
+</code></pre>
+<p><strong>sapi_cgi_register_variables</strong></p>
+<p>这个函数提供了一个接口，用以给 <code>$_SERVER</code> 变量中添加变量，对于 CGI 来说，注册了一个 PHP_SELF,这样我们就可以在脚本中访问 <code>$_SERVER['PHP_SELF']</code> 来获取本次的 request_uri：</p>
+<pre><code>static void sapi_cgi_register_variables(zval *track_vars_array)
+{
+    size_t php_self_len;
+    char *php_self;
+
+    /* In CGI mode, we consider the environment to be a part of the server
+     * variables
+     */
+    php_import_environment_variables(track_vars_array);
+
+    if (CGIG(fix_pathinfo)) {
+        char *script_name = SG(request_info).request_uri;
+        char *path_info;
+        int free_php_self;
+        ALLOCA_FLAG(use_heap)
+
+        if (fcgi_is_fastcgi()) {
+            fcgi_request *request = (fcgi_request*) SG(server_context);
+
+            path_info = FCGI_GETENV(request, "PATH_INFO");
+        } else {
+            path_info = getenv("PATH_INFO");
+        }
+
+        if (path_info) {
+            size_t path_info_len = strlen(path_info);
+
+            if (script_name) {
+                size_t script_name_len = strlen(script_name);
+
+                php_self_len = script_name_len + path_info_len;
+                php_self = do_alloca(php_self_len + 1, use_heap);
+                memcpy(php_self, script_name, script_name_len + 1);
+                memcpy(php_self + script_name_len, path_info, path_info_len + 1);
+                free_php_self = 1;
+            }  else {
+                php_self = path_info;
+                php_self_len = path_info_len;
+                free_php_self = 0;
+            }
+        } else if (script_name) {
+            php_self = script_name;
+            php_self_len = strlen(script_name);
+            free_php_self = 0;
+        } else {
+            php_self = "";
+            php_self_len = 0;
+            free_php_self = 0;
+        }
+
+        /* Build the special-case PHP_SELF variable for the CGI version */
+        if (sapi_module.input_filter(PARSE_SERVER, "PHP_SELF", &amp;php_self, php_self_len, &amp;php_self_len)) {
+            php_register_variable_safe("PHP_SELF", php_self, php_self_len, track_vars_array);
+        }
+        if (free_php_self) {
+            free_alloca(php_self, use_heap);
+        }
+    } else {
+        php_self = SG(request_info).request_uri ? SG(request_info).request_uri : "";
+        php_self_len = strlen(php_self);
+        if (sapi_module.input_filter(PARSE_SERVER, "PHP_SELF", &amp;php_self, php_self_len, &amp;php_self_len)) {
+            php_register_variable_safe("PHP_SELF", php_self, php_self_len, track_vars_array);
+        }
+    }
+}
+</code></pre>
+<p><strong>sapi_cgi_log_message</strong></p>
+<p>用来输出错误信息，对于 CGI 来说，只是简单的输出到 <code>stderr</code>:</p>
+<pre><code>static void sapi_cgi_log_message(char *message, int syslog_type_int)
+{
+    if (fcgi_is_fastcgi() &amp;&amp; CGIG(fcgi_logging)) {
+        fcgi_request *request;
+
+        request = (fcgi_request*) SG(server_context);
+        if (request) {
+            int ret, len = (int)strlen(message);
+            char *buf = malloc(len+2);
+
+            memcpy(buf, message, len);
+            memcpy(buf + len, "\n", sizeof("\n"));
+            ret = fcgi_write(request, FCGI_STDERR, buf, (int)(len + 1));
+            free(buf);
+            if (ret &lt; 0) {
+                php_handle_aborted_connection();
+            }
+        } else {
+            fprintf(stderr, "%s\n", message);
+        }
+        /* ignore return code */
+    } else {
+        fprintf(stderr, "%s\n", message);
+    }
+}
+</code></pre>
+<p>经过分析，我们已经了解了一个 SAPI 是如何实现的了， 分析过 CGI 以后，我们也就可以想象 <code>mod_php7</code>, <code>php-fpm</code> 等SAPI的实现机制。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../modern-php/php-extension" rel="category tag">
+                扩展开发
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/原理" rel="tag">原理</a>
+                                    ,
+                                            <a href="../tags/PHP" rel="tag">PHP</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E5%86%85%E6%A0%B8" rel="tag">内核</a>
+                                    ,
+                                            <a href="../tags/SAPI" rel="tag">SAPI</a>
+                                    ,
+                                            <a href="../tags/CGI" rel="tag">CGI</a>
+                                    ,
+                                            <a href="../tags/源码" rel="tag">源码</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;7 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="7141" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="7141" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;7 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                        <li class="nav-next next">
+            <a href="7152.html" rel="next">
+                [ PHP 内核与扩展开发系列] PHP 生命周期 —— 启动、终止与模式
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        1 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-7490" class="comment even thread-even depth-1">
+            <article id="div-comment-7490" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='hi_tp' src='https://www.gravatar.com/avatar/164f7758c2b340b92f9f261e0f767a7e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            hi_tp
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我记得有个项目就是讲的PHP得源码
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='7141.html#respond' data-id="7490"  aria-label='回复hi_tp...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-05-15T10:40:42+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-05-15 10:40:42
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7490" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="7141.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='7141' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="7141.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="7152.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] PHP 生命周期 —— 启动、终止与模式
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7159.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 变量类型
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7167.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— 变量的值
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7172.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ PHP 内核与扩展开发系列] 变量在内核中的实现 —— PHP 变量的创建、存储和检索
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7530.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        服务器部署篇（四）：使用现代化工具 Capistrano 自动部署应用代码到生产环境
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

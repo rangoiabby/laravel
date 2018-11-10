@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel 开发博客应用系列 —— 设置 Windows 本地开发环境 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="2124.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="2124.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="2124.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="2124.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="2124.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../blog">
+                博客系列
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel 开发博客应用系列 —— 设置 Windows 本地开发环境</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel 开发博客应用系列 —— 设置 Windows 本地开发环境</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="2124.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2015-11-24T22:58:22+08:00">2015-11-24</time>
+                    <time class="updated" datetime="2015-11-25T00:28:10+08:00">2015-11-25 00:28:10</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                24431 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>这一节我们将讨论如何在 Windows 上安装 Laravel Homestead 开发环境。在此之前，我们假设你已经安装过 VirtualBox 和Vagrant（如果没有的话参考<a href="../../post/2116.html">上一篇教程</a>）。</p>
+<h3 id="toc_0"><strong>1、安装原生PHP</strong></h3>
+<h4 id="toc_1"><strong>下载/解压 PHP</strong></h4>
+<p>到 <a href="http://windows.php.net/download" target="_blank">PHP 下载页</a>下载最新版本的 PHP（如果使用 Laravel 5.1 的话需要 PHP 5.5.9+ 版本），解压下载的zip格式压缩文件到本地目录，比如<code>E:\Php</code>。</p>
+<h4 id="toc_2"><strong>编辑 php.ini</strong></h4>
+<p>打开命令行按照如下步骤创建<code>php.ini</code>文件：</p>
+<pre>C:\Users\Test&gt;E:
+E:\&gt;cd Php
+E:\Php&gt; copy php.ini-development php.ini</pre>
+<p>然后在编辑 <code>php.ini</code>：</p>
+<pre>// 将
+; extension_dir = "ext"
+// 修改为
+extension_dir = "ext"
+
+// 将
+;extension=php_openssl.dll
+// 修改为
+extension=php_openssl.dll
+
+// 将
+;extension=php_mbstring.dll
+// 修改为
+extension=php_mbstring.dll
+</pre>
+<p>现在，在 <code>E:\php</code> 目录下，可以执行 <code>php</code> 命令：</p>
+<p><img class="alignnone size-full wp-image-2129" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_224454.jpg" alt="Php版本信息" width="528" height="72" /></p>
+<h4 id="toc_3"><strong>添加E:\Php到用户变量</strong></h4>
+<p>1）打开Windows控制面板，在顶部右侧搜索框搜索”环境变量“：</p>
+<p><img class="alignnone size-full wp-image-2125" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-10-29_152643.jpg" alt="在控制面板中搜索环境变量" width="699" height="267" /></p>
+<p>2）点击”编辑账户的环境变量“：</p>
+<p><img class="alignnone size-full wp-image-2126" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/environment-variable.jpg" alt="Windows中编辑环境变量" width="384" height="393" /></p>
+<p>3）双击PATH那一行然后将<code>;E:\Php</code>添加到弹出框的变量值中：</p>
+<p><img class="alignnone size-full wp-image-2127" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/add-php-to-path.jpg" alt="添加PHP到系统路径" width="347" height="132" /></p>
+<p>下一次打开命令行时，<code>php.exe</code>已经在用户变量中，可以在任何地方直接执行<code>php</code>命令而不需要指定绝对路径。</p>
+<p>如果执行<code>php</code>命令时报错：</p>
+<p><img class="alignnone size-full wp-image-2131" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_230159.jpg" alt="执行php报错：计算机中丢失 MSVCR110.dll" width="478" height="181" /></p>
+<p>对应解决办法：<a href="http://jingyan.baidu.com/article/4f7d57129fa86e1a201927de.html" target="_blank">http://jingyan.baidu.com/article/4f7d57129fa86e1a201927de.html</a>。</p>
+<h3 id="toc_4"><strong>2、安装 Node.js</strong></h3>
+<p>我们将会在本地安装 Node.js 以便后续使用 gulp。</p>
+<p>到 <a href="https://nodejs.org/en/download/" target="_blank">Nodejs 下载页</a>下载 Windows 系统对应版本安装。</p>
+<p><img class="alignnone wp-image-2128" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_223744.jpg" alt="Nodejs下载页" width="900" height="473" /></p>
+<p>使用默认设置安装，安装完成后打开新的命令行使用如下命令检查安装是否成功：<br />
+<img class="alignnone size-full wp-image-2130" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_230024.jpg" alt="检查Nodejs是否安装成功" width="382" height="92" /></p>
+<h4 id="toc_5"><strong>全局安装gulp</strong></h4>
+<pre>npm install -g gulp</pre>
+<p>安装完成后检查gulp版本：</p>
+<p><img class="alignnone size-full wp-image-2132" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_230942.jpg" alt="gulp版本检查" width="347" height="39" /></p>
+<h4 id="toc_6"><strong>全局安装bower</strong></h4>
+<pre>npm install -g bower</pre>
+<p>安装完成后检查bower版本：</p>
+<p><img class="alignnone size-full wp-image-2133" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_231116.jpg" alt="检查bower安装版本" width="468" height="46" /></p>
+<h3 id="toc_7"><strong>3、安装Composer</strong></h3>
+<p>Composer是PHP包依赖管理器。</p>
+<p><img class="alignnone size-full wp-image-2134" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_231242.jpg" alt="Composer包依赖管理器" width="568" height="449" /></p>
+<p>去 <a href="https://getcomposer.org/download/" target="_blank">Composer 下载页</a>下载 Windows 版本安装程序。使用默认设置安装，如果问你PHP安装路径，输入：</p>
+<pre>E:\Php\php.exe</pre>
+<p>安装完成后，关掉当前的命令行并打开一个新的，检查Composer版本验证是否安装成功：</p>
+<p><img class="alignnone size-full wp-image-2137" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-23_232452.jpg" alt="查看Composer安装版本" width="640" height="59" /></p>
+<p>安装过程中会将<code>E:\Php</code>从用户变量移动到系统变量，并添加<code>C:\ProgramData\ComposerSetup\bin</code>到系统路径。</p>
+<h3 id="toc_8"><strong>4、安装GIT并设置SSH Key</strong></h3>
+<p>在 Windows 中我们将会安装本地 Git 软件并只使用其提供的 Git Bash 设置 SSH Key，任何其它对git的使用都通过命令行实现。</p>
+<h4 id="toc_9"><strong>安装Git</strong></h4>
+<p><strong>下载git安装器</strong></p>
+<p>到<a href="http://git-scm.com/downloads" target="_blank">git下载页</a>下载 Windows 版安装。</p>
+<p><strong>安装</strong></p>
+<p>运行下载的安装文件并一路选择默认选项直到这个页面：</p>
+<p><img class="alignnone size-full wp-image-2162" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/d6ea26a1b609b7f56f09dfbcff58d3de.jpg" alt="Git安装" width="512" height="400" /></p>
+<p>确保选择“Use Git from the Windows Command Prompt”选项。</p>
+<p>余下部分继续选择默认选项进行安装即可。</p>
+<p><strong>检查Git版本</strong></p>
+<p>关闭所有命令行窗口，然后打开一个新的命令行窗口，运行如下命令确保Git安装成功：</p>
+<p><img class="alignnone size-full wp-image-2163" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-24_220459.jpg" alt="查看git版本" width="358" height="40" /></p>
+<h4 id="toc_10"><strong>设置SSH Key</strong></h4>
+<p>在 Windows 开始菜单找到 Git Bash 并运行，在打开的窗口中执行 <code>ssh-keygen</code> 命令，一路回车使用默认选项来设置SSH Key：</p>
+<pre>$ ssh-keygen -t rsa -C "your@email.com" 
+Generating public/private rsa key pair. 
+Enter file in which to save the key (/c/Users/LaravelAcademy/.ssh/id_rsa): 
+Created directory '/c/Users/LaravelAcademy/.ssh'. 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+$</pre>
+<h3 id="toc_11"><strong>5、添加 Homestead Vagrant 盒子</strong></h3>
+<p>下面我们会下载 Laravel Homestead Vagrant 盒子：</p>
+<pre>C:\Users\LaravelAcademy&gt; vagrant box add laravel/homestead 
+==&gt; box: Loading metadata for box 'laravel/homestead' 
+    box: URL: https://vagrantcloud.com/laravel/homstead</pre>
+<p>这一步可能需要消耗较长时间，具体取决与你的网络连接速度。</p>
+<h3 id="toc_12"><strong>6、安装 Homestead</strong></h3>
+<h4 id="toc_13"><strong>使用 Composer 安装</strong></h4>
+<p>现在让我们使用 Composer 安装 Homestead ：</p>
+<pre>C:\Users\LaravelAcademy&gt; composer global require "laravel/homestead=~2.0" 
+Changed current directory to C:\Users/LaravelAcademy/AppData/Roaming/Composer 
+./composer.json has been updated 
+Loading composer repositories with package information 
+Updating dependencies (including require-dev)
+ - Installing symfony/process (v2.7.7)
+   Downloading: 100%
+
+ - Installing symfony/console (v2.7.7)
+   Downloading: 100%
+
+ - Installing laravel/homestead (v2.1.8)
+   Downloading: 100% 
+
+symfony/console suggests installing symfony/event-dispatcher ()
+symfony/console suggests installing psr/log (For using the console logger)
+Writing lock file 
+Generating autoload files</pre>
+<h4 id="toc_14"><strong>更新系统变量</strong></h4>
+<p>Composer 会将 Homestead 安装到 Composer 安装目录下的 <code>vendor</code> 目录。</p>
+<p>为了从命令行可以直接访问<code>homestead</code>，将其安装路径添加到系统变量即可。和添加PHP路径到系统变量操作步骤一样，只是这一次添加的路径不一样而已：</p>
+<pre>C:\Users\YOU\AppData\Roaming\Composer\vendor\bin;vendor\bin</pre>
+<p>具体路径根据你的本地路径来。</p>
+<blockquote><p>注意：这里我们添加<code>vendor\bin</code>到系统路径中，因为每一个Laravel项目都会包含这一目录，将其添加到系统变量后我们就可以在项目根目录下直接使用项目提供的依赖包。</p></blockquote>
+<h4 id="toc_15"><strong>验证Homestead安装</strong></h4>
+<p>系统变量修改后需要重新打开新的命令行窗口才会生效，所以我们再一次关闭所有命令行窗口并打开一个新的，然后检查 Homestead 版本已验证是否安装成功：</p>
+<pre><img class="alignnone size-full wp-image-2168" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-24_232753.jpg" alt="查看Homestead安装版本" width="411" height="37" /></pre>
+<h4 id="toc_16"><strong>初始化 Homestead</strong></h4>
+<p>安装完 Homestead 并添加 Composer 的 <code>bin</code> 目录到系统变量后，需要初始化 Homestead ：</p>
+<pre>C:\Users\LaravelAcademy&gt; homestead init
+Creating Homestead.yaml file...
+Homestead.yaml file created at: C:\Users\LaravelAcademy\.homestead/Homestead.yaml</pre>
+<p>记住：一台机子上只需要初始化一次 Homestead 即可。</p>
+<h3 id="toc_17"><strong>7、启动 Homestead VM</strong></h3>
+<p>在第一次启动 Homestead 之前我们要创建一个 <code>Code</code> 目录用于存放项目文件，然后使用 <code>homestead up</code> 命令启动虚拟机：</p>
+<pre>E:&gt; mkdir Code 
+E:&gt; homestead up 
+Bringing machine 'default' up with 'virtualbox' provider... 
+==&gt; default: Checking if box 'laravel/homestead' is up to date...</pre>
+<p>如果启动过程中出现报错信息：</p>
+<pre>There was an error while executing `VBoxManage`, a CLI used by Vagrant
+for controlling VirtualBox. The command and stderr is shown below.
+
+Command: ["hostonlyif", "create"]
+
+Stderr: 0%...
+Progress state: E_FAIL
+VBoxManage.exe: error: Failed to create the host-only adapter
+VBoxManage.exe: error: Code E_FAIL (0x80004005) - Unspecified error (extended in
+fo not available)
+VBoxManage.exe: error: Context: "int __cdecl handleCreate(struct HandlerArg *,in
+t,int *)" at line 66 of file VBoxManageHostonly.cpp
+</pre>
+<p>解决办法参考：<a href="../../post/354.html#ipt_kb_toc_354_5" target="_blank">在 Windows 上进行 Laravel Homestead 安装、配置及测试</a></p>
+<p>现在 Homestead 虚拟机已经运行起来了，如果你关闭这个 Windows 命令行窗口，虚拟机仍然在后台运行，除非你在命令行中运行 <code>homestead halt</code> 命令才会关闭虚拟机。</p>
+<p>你可以登录到 Homestead 虚拟机，但是在 Windows 系统中不能使用 <code>homestead ssh</code>，这里我们借助第三方软件 PuTTY 来登录到虚拟机。</p>
+<h3 id="toc_18"><strong>8、使用 PuTTY 登录到 Homestead</strong></h3>
+<p>Windows 系统并没有内置 SSH 客户端软件，因此我们需要下载一个并安装，推荐使用 PuTTY 通过 SSH 登录到虚拟机。</p>
+<p><strong>下载并安装 PuTTY</strong></p>
+<p>下载<a href="http://the.earth.li/~sgtatham/putty/latest/x86/putty-0.63-installer.exe" target="_blank">putty安装器</a>，运行这个安装文件，一路使用默认设置即可。</p>
+<p><strong>保存 SSH Key</strong></p>
+<p>接下来在 Windows 开始菜单中找到 PuTTYgen 并点击运行，选择 Conversions 菜单然后点击 Import Key，进入之前设置 SSH Key 时<code>id_rsa</code>文件所在目录并选择该文件，然后点击“Save private key”按钮。如果你想要保存不带密码的key，在同一目录下选择 <code>id_rsa.ppk</code> 即可。</p>
+<p><strong>设置 Homestead PuTTY 会话</strong></p>
+<p>启动 PuTTY 并设置 <code>Connection->SSH->Auth</code> 私有 key 为刚刚创建的<code>id_rsa.ppk</code>，设置当前会话的主机名为 <code>vagrant@127.0.0.1</code>，端口为2222，保存当前会话名为 <code>homestead</code> ：</p>
+<p><img class="alignnone size-full wp-image-2169" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-25_001103.jpg" alt="使用PuTTY登录到Homestead" width="452" height="437" /></p>
+<p>首次运行该会话的时候会弹出一个确认会话框，但之后登录到 Homestead 虚拟机就不再需要输入密码。</p>
+<p>你还可以在桌面上创建一个该会话的快捷方式，该快捷方式链接指向<code>"C:\Program Files (x86)\PuTTY\Putty.exe" -load homestead</code>，我们将其命名为 Homestead。</p>
+<p><strong>修改 PuTTY 的字体</strong></p>
+<p>PuTTY 的默认字体是 <code>Courier New</code>，在我看来很丑，可以到 PuTTY 的 <code>Windows->Appearance</code> 配置中修改字体、尺寸和颜色等：</p>
+<p><img class="alignnone size-full wp-image-2170" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-25_001322.jpg" alt="修改PuTTY字体、颜色、尺寸" width="452" height="437" /></p>
+<p><strong>通过 PuTTY 连接到 Homestead</strong></p>
+<p>运行刚刚在 PuTTY 创建的 <code>homestead</code> 会话，登录到 Homestead 后界面显示如下：</p>
+<pre>Using username "vagrant". 
+Authenticating with public key "imported-openssh-key" 
+Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.13.0-24-generic x86_64) 
+
+* Documentation: https://help.ubuntu.com/ 
+Last login: Tue Nov 24 15:46:46 2015 
+vagrant@homestead:~$</pre>
+<h3 id="toc_19"><strong>9、安装 Laravel 安装器</strong></h3>
+<p>最后一步我们将会 Windows 上安装 Laravel 安装器。</p>
+<p>还是使用 Composer 安装：</p>
+<pre>C:\Users\LaravelAcademy&gt; composer global require "laravel/installer=~1.1" 
+Changed current directory to C:\Users/LaravelAcademy/AppData/Roaming/Composer 
+./composer.json has been updated 
+Loading composer repositories with package information 
+Updating dependencies (including require-dev)
+ - Installing guzzlehttp/promises (1.0.3)
+ Downloading: 100%
+
+ - Installing psr/http-message (1.0)
+ Downloading: 100%
+
+ - Installing guzzlehttp/psr7 (1.2.1)
+ Downloading: 100%
+
+ - Installing guzzlehttp/guzzle (6.1.1)
+ Downloading: 100%
+
+ - Installing laravel/installer (v1.2.2)
+ Downloading: 100%
+
+Writing lock file 
+Generating autoload files</pre>
+<p>由于我们在之前已经设置过了系统变量，这里 <code>laravel</code> 命令可以直接从命令行中运行，我们可以查看其版本：</p>
+<p><img class="alignnone size-full wp-image-2171" src="https://static.laravelacademy.org/wp-content/uploads/2015/11/2015-11-25_002258.jpg" alt="查看Laravel安装器版本" width="385" height="41" /></p>
+<p>好了，至此我们已经迈出了万里长征第一步 —— 成功在 Windows 上安装并设置好了本地开发环境，这将为我们后续使用 Laravel 5.1 开发博客应用打下坚实基础。</p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/blog" rel="category tag">
+                博客系列
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E5%AE%89%E8%A3%85" rel="tag">安装</a>
+                                    ,
+                                            <a href="../tags/Composer" rel="tag">Composer</a>
+                                    ,
+                                            <a href="../tags/Homestead" rel="tag">Homestead</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83" rel="tag">开发环境</a>
+                                    ,
+                                            <a href="../tags/Gulp" rel="tag">Gulp</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/Node.js" rel="tag">Node.js</a>
+                                    ,
+                                            <a href="../tags/SSH" rel="tag">SSH</a>
+                                    ,
+                                            <a href="../tags/Windows" rel="tag">Windows</a>
+                                    ,
+                                            <a href="../tags/PHP" rel="tag">PHP</a>
+                                    ,
+                                            <a href="../tags/博客" rel="tag">博客</a>
+                                    ,
+                                            <a href="../tags/Bower" rel="tag">Bower</a>
+                                    ,
+                                            <a href="../tags/Git" rel="tag">Git</a>
+                                    ,
+                                            <a href="../tags/Putty" rel="tag">Putty</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;13 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="2124" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="2124" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;13 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="2116.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel 开发博客应用系列 —— 项目必备软件安装
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="2177.html" rel="next">
+                基于 Laravel 开发博客应用系列 —— 设置 Linux/Mac 本地开发环境
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117247</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        47 条回复
+    </h4>
+
+    <ol class="comment-list">
+            <li id="comment-9777" class="comment even thread-even depth-1">
+            <article id="div-comment-9777" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='王一帅' src='https://www.gravatar.com/avatar/bdbfd7a041156d08a9dcfab03e8ddbed?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            王一帅
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        个人认为是因为这个homestead版本太老了，只能支持php5，我尝试了好多次也是这样，最后在homestead的github页面看到版本到了7.4.0,然后尝试将=~2.0改成7.0，结果完美
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="9777"  aria-label='回复王一帅...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-04-25T23:42:42+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-04-25 23:42:42
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9777" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9403" class="comment even thread-even depth-1">
+            <article id="div-comment-9403" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='mark' src='https://www.gravatar.com/avatar/5504169b02f80aecc41eae8f0ee41ec2?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            mark
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我也遇到这个问题，你怎么解决的？
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="9403"  aria-label='回复mark...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-03-19T14:16:29+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-03-19 14:16:29
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9403" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-9000" class="comment even thread-even depth-1">
+            <article id="div-comment-9000" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='蒋勇' src='https://www.gravatar.com/avatar/774f2ac7b04afbf7c35c880bcd556fbc?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            蒋勇
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学源君，你好，我安装好了homestead 并配置了环境变量之后，在本地window 命令行输入homestead --version 后报错如下
+PHP Fatal error: Cannot redeclare static Symfony\Componet\Console\Command\Command::$defaultName as non static Laravel\Homestead\MakeCommand::$defaultName in C:\User\Adminstrator\AppData\Roaming\Composer\vendor\laravel\homestead\src\MakeCommand.php on line 155
+从字面上是$defautlName重新定义了，然后我去找了相关代码进行修改，能有输出，但是会产生一些列的notice报错，我想这个是不是下载的问题
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="9000"  aria-label='回复蒋勇...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-01-07T10:28:08+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-01-07 10:28:08
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="9000" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8999" class="comment even thread-even depth-1">
+            <article id="div-comment-8999" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='蒋勇' src='https://www.gravatar.com/avatar/774f2ac7b04afbf7c35c880bcd556fbc?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            蒋勇
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        学院君，你好，我安装了homestead,并配置了环境变量之后，本地window 命令行 输入homestead --version 的时候报错
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="8999"  aria-label='回复蒋勇...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2018-01-07T10:23:33+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2018-01-07 10:23:33
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8999" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-8385" class="comment even thread-even depth-1">
+            <article id="div-comment-8385" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='ctt' src='https://www.gravatar.com/avatar/343ce1d530cb632edd28a6db06e2d902?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            ctt
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        修改了php.ini  查看php版本为什么会报php不是内部或外部命令，也不是可运行的程序或批处理文件的错啊 小白 求问
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="8385"  aria-label='回复ctt...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-09-27T13:16:01+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-09-27 13:16:01
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="8385" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7383" class="comment even thread-even depth-1">
+            <article id="div-comment-7383" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='zyd' src='https://www.gravatar.com/avatar/017556a776e36345012bc456e9322abd?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            zyd
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我在linux各种装完情况下，重装win7安装，网上查看是有因为cpu没有vt-x，不支持；准备找一台有的电脑试一下；
+查看cpu是否支持，是在bios里的advanced 查看cpu配置可以看到
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="7383"  aria-label='回复zyd...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-05-01T21:50:58+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-05-01 21:50:58
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7383" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-7206" class="comment even thread-even depth-1">
+            <article id="div-comment-7206" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='王亮亮' src='https://www.gravatar.com/avatar/ab5aff212d34d55827f9e8e35d8b40ef?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            王亮亮
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    焦炭君
+                                                                最后你们是怎么解决的,我也是报这个错误
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="7206"  aria-label='回复王亮亮...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2017-04-05T10:18:18+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2017-04-05 10:18:18
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="7206" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-6294" class="comment even thread-even depth-1">
+            <article id="div-comment-6294" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='X ~' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            X ~
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                            @
+                                                    saint
+                                                                我也报了类似的错误
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="6294"  aria-label='回复X ~...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-12-17T14:10:16+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-12-17 14:10:16
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="6294" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-6127" class="comment even thread-even depth-1">
+            <article id="div-comment-6127" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Lawson_Lao' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Lawson_Lao
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        各种报错这是什么鬼教程C:Userslao&gt;homestead upBringing machine 'default' up with 'virtualbox' provider...==&gt; default: Importing base box 'laravel/homestead'...[K==&gt; default: Matching MAC address for NAT networking...==&gt; default: Setting the name of the VM: homestead==&gt; default: Clearing any previously set network interfaces...==&gt; default: Destroying VM and associated drives...D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/driver/version_5_1.rb:381:in `split': invalid byte sequence in UTF-8 (ArgumentError)        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/driver/version_5_1.rb:381:in `read_bridged_interfaces'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/network.rb:275:in `hostonly_config'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/network.rb:90:in `block in call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/network.rb:83:in `each'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/network.rb:83:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/clear_network_interfaces.rb:26:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/prepare_nfs_settings.rb:18:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/synced_folders.rb:87:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/synced_folder_cleanup.rb:28:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/synced_folders/nfs/action_cleanup.rb:19:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/prepare_nfs_valid_ids.rb:12:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/handle_forwarded_port_collisions.rb:49:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/prepare_forwarded_port_collision_params.rb:30:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/env_set.rb:19:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/provision.rb:80:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/clear_forwarded_ports.rb:15:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/set_name.rb:50:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/clean_machine_folder.rb:17:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/check_accessible.rb:18:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:95:in `block in finalize_action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builder.rb:116:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `block in run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/util/busy.rb:19:in `busy'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/call.rb:53:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:95:in `block in finalize_action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builder.rb:116:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `block in run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/util/busy.rb:19:in `busy'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/call.rb:53:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:95:in `block in finalize_action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builder.rb:116:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `block in run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/util/busy.rb:19:in `busy'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/call.rb:53:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/box_check_outdated.rb:36:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/config_validate.rb:25:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/check_virtualbox.rb:17:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:95:in `block in finalize_action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/match_mac_address.rb:19:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/discard_state.rb:15:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/import.rb:74:in `import'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/import.rb:13:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/prepare_clone_snapshot.rb:17:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/prepare_clone.rb:15:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/customize.rb:40:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/check_accessible.rb:18:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:95:in `block in finalize_action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builder.rb:116:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `block in run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/util/busy.rb:19:in `busy'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/call.rb:53:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/config_validate.rb:25:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:95:in `block in finalize_action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/handle_box.rb:56:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:95:in `block in finalize_action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builder.rb:116:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `block in run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/util/busy.rb:19:in `busy'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builtin/call.rb:53:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/plugins/providers/virtualbox/action/check_virtualbox.rb:17:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/warden.rb:34:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/builder.rb:116:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `block in run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/util/busy.rb:19:in `busy'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/action/runner.rb:66:in `run'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/machine.rb:225:in `action_raw'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/machine.rb:200:in `block in action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/environment.rb:567:in `lock'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/machine.rb:186:in `call'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/machine.rb:186:in `action'        from D:/HashiCorp/Vagrant/embedded/gems/gems/vagrant-1.9.0/lib/vagrant/batch_action.rb:82:in `block (2 levels) in run'
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="6127"  aria-label='回复Lawson_Lao...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-12-05T11:54:29+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-12-05 11:54:29
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="6127" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+            <li id="comment-6120" class="comment even thread-even depth-1">
+            <article id="div-comment-6120" class="comment-body panel panel-default">
+                <div class="panel-heading comment-meta">
+                    <div class="comment-author vcard pull-left">
+                        <img alt='Lawson_Lao' src='https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=32&amp;d=retro&amp;r=g' class='avatar avatar-32 photo' height='32' width='32' />
+                        <cite class="fn">
+                                                            Lawson_Lao
+                                                    </cite>
+                        <span class="says">says:</span>
+                    </div><!-- .comment-author -->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="comment-content panel-body">
+                                        我下载最新的virtualbox.box 并且修改安装①config.vm.box_version = settings["version"] ||= "&gt;= 0.4.0"②To circumvent around this you could create a metadata.json file locally in the same directory as your downloaded box file. e.g:{    "name": "laravel/homestead",    "versions": [{        "version": "0.4.0",        "providers": [{            "name": "virtualbox",            "url": "file://homestead.box"        }]    }]}Then run vagrant box add metadata.json然后执行启动命令homestead up时候报错G:boxes&gt;homestead upBringing machine 'default' up with 'virtualbox' provider...==&gt; default: Importing base box 'laravel/homestead'...[K==&gt; default: Matching MAC address for NAT networking...==&gt; default: Checking if box 'laravel/homestead' is up to date...==&gt; default: There was a problem while downloading the metadata for your box==&gt; default: to check for updates. This is not an error, since it is usually due==&gt; default: to temporary network problems. This is just a warning. The problem==&gt; default: encountered was:==&gt; default:==&gt; default: Couldn't open file /boxes/metadata.json==&gt; default:==&gt; default: If you want to check for box updates, verify your network connection==&gt; default: is valid and try again.==&gt; default: Setting the name of the VM: homestead==&gt; default: Clearing any previously set network interfaces...==&gt; default: Destroying VM and associated drives...求原因
+                </div>
+
+                <div class="panel-footer">
+                    <div class="pull-right">
+                        <div class="reply text-right">
+                            <a rel='nofollow' class='comment-reply-link btn btn-info btn-sm' href='2124.html#respond' data-id="6120"  aria-label='回复Lawson_Lao...'>
+                                <i class="glyphicon ipt-icon-reply"></i>&nbsp;&nbsp;回复
+                            </a>
+                        </div>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="2016-12-04T23:48:11+08:00">
+                            <i class="glyphicon glyphicon-calendar"></i>&nbsp;&nbsp;2016-12-04 23:48:11
+                        </time>
+                        <span class="vote-link" style="margin-left: 10px;">
+                                                            <i class="glyphicon ipt-icon-thumbs-up"></i>
+                                <a class="comment-vote-link" href="javascript:void(0);" data-itemid="6120" data-itemtype="App\Models\Comment">
+                                    感谢
+                                </a>
+                                                        (<span class="comment-vote-num">0</span>)
+                        </span>
+                                            </div><!-- .comment-metadata -->
+                    <div class="clearfix"></div>
+                </div>
+            </article><!-- .comment-body -->
+        </li><!-- #comment-## -->
+        </ol><!-- .comment-list -->
+
+    <ul class="pagination" role="navigation">
+        
+                    <li class="page-item disabled" aria-disabled="true" aria-label="&laquo; Previous">
+                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+            </li>
+        
+        
+                    
+            
+            
+                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2124.html/page/2#comments">2</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2124.html/page/3#comments">3</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2124.html/page/4#comments">4</a></li>
+                                                                                <li class="page-item"><a class="page-link" href="http://laravelacademy.org/index.php/post/2124.html/page/5#comments">5</a></li>
+                                                        
+        
+                    <li class="page-item">
+                <a class="page-link" href="http://laravelacademy.org/index.php/post/2124.html/page/2#comments" rel="next" aria-label="Next &raquo;">&rsaquo;</a>
+            </li>
+            </ul>
+
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="2124.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='2124' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="2124.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="2124.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        1、安装原生PHP
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        下载/解压 PHP
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        编辑 php.ini
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        添加E:\Php到用户变量
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        2、安装 Node.js
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        全局安装gulp
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        全局安装bower
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        3、安装Composer
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        4、安装GIT并设置SSH Key
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        安装Git
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        设置SSH Key
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_11">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        5、添加 Homestead Vagrant 盒子
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_12">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        6、安装 Homestead
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_13">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        使用 Composer 安装
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_14">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        更新系统变量
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_15">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        验证Homestead安装
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_16">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        初始化 Homestead
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_17">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        7、启动 Homestead VM
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_18">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        8、使用 PuTTY 登录到 Homestead
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="2124.html#toc_19">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        9、安装 Laravel 安装器
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="354.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        在 Windows 上进行 Laravel Homestead 安装、配置及测试
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2177.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel 开发博客应用系列 —— 设置 Linux/Mac 本地开发环境
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2299.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于Laravel开发博客应用系列 —— 使用Bower+Gulp集成前端资源
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7754.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 快速入门 —— 使用 Laragon 在 Windows 中搭建 Laravel 开发环境
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8671.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 快速入门 —— 重量级开发环境：Homestead
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

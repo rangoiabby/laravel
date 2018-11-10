@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            赵成的运维体系管理课学习笔记系列（一） —— 基础设施篇 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9489.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9489.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9489.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9489.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9489.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../resources.1">
+                资源
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../notebook">
+                读书笔记
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">赵成的运维体系管理课学习笔记系列（一） —— 基础设施篇</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">赵成的运维体系管理课学习笔记系列（一） —— 基础设施篇</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9489.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-07-31T23:45:58+08:00">2018-07-31</time>
+                    <time class="updated" datetime="2018-08-03T14:08:11+08:00">2018-08-03 14:08:11</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                1040 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <blockquote>
+<p>本系列教程是学院君在极客时间学习<a href="https://time.geekbang.org/column/63">赵成的运维体系管理课</a>记录的学习笔记，希望对有这方面需求的同学有所启发，如果想要深入了解细节可以去极客时间订阅该专栏。作者介绍：赵成，美丽联合集团技术服务经理。</p>
+</blockquote>
+<h3 id="toc_0">为什么 Netflix 没有运维岗</h3>
+<p><strong>相关术语</strong></p>
+<ul>
+<li>SRE: Site Reliability Engineer 系统可用性工程师</li>
+<li>DevOps: You build it, you run it.</li>
+</ul>
+<p>用软件工程的方法重新设计和定义运维工作</p>
+<ul>
+<li>启示一：微服务架构模式下，我们必须换一个思路来重新定义和思考运维；</li>
+<li>启示二：合理的组织架构是保障技术架构落地的必要条件；</li>
+<li>启示三：Freedom &amp; Responsibility，Owner意识很重要。</li>
+</ul>
+<h3 id="toc_1">运维体系建设要以“应用”为核心</h3>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/f89ca67b90fc7f950fc31795200016af.jpg" alt="运维体系建设" /></p>
+<p>以 AppName 贯穿整个生命周期：应用业务模型（开发）-&gt;应用管理模型（上线）-&gt;应用所需基础设施：基础设施（服务器、IP、DNS）和组件（数据库、缓存、消息队列等）。</p>
+<h3 id="toc_2">建立应用标准化体系和模型</h3>
+<p>标准化的过程实际上就是对运维对象的识别和建模过程，标准化的套路：</p>
+<ul>
+<li>第一步，识别对象；</li>
+<li>第二步，识别对象属性；</li>
+<li>第三步，识别对象关系；</li>
+<li>第四步，识别对象场景。</li>
+</ul>
+<p><strong>基础设施层面的标准化</strong></p>
+<ul>
+<li>第一步，识别实体对象，主要有服务器、网络、IDC、机柜、存储、配件等。</li>
+<li>第二步，识别对象的属性，比如服务器就会有 SN 序列号、IP 地址、厂商、硬件配置（如 CPU、内存、硬盘、网卡、PCIE、BIOS）、维保信息等；网络设备如交换机也会有厂商、型号、带宽等信息。</li>
+<li>第三步，识别对象之间的关联关系，比如服务器所在的机柜，虚拟机所在的宿主机、机柜所在 IDC 等简单关系；复杂一点就会有核心交换机、汇聚交换机、接入交换机以及机柜和服务器之间的级联关系等，这些相对复杂一些，也就是我们常说的网络拓扑关系。</li>
+<li>第四步，还是以服务器为例，我们针对服务器的日常操作有采购、入库、安装、配置、上线、下线、维修等等。另外，可能还会有可视化和查询的场景，如拓扑关系的可视化和动态展示，交换机与服务器之间的级联关系、状态（正常 or 故障）的展示等，这样可以很直观地关注到资源节点的状态。</li>
+</ul>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/49ff8f4ea50f8c894221919ab8011740.jpg" alt="基础设施层面的标准化" /></p>
+<p><strong>应用层面的标准化</strong></p>
+<ul>
+<li>第一步，识别对象：应用</li>
+<li>第二步，识别对象属性。包括业务属性和运维属性，我们重点关注运维属性：应用元数据属性（应用名称、负责人、所属业务等）、应用代码属性（语言、仓库等）、应用部署模式、应用目录信息、应用运行脚本、应用运行时的参数配置</li>
+<li>第三步，识别对象关系：应用与基础设施的关系、平行层面的应用与应用之间的关系、应用与各类基础组件之间的关系</li>
+<li>第四步，识别应用的运维场景：应用创建、持续集成、持续发布、扩容、缩容、监控等；再复杂点的比如容量评估、压测、限流降级等</li>
+</ul>
+<h3 id="toc_3">建立基础架构标准化及服务化体系</h3>
+<p><strong>常见的分布式基础架构组件</strong></p>
+<ul>
+<li>分布式服务化框架，业界开源产品比如 Dubbo、Spring Cloud 这样的框架；</li>
+<li>分布式缓存及框架，业界如 Redis、Memcached，框架如 Codis 和 Redis Cluster；</li>
+<li>数据库及分布式数据库框架，这两者是密不可分的，数据库如 MySQL、MariaDB 等，中间件如淘宝 TDDL（现在叫 DRDS）、Sharding-JDBC 等。当前非常火热的 TiDB，就直接实现了分布式数据库的功能，不再额外选择中间件框架；</li>
+<li>分布式的消息中间件，业界如 Kafka、RabbitMQ、ActiveMQ 以及 RocketMQ 等；</li>
+<li>前端接入层部分，如四层负载 LVS，七层负载 Nginx 或 Apache，再比如硬件负载 F5 等。</li>
+</ul>
+<p><strong>基础架构组件的选型问题</strong></p>
+<p>按正常的思路，一定是先组织选型调研，然后进行方案验证和对比，最后确认统一的解决方案。</p>
+<p>对基础架构有统一的规划和建设。原则上，每种基础组件只允许一种选型，至少就能满足 90% 甚至更多的应用场景。</p>
+<p><strong>基础架构的服务化</strong></p>
+<p>我们对基础架构组件做了统一标准之后，下一步要做的就是服务化。因为这些组件都只提供了简单的维护功能，还有很多都是命令行层面的维护，这时我们要做的就是把这些组件提供的维护 API 进行封装，以提供更加便捷的运维能力，基于这些原生能力进行封装，结合运维场景，将能力服务化，这样就大大提升了使用方的便利性。</p>
+<p>同时，我们也可以看到，这个服务化的过程其实就是 PaaS 化的过程。换言之，如果我们能把基础架构组件服务化完成，我们的 PaaS 平台也就基本成型了。</p>
+<p><strong>运维的职责是什么？</strong></p>
+<p>总结上面的过程，我们要做的事情，可以归纳为两步：第一步是基础架构标准化，第二步是基础架构服务化。所以这个时候，运维必须要有意识去做的两件事情：</p>
+<ul>
+<li>参与制定基础架构标准，并强势地约束；</li>
+<li>基础架构的服务化平台开发，目标是平台自助化，让开发依赖平台的能力自助完成对基础组件的需求，而不是依赖运维的人。</li>
+</ul>
+<h3 id="toc_4">从生命周期的角度看应用运维体系建设</h3>
+<p>对应用的生命周期阶段进行分解，大致分为五个部分，应用的创建阶段、研发阶段、上线阶段、运行阶段和销毁阶段：</p>
+<ul>
+<li>应用创建阶段：这个阶段，最重要的工作，是确认应用的基础信息和与基础服务的关系，要同时固化下来，从应用创建之初，就将应用与各类基础服务的生命周期进行挂钩。另外一个很重要的工作，就是要开启与应用相关的各类基础服务的生命周期（队列、DB、缓存等）。</li>
+<li>应用研发阶段：主要是业务逻辑实现、验证和测试的阶段。我们要做的最重要的一个事情，就是为研发团队打造完善的持续集成体系和工具链支持。</li>
+<li>应用上线阶段：这是个过渡阶段，从应用创建过渡到线上运行。</li>
+<li>应用运行阶段：这是应用生命周期中最重要、最核心的阶段。从运维角度来看，这个阶段应用最重要的属性就是应用本身以及相关联的基础服务的各项运行指标（监控、报警）；从业务角度看，业务需求是在不断变化和迭代的，所以就需要不断地去迭代更新我们的线上应用；从运行阶段应用的关系看，除了它跟基础服务之间相对固化的关系外，应用跟应用、以及应用包含的服务之间的调用关系也非常重要，而且这个关系可能随时都在变化，这个时候，我们应用之间依赖管理和链路跟踪的场景就出现了。同时，应用线上运行还会面临外部业务量的各种异常变化，以及应用自身所依赖的基础设施、基础服务以及应用服务的各种异常状况（如双十一）。</li>
+<li>应用销毁阶段：如果应用的业务职责不存在了，应用就可以下线销毁了。执行应用的销毁这一步动作，其实是取决于最前面应用与基础服务的关系模型分析和建设是否做得足够到位。</li>
+</ul>
+<p>做运维架构的切入点套路：从生命周期入手，划分阶段，提炼属性，理清关系，固化基础信息，实现运维场景。</p>
+<h3 id="toc_5">CMDB的前世今生</h3>
+<p>当我们识别出运维对象和对象间的关系，并形成了统一的标准之后，接下来要做的事情就是将这些标准固化，固化到某个信息管理平台中，也就是我们常说的配置管理，专业一点就叫作 CMDB（Configuration Management DataBase）。</p>
+<p>CMDB 并不是一个新概念，它源于上世纪八十年代的 ITIL（Information Technology Infrastructure Library，信息技术基础架构库）。</p>
+<p>从传统 IT 运维的角度来看，运维的核心对象是资源层面。所谓的基础架构也就是网络设备和硬件设备这个层面；各种关联和拓扑关系，基本也是从服务器的视角去看。所以更多地，我们是把 CMDB 建设成为一个以设备为中心的信息管理平台。</p>
+<p>传统运维思路下的 CMDB，因为管理范围有限，可以定义为狭义上的 CMDB；而互联网运维思路下的 CMDB 外延更广，我们称它为广义的 CMDB。此时的 CMDB，仍然可以叫做配置管理数据库，但是这个配置管理的外延已经发生了很大的变化。之前所指的简单的硬件资源配置管理，只能算是狭义的理解；从广义上讲，当前的应用以及以应用为核心的分布式服务化框架、缓存、消息、DB、接入层等基础组件，都应该纳入这个配置管理的范畴，尤其是云计算的兴起，我们对硬件基础设施的关注越来越低。</p>
+<h3 id="toc_6">应用配置管理</h3>
+<p>CMDB 是面向资源的管理，应用配置是面向应用的管理。</p>
+<p>CMDB 是面向资源的管理，是运维的基石：</p>
+<ul>
+<li>第 1 步，把服务器、网络、IDC、机柜、存储、配件等这几大维度先定下来；</li>
+<li>第 2 步，把这些硬件的属性确定下；</li>
+<li>第 3 步，梳理以上信息之间的关联关系，或者叫拓扑关系；</li>
+<li>第 4 步，基于这些信息进行流程规范的建设，比如服务器的上线、下线、维修、装机等流程；</li>
+<li>第 5 步，拓扑关系的可视化和动态展示</li>
+</ul>
+<p>应用配置管理是面向应用的管理，是运维的核心：</p>
+<ul>
+<li>CMDB 是 IP 为标识的资源管理维度，有了应用名之后，就是以应用为视角的管理维度了。</li>
+<li>按照上面 CMDB 说的套路，梳理应用属性和IP映射关系后，就是要进行信息的建模和数据的固化，这时就有了我们的“应用配置管理”；</li>
+<li>再往后，就是基于应用配置管理的流程规范和工具平台的建设，这就涉及到我们经常说的持续集成和发布、持续交付、监控、稳定性平台、成本管理等等。</li>
+</ul>
+<p>有了资源配置信息和应用配置信息，这两个信息就可以统一管理起来：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/2cd7d2b7d932ba2b195106cac17ab6d7.jpg" alt="应用配置管理" /></p>
+<h3 id="toc_7">如何在CMDB中落地应用</h3>
+<p><strong>如何有效组织和管理应用</strong></p>
+<p>服务树</p>
+<p>业务架构决定了技术架构，而技术架构又决定了一个研发团队的组织架构</p>
+<p>运维能力的体现，一定是整体技术架构能力的体现，割裂两者单独去看，都是没有意义的</p>
+<p><strong>应用的集群服务分组建设</strong></p>
+<p>为什么分组？</p>
+<p>场景一：多环境问题：开发、测试、预发、线上</p>
+<p>场景二：多 IDC 问题</p>
+<p>场景三：多服务分组问题：</p>
+<ul>
+<li>核心应用和非核心应用：静态</li>
+<li>场景因素决定：动态（如秒杀、大促）</li>
+</ul>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/b513cd833cee0f2cbf580dfd0fb171ce.jpg" alt="应用的集群服务分组建设" /></p>
+<p>「应用 - 分组 - 资源」这个信息是 CMDB 中最为关键和核心的信息</p>
+<p><strong>CMDB 在基础服务体系中的核心位置</strong></p>
+<ul>
+<li>监控系统</li>
+<li>发布系统</li>
+<li>服务化框架</li>
+<li>基础服务（数据库、缓存、队列）</li>
+<li>服务治理平台（降级、限流、开关）</li>
+</ul>
+<p>以上都要用到「应用 - 分组 - 资源」映射信息：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/07/11c998f7d88629a03c56564c2ea6b3a0.jpg" alt="应用-分组-资源映射信息" /></p>
+<h3 id="toc_8">如何打造运维组织架构</h3>
+<p><strong>Netflix 给我们的启示</strong></p>
+<p>在提供基础服务能力的同时，提供对应的自助化运维能力。</p>
+<p>做好运维和整个技术架构体系的融合，一定不要割裂两者。同时，还要注意不仅仅是促进组织架构层面的融合，最重要的是要促进职能协作上的融合。</p>
+<p><strong>从价值呈现的角度看运维</strong></p>
+<p>效率、稳定、成本</p>
+<ul>
+<li>运维基础平台体系建设</li>
+<li>分布式中间件的服务化建设</li>
+<li>持续交付体系建设</li>
+<li>稳定性体系建设</li>
+<li>技术运营体系建设</li>
+</ul>
+<p><strong>运维的组织架构</strong></p>
+<ul>
+<li>基础运维，包括 IDC 运维、硬件运维、系统运维以及网络运维；</li>
+<li>应用运维，主要是业务和基础服务层面的稳定性保障和容量规划等工作；</li>
+<li>数据运维，包括数据库、缓存以及大数据的运维；</li>
+<li>运维开发，主要是提供效率和稳定性层面的工具开发。</li>
+</ul>
+<hr />
+<p>本系列教程导航索引：</p>
+<ul>
+<li>赵成的运维体系管理课学习笔记系列（一） —— 基础设施篇</li>
+<li><a href="9490.html">赵成的运维体系管理课学习笔记系列（二） —— 持续交付篇</a></li>
+<li><a href="9491.html">赵成的运维体系管理课学习笔记系列（三） —— 云计算篇</a></li>
+<li><a href="9492.html">赵成的运维体系管理课学习笔记系列（四） —— 稳定性实践篇</a></li>
+<li><a href="9493.html">赵成的运维体系管理课学习笔记系列（五） —— 故障管理篇</a></li>
+</ul>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../resources/notebook" rel="category tag">
+                读书笔记
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/运维" rel="tag">运维</a>
+                                    ,
+                                            <a href="../tags/CMDB" rel="tag">CMDB</a>
+                                    ,
+                                            <a href="../tags/Devops" rel="tag">Devops</a>
+                                    ,
+                                            <a href="../tags/生命周期" rel="tag">生命周期</a>
+                                    ,
+                                            <a href="../tags/基础设施" rel="tag">基础设施</a>
+                                    ,
+                                            <a href="../tags/标准化" rel="tag">标准化</a>
+                                    ,
+                                            <a href="../tags/分布式架构" rel="tag">分布式架构</a>
+                                    ,
+                                            <a href="../tags/服务化" rel="tag">服务化</a>
+                                    ,
+                                            <a href="../tags/应用" rel="tag">应用</a>
+                                    ,
+                                            <a href="../tags/应用配置" rel="tag">应用配置</a>
+                                    ,
+                                            <a href="../tags/Netflix" rel="tag">Netflix</a>
+                                    ,
+                                            <a href="../tags/组织架构" rel="tag">组织架构</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9489" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9489" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                        <li class="nav-next next">
+            <a href="9490.html" rel="next">
+                赵成的运维体系管理课学习笔记系列（二） —— 持续交付篇
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9489.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9489' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9489.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9489.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        为什么 Netflix 没有运维岗
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        运维体系建设要以“应用”为核心
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        建立应用标准化体系和模型
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        建立基础架构标准化及服务化体系
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        从生命周期的角度看应用运维体系建设
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        CMDB的前世今生
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        应用配置管理
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        如何在CMDB中落地应用
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9489.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        如何打造运维组织架构
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="9062.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        2018 年 Web 开发工程师学习进阶路线图
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9490.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        赵成的运维体系管理课学习笔记系列（二） —— 持续交付篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9491.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        赵成的运维体系管理课学习笔记系列（三） —— 云计算篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9492.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        赵成的运维体系管理课学习笔记系列（四） —— 稳定性实践篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9493.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        赵成的运维体系管理课学习笔记系列（五） —— 故障管理篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

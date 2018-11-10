@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            [ Laravel 5.7 文档 ] 基础组件 —— HTTP 请求 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9542.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9542.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature.1">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9542.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9542.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools.1">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9542.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../docs">
+                文档
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../laravel-5_7">
+                Laravel 5.7
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">[ Laravel 5.7 文档 ] 基础组件 —— HTTP 请求</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">[ Laravel 5.7 文档 ] 基础组件 —— HTTP 请求</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9542.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-08-30T23:27:37+08:00">2018-08-30</time>
+                    <time class="updated" datetime="2018-08-31T10:45:25+08:00">2018-08-31 10:45:25</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                2586 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <h3 id="toc_0">访问请求实例</h3>
+<p>在控制器中获取当前 HTTP 请求实例，需要在构造函数或方法中对 <code>Illuminate\Http\Request</code> 类进行依赖注入，这样当前请求实例会被<a href="../../post/9534.html">服务容器</a>自动注入：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    /**
+     * 存储新用户
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $name = $request-&gt;input('name');
+
+        //
+    }
+}</code></pre>
+<p><strong>依赖注入 &amp; 路由参数</strong></p>
+<p>如果还期望在控制器方法中获取路由参数，只需要将路由参数置于其它依赖之后即可，例如，如果你的路由定义如下：</p>
+<pre><code>Route::put('user/{id}','UserController@update');</code></pre>
+<p>你仍然可以对 <code>Illuminate\Http\Request</code> 进行依赖注入并通过如下方式定义控制器方法来访问路由参数 <code>id</code>：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    /**
+     * 更新指定用户
+     *
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+}</code></pre>
+<p><strong>通过路由闭包访问请求</strong></p>
+<p>还可以在路由闭包中注入 <code>Illuminate\Http\Request</code>，在执行闭包函数的时候服务容器会自动注入输入请求：</p>
+<pre><code>use Illuminate\Http\Request;
+
+Route::get('/', function (Request $request) {
+    //
+});</code></pre>
+<h4 id="toc_1">请求路径 &amp; 方法</h4>
+<p><code>Illuminate\Http\Request</code> 继承自 <code>Symfony\Component\HttpFoundation\Request</code> 类，提供了多个方法来检测应用的 HTTP 请求，下面我们来演示其提供的一些获取请求路径和请求方式的方法：</p>
+<p><strong>获取请求路径</strong></p>
+<p><code>path</code> 方法将会返回请求的路径信息，因此，如果请求URL是 <code>http://domain.com/user/1</code>，则 <code>path</code> 方法将会返回 <code>user/1</code>：</p>
+<pre><code>$path = $request-&gt;path();</code></pre>
+<p><code>is</code> 方法允许你验证请求路径是否与给定模式匹配。该方法参数支持 <code>*</code> 通配符：</p>
+<pre><code>if($request-&gt;is('user/*')){
+    //
+}</code></pre>
+<p>如果请求URL是 <code>http://domain.com/user/1</code>，该方法会返回 <code>true</code>。</p>
+<p><strong>获取请求 URL</strong></p>
+<p>想要获取完整的 URL，而不仅仅是路径信息，可以使用请求实例提供的 <code>url</code> 或 <code>fullUrl</code> 方法， <code>url</code> 方法返回不带查询字符串的 URL，而 <code>fullUrl</code> 方法返回结果则包含查询字符串：</p>
+<pre><code>// 不包含查询字符串
+$url = $request-&gt;url();
+
+// 包含查询字符串
+$url_with_query = $request-&gt;fullUrl();</code></pre>
+<p>例如，我们请求 <code>http://domain.com/user/1?token=laravelacademy.org</code>，则上述 <code>$url</code> 的值是 <code>http://domain.com/user/1</code>，<code>$url_with_query</code> 的值是 <code>http://blog.test/user/1?token=laravelacademy.org</code>。</p>
+<p><strong>获取请求方法</strong></p>
+<p><code>method</code> 方法将会返回 HTTP 请求方式。你还可以使用 <code>isMethod</code> 方法来验证 HTTP 请求方式是否匹配给定字符串：</p>
+<pre><code>$method = $request-&gt;method(); // GET/POST
+
+if($request-&gt;isMethod('post')){ 
+    // true or false
+}</code></pre>
+<h4 id="toc_2">PSR-7 请求</h4>
+<p><a href="http://www.php-fig.org/psr/psr-7/">PSR-7 标准</a>指定了 HTTP 消息接口，包括请求和响应。如果你想要获取遵循 PSR-7 标准的请求实例而不是 Laravel 请求实例，首先需要安装一些库。Laravel 可以使用 <em>Symfony HTTP Message Bridge</em> 组件将典型的 Laravel 请求和响应转化为兼容 PSR-7 接口的实现：</p>
+<pre><code>composer require symfony/psr-http-message-bridge
+composer require zendframework/zend-diactoros</code></pre>
+<p>安装完这些库之后，只需要在路由或控制器中通过对请求示例进行类型提示就可以获取 PSR-7 请求：</p>
+<pre><code>use Psr\Http\Message\ServerRequestInterface;
+
+Route::get('/', function (ServerRequestInterface $request) {
+    //
+});</code></pre>
+<p>对比下 <code>Request</code> 实例和 <code>ServerRequestInterface</code> 实例的数据结构，可以看到 Laravel 的 Request 实例提供信息更丰富：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15063951747233.jpg" alt="" /></p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15063951299110.jpg" alt="" /></p>
+<blockquote>
+<p>注：如果从路由或控制器返回的是 PSR-7 响应实例，则其将会自动转化为 Laravel 响应实例并显示出来。</p>
+</blockquote>
+<h3 id="toc_3">请求字符串处理</h3>
+<p>默认情况下，Laravel 在 <code>App\Http\Kernel</code> 的全局中间件堆栈中引入了 <code>TrimStrings</code> 和 <code>ConvertEmptyStringsToNull</code> 中间件。这些中间件会自动对请求中的字符串字段进行处理，前者将字符串两端的空格清除，后者将空字符串转化为 <code>null</code>。这样，在路由和控制器中我们就不必对字符串字段做额外的处理：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/15063953875068.jpg" alt="" /></p>
+<p>如果你想要禁止该行为，可以从 <code>App\Http\Kernel</code> 的中间件堆栈属性 <code>$middleware</code> 中移除这两个中间件。</p>
+<h3 id="toc_4">获取请求输入</h3>
+<p><strong>获取所有输入值</strong></p>
+<p>你可以使用 <code>all</code> 方法以数组格式获取所有输入值：</p>
+<pre><code>$input = $request-&gt;all();</code></pre>
+<p>如果请求 URL 是 <code>http://blog.test/user/1?token=laravelacademy.org&amp;name=学院君</code>，则对应 <code>$input</code> 返回值是：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15063957252365.jpg" alt="" /> </p>
+<p><strong>获取单个输入值</strong></p>
+<p>通过一些很简单的方法，就可以从 <code>Illuminate\Http\Request</code> 实例中访问用户输入。你不需要关心请求所使用的 HTTP 请求方式，因为对所有请求方式都是通过 <code>input</code> 方法获取用户输入：</p>
+<pre><code>$name = $request-&gt;input('name');</code></pre>
+<p>还是以上面的请求 URL 为例，这里的 <code>$name</code> 值是 <code>学院君</code>。</p>
+<p>你还可以传递一个默认值作为第二个参数给 <code>input</code> 方法，如果请求输入值在当前请求 URL 中未出现时该值将会被返回：</p>
+<pre><code>$name = $request-&gt;input('name', '学院君');</code></pre>
+<p>比如我们访问 <code>http://blog.test/user/1?token=laravelacademy.org</code>，仍然可以获取到 <code>$name</code> 的值为 <code>学院君</code>。</p>
+<p>处理表单数组输入时，可以使用”.”来访问数组输入：</p>
+<pre><code>$input = $request-&gt;input('products.0.name');
+$names = $request-&gt;input('products.*.name');</code></pre>
+<p>比如我们访问 <code>http://blog.test/user/1?products[][name]=学院君&amp;products[][name]=学院君小号</code>，则上述 <code>$input</code> 的值是 <code>学院君</code>，而 <code>$names</code> 的值是：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15063963904950.jpg" alt="" /></p>
+<p><strong>从查询字符串中获取输入</strong></p>
+<p><code>input</code> 方法会从整个请求负载（包括查询字符串）中获取数值，<code>query</code>则只会从查询字符串中获取数值：</p>
+<pre><code>$name = $request-&gt;query('name');</code></pre>
+<p>如果请求的查询字符串中没有提供给定的查询项，我们可以像 <code>input</code> 方法一样设置第二个参数为默认值：</p>
+<pre><code>$name = $request-&gt;query('name', '学院君');</code></pre>
+<p>你也可以调用一个不传任何参数的 <code>query</code> 方法以便以关联数组的方式获取整个查询字符串的值，类似 <code>all</code> 方法所做的：</p>
+<pre><code>$query = $request-&gt;query();</code></pre>
+<p>写到这里，估计有些人要蒙圈了，那 <code>input</code> 和 <code>query</code> 到底有什么区别，官方文档还是有些含混不清，那么这里学院君一杆子打到底，跟你聊聊两者的本质区别，回到上面打印 Request 实例那张图：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15064003082756.jpg" alt="" /></p>
+<p>注意到标红圈的部分，<code>query</code> 方法就是从 <code>query</code> 属性对象中获取参数值，<code>input</code> 方法会从 <code>query + request</code> 属性对象中获取参数值，请求实例上还有个 <code>post</code> 方法用于从 <code>request</code> 属性对象中获取参数值，讲到这里我们应该有点眉目了，<code>query</code> 方法用于获取 <code>GET</code> 请求查询字符串参数值，<code>input</code> 方法用于获取所有 HTTP 请求参数值，<code>post</code> 方法用于获取 <code>POST</code> 请求参数值。感兴趣的同学可以去底层查看下源码：<code>vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php</code>。</p>
+<p><strong>通过动态属性获取输入</strong></p>
+<p>此外，你还可以通过使用 <code>Illuminate\Http\Request</code> 实例上的动态属性来访问用户输入。例如，如果你的应用表单包含 <code>name</code> 字段，那么可以像这样访问提交的值：</p>
+<pre><code>$name = $request-&gt;name;</code></pre>
+<p>使用动态属性的时候，Laravel 首先会在请求中查找参数的值，如果不存在，还会到路由参数中查找。该功能的实现原理自然是魔术函数 <code>__get</code> 了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/15064007000489.jpg" alt="" /></p>
+<p><strong>获取JSON输入值</strong></p>
+<p>发送 JSON 请求到应用的时候，只要 <code>Content-Type</code> 请求头被设置为 <code>application/json</code>，都可以通过 <code>input</code> 方法获取 JSON 数据，还可以通过“.”号解析数组：</p>
+<pre><code>$name = $request-&gt;input('user.name');</code></pre>
+<p><strong>获取输入的部分数据</strong></p>
+<p>如果你需要取出输入数据的子集，可以使用 <code>only</code> 或 <code>except</code> 方法，这两个方法都接收一个数组或动态列表作为唯一参数，这和我们在上一篇<a href="../../post/9541.html">控制器</a>中提到的控制器中间件使用语法类似：</p>
+<pre><code>$input = $request-&gt;only(['username', 'password']);
+$input = $request-&gt;only('username', 'password');
+
+$input = $request-&gt;except(['credit_card']);
+$input = $request-&gt;except('credit_card');</code></pre>
+<blockquote>
+<p>注：<code>only</code> 方法返回所有你想要获取的参数键值对，不过，如果你想要获取的参数不存在，则对应参数会被过滤掉。</p>
+</blockquote>
+<p><strong>判断请求参数是否存在</strong></p>
+<p>判断参数在请求中是否存在，可以使用 <code>has</code> 方法，如果参数存在则返回 <code>true</code>：</p>
+<pre><code>if ($request-&gt;has('name')) {
+    //
+}</code></pre>
+<p>该方法支持以数组形式查询多个参数，这种情况下，只有当参数都存在时，才会返回 <code>true</code>：</p>
+<pre><code>if ($request-&gt;has(['name', 'email'])) {
+    //
+}</code></pre>
+<p>如果你想要判断参数存在且参数值不为空，可以使用 <code>filled</code> 方法：</p>
+<pre><code>if ($request-&gt;filled('name')) {
+    //
+}</code></pre>
+<h4 id="toc_5">上一次请求输入</h4>
+<p>Laravel 允许你在两次请求之间保存上一次输入数据，这个特性在检测校验数据失败后需要重新填充表单数据时很有用，不过如果你使用的是 Laravel 自带的验证功能，则不需要手动使用这些方法，因为一些 Laravel 自带的校验设置会自动调用它们。</p>
+<p><strong>将输入存储到 Session</strong></p>
+<p><code>Illuminate\Http\Request</code> 实例的 <code>flash</code> 方法会将当前输入存放到<a href="../../post/9546.html#toc_6">一次性 Session</a>（所谓的一次性指的是从 Session 中取出数据后，对应数据会从 Session 中销毁）中，这样在下一次请求时上一次输入的数据依然有效：</p>
+<pre><code>$request-&gt;flash();</code></pre>
+<p>你还可以使用 <code>flashOnly</code> 和 <code>flashExcept</code> 方法将输入数据子集存放到 Session 中，这些方法在 Session 之外保存敏感信息时很有用，该功能适用于登录密码填写错误的场景：</p>
+<pre><code>$request-&gt;flashOnly('username', 'email');
+$request-&gt;flashExcept('password');</code></pre>
+<p><strong>将输入存储到 Session 然后重定向</strong></p>
+<p>如果你经常需要一次性存储输入请求输入并返回到表单填写页，可以在 <code>redirect</code> 之后调用 <code>withInput</code> 方法实现这样的功能：</p>
+<pre><code>return redirect('form')-&gt;withInput();
+return redirect('form')-&gt;withInput($request-&gt;except('password'));</code></pre>
+<p><strong>取出上次请求数据</strong></p>
+<p>要从 Session 中取出上次请求的输入数据，可以使用 Request 实例提供的 <code>old</code> 方法。<code>old</code> 方法可以很方便地从 <a href="../../post/9546.html">Session</a> 中取出一次性数据：</p>
+<pre><code>$username = $request-&gt;old('username');</code></pre>
+<p>Laravel 还提供了一个全局的辅助函数 <code>old()</code>，如果你是在 <a href="../../post/7888.html">Blade 模板</a>中显示上次输入数据，使用辅助函数 <code>old()</code> 更方便，如果给定参数没有对应输入，返回 <code>null</code>：</p>
+<pre><code> &lt;input type="text" name="username" value="{{ old('username') }}"&gt;</code></pre>
+<h4 id="toc_6">Cookie</h4>
+<p><strong>从请求中取出Cookie</strong></p>
+<p>为了安全起见，Laravel 框架创建的所有 Cookie 都经过加密并使用一个认证码进行签名，这意味着如果客户端修改了它们则需要对其进行有效性验证。我们使用 <code>Illuminate\Http\Request</code> 实例的 <code>cookie</code> 方法从请求中获取 Cookie 的值：</p>
+<pre><code>$value = $request-&gt;cookie('name');</code></pre>
+<p>此外，还可以使用 <code>Cookie</code> 门面获取 Cookie 值：</p>
+<pre><code>$value = Cookie::get('name');</code></pre>
+<p><strong>添加 Cookie 到响应</strong></p>
+<p>你可以使用 <code>cookie</code> 方法将一个 Cookie 添加到返回的 <code>Illuminate\Http\Response</code> 实例，你需要传递 Cookie 名称、值、以及有效期（分钟）到这个方法：</p>
+<pre><code>return response('欢迎来到 Laravel 学院')-&gt;cookie(
+    'name', '学院君', $minutes
+);</code></pre>
+<p><code>cookie</code> 方法可以接收一些使用频率较低的参数，一般来说，这些参数和 PHP 原生函数 <a href="https://secure.php.net/manual/zh/function.setcookie.php">setcookie</a> 作用和意义一致：</p>
+<pre><code>return response('欢迎来到 Laravel 学院')-&gt;cookie(
+    'name', '学院君', $minutes, $path, $domain, $secure, $httpOnly
+);</code></pre>
+<p>我们简单演示下该功能的使用，在 <code>routes/web.php</code> 定义两个路由如下：</p>
+<pre><code>Route::get('cookie/add', function () {
+    $minutes = 24 * 60;
+    return response('欢迎来到 Laravel 学院')-&gt;cookie('name', '学院君', $minutes);
+});
+
+Route::get('cookie/get', function(\Illuminate\Http\Request $request) {
+    $cookie = $request-&gt;cookie('name');
+    dd($cookie);
+});</code></pre>
+<p>先访问 <code>http://blog.test/cookie/add</code> 设置 Cookie，然后再通过 <code>http://blog.test/cookie/get</code> 获取 Cookie 值，如果在页面看到输出 <code>学院君</code>，则表示 Cookie 设置成功。当然我们也可以通过 Chrome 浏览器的 F12 模式快速查看 Cookie 信息：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/15064055559978.jpg" alt="" /></p>
+<p>被加密过的 <code>name</code> 就是我们刚刚设置的 Cookie 了。</p>
+<p>此外，你还可以使用 <code>Cookie</code> 门面将应用于附件的 Cookie 推送到输出响应队列。<code>queue</code> 方法接收一个 <code>Cookie</code> 实例或者创建一个 <code>Cookie</code> 实例的必要参数。这些 Cookie 会在响应发送到浏览器之前添加上：</p>
+<pre><code>Cookie::queue(Cookie::make('name', 'value', $minutes));
+
+Cookie::queue('name', 'value', $minutes);</code></pre>
+<p><strong>生成 Cookie 实例</strong></p>
+<p>如果你想要生成一个 <code>Symfony\Component\HttpFoundation\Cookie</code> 实例以便后续添加到响应实例，可以使用全局辅助函数 <code>cookie</code>，该 Cookie 只有在添加到响应实例上才会发送到客户端：</p>
+<pre><code>$cookie = cookie('name', '学院君', $minutes);
+return response('欢迎来到 Laravel 学院')-&gt;cookie($cookie);</code></pre>
+<p>我们改写下之前的 <code>cookie/add</code> 路由实现逻辑：</p>
+<pre><code>Route::get('cookie/add', function () {
+    $minutes = 24 * 60;
+    //return response('欢迎来到 Laravel 学院')-&gt;cookie('name', '学院君', $minutes);
+    $cookie = cookie('name', '学院君X', $minutes);
+    return response('欢迎来到 Laravel 学院')-&gt;cookie($cookie);
+});</code></pre>
+<p>效果和之前一致，这次访问 <code>cookie/get</code> 路由，页面打印结果是 <code>学院君X</code>。</p>
+<h3 id="toc_7">文件上传</h3>
+<h4 id="toc_8">获取上传的文件</h4>
+<p>可以使用 <code>Illuminate\Http\Request</code> 实例提供的 <code>file</code> 方法或者动态属性来访问上传文件， <code>file</code> 方法返回 <code>Illuminate\Http\UploadedFile</code> 类的一个实例，该类继承自 PHP 标准库中提供与文件交互方法的 <code>SplFileInfo</code> 类：</p>
+<pre><code>$file = $request-&gt;file('photo');
+$file = $request-&gt;photo;</code></pre>
+<p>你可以使用 <code>hasFile</code> 方法判断文件在请求中是否存在：</p>
+<pre><code>if ($request-&gt;hasFile('photo')) {
+    //
+}</code></pre>
+<p><strong>验证文件是否上传成功</strong></p>
+<p>使用 <code>isValid</code> 方法判断文件在上传过程中是否出错：</p>
+<pre><code>if ($request-&gt;file('photo')-&gt;isValid()){
+    //
+}</code></pre>
+<p><strong>文件路径 &amp; 扩展名</strong></p>
+<p><code>UploadedFile</code> 类还提供了访问上传文件绝对路径和扩展名的方法。 <code>extension</code> 方法可以基于文件内容判断文件扩展名，该扩展名可能会和客户端提供的扩展名不一致：</p>
+<pre><code>$path = $request-&gt;photo-&gt;path();
+$extension = $request-&gt;photo-&gt;extension();</code></pre>
+<p><strong>其他文件方法</strong></p>
+<p><code>UploadedFile</code> 实例上还有很多其他可用方法，查看<a href="http://api.symfony.com/4.0/Symfony/Component/HttpFoundation/File/UploadedFile.html">该类的API文档</a>了解更多信息。</p>
+<h4 id="toc_9">保存上传的文件</h4>
+<p>要保存上传的文件，需要使用你所配置的某个<a href="../../post/8419.html">文件系统</a>，对应配置位于 <code>config/filesystems.php</code>：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15064074232597.jpg" alt="" /></p>
+<p>Laravel 默认使用 <code>local</code> 配置存放上传文件，即本地文件系统，默认根目录是 <code>storage/app</code>，<code>public</code> 也是本地文件系统，只不过存放在这里的文件可以被公开访问，其对应的根目录是 <code>storage/app/public</code>，要让 Web 用户访问到该目录下存放文件的前提是在应用入口 <code>public</code> 目录下建一个软链 <code>storage</code> 链接到 <code>storage/app/public</code>。 </p>
+<p><code>UploadedFile</code> 类有一个 <code>store</code> 方法，该方法会将上传文件移动到相应的磁盘路径上，该路径可以是本地文件系统的某个位置，也可以是云存储（如Amazon S3）上的路径。</p>
+<p><code>store</code> 方法接收一个文件保存的相对路径（相对于文件系统配置的根目录 ），该路径不需要包含文件名，因为系统会自动生成一个唯一ID作为文件名。</p>
+<p><code>store</code> 方法还接收一个可选的参数 —— 用于存储文件的磁盘名称作为第二个参数（对应文件系统配置 <code>disks</code> 的键名，默认值是 <code>local</code>），该方法会返回相对于根目录的文件路径：</p>
+<pre><code>$path = $request-&gt;photo-&gt;store('images');
+$path = $request-&gt;photo-&gt;store('images', 's3');</code></pre>
+<p>如果你不想自动生成文件名，可以使用 <code>storeAs</code> 方法，该方法接收保存路径、文件名和磁盘名作为参数：</p>
+<pre><code>$path = $request-&gt;photo-&gt;storeAs('images', 'filename.jpg');
+$path = $request-&gt;photo-&gt;storeAs('images', 'filename.jpg', 's3');</code></pre>
+<p>下面我们来简单演示下文件上传功能，在 <code>routes/api.php</code> 中定义如下文件上传路由：</p>
+<pre><code>Route::post('file/upload', function(\Illuminate\Http\Request $request) {
+    if ($request-&gt;hasFile('photo') &amp;&amp; $request-&gt;file('photo')-&gt;isValid()) {
+        $photo = $request-&gt;file('photo');
+        $extension = $photo-&gt;extension();
+        //$store_result = $photo-&gt;store('photo');
+        $store_result = $photo-&gt;storeAs('photo', 'test.jpg');
+        $output = [
+            'extension' =&gt; $extension,
+            'store_result' =&gt; $store_result
+        ];
+        print_r($output);exit();
+    }
+    exit('未获取到上传文件或上传过程出错');
+});</code></pre>
+<p>我们还是使用 Advanced REST Client 工具来演示 POST 表单提交：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/15064080757437.jpg" alt="" /></p>
+<p>标记红圈的地方是需要重点关注的输入和输出。我分别测试了 <code>store</code> 方法和 <code>storeAs</code> 方法，上传文件成功后可以去 <code>storage/app</code> 目录下查看：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/03/15064081988612.jpg" alt="" /></p>
+<p>其他存储介质使用方式也差不多，无非是修改下 <code>store</code> 和 <code>storeAs</code> 对应的参数。在使用过程中遇到什么问题，欢迎在评论区反馈。</p>
+<h3 id="toc_10">配置信任代理</h3>
+<p>如果你的应用运行在一个会中断 TLS/SSL 证书的负载均衡器之后，你会注意到有的时候应用不会生成 HTTPS 链接，通常这是因为应用是从负载均衡器从80端口转发过来的流量，所以不知道应该生成安全加密链接。</p>
+<p>要解决这个问题可以使用 <code>App\Http\Middleware\TrustProxies</code> 中间件，该中间件允许你快速自定义需要被应用信任的负载均衡器或代理。被信任的代理位于这个中间件的 <code>$proxies</code> 属性列表，除了配置信任代理之外，还可以配置代理发送的带有请求来源信息的消息头：</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Http\Request;
+use Fideloper\Proxy\TrustProxies as Middleware;
+
+class TrustProxies extends Middleware
+{
+    /**
+     * The trusted proxies for this application.
+     *
+     * @var array
+     */
+    protected $proxies = [
+        '192.168.1.1',
+        '192.168.1.2',
+    ];
+
+    /**
+     * The headers that should be used to detect proxies.
+     *
+     * @var string
+     */
+    protected $headers = Request::HEADER_X_FORWARDED_ALL;
+}</code></pre>
+<blockquote>
+<p>注：如果你在使用 AWS Elastic Load Balancing，<code>headers</code> 值应该修改为 <code>Request::HEADER_X_FORWARDED_AWS_ELB</code>，关于 <code>headers</code> 属性可用的更多常量，请查看 <a href="http://symfony.com/doc/current/deployment/proxies.html">Symfony 信任代理文档</a>。</p>
+</blockquote>
+<p><strong>信任所有代理</strong></p>
+<p>如果你在使用 Amazon AWS 或者其他云服务提供的负载均衡，并不知道均衡器真实的 IP 地址，这种情况下，可以使用 <code>*</code> 通配符信任所有代理：</p>
+<pre><code>/**
+ * The trusted proxies for this application.
+ *
+ * @var array
+ */
+protected $proxies = '*';</code></pre>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../docs/laravel-5_7" rel="category tag">
+                Laravel 5.7
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/5.7" rel="tag">5.7</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E6%A1%A3" rel="tag">文档</a>
+                                    ,
+                                            <a href="../tags/请求" rel="tag">请求</a>
+                                    ,
+                                            <a href="../tags/HTTP" rel="tag">HTTP</a>
+                                    ,
+                                            <a href="../tags/Request" rel="tag">Request</a>
+                                    ,
+                                            <a href="../tags/PSR-7" rel="tag">PSR-7</a>
+                                    ,
+                                            <a href="../tags/请求参数" rel="tag">请求参数</a>
+                                    ,
+                                            <a href="../tags/Session.2" rel="tag">Session</a>
+                                    ,
+                                            <a href="../tags/Cookie" rel="tag">Cookie</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/index.php/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0" rel="tag">文件上传</a>
+                                    ,
+                                            <a href="../tags/信任代理" rel="tag">信任代理</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9542" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9542" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;1 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9541.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                [ Laravel 5.7 文档 ] 基础组件 —— 控制器
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9543.html" rel="next">
+                [ Laravel 5.7 文档 ] 基础组件 —— HTTP 响应
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117242</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9542.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/index.php/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9542' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/index.php/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9542.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9542.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        访问请求实例
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        请求路径 &amp; 方法
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        PSR-7 请求
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        请求字符串处理
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_4">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        获取请求输入
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_5">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        上一次请求输入
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_6">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        Cookie
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_7">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        文件上传
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_8">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        获取上传的文件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_9">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        保存上传的文件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9542.html#toc_10">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        配置信任代理
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="68.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.1 文档 ] 基础 —— HTTP 请求
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="606.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        HTTP 请求实例教程 —— 获取请求数据、Cookie及文件上传处理
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="2824.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.2 文档 ] 基础 —— HTTP 请求
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="7856.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.5 文档 ] 处理用户请求 —— HTTP 请求参数获取、Cookie设置及文件上传
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="8764.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        [ Laravel 5.6 文档 ] 基础组件 —— HTTP 请求
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../../about-us">关于学院</a>
+        |
+        <a href="../../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/index.php/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

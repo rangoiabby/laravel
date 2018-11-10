@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+            基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（三十九） —— 管理后台前端动作审核列表页面功能实现 - Laravel学院
+    </title>
+    <meta name="keywords" content="Laravel学院,Laravel,Lumen,PHP,PHP框架,文档,教程,中文,资源,学习">
+    <meta name="description" content="Laravel学院致力于提供优质Laravel中文学习资源">
+        <!-- CSRF Token -->
+<meta name="csrf-token" content="4p2LF3GX9JkAp8kLsq108iKyPudj68JXF2ozx5Oh">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://static.laravelacademy.org/image/favicon.png" title="Favicon">
+<link rel='stylesheet' id='font-awesome-css'  href='https://static.laravelacademy.org/css/font-awesome.css' type='text/css' media='screen' />
+<link rel='stylesheet' id='ipt_kb-style-css'  href='https://static.laravelacademy.org/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-css'  href='https://static.laravelacademy.org/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-bootstrap-theme-css'  href='https://static.laravelacademy.org/css/bootstrap-theme.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='ipt_kb-icomoon-css'  href='https://static.laravelacademy.org/css/icomoon.css' type='text/css' media='all' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" type="text/css" media="all"/>
+<link rel='stylesheet' id='ipt_kb-fix-css'  href='https://static.laravelacademy.org/css/academy.css' type='text/css' media='all' />
+<style>
+    .scroll-back-to-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #e74430;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+    .scroll-back-to-top-wrapper:hover {
+        background-color: #f4645f;
+        color: #eeeeee;
+    }
+    .scroll-back-to-top-wrapper.show {
+        visibility:visible;
+        cursor:pointer;
+        opacity: 1.0;
+    }
+    .scroll-back-to-top-wrapper i.fa {
+        line-height: inherit;
+    }
+    .scroll-back-to-top-wrapper .fa-lg {
+        vertical-align: 0;
+    }
+    .media-left, .media>.pull-left {
+        padding-right: 10px;
+    }
+    .media-body, .media-left, .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .media-body p {
+        color: #aaa;
+        margin: 0 0 5px;
+    }
+</style></head>
+
+<body class="post-template-default single single-post single-format-standard group-blog">
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+            <nav class="navbar navbar-default navbar-static-top main-navigation" role="navigation" id="site_navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="site-anchor" href="../index.html">
+                <img src="https://static.laravelacademy.org/wp-content/uploads/2017/09/logo.png" width="200" height="50" alt="">
+            </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-7 dropdown">
+                    <a title="文档" href="9654.html#" data-toggle="dropdown" class="dropdown-toggle">文档 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-8567" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8567"><a title="Laravel 5.7" href="../laravel-docs-5_7">Laravel 5.7</a></li>
+                        <li id="menu-item-8565" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8565"><a title="Laravel 5.6" href="../laravel-docs-5_6">Laravel 5.6</a></li>
+                        <li id="menu-item-7585" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7585"><a title="Laravel 5.5" href="../laravel-docs-5_5">Laravel 5.5</a></li>
+                        <li id="menu-item-6676" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6676"><a title="Laravel 5.4" href="../laravel-docs-5_4">Laravel 5.4</a></li>
+                        <li id="menu-item-5711" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5711"><a title="Laravel 5.3" href="../laravel-docs-5_3">Laravel 5.3</a></li>
+                        <li id="menu-item-2931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2931"><a title="Laravel 5.2" href="../laravel-docs-5_2">Laravel 5.2</a></li>
+                        <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a title="Laravel 5.1" href="../laravel-docs-5_1">Laravel 5.1</a></li>
+                        <li id="menu-item-508" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-508"><a title="Lumen" href="../lumen-docs">Lumen</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-3168 dropdown">
+                    <a title="教程" href="9654.html#" data-toggle="dropdown" class="dropdown-toggle">教程 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-948" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-948"><a title="Laravel从入门到精通系列教程" href="../laravel-tutorial-5_7">Laravel从入门到精通</a></li>
+                        <li id="menu-item-2122" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2122"><a title="博客应用系列教程" href="../tutorials/blog">博客应用</a></li>
+                        <li id="menu-item-8566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8566"><a title="API应用系列教程" href="../api-driven-development-laravel-vue">API 应用</a></li>
+                        <li id="menu-item-3513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3513"><a title="Laravel新特性系列" href="../tutorials/feature">Laravel新特性</a></li>
+                        <li id="menu-item-5612" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5612"><a title="VueJS教程" href="../tutorials/vuejs">VueJS教程</a></li>
+                        <li id="menu-item-xmq" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-xmq"><a title="数据结构与算法(PHP语言描述)" href="https://t.zsxq.com/yz7iMni" target="_blank">数据结构与算法</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-671" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-671 dropdown">
+                    <a title="项目" href="9654.html#" data-toggle="dropdown" class="dropdown-toggle">项目 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2044" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2044"><a title="网站" href="../project/website">网站</a></li>
+                        <li id="menu-item-1327" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1327"><a title="扩展包" href="../tutorials/packages">扩展包</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-159 dropdown">
+                    <a title="资源" href="9654.html#" data-toggle="dropdown" class="dropdown-toggle">资源 <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-2482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2482"><a title="设计模式" href="../resources/design-patterns">设计模式</a></li>
+                        <li id="menu-item-644" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-644"><a title="代码片段" href="../resources/code">代码片段</a></li>
+                        <li id="menu-item-9343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9343"><a title="基础技术" href="../resources/underlying">基础技术</a></li>
+                        <li id="menu-item-3187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3187"><a title="运维部署" href="../resources/linux">运维部署</a></li>
+                        <li id="menu-item-1265" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1265"><a title="区块链" href="../resources/blockchain">区块链</a></li>
+                        <li id="menu-item-680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-680"><a title="工具系列" href="../resources/tools">工具系列</a></li>
+                        <li id="menu-item-5343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5343"><a title="读书笔记" href="../resources/notebook">读书笔记</a></li>
+                        <li id="menu-item-410" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-410"><a title="相关下载" href="../resources-download">相关下载</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-4225" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-4225 dropdown">
+                    <a title="现代PHP" href="9654.html#" data-toggle="dropdown" class="dropdown-toggle">现代PHP <span class="caret"></span></a>
+                    <ul role="menu" class=" dropdown-menu">
+                        <li id="menu-item-4226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4226"><a title="新特性" href="../modern-php/feature-modern-php">新特性</a></li>
+                        <li id="menu-item-4513" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4513"><a title="最佳实践" href="../modern-php/best-practice">最佳实践</a></li>
+                        <li id="menu-item-7512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7512"><a title="部署调优" href="../modern-php/devops">部署调优</a></li>
+                        <li id="menu-item-4496" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4496"><a title="编码规范" href="https://github.com/PizzaLiu/PHP-FIG">编码规范</a></li>
+                        <li id="menu-item-7178" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7178"><a title="扩展开发" href="../modern-php/php-extension">扩展开发</a></li>
+                        <li id="menu-item-2397" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2397"><a title="PHP 7" href="../modern-php/php7">PHP 7</a></li>
+                    </ul>
+                </li>
+                <li id="menu-item-3999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3999"><a title="问答" href="../discussions">问答</a></li>
+                <li id="menu-item-6268" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6268"><a title="招聘" href="../jobs">招聘</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="新闻" href="../news">新闻</a></li>
+                <li id="menu-item-7938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7938"><a title="捐赠" href="../donate-us">捐赠</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="../login">登录</a></li>
+                    <li><a href="../register">注册</a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>    </header><!-- #masthead -->
+
+    <div id="content" class="site-content container">
+
+            <ol id="breadcrumbs" class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <li typeof="v:Breadcrumb">
+        <a rel="v:url" property="v:title" href="../index.html">首页</a>
+    </li>
+
+                    <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../tutorials.1">
+                教程
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb">
+            <a rel="v:url" property="v:title" href="../api-app">
+                API 应用
+            </a>
+        </li>
+                            <li typeof="v:Breadcrumb" class="active">
+            <span property="v:title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（三十九） —— 管理后台前端动作审核列表页面功能实现</span>
+        </li>
+            </ol>
+        <div id="primary" class="content-area col-md-8">
+            <main id="main" class="site-main" role="main">
+
+                <article class="post type-post status-publish format-standard has-post-thumbnail hentry category-basic">
+                        <header class="entry-header page-header">
+        <h1 class="entry-title">基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（三十九） —— 管理后台前端动作审核列表页面功能实现</h1>
+
+        <div class="entry-meta text-muted">
+                        <span class="posted-on">
+                <i class="glyphicon glyphicon-calendar"></i>
+                发布于
+                <a href="9654.html" rel="bookmark">
+                    <time class="entry-date published" datetime="2018-10-30T12:13:56+08:00">2018-10-30</time>
+                    <time class="updated" datetime="2018-10-30T12:22:48+08:00">2018-10-30 12:22:48</time>
+                </a>
+            </span>
+                        <span class="byline">
+                <span class="author vcard">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <a class="url fn n" href="../author/nonfu">学院君</a>
+                </span>
+            </span>
+            <span class="article-views">
+                <i class="glyphicon ipt-icon-eye"></i>
+                285 Views
+            </span>
+                                </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+                        <div class="entry-content">
+        <p>在<a href="9653.html">上一篇教程</a>中，我们完成了管理后台前端路由定义，并通过 Vue Router 的路由元信息功能实现了在前端路由中进行权限判断及请求拦截。在这篇教程中我们就要来真正为动作审核列表编写管理后台页面，对列表数据进行渲染并实现对每个审核动作的通过和拒绝操作。</p>
+<h3 id="toc_0">第一步：为后台布局文件 Admin.vue 添加页面头部和导航组件</h3>
+<p>在开始之前，首先需要填充 <code>resources/assets/js/layouts/Admin.vue</code> 组件，和前台布局文件 <code>Layout.vue</code> 一样，需要在该组件中引入公共的页面头部、导航组件、其他辅助组件和子页面组件。</p>
+<p>为此，首先为管理后台创建一个 <code>resources/assets/js/components/admin/AdminHeader.vue</code> 组件用于渲染管理后台头部，该组件用于在页面顶部渲染应用 Logo 和用户登录等元素（在应用前台这些元素是在导航组件中渲染的）：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    @import '~@/abstracts/_variables.scss';
+
+    header {
+        background-color: #FFFFFF;
+        height: 75px;
+
+        z-index: 9999;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+
+        img.logo {
+            margin: auto;
+            margin-top: 22.5px;
+            margin-bottom: 22.5px;
+            display: block;
+        }
+
+        img.hamburger {
+            float: right;
+            margin-right: 18px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        img.avatar {
+            float: right;
+            margin-right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            margin-top: 18px;
+        }
+
+        &amp;:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    }
+
+    /* Small only */
+    @media screen and (max-width: 39.9375em) {
+        nav.top-navigation {
+            span.login {
+                display: none;
+            }
+
+            img.hamburger {
+                margin-top: 26px;
+            }
+        }
+    }
+
+    /* Medium only */
+    @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+
+    }
+
+    /* Large only */
+    @media screen and (min-width: 64em) and (max-width: 74.9375em) {
+
+    }
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;header class="admin-header"&gt;
+        &lt;div class="grid-x"&gt;
+            &lt;div class="large-4 medium-4 small-4 cell"&gt;
+
+            &lt;/div&gt;
+            &lt;div class="large-4 medium-4 small-4 cell"&gt;
+                &lt;router-link :to="{ name: 'cafes'}"&gt;
+                    &lt;img src="/storage/img/logo.svg" class="logo"/&gt;
+                &lt;/router-link&gt;
+            &lt;/div&gt;
+            &lt;div class="large-4 medium-4 small-4 cell"&gt;
+                &lt;img class="hamburger" src="/storage/img/hamburger.svg" v-on:click="setShowPopOut()"/&gt;
+                &lt;img class="avatar" v-if="user !== '' &amp;&amp; userLoadStatus === 2" :src="user.avatar"
+                     v-show="userLoadStatus === 2"/&gt;
+                &lt;span class="login" v-if="user === ''" v-on:click="login()"&gt;登录&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/header&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    export default {
+        computed: {
+            userLoadStatus() {
+                return this.$store.getters.getUserLoadStatus();
+            },
+
+            user() {
+                return this.$store.getters.getUser;
+            }
+        },
+
+        methods: {
+            setShowPopOut() {
+                this.$store.dispatch('toggleShowPopOut', {showPopOut: true});
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>然后创建管理后台导航组件 <code>resources/assets/js/components/admin/Navigation.vue</code> 用于渲染类似页面面包屑导航之类的元素：</p>
+<pre><code>&lt;style lang="scss"&gt;
+  @import '~@/abstracts/_variables.scss';
+
+  nav.admin-navigation{
+    div.admin-link{
+      font-size: 16px;
+      font-weight: bold;
+      font-family: "Lato", sans-serif;
+      text-transform: uppercase;
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      a{
+        color: black;
+
+        &amp;.router-link-active{
+          color: $secondary-color;
+        }
+      }
+    }
+  }
+&lt;/style&gt;
+
+&lt;template&gt;
+  &lt;nav class="admin-navigation"&gt;
+    &lt;div class="admin-link"&gt;
+      &lt;router-link :to="{ name: 'admin-actions' }"&gt;
+        动作审核列表
+      &lt;/router-link&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+
+  }
+&lt;/script&gt;</code></pre>
+<p>最后，打开布局文件 <code>resources/assets/js/layouts/Admin.vue</code>，编写代码如下：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    @import '~@/abstracts/_variables.scss';
+
+    div#admin-layout {
+        div#page-container {
+            margin-top: 75px;
+        }
+    }
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div id="admin-layout"&gt;
+        &lt;admin-header&gt;&lt;/admin-header&gt;
+
+        &lt;success-notification&gt;&lt;/success-notification&gt;
+        &lt;error-notification&gt;&lt;/error-notification&gt;
+
+        &lt;div class="grid-container" id="page-container"&gt;
+            &lt;div class="grid-x grid-padding-x"&gt;
+                &lt;div class="large-3 medium-4 cell"&gt;
+                    &lt;navigation&gt;&lt;/navigation&gt;
+                &lt;/div&gt;
+                &lt;div class="large-9 medium-8 cell"&gt;
+                    &lt;router-view&gt;&lt;/router-view&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;pop-out&gt;&lt;/pop-out&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    import SuccessNotification from '../components/global/SuccessNotification.vue';
+    import ErrorNotification from '../components/global/ErrorNotification.vue';
+
+    import AdminHeader from '../components/admin/AdminHeader.vue';
+    import Navigation from '../components/admin/Navigation.vue';
+    import PopOut from '../components/global/PopOut.vue';
+
+    export default {
+        components: {
+            SuccessNotification,
+            ErrorNotification,
+            AdminHeader,
+            Navigation,
+            PopOut
+        },
+
+        created() {
+            this.$store.dispatch('loadBrewMethods');
+        },
+
+        computed: {
+            user() {
+                return this.$store.getters.getUser;
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>在这个布局文件中，我们引入了刚刚创建的后台头部组件、导航组件，以及和前台共用消息通知组件、滑出菜单组件，子页面组件还是通过内置的 <code>router-view</code> 引入，下面我们就要来创建用于渲染动作审核列表的子页面组件。</p>
+<h3 id="toc_1">第二步：为动作审核子页面定义前端路由、API 调用和 Vuex 模块</h3>
+<p>接下来我们在前端路由文件 <code>resources/assets/js/routes.js</code> 中定义动作审核子页面路由，改写之前的 <code>admin</code> 路由定义如下： </p>
+<pre><code>{
+   path: '/admin',
+   name: 'admin',
+   component: Vue.component('Admin', require('./layouts/Admin.vue')),
+   beforeEnter: requireAuth,
+   meta: {
+       permission: 'owner'
+   },
+   children: [
+       {
+           path: 'actions',
+           name: 'admin-actions',
+           component: Vue.component('AdminActions', require('./pages/admin/Actions.vue')),
+           meta: {
+               permission: 'owner'
+           }
+       },
+       {
+           path: '_=_',
+           redirect: '/'
+       }
+   ]
+}</code></pre>
+<p>创建一个空的子页面组件 <code>resources/assets/js/pages/admin/Actions.vue</code>，具体代码稍后编写，我们先创建一个新的 API 调用文件 <code>resources/assets/js/api/admin/actions.js</code>，并在其中定义对动作审核相关后台 API 的请求：</p>
+<pre><code>/*
+  Imports the Roast API URL from the config.
+*/
+import {ROAST_CONFIG} from '../../config.js';
+
+export default {
+    /*
+      GET   /api/v1/admin/actions
+    */
+    getActions: function () {
+        return axios.get(ROAST_CONFIG.API_URL + '/admin/actions');
+    },
+
+    /*
+      PUT   /admin/v1/admin/actions/{action}/approve
+    */
+    putApproveAction: function (id) {
+        return axios.put(ROAST_CONFIG.API_URL + '/admin/actions/' + id + '/approve');
+    },
+
+    /*
+      PUT   /admin/v1/admin/actions/{action}/deny
+    */
+    putDenyAction: function (id) {
+        return axios.put(ROAST_CONFIG.API_URL + '/admin/actions/' + id + '/deny');
+    }
+}</code></pre>
+<p>然后为审核动作创建一个新的 Vuex 模块 <code>resources/assets/js/modules/admin/actions.js</code>，编写模块代码如下：</p>
+<pre><code>/*
+|-------------------------------------------------------------------------------
+| VUEX modules/admin/actions.js
+|-------------------------------------------------------------------------------
+| The Vuex data store for the admin actions
+*/
+import ActionsAPI from '../../api/admin/actions.js';
+
+export const actions = {
+    /*
+      Defines the state being monitored for the module.
+    */
+    state: {
+        actions: [],
+        actionsLoadStatus: 0,
+
+        actionApproveStatus: 0,
+        actionDeniedStatus: 0
+    },
+
+    actions: {
+        loadAdminActions({commit}) {
+            commit('setActionsLoadStatus', 1);
+
+            ActionsAPI.getActions()
+                .then(function (response) {
+                    commit('setActions', response.data);
+                    commit('setActionsLoadStatus', 2);
+                })
+                .catch(function () {
+                    commit('setActions', []);
+                    commit('setActionsLoadStatus', 3);
+                });
+        },
+
+        approveAction({commit, state, dispatch}, data) {
+            commit('setActionApproveStatus', 1);
+
+            ActionsAPI.putApproveAction(data.id)
+                .then(function (response) {
+                    commit('setActionApproveStatus', 2);
+                    dispatch('loadAdminActions');
+                })
+                .catch(function () {
+                    commit('setActionApproveStatus', 3);
+                });
+
+        },
+
+        denyAction({commit, state, dispatch}, data) {
+            commit('setActionDeniedStatus', 1);
+
+            ActionsAPI.putDenyAction(data.id)
+                .then(function (response) {
+                    commit('setActionDeniedStatus', 2);
+                    dispatch('loadAdminActions');
+                })
+                .catch(function () {
+                    commit('setActionDeniedStatus', 3);
+                });
+
+        }
+    },
+
+    mutations: {
+        setActionsLoadStatus(state, status) {
+            state.actionsLoadStatus = status;
+        },
+
+        setActions(state, actions) {
+            state.actions = actions;
+        },
+
+        setActionApproveStatus(state, status) {
+            state.actionApproveStatus = status;
+        },
+
+        setActionDeniedStatus(state, status) {
+            state.actionDeniedStatus = status;
+        }
+    },
+
+    getters: {
+        getActions(state) {
+            return state.actions;
+        },
+
+        getActionsLoadStatus(state) {
+            return state.actionsLoadStatus;
+        },
+
+        getActionApproveStatus(state) {
+            return state.actionApproveStatus;
+        },
+
+        getActionDeniedStatus(state) {
+            return state.actionDeniedStatus;
+        }
+    }
+};</code></pre>
+<h3 id="toc_2">第三步：实现动作审核列表子页面组件</h3>
+<p>最后，我们编写动作审核列表子页面组件 <code>resources/assets/js/pages/admin/Actions.vue</code> 代码如下：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    @import '~@/abstracts/_variables.scss';
+
+    div#admin-actions {
+        div.actions-header {
+            font-family: "Lato", sans-serif;
+            border-bottom: 1px solid black;
+            font-weight: bold;
+            padding-bottom: 10px;
+        }
+
+        div.no-actions-available {
+            text-align: center;
+            font-family: "Lato", sans-serif;
+            font-size: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    }
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div id="admin-actions"&gt;
+        &lt;div class="grid-container"&gt;
+            &lt;div class="grid-x"&gt;
+                &lt;div class="large-12 medium-12 cell"&gt;
+                    &lt;h3 class="page-header"&gt;Actions&lt;/h3&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="grid-container"&gt;
+            &lt;div class="grid-x actions-header"&gt;
+                &lt;div class="large-3 medium-3 cell"&gt;
+                    公司
+                &lt;/div&gt;
+                &lt;div class="large-3 medium-3 cell"&gt;
+                    咖啡店
+                &lt;/div&gt;
+                &lt;div class="large-3 medium-3 cell"&gt;
+                    类型
+                &lt;/div&gt;
+                &lt;div class="large-3 medium-3 cell"&gt;
+                    操作
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;action v-for="action in actions"
+                    :key="action.id"
+                    :action="action"&gt;
+            &lt;/action&gt;
+            &lt;div class="large-12 medium-12 cell no-actions-available" v-show="actions.length == 0"&gt;
+                All outstanding actions have been processed!
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    import Action from '../../components/admin/actions/Action.vue';
+
+    export default {
+        components: {
+            Action
+        },
+
+        created() {
+            this.$store.dispatch('loadAdminActions');
+        },
+
+        computed: {
+            actions() {
+                return this.$store.getters.getActions;
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>这个组件主要用于渲染待审核动作列表，对于每个具体的待审核动作，通过创建一个新的 <code>resources/assets/js/components/admin/actions/Action.vue</code> 组件来渲染：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    @import '~@/abstracts/_variables.scss';
+
+    div.action {
+        font-family: "Lato", sans-serif;
+        border-bottom: 1px solid black;
+        padding-bottom: 15px;
+        padding-top: 15px;
+
+        span.approve-action {
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        span.deny-action {
+            color: $secondary-color;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        img.more-info {
+            cursor: pointer;
+            float: right;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+    }
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div class="action"&gt;
+        &lt;div class="grid-x"&gt;
+            &lt;div class="large-3 medium-3 cell"&gt;
+                {{ action.company != null ? action.company.name : '' }}
+            &lt;/div&gt;
+            &lt;div class="large-3 medium-3 cell"&gt;
+                {{ action.cafe != null ? action.cafe.location_name : '' }}
+            &lt;/div&gt;
+            &lt;div class="large-3 medium-3 cell"&gt;
+                {{ type }}
+            &lt;/div&gt;
+            &lt;div class="large-3 medium-3 cell"&gt;
+                &lt;span class="approve-action" v-on:click="approveAction()"&gt;通过&lt;/span&gt;
+                &lt;span class="deny-action" v-on:click="denyAction()"&gt;拒绝&lt;/span&gt;
+                &lt;span v-on:click="showDetails = !showDetails"&gt;
+                    &lt;img src="/storage/img/more-info-closed.svg" class="more-info" v-show="!showDetails"/&gt;
+                    &lt;img src="/storage/img/more-info-open.svg" class="more-info" v-show="showDetails"/&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="grid-x" v-show="showDetails"&gt;
+            &lt;div class="large-12 medium-12 cell"&gt;
+                &lt;action-cafe-added v-if="action.type == 'cafe-added'" :action="action"&gt;&lt;/action-cafe-added&gt;
+                &lt;action-cafe-edited v-if="action.type == 'cafe-updated'" :action="action"&gt;&lt;/action-cafe-edited&gt;
+                &lt;action-cafe-deleted v-if="action.type == 'cafe-deleted'" :action="action"&gt;&lt;/action-cafe-deleted&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    import ActionCafeAdded from './ActionCafeAdded.vue';
+    import ActionCafeEdited from './ActionCafeEdited.vue';
+    import ActionCafeDeleted from './ActionCafeDeleted.vue';
+
+    import {EventBus} from '../../../event-bus.js';
+
+    export default {
+        props: ['action'],
+
+        components: {
+            ActionCafeAdded,
+            ActionCafeEdited,
+            ActionCafeDeleted
+        },
+
+        data() {
+            return {
+                showDetails: false
+            }
+        },
+
+        computed: {
+            type() {
+                switch (this.action.type) {
+                    case 'cafe-added':
+                        return '添加咖啡店';
+                        break;
+                    case 'cafe-updated':
+                        return '更新咖啡店';
+                        break;
+                    case 'cafe-deleted':
+                        return '删除咖啡店';
+                        break;
+                }
+            },
+
+            actionApproveStatus() {
+                return this.$store.getters.getActionApproveStatus;
+            },
+
+            actionDeniedStatus() {
+                return this.$store.getters.getActionDeniedStatus;
+            }
+        },
+
+        watch: {
+            'actionApprovedStatus': function () {
+                if (this.actionApproveStatus == 2) {
+                    EventBus.$emit('show-success', {
+                        notification: 'Action approved successfully!'
+                    });
+                }
+            },
+
+            'actionDeniedStatus': function () {
+                if (this.actionDeniedStatus == 2) {
+                    EventBus.$emit('show-success', {
+                        notification: 'Action denied successfully!'
+                    });
+                }
+            }
+        },
+
+        methods: {
+            approveAction() {
+                this.$store.dispatch('approveAction', {
+                    id: this.action.id
+                });
+            },
+
+            denyAction() {
+                this.$store.dispatch('denyAction', {
+                    id: this.action.id
+                });
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>在这个组件中，主要渲染每个待审核动作的具体字段信息以及通过、拒绝按钮及对应点击触发方法，然后还有一个显示操作明细数据的组件，我们根据条件渲染来显示它们，比如新增咖啡店显示新增咖啡店数据，修改咖啡店显示修改咖啡店数据，删除咖啡店显示删除咖啡店数据，这些数据的显示我们也分割到不同的子组件中去实现了，分别是新增数据显示组件 <code>resources/assets/js/components/admin/actions/ActionCafeAdded.vue</code>：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    @import '~@/abstracts/_variables.scss';
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div class="action-cafe-added action-cafe-detail"&gt;
+        &lt;div class="grid-x grid-padding-x"&gt;
+            &lt;div class="large-6 medium-6 cell"&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;公司名称&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ content.company_name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;网站&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ content.website }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;位置名称&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ content.location_name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;街道地址&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ content.address }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;城市&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ content.city }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;省份&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ content.state }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;邮编&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ content.zip }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;冲泡方法&lt;/label&gt;
+                        &lt;div class="brew-method option" v-for="method in actionBrewMethods"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="method.icon" class="option-icon"/&gt; &lt;span class="option-name"&gt;{{ method.method }}&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="content.tea == 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;茶包&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/tea-bag.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;茶包&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="content.matcha == 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;抹茶&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/matcha-latte.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;抹茶&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="large-12 medium-12 cell"&gt;
+                &lt;span class="action-information"&gt;Cafe Added by {{ action.by.name }} on {{ action.created_at }}&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    export default {
+        props: ['action'],
+
+        data() {
+            return {
+                content: ''
+            }
+        },
+
+        created() {
+            this.content = JSON.parse(this.action.content);
+        },
+
+        computed: {
+
+            brewMethods() {
+                return this.$store.getters.getBrewMethods;
+            },
+
+            actionBrewMethods() {
+                let actionBrewMethods = [];
+
+                let contentBrewMethods = JSON.parse(this.content.brew_methods);
+
+                for (let i = 0; i &lt; contentBrewMethods.length; i++) {
+                    for (let k = 0; k &lt; this.brewMethods.length; k++) {
+                        if (parseInt(contentBrewMethods[i]) === parseInt(this.brewMethods[k].id)) {
+                            actionBrewMethods.push(this.brewMethods[k]);
+                        }
+                    }
+                }
+
+                return actionBrewMethods;
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>编辑数据显示组件 <code>resources/assets/js/components/admin/actions/ActionCafeEdited.vue</code>：</p>
+<pre><code>&lt;style lang="scss"&gt;
+    div.action-cafe-edited {
+        span.change {
+            color: red;
+        }
+    }
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div class="action-cafe-edited action-cafe-detail"&gt;
+        &lt;div class="grid-x grid-padding-x"&gt;
+            &lt;div class="large-6 medium-6 cell"&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;span class="action-detail-header"&gt;当前数据&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;公司名称&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.company.name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;网站&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.company.website }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;位置名称&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.location_name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;街道地址&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.address }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;城市&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.city }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;省份&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.state }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;邮编&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.zip }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;冲泡方法&lt;/label&gt;
+                        &lt;div class="brew-method option" v-for="method in action.cafe.brew_methods"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="method.icon" class="option-icon"/&gt; &lt;span class="option-name"&gt;{{ method.method }}&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="action.cafe.tea === 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;茶包&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/tea-bag.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;茶包&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="action.cafe.matcha === 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;抹茶&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/matcha-latte.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;抹茶&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="large-6 medium-6 cell"&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;span class="action-detail-header"&gt;更新后数据&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;公司名称&lt;/label&gt;
+                        &lt;span class="action-content"
+                              v-bind:class="{'change': content.after.company_name !== action.company.name }"&gt;{{ content.after.company_name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;网站&lt;/label&gt;
+                        &lt;span class="action-content"
+                              v-bind:class="{'change': content.after.website !== action.company.website }"&gt;{{ content.after.website }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;位置名称&lt;/label&gt;
+                        &lt;span class="action-content"
+                              v-bind:class="{'change': content.after.location_name !== action.cafe.location_name }"&gt;{{ content.after.location_name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;街道地址&lt;/label&gt;
+                        &lt;span class="action-content"
+                              v-bind:class="{'change': content.after.address !== action.cafe.address }"&gt;{{ content.after.address }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;城市&lt;/label&gt;
+                        &lt;span class="action-content"
+                              v-bind:class="{'change': content.after.city !== action.cafe.city }"&gt;{{ content.after.city }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;省份&lt;/label&gt;
+                        &lt;span class="action-content"
+                              v-bind:class="{'change': content.after.state !== action.cafe.state }"&gt;{{ content.after.state }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;邮编&lt;/label&gt;
+                        &lt;span class="action-content" v-bind:class="{'change': content.after.zip !== action.cafe.zip }"&gt;{{ content.after.zip }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;冲泡方法&lt;/label&gt;
+                        &lt;div class="brew-method option" v-for="method in actionBrewMethods"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="method.icon" class="option-icon"/&gt; &lt;span class="option-name"&gt;{{ method.method }}&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="content.after.tea === 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;茶包&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/icons/tea-bag.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;茶包&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="content.after.matcha === 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;抹茶&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/icons/matcha-latte.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;抹茶&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="large-12 medium-12 cell"&gt;
+                &lt;span class="action-information"&gt;Cafe Updated by {{ action.by.name }} on {{ action.created_at }}&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    export default {
+        props: ['action'],
+
+        data() {
+            return {
+                content: ''
+            }
+        },
+
+        created() {
+            this.content = JSON.parse(this.action.content);
+        },
+
+        computed: {
+
+            brewMethods() {
+                return this.$store.getters.getBrewMethods;
+            },
+
+            actionBrewMethods() {
+                let actionBrewMethods = [];
+                let contentBrewMethods = JSON.parse(this.content.after.brew_methods);
+
+                for (let i = 0; i &lt; contentBrewMethods.length; i++) {
+                    for (let k = 0; k &lt; this.brewMethods.length; k++) {
+                        if (parseInt(contentBrewMethods[i]) === parseInt(this.brewMethods[k].id)) {
+                            actionBrewMethods.push(this.brewMethods[k]);
+                        }
+                    }
+                }
+
+                return actionBrewMethods;
+            }
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>和删除数据显示组件 <code>resources/assets/js/components/admin/actions/ActionCafeDeleted.vue</code>：</p>
+<pre><code>&lt;style&gt;
+
+&lt;/style&gt;
+
+&lt;template&gt;
+    &lt;div class="action-cafe-deleted action-cafe-detail"&gt;
+        &lt;div class="grid-x grid-padding-x"&gt;
+            &lt;div class="large-6 medium-6 cell"&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;公司名称&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.company_name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;网站&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.website }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;位置名称&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.location_name }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;街道地址&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.address }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;城市&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.city }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;省份&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.state }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;邮编&lt;/label&gt;
+                        &lt;span class="action-content"&gt;{{ action.cafe.zip }}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;冲泡方法&lt;/label&gt;
+                        &lt;div class="brew-method option" v-for="method in action.cafe.brew_methods"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="method.icon" class="option-icon"/&gt; &lt;span class="option-name"&gt;{{ method.method }}&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="action.cafe.tea === 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;茶包&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/tea-bag.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;茶包&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="grid-x" v-if="action.cafe.matcha === 1"&gt;
+                    &lt;div class="large-12 medium-12 small-12 cell"&gt;
+                        &lt;label&gt;抹茶&lt;/label&gt;
+                        &lt;div class="drink-option option"&gt;
+                            &lt;div class="option-container"&gt;
+                                &lt;img v-bind:src="'/storage/img/matcha-latte.svg'" class="option-icon"/&gt; &lt;span
+                                    class="option-name"&gt;抹茶&lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="large-12 medium-12 cell"&gt;
+                &lt;span class="action-information"&gt;Cafe Deleted by {{ action.by.name }} on {{ action.created_at }}&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    export default {
+        props: ['action'],
+
+        data() {
+            return {
+                content: ''
+            }
+        },
+
+        created() {
+            this.content = JSON.parse(this.action.content);
+        }
+    }
+&lt;/script&gt;</code></pre>
+<p>创建完这些组件后，在 <code>Action.vue</code> 中引入它们。至此，我们的动作审核子页面组件全部代码就编写完成了，接下来，只需要将对应的 Vuex 模块引入就大功告成了。</p>
+<h3 id="toc_3">第四步：动态引入动作审核 Vuex 模块</h3>
+<p>你可能已经注意到我们在创建完 <code>resources/assets/js/modules/admin/actions.js</code> 模块后，并没有像在之前用户前台代码里所做的那样立刻在 <code>resources/assets/js/store.js</code> 引入它们，这是因为只有管理员才能登录到管理后台，对于游客、普通用户和商家用户而言，根本无需加载这些资源，我们甚至可以在用户需要这些 Vuex 模块的时候加载它们，不需要的时候卸载它们（比如退出登录），这也是 Vuex 模块的强大之处，接下来，我们将通过动态加载的方式来引入 <code>Actions</code> Vuex 模块。</p>
+<p>首先，回到后台布局文件 <code>resources/assets/js/layouts/Admin.vue</code>，在 <code>created</code> 钩子中编写代码如下：</p>
+<pre><code>// 引入后台 Vuex 模块
+import {actions} from '../modules/admin/actions.js';
+
+created() {
+   this.$store.dispatch('loadBrewMethods');
+
+   if (!this.$store._modules.get(['admin'])) {
+       this.$store.registerModule('admin', {});
+   }
+
+   if (!this.$store._modules.get(['admin', 'actions'])) {
+       this.$store.registerModule(['admin', 'actions'], actions);
+   }
+},</code></pre>
+<p>在这段代码中，我们首先查看 <code>admin</code> 模块是否已经注册，如果没有注册话则注册它，它是其他后台模块的父模块，然后我们检查在 <code>admin</code> 父模块中是否存在 <code>actions</code> 子模块，如果没有的话，则将其注册到 <code>admin</code> 模块中，这也就是我们的动作审核 Vuex 模块，这个是按照模块路径来依次注册的，<code>registerModule</code> 方法用于动态注册 Vuex 模块，该方法第一个参数是一个字符串或数组，第二个参数是要引入的 Vuex 模块。这段代码整体的意思就是用户进入管理后台后才会引入动作审核 Vuex 模块（<code>admin.actions</code>)。</p>
+<p>接下来，打开前台布局文件 <code>resources/assets/js/layouts/Layout.vue</code>，我们要在这个组件中卸载所有 <code>admin.*</code> Vuex 模块，这样，当管理员退出的时候，就可以从系统中卸载 <code>admin</code> 相关模块，还是在 <code>created</code> 钩子中新增一段卸载 Vuex 模块代码如下：</p>
+<pre><code>created() {
+   this.$store.dispatch('loadCafes');
+   this.$store.dispatch('loadUser');
+   this.$store.dispatch('loadBrewMethods');
+   this.$store.dispatch('loadCities');
+   if (this.$store._modules.get(['admin'])) {
+       this.$store.unregisterModule('admin', {});
+   }
+},</code></pre>
+<p>我们会先判断 <code>$store</code> 模块中是否存在 <code>admin</code> 父模块，如果存在，则通过 <code>unregisterModule</code> 方法将其卸载，这样也会连带将 <code>admin</code> 模块下的所有子模块一起卸载。</p>
+<p>至此，我们的管理后台动作审核列表前端 UI 功能开发工作算是全部完成了，在演示功能之前，还要做少许优化，打开滑出菜单组件 <code>resources/assets/js/components/global/PopOut.vue</code>，加入管理后台入口（只有管理员可见）：</p>
+<pre><code>&lt;div class="side-bar-link" v-if="user != '' &amp;&amp; userLoadStatus === 2 &amp;&amp; user.permission &gt;= 1"&gt;
+    &lt;router-link :to="{ name: 'admin'}" v-on:click.native="hideNav()"&gt;
+        管理后台
+    &lt;/router-link&gt;
+&lt;/div&gt;</code></pre>
+<p>然后为新增的管理后台头部组件添加一些样式代码，在 <code>resources/assets/sass/components/admin</code> 目录下创建 <code>_page-header.scss</code>，编写 Sass 代码如下：</p>
+<pre><code>h3.page-header {
+  font-weight: bold;
+  font-family: "Lato", sans-serif;
+  margin-bottom: 30px;
+  font-size: 20px;
+
+  a {
+    color: black;
+  }
+}</code></pre>
+<p>最后在 <code>resources/assets/sass/app.scss</code> 中引入上述 Sass 文件：</p>
+<pre><code>@import "components/admin/page-header";</code></pre>
+<p>接下来，就可以演示管理后台动作审核列表功能了，运行 <code>npm run dev</code> 重新编译前端资源，打开 Roast 应用首页并登录，此时由于用户还是普通用户，没有管理员权限，所以点击右上角滑出菜单是看不到「管理后台」的入口链接的，我们去数据库修改下 <code>users</code> 表对应用户的 <code>permission</code> 字段值为 <code>2</code>，然后刷新页面就可以看到这个入口了：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/919c18f70865baefaa8d4eee9f29a391.jpg" alt="" /></p>
+<p>接下来我们进入管理后台，点击「审核列表」进入动作审核页面 <code>http://roast.test/#/admin/actions</code>，如果没有待审核记录，页面显示如下：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/d7f934e985106f968763648c259428eb.jpg" alt="" /></p>
+<p>如果有待审核记录，就会显示出动作审核列表：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/1ba3be1861014c1e1047141d0af8282c.jpg" alt="" /></p>
+<p>点击每条记录右侧的下拉箭头就可以看到对应的数据明细：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/eda0b5a38fe3b543d7a839a8160ff97e.jpg" alt="" /></p>
+<p>点击通过/拒绝，则会执行通过或拒绝审核动作，操作成功会弹出提示：</p>
+<p><img src="https://static.laravelacademy.org/wp-content/uploads/2018/10/4eccea45d601f4af714e64bdcd6c24f3.jpg" alt="" /></p>
+
+    </div><!-- .entry-content -->
+                        <footer class="entry-meta text-muted well well-sm">
+        <div>
+            分类：
+            <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+            <a href="../tutorials/api-app" rel="category tag">
+                API 应用
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            标签：
+            <i class="glyphicon glyphicon-tags"></i>&nbsp;
+                            <a href="../tags/Laravel" rel="tag">Laravel</a>
+                                    ,
+                                            <a href="../tags/API" rel="tag">API</a>
+                                    ,
+                                            <a href="../tags/Vue" rel="tag">Vue</a>
+                                    ,
+                                            <a href="../tags/Roast" rel="tag">Roast</a>
+                                    ,
+                                            <a href="../tags/Vuex" rel="tag">Vuex</a>
+                                    ,
+                                            <a href="../tags/动态加载" rel="tag">动态加载</a>
+                                    ,
+                                            <a href="../tags/管理后台" rel="tag">管理后台</a>
+                                    ,
+                                            <a href="../tags/权限" rel="tag">权限</a>
+                                    ,
+                                            <a href="../tags/审核" rel="tag">审核</a>
+                                    ,
+                                            <a href="../tags/列表" rel="tag">列表</a>
+                                    ,
+                                            <a href="../tags/布局" rel="tag">布局</a>
+                                    ,
+                                            <a href="https://laravelacademy.org/tags/%E7%BB%84%E4%BB%B6" rel="tag">组件</a>
+                                    </div>
+        <div class="clearfix"></div>
+        <div class="share-jiathis">
+            <span class="share-jiathis-label">分享：</span>
+            <div class="social-share"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div>声明： 原创文章，未经允许，禁止转载！</div>
+    </footer><!-- .entry-meta -->
+                </article><!-- #post-## -->
+
+                    <p class="hidden-xs">
+            <span class="ipt_kb_like_article_info pull-right text-info">
+                <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 人觉得这篇文章很有用
+            </span>
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary ipt_kb_like_article" data-postid="9654" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+    <p class="visible-xs">
+        <button type="button" data-loading-text="请稍等" class="btn btn-primary btn-block ipt_kb_like_article" data-postid="9654" data-posttype="App\Models\Article">
+            <i class="glyphicon glyphicon-thumbs-up"></i> <span class="text">这篇文章对我很有帮助</span>
+        </button>
+    </p>
+<p class="ipt_kb_like_article_info text-info text-center visible-xs">
+    <i class="glyphicon glyphicon-fire"></i>&nbsp;&nbsp;0 觉得这篇文章很有用
+</p>
+                        <ul role="navigation" id="nav-below" class="post-navigation pager">
+        <li class="screen-reader-text">Post navigation</li>
+                <li class="nav-previous previous">
+            <a href="9653.html" rel="prev">
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-left"></span></span>
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（三十八） —— 通过 Vue Router 提供的路由元信息功能实现前端路由权限判断
+            </a>
+        </li>
+                        <li class="nav-next next">
+            <a href="9655.html" rel="next">
+                基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（四十） —— 在管理后台添加公司、咖啡店、城市、用户、冲泡方法管理功能
+                <span class="meta-nav"><span class="glyphicon glyphicon-arrow-right"></span></span>
+            </a>
+        </li>
+            </ul><!-- #nav-below -->
+    
+                    <div class="well author-meta">
+        <div class="author-avatar text-center pull-left">
+            <a href="../author/nonfu">
+                <img alt='学院君' src='https://static.laravelacademy.org/assets/avatars/numxwdxf8lrtrsol.jpg' height='96' width='96' />
+            </a>
+        </div>
+        <h4 class="author-meta-title">
+            学院君 has written <a href="../author/nonfu">999</a> articles
+        </h4>
+        <div class="author-meta-bio">
+            <p>Laravel学院院长，终身学习者</p>
+            <p>
+                <span class="point">积分：117237</span>
+                <span class="level">
+                等级：P12
+                    <label class="label label-default">
+                    科学家
+                </label>
+            </span>
+                <span class="level">
+                职业：手艺人
+            </span>
+                <span class="level">
+                城市：杭州
+            </span>
+            </p>
+        </div>
+        <div class="author-meta-buttons text-right">
+            <div class="btn-group">
+                <a href="../index.html" class="btn btn-info bstooltip" title="Website"><span class="glyphicon ipt-icon-home"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+                    <!--
+<div class="footer-ads" style="margin:10px auto;">
+    <a href="http://www.qingdapei.net/laravelacadmy" target="_blank"><img src="http://ads.qingdapei.net/laravelacademy/728-90-1.jpg" width="728"></a>
+</div>
+-->
+
+                    <div class="google-ads" style="margin-bottom:8px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel学院详情页底部横幅广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="4898369711"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                    <div id="comments" class="comments-area">
+    <h4 class="comments-title">
+        0 条回复
+    </h4>
+
+    <ol class="comment-list">
+        </ol><!-- .comment-list -->
+
+    
+
+    <div id="respond" class="comment-respond">
+        <span class="pull-right">
+            <a class="btn btn-danger btn-sm" rel="nofollow" id="cancel-comment-reply-link" href="9654.html#respond" style="display:none;">取消回复</a>
+        </span>
+                    <p class="logged-in-as alert alert-warning">登录后才能进行评论，<a href="../login">立即登录?</a></p>
+                <form action="https://laravelacademy.org/comment/add" method="post" id="comment-form" class="comment-form form-horizontal" novalidate>
+            <div class="comment-form-comment form-group">
+                <label class="sr-only control-label" for="comment">评论内容</label>
+                <textarea placeholder="在这里输入评论内容或者进行提问..." class="form-control" id="comment_content" name="comment_content" rows="6" aria-required="true"></textarea>
+            </div>
+            <p class="form-submit text-right">
+                <label>支持 Markdown 语法，提交之前可通过预览查看效果</label>
+                <button name="preview" class="btn btn-success" type="button" id="preview-comment">预览评论</button>
+                <button name="submit" class="btn btn-primary" type="button" id="submit-comment">提交评论</button>
+                <input type="hidden" name="comment_item_type" value="App\Models\Article" id="comment_item_type"/>
+                <input type='hidden' name='comment_item_id' value='9654' id='comment_item_id'/>
+                <input type='hidden' name='comment_parent_id' id='comment_parent_id' value='0' />
+            </p>
+        </form>
+
+        <article id="div-comment-preview" class="comment-body panel panel-default" style="display: none;">
+            <div class="comment-content panel-body">
+
+            </div>
+        </article><!-- .comment-body -->
+    </div><!-- #respond -->
+</div><!-- #comments -->
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="secondary" class="widget-area col-md-4" role="complementary">
+
+                
+                <div class="academy-ads">
+    <a href="https://t.zsxq.com/yz7iMni" target="_blank">
+        <img src="https://static.laravelacademy.org/algorithms.jpg" width="350">
+    </a>
+</div>
+<div class="forum-20160919142357" style="margin-top: 5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="https://adman.henghost.com/data/forum-20160919142357.js"></script>
+</div>
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.tp-shop.cn/index.php?http_referer=laravel" target="_blank"><img src="http://www.tp-shop.cn/Public/images/2018shijiebei.jpg" width="350"></a>
+    <!--<a href="http://www.tp-shop.cn" target="_blank"><img src="http://static.laravelacademy.org/php-opensource-shop.jpg" width="350"></a>-->
+</div>
+<!--
+<div class="company-ads" style="margin-top:5px;">
+    <a href="http://www.qingdapei.net" target="_blank">
+        <img src="http://ads.wangkalike.com/laravelacademy/banner.png" width="350" style="border: 1px solid #ccc;">
+    </a>
+</div>
+-->
+<!--
+<div id="xumaoyun-img-container" class="company-ads" style="margin-top:5px;">
+    <script charset="utf-8" language="JavaScript" type="text/javascript" src="//docker-1252905040.file.myqcloud.com/other/xumaoyun-laravel2.js"></script>
+</div>
+-->
+
+                <div class="google-ads" style="text-align:center;margin-bottom:10px;margin-top:10px;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏大矩形广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="6375165315"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+                <aside id="ipt_kb_affix-2" class="widget ipt_kb_affix panel panel-default">
+        <div class="panel-heading">
+            <h3 class="widget-title panel-title">内容导航</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Stick it or not -->
+            <input type="hidden" class="dontfix" value="1" />
+            <!-- Search form -->
+            <form role="search" method="get" class="search-form" action="https://laravelacademy.org/search">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="search" class="search-field form-control" placeholder="全站搜索&hellip;" value="" name="keyword" />
+                        <span class="input-group-btn"><button type="submit" class="btn btn-default"><span class="ipt-icon-search"></span></button></span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- TOC for single posts -->
+            <div class="text-muted ipt-kb-toc">
+                <a href="9654.html#ipt-kb-toc-scrollspy" title="点击显示/隐藏内容目录" class="bstooltip pull-right btn btn-xs btn-default accordion-toggle ipt-kb-sub-toc-toggle" data-toggle="collapse"><i class="glyphicon ipt-icon-menu"></i></a>
+                <h4>
+                    内容目录	</h4>
+                <div class="clearfix"></div>
+            </div>
+            <nav id="ipt-kb-toc-scrollspy" class="collapse in">
+                <ul class="nav">
+                                        <li>
+                        <a href="9654.html#toc_0">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第一步：为后台布局文件 Admin.vue 添加页面头部和导航组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9654.html#toc_1">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第二步：为动作审核子页面定义前端路由、API 调用和 Vuex 模块
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9654.html#toc_2">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第三步：实现动作审核列表子页面组件
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="9654.html#toc_3">
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                            &nbsp
+                                                        第四步：动态引入动作审核 Vuex 模块
+                        </a>
+                    </li>
+                                    </ul>
+            </nav>
+        </div>
+    </aside>
+
+            <div class="pin-wrapper">
+                <div class="pinned">
+                        <aside id="widget-related-posts" class="widget widget_wp_related_posts panel panel-default">
+    <div class="panel-heading">
+        <h3 class="widget-title panel-title">相关文章</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+                            <a href="9518.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十二） —— 为 Vue Router 添加页面布局
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9618.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（十三） —— 通过 Vue 组件、Vue Router、Vuex 和 Laravel 实现表单提交
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9627.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十） —— 通过 Laravel + Vue 实现喜欢/取消喜欢咖啡店功能
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9632.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（二十二） —— 咖啡店标签前端输入及显示功能实现
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                            <a href="9643.html" class="wp_rp_title list-group-item kb-list-date kb-post-list">
+                    <h3>
+                        <span class="glyphicon ipt-icon-file"></span>
+                        基于 Laravel + Vue 构建 API 驱动的前后端分离应用系列（三十一） —— 功能模块重构 &amp; CSS 整体优化：首页篇
+                    </h3>
+                    <span class="clearfix"></span>
+                </a>
+                    </div>
+    </div>
+</aside>                        <div class="google-ads" style="text-align:center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Laravel侧边栏矩形滚动广告 -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:336px;height:280px"
+         data-ad-client="ca-pub-6544917749399342"
+         data-ad-slot="3421636513"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+                </div>
+            </div>
+        </div><!-- #secondary -->
+
+    </div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+            <div class="site-info">
+    <p class="copyright text-muted">
+        &copy; 2015-2018 Powered By Laravel 5.6
+        |
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备16003554号</a>
+        |
+        <a href="../about-us">关于学院</a>
+        |
+        <a href="../about-us#ads">广告合作</a>
+        |
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256294264'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1256294264' type='text/javascript'%3E%3C/script%3E"));</script>
+    </p>
+</div><!-- .site-info -->
+        <div class="scroll-back-to-top-wrapper">
+	        <span class="scroll-back-to-top-inner">
+					<i class="fa fa-2x fa-arrow-up"></i>
+			</span>
+        </div>
+    </footer><!-- #colophon -->
+</div><!-- #page -->
+
+    <script type='text/javascript' src="https://static.laravelacademy.org/js/app.js"></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/scroll-back-to-top.js'></script>
+<script type='text/javascript' src='https://static.laravelacademy.org/js/skip-link-focus-fix.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        // 用户退出
+        jQuery('.user-logout').on('click', function () {
+            jQuery('#logout-form').submit();
+        });
+    });
+
+    /* <![CDATA[ */
+    var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
+    /* ]]> */
+</script>
+
+<!--
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+-->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?0149df826a6be49c34721817692bbf7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-66519426-1', 'auto');
+    ga('send', 'pageview');
+
+</script>    <script type='text/javascript' src='https://static.laravelacademy.org/js/jquery.pin.js'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var s = jQuery(".pinned");
+        var pos = s.position();
+        jQuery(window).scroll(function() {
+            var windowpos = jQuery(window).scrollTop();
+            if (windowpos >= pos.top) {
+                s.addClass("stick");
+            } else {
+                s.removeClass("stick");
+            }
+        });
+
+        jQuery('.post-delete-link').on('click', function () {
+            if (confirm('确定要删除这篇教程吗？') == true) {
+                jQuery.ajax({
+                    url: jQuery(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.href = data.redirect_url;
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.ipt_kb_like_article').on('click', function () {
+            var itemId = jQuery(this).attr('data-postid');
+            var itemType = jQuery(this).attr('data-posttype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经投过票了，请勿重复操作');
+                return false;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('投票对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行投票，登录后才能操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#preview-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/preview',
+                type: 'POST',
+                data: {
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            jQuery('#div-comment-preview .comment-content').html(data.message);
+                            jQuery('#div-comment-preview').show();
+                        }
+                    }
+                }
+            });
+        });
+        jQuery('#submit-comment').on('click', function () {
+            var comment_content = jQuery('#comment_content').val();
+            if (comment_content.length == 0 || comment_content.replace(/\s+/g,"").length == 0) {
+                alert('评论内容不能不能为空');
+                return;
+            }
+            var item_id = jQuery('#comment_item_id').val();
+            var item_type = jQuery('#comment_item_type').val();
+            var parent_id = jQuery('#comment_parent_id').val();
+            if (isNaN(item_id) || item_id <= 0 || item_type.length ==0 || isNaN(parent_id)) {
+                alert('无效的评论参数，试试刷新页面并重新提交评论');
+                return;
+            }
+            jQuery('#submit-comment').attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/comment/add',
+                type: 'POST',
+                data: {
+                    'item_id': item_id,
+                    'item_type': item_type,
+                    'parent_id': parent_id,
+                    'content': comment_content
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                    },
+                    404: function () {
+                        alert('评论对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行评论操作');
+                    },
+                    401: function () {
+                        alert('登录后才能进行评论操作');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+            jQuery('#submit-comment').removeAttr('disabled');
+        });
+        jQuery('.comment-reply-link').on('click', function () {
+            jQuery('#comment_parent_id').val(jQuery(this).attr('data-id'));
+            jQuery('#comment_content').value = '';
+            jQuery('#comment_content').attr('placeholder', jQuery(this).attr('aria-label'));
+        });
+        jQuery('.comment-vote-link').on('click', function () {
+            if (jQuery(this).attr('disabled') == 'disabled') {
+                return false;
+            }
+            var itemId = jQuery(this).attr('data-itemid');
+            var itemType = jQuery(this).attr('data-itemtype');
+            var itemKey = 'academy_like_' + itemType + '_' + itemId;
+            if (localStorage.getItem(itemKey) === 'true') {
+                alert('已经感谢过了，请勿重复操作');
+                return false;
+            }
+            var obj = jQuery(this);
+            jQuery(this).attr('disabled', 'disabled');
+            jQuery.ajax({
+                url: 'https://laravelacademy.org/vote/add',
+                type: 'POST',
+                data: {
+                    'item_id': itemId,
+                    'item_type': itemType
+                },
+                dataType: 'json',
+                statusCode: {
+                    422: function () {
+                        alert('无效的请求对象');
+                        jQuery('.comment-vote-link').removeAttr('disabled');
+                    },
+                    404: function () {
+                        alert('感谢对象不存在！');
+                    },
+                    403: function () {
+                        alert('你没有权限进行感谢');
+                    },
+                    500: function () {
+                        alert('服务器开小差了，请在线联系学院君');
+                    },
+                    200: function (data) {
+                        if (!data.success) {
+                            alert(data.message);
+                        } else {
+                            localStorage.setItem(itemKey, 'true');
+                            obj.text('已感谢');
+                            obj.parent('.vote-link').find('.comment-vote-num').text(data.vote_count);
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.comment-delete-link').click(function () {
+            if (confirm('确定要删除这个回复吗？') == true) {
+                $.ajax({
+                    url: $(this).attr('data-href'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    statusCode: {
+                        422: function (data) {
+                            var result = jQuery.parseJSON(data.responseText);
+                            jQuery.each(result.errors, function (field, errors) {
+                                jQuery.each(errors, function (index, message) {
+                                    alert(message);
+                                })
+                            });
+                        },
+                        404: function () {
+                            alert('删除对象不存在或已删除');
+                        },
+                        403: function () {
+                            alert('你没有删除该对象权限');
+                        },
+                        401: function () {
+                            alert('登录后才能操作');
+                        },
+                        419: function () {
+                            alert('认证超时，请重新登录');
+                        },
+                        500: function () {
+                            alert('服务器开小差了，请在线联系学院君');
+                        },
+                        200: function (data) {
+                            if (!data.success) {
+                                alert(data.message);
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>
